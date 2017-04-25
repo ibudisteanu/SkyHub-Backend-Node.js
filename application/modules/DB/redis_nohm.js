@@ -20,7 +20,7 @@ redisClient.on('connect', function() {
             console.log('====> REDIS selecting worked')
 
             console.log("===> NOHM - setting REDIS CLIENT");
-            nohm.setClient(redis);
+            nohm.setClient(redisClient);
         }
     });
 
