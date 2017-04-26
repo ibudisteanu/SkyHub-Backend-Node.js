@@ -132,8 +132,12 @@ serverSocket.on("connection", function(socket){
         console.log("One of the client disconnected");
   });
 
+
 });
 
 server.listen(port, function(){
     console.log('listening on *:'+port);
 });
+
+var APIRoutes = require('./../application/modules/REST/routes/RESTroutes');
+console.log(APIRoutes.getAPIRoutes());

@@ -1,5 +1,6 @@
 /*
     NOHM  https://github.com/maritz/nohm
+    //TUTORIAL https://www.sitepoint.com/using-redis-node-js/
  */
 
 var constants = require ('./../../../bin/constants');
@@ -30,4 +31,9 @@ redisClient.on('disconnect', function() {
     console.log('===> REDIS disconnected!!!\n');
 });
 
-//TUTORIAL https://www.sitepoint.com/using-redis-node-js/
+
+module.exports =
+    {
+        nohm : nohm,
+    };
+
