@@ -15,6 +15,9 @@ module.exports = {
             sUserPassword = req.body.userPassword;
         }
 
+        console.log(sEmailUsername);
+        console.log(sUserPassword);
+
         if (1==1)
         {
             return {

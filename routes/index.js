@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/zzz', function(req, res, next) {
-    var testCtrl = require('./../application/modules/test/testController.js');
+    var testCtrl = require('./../application/modules/REST/test/test.controller.ts');
 
     res.json(testCtrl.getZZZ());
 });

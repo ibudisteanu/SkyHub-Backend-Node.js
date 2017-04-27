@@ -5,9 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var APIRoutes = require('./application/modules/REST/routes/RESTroutes');
-var indexRoutes = require('./routes/index');
-var usersRoutes = require('./routes/users');
+var RESTRouter = require('./application/modules/REST/routes/RESTroutes');
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -23,9 +23,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRoutes);
-app.use('/api', APIRoutes);
-app.use('/users', usersRoutes);
+app.use('/', indexRouter);
+app.use('/api', RESTRouter);
+app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -44,6 +44,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+require('run-middleware')(app);
 
 module.exports = app;
 
