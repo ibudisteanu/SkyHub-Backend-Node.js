@@ -110,7 +110,7 @@ server.listen(port, function(){
 var socketIo = require('socket.io');
 var serverSocket = socketIo.listen(server);
 
-var RESTRouter = require('./../application/modules/REST/routes/RESTroutes');
+var RESTRouter = require('./../application/modules/REST/routes/RESTroutes.ts');
 
 serverSocket.on("connection", function(socket){
   console.log("A new client connected");

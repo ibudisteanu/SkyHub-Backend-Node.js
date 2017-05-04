@@ -1,14 +1,22 @@
 var express = require('express');
 var router = express.Router();
+var Promise = require('promise');
 
 router.get('/auth/login', function(req, res, next) {
     var authCtrl = require('./../auth/auth.controller.ts');
-    res.json(authCtrl.postAuthenticateLogin(req, res));
+    authCtrl.postAuthenticateLogin(req, res).then ((answer) =>{
+        console.log(answer);     console.log(answer);
+        res.json(answer);
+    });
 });
 
 router.get('/auth/register', function(req, res, next) {
     var authCtrl = require('./../auth/auth.controller.ts');
-    res.json(authCtrl.postAuthenticateRegister(req, res));
+
+    authCtrl.postAuthenticateRegister(req, '').then ( (answer ) => {
+        res.json(answer);
+    });
+
 });
 
 router.get('/version', function(req, res, next) {
@@ -28,13 +36,19 @@ router.processSocketRoute = function (socket)
 
     socket.on("api/auth/login", function (data){
         data.body = data;
-        console.log(data);
-        socket.emit("api/auth/login",authCtrl.postAuthenticateLogin(data, ''));
+
+        authCtrl.postAuthenticateLogin(data, '').then ( (res ) => {
+            socket.emit("api/auth/login", res);
+        });
     });
 
     socket.on("api/auth/register", function (data){
         data.body = data;
-        socket.emit("api/auth/register",authCtrl.postAuthenticateRegister(data, ''));
+
+        authCtrl.postAuthenticateRegister(data, '').then ( (res ) => {
+            socket.emit("api/auth/register", res);
+        });
+
     });
 
     var testCtrl = require('./../test/test.controller.ts');
@@ -57,7 +71,7 @@ router.getAPIRoutes = function (sRoutePrefix) {
     router.stack.forEach(function(r){
         if (r.route && r.route.path){
 
-            sRoute = sRoutePrefix+r.route.path;
+            var sRoute = sRoutePrefix+r.route.path;
 
             if (sRoute[1] === '/')sRoute.substring(1);
 

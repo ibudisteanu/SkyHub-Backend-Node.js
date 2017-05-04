@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var RESTRouter = require('./application/modules/REST/routes/RESTroutes');
+var RESTRouter = require('./application/modules/REST/routes/RESTroutes.ts');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 

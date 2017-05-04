@@ -1,6 +1,6 @@
 /*
     NOHM  https://github.com/maritz/nohm
-    //TUTORIAL https://www.sitepoint.com/using-redis-node-js/
+    //TUTORIAL http://maritz.github.io/nohm/
  */
 
 var constants = require ('./../../../bin/constants');

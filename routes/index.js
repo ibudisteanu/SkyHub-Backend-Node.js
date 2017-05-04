@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'SkyHub 2 REST - Backend' });
 });
 
 router.get('/zzz', function(req, res, next) {
