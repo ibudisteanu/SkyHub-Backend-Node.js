@@ -19,14 +19,7 @@ var UserModel = redis.nohm.model('UserModel', {
         },
         password: {
             defaultValue: '',
-            type: function (value) {
-                return value + 'someSeed'; // and hash it of course, but to make this short that is omitted in this example
-            },
-            validations: [
-                ['length', {
-                    min: 6
-                }]
-            ]
+            type: 'string',
         },
         profilePic: {
             type: 'string',

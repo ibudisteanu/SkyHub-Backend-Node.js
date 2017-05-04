@@ -90,12 +90,15 @@ module.exports = {
 
         return new Promise ((resolve) => {
 
-            this.findUserFromEmailUsername(sEmailUsername).then ((foundUser)=> {
+            this.findUserFromEmailUsername(sEmailUsername).then ((foundUser )=> {
 
                 //checking the stored Hash is the same with the input password
                 if (foundUser === null) resolve (null);
                 else
-                    this.passwordHashVerify(sPassword, foundUser.password).then ((answerPassword) => {
+                    console.log("Password");
+                    console.log(foundUser);
+                    console.log(foundUser.p('password'));
+                    this.passwordHashVerify(sPassword, foundUser.p('password')).then ((answerPassword) => {
                         if (answerPassword === true)
                             resolve (foundUser);
                         else
