@@ -21,7 +21,7 @@ module.exports = {
 
         return new Promise ( (resolve) => {
 
-            users.findUserFromEmailUsername(sEmailUsername).then ( (user)=>{
+            users.findUserFromEmailUsernamePassword(sEmailUsername, sUserPassword).then ( (user)=>{
 
                 console.log(user);
 

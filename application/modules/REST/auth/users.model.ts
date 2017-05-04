@@ -16,7 +16,12 @@ module.exports = {
     {
         return new Promise( (resolve)=> {
 
-            if ((typeof sId === 'undefined') || (sId == [])) resolve(null);
+            if ((typeof sId === 'undefined') || (sId == []) || (sId === null)) {
+                resolve(null);
+                return null;
+            }
+
+            //console.log('finding user '+sId);
 
             var user = redis.nohm.factory('UserModel', sId, function (err) {
                 if (err)  // db error or id not found
@@ -85,9 +90,17 @@ module.exports = {
 
         return new Promise ((resolve) => {
 
-            this.findUserFromEmailUsername(sEmailUsername).then ((userAnswer)=> {
+            this.findUserFromEmailUsername(sEmailUsername).then ((foundUser)=> {
 
                 //checking the stored Hash is the same with the input password
+                if (foundUser === null) resolve (null);
+                else
+                    this.passwordHashVerify(sPassword, foundUser.password).then ((answerPassword) => {
+                        if (answerPassword === true)
+                            resolve (foundUser);
+                        else
+                            resolve (null);
+                    });
 
             });
 
@@ -102,9 +115,10 @@ module.exports = {
             this.getUserIdFromEmail(sEmailUsername).then ( (res) => {
 
                 //console.log('answer from email....'); console.log(res);
-                if (res.length) resolve (this.findUserById(res[0]));
+                if (res != null) resolve (this.findUserById(res));
                 else
                     this.getUserIdFromUsername(sEmailUsername).then ( (res) => {
+
                         resolve (this.findUserById(res));
                     })
             });
@@ -121,8 +135,10 @@ module.exports = {
             user.find({
                 username: sUsername,
             }, function (err, ids) {
-                console.log("response from username");
-                resolve(ids)
+                console.log("response from username"); console.log(ids);
+
+                if (ids.length) resolve(ids[0]);
+                else resolve (null);
             });
         });
     },
@@ -138,10 +154,30 @@ module.exports = {
             user.find({
                 email: sEmail,
             }, function (err, ids) {
-                console.log("response from useremail");
-                console.log(err);
-                console.log(ids);
-                resolve(ids)
+                console.log("response from useremail"); console.log(ids);
+
+                if (ids.length) resolve(ids[0]);
+                else resolve (null);
+            });
+        });
+    },
+
+    passwordHashVerify : function (sPassword, sPasswordHash) {
+
+        if (typeof sPasswordHash === "undefined") sPasswordHash = '$2y$08$9TTThrthZhTOcoHELRjuN.3mJd2iKYIeNlV/CYJUWWRnDfRRw6fD2';
+        if (typeof sPassword === "undefined") sPassword = "secret";
+
+        var bcrypt = require('bcrypt');
+        sPasswordHash = sPasswordHash.replace(/^\$2y(.+)$/i, '\$2a$1');
+
+        return new Promise ((resolve) => {
+            bcrypt.compare(sPassword, sPasswordHash, function(err, res) {
+
+                console.log("PASSWORD HASH VERIFY answer");
+                console.log(res);
+
+                resolve(res);
+
             });
         });
     }
