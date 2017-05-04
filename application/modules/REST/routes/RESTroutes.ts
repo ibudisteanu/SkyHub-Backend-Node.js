@@ -5,7 +5,7 @@ var Promise = require('promise');
 router.get('/auth/login', function(req, res, next) {
     var authCtrl = require('./../auth/auth.controller.ts');
     authCtrl.postAuthenticateLogin(req, res).then ((answer) =>{
-        console.log(answer);     console.log(answer);
+        console.log(answer);
         res.json(answer);
     });
 });

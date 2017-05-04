@@ -38,6 +38,7 @@ module.exports = {
                         user :  loggedInUser.getPublicInformation(),
                         auth_key: this.generateAuthTokenId(),
                     });
+
                 } else
                 resolve({
                     result: 'false',
@@ -55,19 +56,18 @@ module.exports = {
         var sEmail = '', sUsername = '', sPassword = '', sFirstName = '', sLastName = '', sLastName='', sCountry='', sCity='',sLanguage='', sProfilePic='', sCoverPic='';
 
         if (req.hasOwnProperty('body')){
-            sEmail = typeof req.body.email !== 'undefined' ? req.body.email : '';
-            sUsername = typeof req.body.username !== 'undefined' ?  req.body.username : '';
-            sPassword = typeof req.body.password !== 'undefined' ?  req.body.password : '';
-            sFirstName = typeof req.body.firstName !== 'undefined' ?  req.body.firstName : '';
-            sLastName = typeof req.body.lastName !== 'undefined' ?  req.body.lastName : '';
-            sCountry = typeof req.body.country !== 'undefined' ?  req.body.country : '';
-            sCity = typeof req.body.city !== 'undefined' ?  req.body.city : '';
+            sEmail = req.body.email || '';
+            sUsername = req.body.username ||  '';
+            sPassword = req.body.password || '';
+            sFirstName = req.body.firstName ||  '';
+            sLastName = req.body.lastName ||  '';
+            sCountry = req.body.country || '';
+            sCity = req.body.city || '';
 
-            if (req.body.hasOwnProperty('language')) sLanguage = req.body.language;
-            else sLanguage = sCountry;
+            sLanguage = req.body.language || sCountry;
 
-            if (req.body.hasOwnProperty('profilePic')) sProfilePic = req.body.profilePic;
-            if (req.body.hasOwnProperty('coverPic')) sCoverPic = req.body.coverPic;
+            sProfilePic = req.body.profilePic || '';
+            sCoverPic = req.body.coverPic || '';
         }
 
         console.log(sEmail);

@@ -81,6 +81,8 @@ var UserModel = redis.nohm.model('UserModel', {
 
         getPublicInformation : function (){
             var properties = this.allProperties();
+
+            properties.connected = this.getConnectedStatus();
             delete properties.password;
             delete properties.email;
 
@@ -89,9 +91,27 @@ var UserModel = redis.nohm.model('UserModel', {
 
         getPrivateInformation : function (){
             var properties = this.allProperties();
+
+            properties.connected = this.getConnectedStatus();
             delete properties.password;
 
             return properties;
+        },
+
+        getConnectedStatus : function () {
+
+            var timeDiff = new Date().getTime() - this.p('dtLastActivity') ;
+
+            /*console.log('calcuating diff time');
+            console.log('time');
+            console.log(new Date().getTime());
+            console.log(this.p('dtLastActivity'));
+            console.log(timeDiff);*/
+
+            if (timeDiff / 1000 < 3 )
+                return true;
+            else
+                return false;
         }
 
         // ... here you'll define your custom methods

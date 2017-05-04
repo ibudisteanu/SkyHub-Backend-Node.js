@@ -114,11 +114,11 @@ module.exports = {
             this.findUserFromEmail(sEmailUsername).then ( (userFound) => {
 
                 //console.log('USER FOUND'); console.log(userFound);
-
                 //console.log('answer from email....'); console.log(res);
+
                 if (userFound != null) resolve (userFound);
                 else
-                    this.findUserFromEmailUsername(sEmailUsername).then ( (userFound) => {
+                    this.findUserFromUsername(sEmailUsername).then ( (userFound) => {
 
                         resolve (userFound);
                     })
