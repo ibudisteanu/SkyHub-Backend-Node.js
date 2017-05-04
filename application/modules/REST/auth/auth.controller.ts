@@ -21,15 +21,21 @@ module.exports = {
 
         return new Promise ( (resolve) => {
 
-            users.findUserFromEmailUsernamePassword(sEmailUsername, sUserPassword).then ( (user)=>{
+            users.findUserFromEmailUsernamePassword(sEmailUsername, sUserPassword).then ( (loggedInUser)=>{
 
-                console.log(user);
+                //console.log(loggedInUser ); console.log(typeof loggedInUser);
 
-                if (user !== null)
+                if (loggedInUser !== null)
                 {
+                    //console.log(loggedInUser.getFullName());
+                    //console.log(loggedInUser.getPublicInformation());
+
+                    users.updateLastActivity(loggedInUser);
+
                     resolve( {
                         result: 'true',
-                        message: 'Welcome back, ',
+                        message: 'Welcome back, '+loggedInUser.getFullName(),
+                        user :  loggedInUser.getPublicInformation(),
                         auth_key: this.generateAuthTokenId(),
                     });
                 } else

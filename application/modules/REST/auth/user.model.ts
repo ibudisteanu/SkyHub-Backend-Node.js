@@ -65,9 +65,35 @@ var UserModel = redis.nohm.model('UserModel', {
                     min: 2
                 }]
             ]
+        },
+        dtCreation: {
+            type: 'timestamp'
+        },
+        dtLastActivity: {
+            type: 'timestamp',
         }
     },
     methods: { // optional
+
+        getFullName : function () {
+            return this.p('firstName') + ' ' + this.p('lastName');
+        },
+
+        getPublicInformation : function (){
+            var properties = this.allProperties();
+            delete properties.password;
+            delete properties.email;
+
+            return properties;
+        },
+
+        getPrivateInformation : function (){
+            var properties = this.allProperties();
+            delete properties.password;
+
+            return properties;
+        }
+
         // ... here you'll define your custom methods
     },
     //client: redis.someRedisClient // optional

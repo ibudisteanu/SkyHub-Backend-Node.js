@@ -55,6 +55,8 @@ module.exports = {
                 country: sCountry.toLowerCase(),
                 city: sCity.toLowerCase(),
                 language: sLanguage.toLowerCase(),
+                dtCreation: new Date(),
+                dtLastActivity: new Date(),
             }
         );
 
@@ -75,18 +77,8 @@ module.exports = {
         });
     },
 
-    checkLoginUser : function (sEmailUsername, sPassword){
-        return new Promise ((resolve)=>{
-
-            var user = redis.nohm.factory('UserModel');
-
-            user.load()
-
-        });
-    },
-
     findUserFromEmailUsernamePassword : function (sEmailUsername, sPassword){
-        console.log("Checking user password" + sEmailUsername + " "+ sPassword);
+        console.log("Checking user password ::: " + sEmailUsername + " ::: " + sPassword);
 
         return new Promise ((resolve) => {
 
@@ -94,16 +86,20 @@ module.exports = {
 
                 //checking the stored Hash is the same with the input password
                 if (foundUser === null) resolve (null);
-                else
-                    console.log("Password");
-                    console.log(foundUser);
-                    console.log(foundUser.p('password'));
-                    this.passwordHashVerify(sPassword, foundUser.p('password')).then ((answerPassword) => {
+                else {
+
+                    /*
+                     console.log(foundUser);
+                     console.log(foundUser.p('password'));
+                     */
+
+                    this.passwordHashVerify(sPassword, foundUser.p('password')).then((answerPassword) => {
                         if (answerPassword === true)
-                            resolve (foundUser);
+                            resolve(foundUser);
                         else
-                            resolve (null);
+                            resolve(null);
                     });
+                }
 
             });
 
@@ -112,54 +108,56 @@ module.exports = {
     },
 
     findUserFromEmailUsername : function (sEmailUsername){
-        console.log("Checking user" + sEmailUsername);
+        console.log("Finding user :::  " + sEmailUsername);
 
         return new Promise((resolve) =>{
-            this.getUserIdFromEmail(sEmailUsername).then ( (res) => {
+            this.findUserFromEmail(sEmailUsername).then ( (userFound) => {
+
+                //console.log('USER FOUND'); console.log(userFound);
 
                 //console.log('answer from email....'); console.log(res);
-                if (res != null) resolve (this.findUserById(res));
+                if (userFound != null) resolve (userFound);
                 else
-                    this.getUserIdFromUsername(sEmailUsername).then ( (res) => {
+                    this.findUserFromEmailUsername(sEmailUsername).then ( (userFound) => {
 
-                        resolve (this.findUserById(res));
+                        resolve (userFound);
                     })
             });
         });
     },
 
-    getUserIdFromUsername: function (sUsername){
+    findUserFromUsername: function (sUsername){
         var user = redis.nohm.factory('UserModel');
 
         //console.log('Checking user by username ' + sUsername);
 
         return new Promise ((resolve)=>{
             //find by username
-            user.find({
+            user.findAndLoad({
                 username: sUsername,
-            }, function (err, ids) {
-                console.log("response from username"); console.log(ids);
+            }, function (err, users) {
+                //console.log("response from username"); console.log(users);
 
-                if (ids.length) resolve(ids[0]);
-                else resolve (null);
+                if (users.length) resolve(users[0]);
+                else resolve(null);
             });
         });
     },
 
-    getUserIdFromEmail : function (sEmail){
+    findUserFromEmail : function (sEmail){
         var user = redis.nohm.factory('UserModel');
 
-        //console.log('Checking user by email ' + sEmail);
+        console.log('Checking user by email ::: ' + sEmail);
 
         return new Promise ((resolve)=>{
             //find by username
 
-            user.find({
+            user.findAndLoad({
                 email: sEmail,
-            }, function (err, ids) {
-                console.log("response from useremail"); console.log(ids);
+            }, function (err, users) {
+                //console.log("response from useremail "); console.log(users);
 
-                if (ids.length) resolve(ids[0]);
+                if (users.length) resolve(users[0]);
                 else resolve (null);
             });
         });
@@ -183,6 +181,34 @@ module.exports = {
 
             });
         });
+    },
+
+    updateLastActivity: function (Users){ //making the user online
+
+        if (!Users.isArray)
+            Users = [Users];
+
+        console.log('updating last activity');
+
+        Users.forEach( function(userIterator, index){
+            var user = userIterator;
+
+            if (typeof user === 'string'){
+                user = this.findUserById(user);
+            }
+
+            user.p('dtLastActivity',new Date().toISOString());
+
+            user.save( function (err) {
+
+                    if (err) {
+                        console.log('Error updating last login');
+                        console.log(err);
+                    }
+                });
+        })
+
+
     }
 
 };
