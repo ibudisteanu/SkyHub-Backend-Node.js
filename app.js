@@ -5,9 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var RESTRouter = require('./application/modules/REST/routes/RESTroutes.ts');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+RESTRouter = require('./application/modules/REST/routes/RESTroutes.ts');
+indexRouter = require('./routes/index');
+usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -49,16 +49,3 @@ require('run-middleware')(app);
 
 module.exports = app;
 
-/*
-function getAPIRoutes () {
-    arrResult = [];
-    APIRoutes.stack.forEach(function(r){
-        if (r.route && r.route.path){
-            arrResult.push(r.route.path);
-            console.log(r.route.path)
-        }
-    });
-
-    return arrResult;
-}
-app.arrAPIRoutes = getAPIRoutes ();*/

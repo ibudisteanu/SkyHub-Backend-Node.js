@@ -20,8 +20,8 @@ router.get('/auth/register', function(req, res, next) {
 });
 
 router.get('/version', function(req, res, next) {
-    var testCtrl = require('./../test/test.controller.ts');
-    res.json(testCtrl.getVersion(req, res));
+    var functionsCtrl = require('./../functions/functions.controller.ts');
+    res.json(functionsCtrl.getVersion(req, res));
 });
 
 
@@ -51,9 +51,9 @@ router.processSocketRoute = function (socket)
 
     });
 
-    var testCtrl = require('./../test/test.controller.ts');
+    var functionsCtrl = require('./../functions/functions.controller.ts');
     socket.on("api/version", function (data){
-        socket.emit("api/version",testCtrl.getVersion(data, ''));
+        socket.emit("api/version",functionsCtrl.getVersion(data, ''));
 
         console.log("Sending Version...")
     });
