@@ -3,7 +3,7 @@
     //TUTORIAL http://maritz.github.io/nohm/
  */
 
-var constants = require ('./../../../bin/constants');
+
 
 var redis = require('redis');
 var nohm = require('nohm').Nohm;
@@ -35,5 +35,6 @@ redisClient.on('disconnect', function() {
 module.exports =
     {
         nohm : nohm,
+        redisClient : redisClient,
     };
 

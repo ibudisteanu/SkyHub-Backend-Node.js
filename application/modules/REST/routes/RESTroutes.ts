@@ -5,7 +5,6 @@ var Promise = require('promise');
 router.get('/auth/login', function(req, res, next) {
     var authCtrl = require('./../auth/auth.controller.ts');
     authCtrl.postAuthenticateLogin(req, res).then ((answer) =>{
-        console.log(answer);
         res.json(answer);
     });
 });
@@ -21,7 +20,11 @@ router.get('/auth/register', function(req, res, next) {
 
 router.get('/version', function(req, res, next) {
     var functionsCtrl = require('./../functions/functions.controller.ts');
-    res.json(functionsCtrl.getVersion(req, res));
+    res.json( functionsCtrl.getVersion(req, res) );
+});
+
+router.get('/profile', function (req, res, next){
+    res.json( {message: 'Great! You are logged in' });
 });
 
 
@@ -38,7 +41,30 @@ router.processSocketRoute = function (socket)
         data.body = data;
 
         authCtrl.postAuthenticateLogin(data, '').then ( (res ) => {
+
+            socket.bAuthenticated = false; socket.userAuthenticated = null;
+            if (res.result == "true"){
+                socket.bAuthenticated = true;
+                socket.userAuthenticated = jwt.verify(res.token, constants.SESSION_Secret_key);
+            }
+
             socket.emit("api/auth/login", res);
+        });
+    });
+
+    socket.on("api/auth/login-token", function (data){
+        data.body = data;
+
+        authCtrl.postAuthenticateTokenAsync(data, '').then ((answer)=>{
+
+            socket.bAuthenticated = false; socket.userAuthenticated = null;
+            if (answer.result == "true"){
+                socket.bAuthenticated = true;
+                socket.userAuthenticated = answer.user;
+            }
+
+            socket.emit("api/auth/login-token", answer);
+
         });
     });
 
@@ -46,10 +72,19 @@ router.processSocketRoute = function (socket)
         data.body = data;
 
         authCtrl.postAuthenticateRegister(data, '').then ( (res ) => {
+
+            socket.bAuthenticated = false; socket.userAuthenticated = null;
+            if (res.result == "true"){
+                socket.bAuthenticated = true;
+                socket.userAuthenticated = jwt.verify(res.token, constants.SESSION_Secret_key);
+            }
+
             socket.emit("api/auth/register", res);
         });
 
     });
+
+
 
     var functionsCtrl = require('./../functions/functions.controller.ts');
     socket.on("api/version", function (data){
@@ -57,6 +92,10 @@ router.processSocketRoute = function (socket)
 
         console.log("Sending Version...")
     });
+
+
+
+
 };
 
 
@@ -82,6 +121,17 @@ router.getAPIRoutes = function (sRoutePrefix) {
 
     return arrResult;
 }
+
+
+// function authenticationMiddleware () {
+//     return function (req, res, next) {
+//         passport = require ('passport');
+//         if (passport.isAuthenticated()) {
+//             return next()
+//         }
+//         return res.json( { error : "You don't have enough privileges"} );
+//     }
+// }
 
 
 module.exports = router;

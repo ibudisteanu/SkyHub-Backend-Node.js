@@ -1,7 +1,7 @@
 /**
  * Created by ERAZER-ALEX on 4/25/2017.
  */
-var constants = require ('./../../../bin/constants');
+
 
 var redis = require('redis');
 

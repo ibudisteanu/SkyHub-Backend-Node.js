@@ -14,8 +14,6 @@ var http = require('http');
 //JugglingDB no working
 //var redis = require ('./../application/modules/DB/redisJugglingDB');
 
-redis = require ('./../application/modules/DB/redis_nohm');
-
 /**
  * Create HTTP server.
  */
@@ -103,6 +101,9 @@ server.listen(port, function(){
   console.log('listening on *:'+port);
 });
 
+/*
+    SOCKET IO SERVER
+ */
 
 serverSocket = require('../application/modules/socketServer/socketServer.controller.ts');
 serverSocket = serverSocket.serverSocket;

@@ -6,13 +6,75 @@
  * Create SOCKET IO.
  */
 
-RESTRouter = require('./../REST/routes/RESTroutes.ts');
 
-socketIo = require('socket.io');
-serverSocket = socketIo.listen(server);
+console.log('==> Creating SOCKET SERVER');
+
+// Initialize socket.io
+var socketIo = require('socket.io');
+var serverSocket = socketIo.listen(server);
+
+
+// serverSocket.use(passportSocketIoRedis.authorize({
+//     //cookieParser: cookieParser,   // the name of the cookie where express/connect stores its session_id
+//     cookieParser: require('cookie-parser'), //optional your cookie-parser middleware function. Defaults to require('cookie-parser')
+//     passport: passport,
+//     //key:         'connect.sid',
+//     key:         'express.sid',
+//     secret:      constants.SESSION_Secret_key,
+//     store:       sessionStore, //you need to use the same sessionStore you defined in the app.use(session({... in app.js
+//     success:     authorizeSuccess,  // *optional* callback on success - read more below
+//     fail:        authorizeFail     // *optional* callback on fail/error - read more below
+// }));
+//
+// console.log('==> PASSPORT SOCKET SERVER');
+//
+// function authorizeSuccess(data, accept)
+// {
+//     console.log('Authorized success');
+//     accept();
+// }
+//
+// function authorizeFail(data, message, error, accept)
+// {
+//     console.log('Authorized failed: '+message);
+//
+//     if(error)
+//         accept(new Error(message));
+// }
+
+// serverSocket.use(socketJWToken.authorize({
+//     secret: constants.SESSION_Secret_key,
+//     handshake: true,
+//     callback: true,
+// }));
+
+serverSocket.use( function(socket, next){
+    console.log("Query: ", socket.handshake.query.token);
+
+    var token = socket.handshake.query.token;
+
+    var userAuthenticated = null;
+
+    console.log('processing token....');
+
+    socket.bAuthenticated = false;
+    socket.userAuthenticated = null;
+    try{
+        userAuthenticated = jwt.verify(token, constants.SESSION_Secret_key);
+
+        socket.bAuthenticated = true;
+        socket.userAuthenticated = userAuthenticated;
+    } catch (err){
+    }
+
+    next();
+
+});
 
 serverSocket.on("connection", function (socket) {
+
     console.log("A new client connected");
+    //console.log(socket.request);
 
     var news = [
         {title: 'The cure of the Sadness is to play Videogames', date: '04.10.2016'},
@@ -21,12 +83,18 @@ serverSocket.on("connection", function (socket) {
         {title: 'Quicksilver demand Warner Bros. due to plagiarism with Speedy Gonzales', date: '04.10.2016'},
     ];
 
+
+
     console.log('sending news');
     socket.emit('api/news', news);
 
     socket.on("api/message", function (data) {
         console.log('received' + data);
     });
+
+
+    console.log('hello! ', socket.bAuthenticated , "   ", socket.userAuthenticated) ;
+
 
     RESTRouter.processSocketRoute(socket);
 

@@ -2,12 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="126f90af-57e2-46c9-ba28-44168b7e2133" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/modules/socketServer/socketServer.controller.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/modules/DB/not_working_redisJugglingDB.js" afterPath="$PROJECT_DIR$/application/modules/DB/not_working_redisJugglingDB.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/modules/DB/redis_nohm.js" afterPath="$PROJECT_DIR$/application/modules/DB/redis_nohm.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/modules/DB/redis_test.js" afterPath="$PROJECT_DIR$/application/modules/DB/redis_test.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/modules/REST/auth/auth.controller.ts" afterPath="$PROJECT_DIR$/application/modules/REST/auth/auth.controller.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/modules/REST/auth/users.model.ts" afterPath="$PROJECT_DIR$/application/modules/REST/auth/users.model.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/modules/REST/routes/RESTroutes.ts" afterPath="$PROJECT_DIR$/application/modules/REST/routes/RESTroutes.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/modules/socketServer/socketServer.controller.ts" afterPath="$PROJECT_DIR$/application/modules/socketServer/socketServer.controller.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/constants.js" afterPath="$PROJECT_DIR$/bin/constants.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/www.ts" afterPath="$PROJECT_DIR$/bin/www.ts" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/application/modules/REST/test/test.controller.ts" afterPath="$PROJECT_DIR$/application/modules/REST/functions/functions.controller.ts" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -22,31 +27,51 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="auth.controller.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/modules/REST/auth/auth.controller.ts">
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="40" lean-forward="true" selection-start-line="12" selection-start-column="40" selection-end-line="12" selection-end-column="40" />
+            <state relative-caret-position="1530">
+              <caret line="90" column="0" lean-forward="false" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RESTroutes.ts" pinned="false" current-in-tab="true">
+      <file leaf-file-name="socketServer.controller.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/modules/socketServer/socketServer.controller.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="555">
+              <caret line="95" column="55" lean-forward="false" selection-start-line="95" selection-start-column="55" selection-end-line="95" selection-end-column="55" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RESTroutes.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/modules/REST/routes/RESTroutes.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="51" column="7" lean-forward="true" selection-start-line="50" selection-start-column="0" selection-end-line="51" selection-end-column="7" />
+            <state relative-caret-position="340">
+              <caret line="65" column="56" lean-forward="false" selection-start-line="65" selection-start-column="56" selection-end-line="65" selection-end-column="56" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="functions.controller.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/modules/REST/functions/functions.controller.ts">
+      <file leaf-file-name="auth.controller.ts" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/application/modules/REST/auth/auth.controller.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="28" lean-forward="false" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
+            <state relative-caret-position="187">
+              <caret line="69" column="9" lean-forward="true" selection-start-line="69" selection-start-column="9" selection-end-line="69" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="users.model.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/modules/REST/auth/users.model.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="14" column="4" lean-forward="false" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -65,23 +90,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>console.</find>
-      <find>console.log</find>
-      <find>console.log(</find>
-      <find>console.log(&quot;p</find>
-      <find>console.log(&quot;</find>
-      <find>console.log(&quot;P</find>
-      <find>console.log(&quot;Pa</find>
-      <find>console.log(&quot;Pas</find>
-      <find>console.log(&quot;Pass</find>
-      <find>console.log(&quot;Passw</find>
-      <find>console.log(&quot;Passwor</find>
-      <find>console.log(&quot;Password</find>
-      <find>console.log(&quot;Password&quot;</find>
-      <find>console.log(&quot;Password&quot;)</find>
-      <find>console.log(&quot;Password')</find>
-      <find>console.log('Password')</find>
-      <find>r</find>
       <find>resp</find>
       <find>respo</find>
       <find>response</find>
@@ -94,7 +102,24 @@
       <find>Password</find>
       <find>finding user</find>
       <find>red</find>
+      <find>session</find>
+      <find>constant</find>
       <find>redis</find>
+      <find>express.sid</find>
+      <find>constants</find>
+      <find>c</find>
+      <find>coo</find>
+      <find>cook</find>
+      <find>cooki</find>
+      <find>cookie</find>
+      <find>cookie-</find>
+      <find>cookie-s</find>
+      <find>cookie-se</find>
+      <find>cookie-ses</find>
+      <find>cookie-sess</find>
+      <find>cookie-sessi</find>
+      <find>cookie-session</find>
+      <find>cookie-sessio</find>
     </findStrings>
     <dirStrings>
       <dir>E:\SkyHub-node\backend\express</dir>
@@ -114,7 +139,6 @@
         <option value="$PROJECT_DIR$/application/modules/DB/redis.js" />
         <option value="$PROJECT_DIR$/readme.md" />
         <option value="$PROJECT_DIR$/application/modules/DB/redisJugglingDB.js" />
-        <option value="$PROJECT_DIR$/bin/constants.js" />
         <option value="$PROJECT_DIR$/application/modules/REST/auth/authController.ts" />
         <option value="$PROJECT_DIR$/application/modules/REST/routes/routes.js" />
         <option value="$PROJECT_DIR$/../SkyHub-Frontend-Node.js/.gitignore" />
@@ -123,14 +147,15 @@
         <option value="$PROJECT_DIR$/application/modules/test/test.controller.ts" />
         <option value="$PROJECT_DIR$/routes/index.js" />
         <option value="$PROJECT_DIR$/application/modules/REST/routes/RESTroutes.js" />
-        <option value="$PROJECT_DIR$/application/modules/DB/redis_nohm.js" />
-        <option value="$PROJECT_DIR$/application/modules/REST/auth/users.model.ts" />
-        <option value="$PROJECT_DIR$/application/modules/REST/auth/auth.controller.ts" />
         <option value="$PROJECT_DIR$/application/modules/REST/auth/user.model.ts" />
         <option value="$PROJECT_DIR$/bin/www.ts" />
-        <option value="$PROJECT_DIR$/application/modules/socketServer/socketServer.controller.ts" />
+        <option value="$PROJECT_DIR$/bin/constants.js" />
+        <option value="$PROJECT_DIR$/application/modules/DB/redis_nohm.js" />
         <option value="$PROJECT_DIR$/app.js" />
+        <option value="$PROJECT_DIR$/application/modules/REST/auth/users.model.ts" />
+        <option value="$PROJECT_DIR$/application/modules/socketServer/socketServer.controller.ts" />
         <option value="$PROJECT_DIR$/application/modules/REST/routes/RESTroutes.ts" />
+        <option value="$PROJECT_DIR$/application/modules/REST/auth/auth.controller.ts" />
       </list>
     </option>
   </component>
@@ -164,6 +189,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -346,8 +373,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -468,12 +493,13 @@
       <workItem from="1493368051925" duration="9925000" />
       <workItem from="1493823812058" duration="12758000" />
       <workItem from="1493889734319" duration="24387000" />
-      <workItem from="1493970950324" duration="2721000" />
+      <workItem from="1493970950324" duration="42921000" />
+      <workItem from="1494060558726" duration="11501000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="96785000" />
+    <option name="totallyTimeSpent" value="148486000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -510,8 +536,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/bin/www.ts</url>
-          <line>103</line>
-          <properties />
+          <line>101</line>
         </line-breakpoint>
       </breakpoints>
       <option name="time" value="1" />
@@ -531,7 +556,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="10" column="1" lean-forward="false" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -563,7 +587,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -819,15 +842,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/modules/REST/auth/users.model.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="986">
-          <caret line="58" column="43" lean-forward="false" selection-start-line="58" selection-start-column="43" selection-end-line="58" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -839,59 +853,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/constants.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="9" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/modules/DB/redis_nohm.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="19" column="16" lean-forward="true" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/www.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="732">
-          <caret line="106" column="83" lean-forward="false" selection-start-line="106" selection-start-column="83" selection-end-line="106" selection-end-column="86" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/routes/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="820">
-          <caret line="51" column="0" lean-forward="true" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/modules/socketServer/socketServer.controller.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="11" column="2" lean-forward="true" selection-start-line="11" selection-start-column="2" selection-end-line="11" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/modules/REST/auth/auth.controller.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="40" lean-forward="true" selection-start-line="12" selection-start-column="40" selection-end-line="12" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -899,14 +864,68 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" column="28" lean-forward="false" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/modules/DB/redis_nohm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="37" column="34" lean-forward="false" selection-start-line="37" selection-start-column="34" selection-end-line="37" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/www.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="681">
+          <caret line="104" column="20" lean-forward="true" selection-start-line="104" selection-start-column="20" selection-end-line="104" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1530">
+          <caret line="90" column="0" lean-forward="false" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/modules/socketServer/socketServer.controller.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="95" column="55" lean-forward="false" selection-start-line="95" selection-start-column="55" selection-end-line="95" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/modules/REST/auth/users.model.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="14" column="4" lean-forward="false" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/constants.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="3" lean-forward="true" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/modules/REST/routes/RESTroutes.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="51" column="7" lean-forward="true" selection-start-line="50" selection-start-column="0" selection-end-line="51" selection-end-column="7" />
+        <state relative-caret-position="340">
+          <caret line="65" column="56" lean-forward="false" selection-start-line="65" selection-start-column="56" selection-end-line="65" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/modules/REST/auth/auth.controller.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="69" column="9" lean-forward="true" selection-start-line="69" selection-start-column="9" selection-end-line="69" selection-end-column="9" />
           <folding />
         </state>
       </provider>

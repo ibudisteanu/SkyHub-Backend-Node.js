@@ -3,7 +3,7 @@
  * ORM DB for REDIS
  */
 
-var constants = require ('./../../../bin/constants');
+
 
 var Schema = require('jugglingdb-redis-hq').Schema;
 var schema = new Schema('redis-hq', {port: constants.DB_RedisHost}); //port number depends on your configuration

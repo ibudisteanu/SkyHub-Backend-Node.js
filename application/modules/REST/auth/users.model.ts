@@ -67,10 +67,10 @@ module.exports = {
                     console.log("==> Error Saving User");
                     console.log(user.errors); // the errors in validation
 
-                    resolve({success:false, errors: user.errors });
+                    resolve({result:"false", errors: user.errors });
                 } else {
                     console.log("Saving User Successfully");
-                    resolve( {success:true, result: user });
+                    resolve( {result:"true", user: user });
                 }
             });
 

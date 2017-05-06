@@ -1,5 +1,12 @@
 var users = require('./users.model.ts');
 
+// passport.use(new LocalStrategy(
+//     function (username, password, done){
+//         return done(null, user);
+//     }
+//
+// ));
+
 module.exports = {
 
     /*
@@ -23,7 +30,10 @@ module.exports = {
 
             users.findUserFromEmailUsernamePassword(sEmailUsername, sUserPassword).then ( (loggedInUser)=>{
 
-                //console.log(loggedInUser ); console.log(typeof loggedInUser);
+                // passport.authenticate('local','','', function (req, res){
+                //
+                // });
+
 
                 if (loggedInUser !== null)
                 {
@@ -36,6 +46,7 @@ module.exports = {
                         result: 'true',
                         message: 'Welcome back, '+loggedInUser.getFullName(),
                         user :  loggedInUser.getPublicInformation(),
+                        token: this.getUserToken(loggedInUser),
                         auth_key: this.generateAuthTokenId(),
                     });
 
@@ -49,6 +60,43 @@ module.exports = {
 
         });
 
+    },
+
+    postAuthenticateTokenAsync: function (req, res){
+
+        var sToken = '';
+        if (req.hasOwnProperty('body')) {
+            sToken = req.body.token || '';
+        }
+
+        console.log("Token", sToken);
+
+        return new Promise ( (resolve) => {
+
+            try{
+                var userAuthenticatedData = jwt.verify(sToken, constants.SESSION_Secret_key);
+
+                users.findUserById(userAuthenticatedData.id).then ((userAuthenticated)=>{
+
+                    console.log(userAuthenticated.getPublicInformation());
+
+                    resolve({
+                        result: "true",
+                        user: userAuthenticated.getPublicInformation(),
+                    });
+
+                });
+
+            } catch (err){
+
+                resolve({
+                    result: "false",
+                    message: "Error. Invalid token",
+                });
+
+            }
+
+        });
     },
 
     postAuthenticateRegister: function (req, res){
@@ -83,6 +131,19 @@ module.exports = {
     {
         var hat = require('hat');
         return hat();
+    },
+
+    getUserToken : function(user){
+
+        //console.log('calculating token');
+
+        constants = require ('./../../../../bin/constants.js');
+        console.log("SECRET key: "+constants.SESSION_Secret_key);
+
+        var token = jwt.sign({ "id" : user.id}, constants.SESSION_Secret_key, {expiresInMinutes: 60 * 24 * 30* 12 * 5});
+        console.log('token = '+token);
+
+        return token;
     }
 
 };

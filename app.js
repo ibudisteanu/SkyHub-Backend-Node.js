@@ -2,8 +2,12 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
+cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+
+constants = require ('./bin/constants.js');
+
+redis = require ('./application/modules/DB/redis_nohm');    //REDIS NOHM
 
 RESTRouter = require('./application/modules/REST/routes/RESTroutes.ts');
 indexRouter = require('./routes/index');
@@ -44,6 +48,48 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+/*
+    SESSIONS TUTORIAL http://mono.software/2014/08/25/Sharing-sessions-between-SocketIO-and-Express-using-Redis/
+ */
+
+// passport = require('passport');
+// LocalStrategy = require('passport-local').Strategy;
+// session = require('express-session');
+// RedisStore = require('connect-redis')(session);
+// sessionStore = new RedisStore({ host: constants.SESSION_RedisHost,  port: constants.SESSION_RedisPort,  client: redis.redisClient });
+//
+// app.use (session({
+//     store: sessionStore,
+//     secret: constants.SESSION_Secret_key,
+//     resave: false,
+//     saveUninitialized: false,
+// }));
+
+//
+// //passportSocketIoRedis = require("passport-socketio-redis");    //Passport Socket io Redis
+// passportSocketIoRedis = require('passport.socketio');
+//
+//
+//
+// // When configure your session for express use options like this.
+// app.use(session({
+//     key: 'connect.sid',
+//     secret: constants.SESSION_Secret_key, // the session_secret to parse the cookie
+//     store: sessionStore, // we NEED to use a sessionstore. no memorystore please
+//     resave: true,
+//     saveUninitialized: true
+//     })
+// );
+//
+
+ // // Use passport
+ // app.use(passport.initialize());
+ // app.use(passport.session());
+
+
+socketJWToken = require('socketio-jwt');
+jwt = require('jsonwebtoken');
 
 require('run-middleware')(app);
 
