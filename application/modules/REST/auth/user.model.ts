@@ -30,7 +30,7 @@ var UserModel = redis.nohm.model('UserModel', {
         firstName: {
             type: 'string',
             validations: [
-                ['notEmpty']
+                    ['notEmpty']
             ]
         },
         lastName: {
