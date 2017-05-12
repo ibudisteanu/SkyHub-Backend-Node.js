@@ -85,7 +85,7 @@ module.exports = {
             this.findUserFromEmailUsername(sEmailUsername).then ((foundUser )=> {
 
                 //checking the stored Hash is the same with the input password
-                if (foundUser === null) resolve (null);
+                if (foundUser === null) resolve ({result:"false", message: "No User Found"});
                 else {
 
                     /*
@@ -95,9 +95,9 @@ module.exports = {
 
                     this.passwordHashVerify(sPassword, foundUser.p('password')).then((answerPassword) => {
                         if (answerPassword === true)
-                            resolve(foundUser);
+                            resolve({result:"true", user: foundUser});
                         else
-                            resolve(null);
+                            resolve({result:"false", message: "Password Incorrect"});
                     });
                 }
 

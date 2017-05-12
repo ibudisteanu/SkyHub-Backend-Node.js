@@ -28,32 +28,33 @@ module.exports = {
 
         return new Promise ( (resolve) => {
 
-            users.findUserFromEmailUsernamePassword(sEmailUsername, sUserPassword).then ( (loggedInUser)=>{
+            users.findUserFromEmailUsernamePassword(sEmailUsername, sUserPassword).then ( (answer)=>{
 
                 // passport.authenticate('local','','', function (req, res){
                 //
                 // });
 
+                console.log('User answer',answer);
 
-                if (loggedInUser !== null)
+                if (answer.result === "true")
                 {
                     //console.log(loggedInUser.getFullName());
                     //console.log(loggedInUser.getPublicInformation());
 
-                    users.updateLastActivity(loggedInUser);
+                    users.updateLastActivity(answer.user);
 
                     resolve( {
                         result: 'true',
-                        message: 'Welcome back, '+loggedInUser.getFullName(),
-                        user :  loggedInUser.getPublicInformation(),
-                        token: this.getUserToken(loggedInUser),
+                        message: 'Welcome back, '+answer.user.getFullName(),
+                        user :  answer.user.getPublicInformation(),
+                        token: this.getUserToken(answer.user),
                         auth_key: this.generateAuthTokenId(),
                     });
 
                 } else
                 resolve({
                     result: 'false',
-                    message: "Wrong Username/Email or Password",
+                    message: answer.message,
                 });
 
             });
