@@ -73,12 +73,6 @@ router.processSocketRoute = function (socket)
 
         authCtrl.postAuthenticateRegister(data, '').then ( (res ) => {
 
-            socket.bAuthenticated = false; socket.userAuthenticated = null;
-            if (res.result == "true"){
-                socket.bAuthenticated = true;
-                socket.userAuthenticated = jwt.verify(res.token, constants.SESSION_Secret_key);
-            }
-
             socket.emit("api/auth/register", res);
         });
 

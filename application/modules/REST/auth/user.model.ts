@@ -6,7 +6,11 @@ var UserModel = redis.nohm.model('UserModel', {
             type: 'string',
             unique: true,
             validations: [
-                ['notEmpty']
+                ['notEmpty'],
+                ['length', {
+                    min: 4
+                }]
+
             ]
         },
         email: {
@@ -20,6 +24,13 @@ var UserModel = redis.nohm.model('UserModel', {
         password: {
             defaultValue: '',
             type: 'string',
+            validations: [
+                ['notEmpty'],
+                ['length', {
+                    min: 4
+                }]
+            ]
+
         },
         profilePic: {
             type: 'string',
@@ -30,13 +41,20 @@ var UserModel = redis.nohm.model('UserModel', {
         firstName: {
             type: 'string',
             validations: [
-                    ['notEmpty']
+                ['notEmpty'],
+                ['length', {
+                    min: 1
+                }]
+
             ]
         },
         lastName: {
             type: 'string',
             validations: [
-                ['notEmpty']
+                ['notEmpty'],
+                ['length', {
+                    min: 2
+                }]
             ]
         },
         country: {
@@ -65,6 +83,12 @@ var UserModel = redis.nohm.model('UserModel', {
                     min: 2
                 }]
             ]
+        },
+        latitude : {
+            type: 'number'
+        },
+        longitude : {
+            type: 'number'
         },
         dtCreation: {
             type: 'timestamp'

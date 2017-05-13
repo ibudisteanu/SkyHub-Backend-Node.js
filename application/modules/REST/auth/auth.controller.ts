@@ -102,7 +102,7 @@ module.exports = {
 
     postAuthenticateRegister: function (req, res){
 
-        var sEmail = '', sUsername = '', sPassword = '', sFirstName = '', sLastName = '', sLastName='', sCountry='', sCity='',sLanguage='', sProfilePic='', sCoverPic='';
+        var sEmail = '', sUsername = '', sPassword = '', sFirstName = '', sLastName = '', sLastName='', sCountry='', sCity='',sLanguage='', sProfilePic='', sCoverPic='', dbLatitude = 0, dbLongitude = 0;
 
         if (req.hasOwnProperty('body')){
             sEmail = req.body.email || '';
@@ -113,6 +113,9 @@ module.exports = {
             sCountry = req.body.country || '';
             sCity = req.body.city || '';
 
+            dbLatitude = req.body.latitude || -666;
+            dbLongitude = req.body.longitude || -666;
+
             sLanguage = req.body.language || sCountry;
 
             sProfilePic = req.body.profilePic || '';
@@ -121,7 +124,7 @@ module.exports = {
 
         console.log(sEmail);
 
-        return users.registerUser(sEmail, sUsername, sPassword, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic);
+        return users.registerUser(sEmail, sUsername, sPassword, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude);
     },
 
     /*

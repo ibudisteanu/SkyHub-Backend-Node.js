@@ -33,21 +33,32 @@ module.exports = {
         });
     },
 
-    registerUser : function (sEmail, sUsername, sPassword, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic){
+    registerUser : function (sEmail, sUsername, sPassword, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongtitude){
 
         if (typeof sCountry === 'undefined') sCountry = '';
         if (typeof sCity === 'undefined') sCity = '';
         if (typeof sLanguage === 'undefined') sLanguage = sCountry;
         if (typeof sProfilePic === 'undefined') sProfilePic = '';
         if (typeof sCoverPic === 'undefined') sCoverPic = '';
+        if (typeof dbLatitude === 'undefined') dbLatitude = -666;
+        if (typeof dbLongtitude === 'undefined') dbLongtitude = -666;
+
 
         var user = redis.nohm.factory('UserModel');
+
+        var errorValidation = {};
+
+
+        //if (! /^[^`<>[\]'"\s~!@#%^&*()|\\?,.:{}=+\xA6-\xDF\x00-\x20\x7F\xF0-\xFF]+$/g.test(sUsername)){
+        if (! /^(?=.{4,30}$)(?![_.-])(?!.*[_.$-]{2})[a-zA-Z0-9._$-]+$/g.test(sUsername)){
+            errorValidation.username = ["Invalid Username"];
+        }
 
         user.p(
             {
                 username: sUsername,
                 email: sEmail,
-                password: sPassword,
+                password: this.passwordHash(sPassword),
                 profilePic: sProfilePic,
                 coverPic: sCoverPic,
                 firstName: sFirstName,
@@ -60,7 +71,17 @@ module.exports = {
             }
         );
 
+        if (dbLatitude != -666) user.p('latitude', dbLatitude);
+        if (dbLongtitude != -666) user.p('longitude', dbLongtitude);
+
         return new Promise( (resolve)=> {
+
+            if (Object.keys(errorValidation).length !== 0 ){
+
+                resolve({result: "false", errors: errorValidation});
+
+                return;
+            }
 
             user.save(function (err) {
                 if (err) {
@@ -70,7 +91,9 @@ module.exports = {
                     resolve({result:"false", errors: user.errors });
                 } else {
                     console.log("Saving User Successfully");
-                    resolve( {result:"true", user: user });
+                    console.log(user.getPrivateInformation());
+
+                    resolve( {result:"true", user: user.getPrivateInformation() });
                 }
             });
 
@@ -93,12 +116,11 @@ module.exports = {
                      console.log(foundUser.p('password'));
                      */
 
-                    this.passwordHashVerify(sPassword, foundUser.p('password')).then((answerPassword) => {
-                        if (answerPassword === true)
-                            resolve({result:"true", user: foundUser});
-                        else
-                            resolve({result:"false", message: "Password Incorrect"});
-                    });
+                    if (this.passwordHashVerify(sPassword, foundUser.p('password')))
+                        resolve({result:"true", user: foundUser});
+                    else
+                        resolve({result:"false", message: "Password Incorrect"});
+
                 }
 
             });
@@ -171,16 +193,13 @@ module.exports = {
         var bcrypt = require('bcrypt');
         sPasswordHash = sPasswordHash.replace(/^\$2y(.+)$/i, '\$2a$1');
 
-        return new Promise ((resolve) => {
-            bcrypt.compare(sPassword, sPasswordHash, function(err, res) {
+        return bcrypt.compareSync(sPassword, sPasswordHash);
+    },
 
-                console.log("PASSWORD HASH VERIFY answer");
-                console.log(res);
+    passwordHash : function (sPassword){
 
-                resolve(res);
-
-            });
-        });
+        var bcrypt = require('bcrypt');
+        return bcrypt.hashSync(sPassword, 8);
     },
 
     updateLastActivity: function (Users){ //making the user online
