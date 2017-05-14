@@ -33,32 +33,64 @@ module.exports = {
         });
     },
 
-    registerUser : function (sEmail, sUsername, sPassword, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongtitude){
+    /*
+        REGISTRATION USER
+            using string password => hashed
+            using social network
+     */
+    registerUser : function (sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, iAge, sTimeZone, sGender){
 
-        if (typeof sCountry === 'undefined') sCountry = '';
-        if (typeof sCity === 'undefined') sCity = '';
-        if (typeof sLanguage === 'undefined') sLanguage = sCountry;
-        if (typeof sProfilePic === 'undefined') sProfilePic = '';
-        if (typeof sCoverPic === 'undefined') sCoverPic = '';
-        if (typeof dbLatitude === 'undefined') dbLatitude = -666;
-        if (typeof dbLongtitude === 'undefined') dbLongtitude = -666;
+        sCountry = sCountry || ''; sCity = sCity || ''; sProfilePic = sProfilePic || ''; sCoverPic = sCoverPic || '';
+        dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iAge = iAge || 0; sTimeZone = sTimeZone || ''; sGender = sGender || '';
+
+        sLanguage = sLanguage || sCountry;
+
+        sUsername = sUsername.toLowerCase();
 
 
         var user = redis.nohm.factory('UserModel');
-
         var errorValidation = {};
-
 
         //if (! /^[^`<>[\]'"\s~!@#%^&*()|\\?,.:{}=+\xA6-\xDF\x00-\x20\x7F\xF0-\xFF]+$/g.test(sUsername)){
         if (! /^(?=.{4,30}$)(?![_.-])(?!.*[_.$-]{2})[a-zA-Z0-9._$-]+$/g.test(sUsername)){
             errorValidation.username = ["Invalid Username"];
         }
 
+        if (typeof (password) === 'string') //it is a simple password
+            user.p('password', this.passwordHash(password));
+        else {
+            let sSocialNetwork = password.socialNetwork;
+            let sSocialNetworkUserId = password.socialNetworkUserId;
+            let sOAuth2Token = password.accessToken;
+
+            switch (sSocialNetwork){
+                case 'facebook':
+                    user.p('idFacebook', sSocialNetworkUserId);
+                    break;
+
+                case 'google':
+                    user.p('idGoogle', sSocialNetworkUserId);
+                    break;
+
+                case 'twitter':
+                    user.p('idGoogle', sSocialNetworkUserId);
+                    break;
+
+                case 'linkedin':
+                    user.p('idLinkedIn', sSocialNetworkUserId);
+                    break;
+
+                case 'reddit':
+                    user.p('idReddit', sSocialNetworkUserId);
+                    break;
+            }
+
+        }
+
         user.p(
             {
                 username: sUsername,
                 email: sEmail,
-                password: this.passwordHash(sPassword),
                 profilePic: sProfilePic,
                 coverPic: sCoverPic,
                 firstName: sFirstName,
@@ -68,11 +100,14 @@ module.exports = {
                 language: sLanguage.toLowerCase(),
                 dtCreation: new Date(),
                 dtLastActivity: new Date(),
+                age : iAge,
+                gender : sGender,
+                timeZone : sTimeZone
             }
         );
 
         if (dbLatitude != -666) user.p('latitude', dbLatitude);
-        if (dbLongtitude != -666) user.p('longitude', dbLongtitude);
+        if (dbLongitude != -666) user.p('longitude', dbLongitude);
 
         return new Promise( (resolve)=> {
 
@@ -184,6 +219,33 @@ module.exports = {
             });
         });
     },
+
+    findUserFromSocialNetwork: function (sSocialNetwork, sId){
+        var user = redis.nohm.factory('UserModel');
+
+        console.log('Checking user by social network ',sSocialNetwork,'  id ' + sId);
+
+        var searchObject = {};
+
+        if (sSocialNetwork === 'facebook') searchObject = {idFacebook : sId};
+        if (sSocialNetwork === 'google') searchObject = {idGoogle : sId};
+        if (sSocialNetwork === 'twitter') searchObject = {idTwitter : sId};
+        if (sSocialNetwork === 'linkedin') searchObject = {idLinkedIn : sId};
+        if (sSocialNetwork === 'reddit') searchObject = {idReddit : sId};
+
+        console.log('searching for: ',searchObject);
+
+        return new Promise ((resolve)=>{
+            //find by username
+            user.findAndLoad( searchObject, function (err, users) {
+                //console.log("response from username"); console.log(users);
+
+                if (users.length) resolve(users[0]);
+                else resolve(null);
+            });
+        });
+    },
+
 
     passwordHashVerify : function (sPassword, sPasswordHash) {
 

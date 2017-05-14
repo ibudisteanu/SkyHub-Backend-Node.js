@@ -78,6 +78,15 @@ router.processSocketRoute = function (socket)
 
     });
 
+    socket.on("api/auth/register-oauth", function (data){
+        data.body = data;
+
+        authCtrl.postAuthenticateRegisterOAuth(data, '').then ( (res ) => {
+
+            socket.emit("api/auth/register", res);
+        });
+
+    });
 
 
     var functionsCtrl = require('./../functions/functions.controller.ts');

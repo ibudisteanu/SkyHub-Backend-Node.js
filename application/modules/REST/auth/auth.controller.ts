@@ -1,4 +1,5 @@
 var users = require('./users.model.ts');
+var oauth2 = require('./oauth2.controller.ts');
 
 // passport.use(new LocalStrategy(
 //     function (username, password, done){
@@ -102,7 +103,7 @@ module.exports = {
 
     postAuthenticateRegister: function (req, res){
 
-        var sEmail = '', sUsername = '', sPassword = '', sFirstName = '', sLastName = '', sLastName='', sCountry='', sCity='',sLanguage='', sProfilePic='', sCoverPic='', dbLatitude = 0, dbLongitude = 0;
+        var sEmail = '', sUsername = '', sPassword = '', sFirstName = '', sLastName = '', sLastName='', sCountry='', sCity='',sLanguage='', sProfilePic='', sCoverPic='', dbLatitude = 0, dbLongitude = 0, iAge = 0, sTimeZone = 0, sGender = 0;
 
         if (req.hasOwnProperty('body')){
             sEmail = req.body.email || '';
@@ -117,19 +118,108 @@ module.exports = {
             dbLongitude = req.body.longitude || -666;
 
             sLanguage = req.body.language || sCountry;
+            iAge = req.body.age || 0;
+            sTimeZone = sTimeZone || 0;
+            sGender = sGender || '';
 
             sProfilePic = req.body.profilePic || '';
             sCoverPic = req.body.coverPic || '';
         }
 
+        if (req.hasOwnProperty(('OAuth'))){
+            sPassword = req.OAuth;
+        }
+
         console.log(sEmail);
 
-        return users.registerUser(sEmail, sUsername, sPassword, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude);
+        return users.registerUser(sEmail, sUsername, sPassword, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, iAge, sTimeZone, sGender);
+    },
+
+    postAuthenticateRegisterOAuth: function (req, res){
+
+        var sSocialNetwork='', sOAuth2Token = '', sSocialNetworkUserId = '';
+
+        if (req.hasOwnProperty('body')){
+            sSocialNetwork = req.body.socialNetwork || '';
+            sSocialNetworkUserId = req.body.socialNetworkId || '';
+            sOAuth2Token = req.body.accessToken || '';
+        }
+
+        console.log('Registering with OAuth 2 token ',sSocialNetwork, sOAuth2Token, sSocialNetworkUserId)
+
+        let oauthCtrl = require ('./oauth2.controller.ts');
+
+        return new Promise( (resolve)=> {
+
+            oauthCtrl.validateOAuth2TokenAsync(sSocialNetwork, sOAuth2Token, sSocialNetworkUserId).then ((res)=> {
+
+                if (res == true) {
+
+                    var user = users.findUserFromSocialNetwork(sSocialNetwork, sSocialNetworkUserId);
+
+                    //checking if the user has been registered before already...
+                    if (user !== null){
+                        resolve({
+                            result : "true",
+                            type : "log in",
+                            user : user.getPrivateInformation(),
+                            token: this.getUserToken(user),
+                        });
+                    } else
+                    {//registering the new user
+
+                        //I create a special property OAuth to show that there is an OAuth registration
+                        req.OAuth = {
+                            socialNetwork : sSocialNetwork,
+                            socialNetworkUserId : sSocialNetworkUserId,
+                            accessToken : sOAuth2Token
+                        };
+
+                        req.body.username = this.generateUserName(req.body.firstName||'', req.body.lastName||'', req.body.email||'');
+
+                        return this.postAuthenticateRegister(req, res);
+
+                    }
+
+                    console.log('OAUTH validated successfully');
+                }
+
+
+
+            });
+
+            //return users.registerUser(sEmail, sUsername, sPassword, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude);
+
+        });
     },
 
     /*
         HELPER FUNCTIONS
      */
+
+    //generate a unique username from firstName, lastName, emailAddress and a unique random number [10 trials]
+    generateUserName : function (sFirstName, sLastName, sEmail){
+
+        var sUserNamePrefix = (sFirstName != '' ? sFirstName+'_' : '')+sLastName; //first from firstName and lastName
+
+        if (sUserNamePrefix === '') {
+            var nameEmail = sEmail.replace(/@.*$/,""); //extracting the name from email address ionut@budisteanu.net => ionut
+            sUserNamePrefix = nameEmail;
+        }
+
+        if (sUserNamePrefix != '')
+        {
+            var sFinalUserName = sUserNamePrefix;
+
+            var user = users.findUserFromUsername(sFinalUserName);
+            var iCount = 0;
+
+            while ((user !== null) && (iCount < 10)){
+                sFinalUserName = Math.floor(Math.random() * 2020);
+            }
+        }
+
+    },
 
     generateAuthTokenId : function()
     {

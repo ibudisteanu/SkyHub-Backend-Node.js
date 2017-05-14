@@ -16,21 +16,10 @@ var UserModel = redis.nohm.model('UserModel', {
         email: {
             type: 'string',
             unique: true,
-            validations: [
-                ['notEmpty'],
-                ['email']
-            ]
         },
         password: {
             defaultValue: '',
             type: 'string',
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 4
-                }]
-            ]
-
         },
         profilePic: {
             type: 'string',
@@ -95,7 +84,19 @@ var UserModel = redis.nohm.model('UserModel', {
         },
         dtLastActivity: {
             type: 'timestamp',
-        }
+        },
+        age: { type: 'number', },
+        timeZone: { type: 'string', },
+        gender: { type: 'string', },
+
+        verified : {type : 'boolean'},
+
+        idFacebook : { type: 'string', },
+        idGoogle : { type: 'string', },
+        idTwitter : { type: 'string', },
+        idLinkedIn : { type: 'string', },
+        idGitHub : { type: 'string', },
+        idReddit : { type: 'string', },
     },
     methods: { // optional
 
