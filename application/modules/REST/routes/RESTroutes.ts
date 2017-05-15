@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Promise = require('promise');
 
-var Authenticate = require ('../auth/authenticate.controller.ts');
+var Authenticate = require ('../auth/Authenticate.controller.ts');
 var Functions = require ('../functions/functions.controller.ts');
 //import {Authenticate} from '../auth/authenticate.controller.ts';
 //import {Functions} from '../functions/functions.controller.ts';
@@ -84,6 +84,7 @@ router.processSocketRoute = function (socket)
 
         Authenticate.postAuthenticateRegisterOAuth(data, '').then ( (res ) => {
 
+            console.log('emitting register oauth');
             socket.emit("api/auth/register-oauth", res);
         });
 

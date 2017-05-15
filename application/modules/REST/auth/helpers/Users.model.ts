@@ -1,4 +1,5 @@
-var userModel = require ('./../user.model.ts');
+var UserModel = require ('./../user.model.ts');
+
 
 module.exports = {
 
@@ -36,15 +37,23 @@ module.exports = {
      using string password => hashed
      using social network
      */
-    registerUser (sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, iAge, sTimeZone, sGender){
+    registerUser (sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, sShortBio, iAge, sTimeZone, enGender, bVerified){
 
         sCountry = sCountry || ''; sCity = sCity || ''; sProfilePic = sProfilePic || ''; sCoverPic = sCoverPic || '';
-        dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iAge = iAge || 0; sTimeZone = sTimeZone || ''; sGender = sGender || '';
+        dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iAge = iAge || 0; sTimeZone = sTimeZone || ''; var bVerified = bVerified || false, sShortBio = sShortBio||'';
 
         sLanguage = sLanguage || sCountry;
 
-        sUsername = sUsername.toLowerCase();
+        console.log('processing gender');
+        console.log(UserModel.UserGenderEnum.NOT_SPECIFIED);
+        console.log('calculating');
 
+        var UserHelper =  require('./User.helper.ts');
+        enGender = UserHelper.convertGenderString(enGender) || UserModel.UserGenderEnum.NOT_SPECIFIED;
+
+        console.log('Gender finished');
+
+        sUsername = sUsername.toLowerCase();
 
         var user = redis.nohm.factory('UserModel');
         var errorValidation = {};
@@ -68,13 +77,26 @@ module.exports = {
                 dtCreation: new Date(),
                 dtLastActivity: new Date(),
                 age : iAge,
-                gender : sGender,
-                timeZone : sTimeZone
+                gender : enGender,
+                timeZone : sTimeZone,
+                verified : bVerified,
+                shortBio : sShortBio,
+                role : UserModel.UserRolesEnum.USER,
             }
         );
 
-        if (password.type === 'string') //it is a simple password
+        if (password.type === 'string'){ //it is a simple password
             user.p('password', this.passwordHash(password.value));
+
+            //also it is required to have an email address
+            if (sEmail.length < 3)
+                errorValidation.email = ["Email is required"];
+            else
+            if (! /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(sEmail))
+                errorValidation.email = ["Invalid Email"]
+
+
+        }
         else
         if (password.type === "oauth2") {
 
