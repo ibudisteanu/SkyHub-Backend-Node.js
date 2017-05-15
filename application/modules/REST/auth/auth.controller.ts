@@ -1,12 +1,6 @@
 var users = require('./users.model.ts');
 var oauth2 = require('./oauth2.controller.ts');
-
-// passport.use(new LocalStrategy(
-//     function (username, password, done){
-//         return done(null, user);
-//     }
-//
-// ));
+var userHelpers = require ('./user.helper.ts');
 
 module.exports = {
 
@@ -48,8 +42,8 @@ module.exports = {
                         result: 'true',
                         message: 'Welcome back, '+answer.user.getFullName(),
                         user :  answer.user.getPublicInformation(),
-                        token: this.getUserToken(answer.user),
-                        auth_key: this.generateAuthTokenId(),
+                        token: userHelpers.getUserToken(answer.user),
+                        auth_key: userHelpers.generateAuthTokenId(),
                     });
 
                 } else
@@ -80,6 +74,8 @@ module.exports = {
 
                 users.findUserById(userAuthenticatedData.id).then ((userAuthenticated)=>{
 
+                    users.updateLastActivity(userAuthenticated);
+
                     console.log(userAuthenticated.getPublicInformation());
 
                     resolve({
@@ -103,12 +99,15 @@ module.exports = {
 
     postAuthenticateRegister: function (req, res){
 
-        var sEmail = '', sUsername = '', sPassword = '', sFirstName = '', sLastName = '', sLastName='', sCountry='', sCity='',sLanguage='', sProfilePic='', sCoverPic='', dbLatitude = 0, dbLongitude = 0, iAge = 0, sTimeZone = 0, sGender = 0;
+        var sEmail = '', sUsername = '', password = {type: "string", value: ""}, sFirstName = '', sLastName = '', sLastName='', sCountry='', sCity='',sLanguage='', sProfilePic='', sCoverPic='', dbLatitude = 0, dbLongitude = 0, iAge = 0, sTimeZone = 0, sGender = 0;
 
         if (req.hasOwnProperty('body')){
             sEmail = req.body.email || '';
             sUsername = req.body.username ||  '';
-            sPassword = req.body.password || '';
+            password = {
+                type: "string",
+                value: req.body.password || '',
+            };
             sFirstName = req.body.firstName ||  '';
             sLastName = req.body.lastName ||  '';
             sCountry = req.body.country || '';
@@ -127,12 +126,15 @@ module.exports = {
         }
 
         if (req.hasOwnProperty(('OAuth'))){
-            sPassword = req.OAuth;
+            password = {
+                type: "oauth2",
+                value: req.OAuth,
+            }
         }
 
-        console.log(sEmail);
+        console.log('Registering: ', sEmail);
 
-        return users.registerUser(sEmail, sUsername, sPassword, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, iAge, sTimeZone, sGender);
+        return users.registerUser(sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, iAge, sTimeZone, sGender);
     },
 
     postAuthenticateRegisterOAuth: function (req, res){
@@ -145,99 +147,10 @@ module.exports = {
             sOAuth2Token = req.body.accessToken || '';
         }
 
-        console.log('Registering with OAuth 2 token ',sSocialNetwork, sOAuth2Token, sSocialNetworkUserId)
+        console.log('Registering with OAuth 2 token ',sSocialNetwork, sOAuth2Token, sSocialNetworkUserId);
 
         let oauthCtrl = require ('./oauth2.controller.ts');
-
-        return new Promise( (resolve)=> {
-
-            oauthCtrl.validateOAuth2TokenAsync(sSocialNetwork, sOAuth2Token, sSocialNetworkUserId).then ((res)=> {
-
-                if (res == true) {
-
-                    var user = users.findUserFromSocialNetwork(sSocialNetwork, sSocialNetworkUserId);
-
-                    //checking if the user has been registered before already...
-                    if (user !== null){
-                        resolve({
-                            result : "true",
-                            type : "log in",
-                            user : user.getPrivateInformation(),
-                            token: this.getUserToken(user),
-                        });
-                    } else
-                    {//registering the new user
-
-                        //I create a special property OAuth to show that there is an OAuth registration
-                        req.OAuth = {
-                            socialNetwork : sSocialNetwork,
-                            socialNetworkUserId : sSocialNetworkUserId,
-                            accessToken : sOAuth2Token
-                        };
-
-                        req.body.username = this.generateUserName(req.body.firstName||'', req.body.lastName||'', req.body.email||'');
-
-                        return this.postAuthenticateRegister(req, res);
-
-                    }
-
-                    console.log('OAUTH validated successfully');
-                }
-
-
-
-            });
-
-            //return users.registerUser(sEmail, sUsername, sPassword, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude);
-
-        });
+        return oauthCtrl.registerOAuth2(req, sSocialNetwork, sOAuth2Token, sSocialNetworkUserId);
     },
-
-    /*
-        HELPER FUNCTIONS
-     */
-
-    //generate a unique username from firstName, lastName, emailAddress and a unique random number [10 trials]
-    generateUserName : function (sFirstName, sLastName, sEmail){
-
-        var sUserNamePrefix = (sFirstName != '' ? sFirstName+'_' : '')+sLastName; //first from firstName and lastName
-
-        if (sUserNamePrefix === '') {
-            var nameEmail = sEmail.replace(/@.*$/,""); //extracting the name from email address ionut@budisteanu.net => ionut
-            sUserNamePrefix = nameEmail;
-        }
-
-        if (sUserNamePrefix != '')
-        {
-            var sFinalUserName = sUserNamePrefix;
-
-            var user = users.findUserFromUsername(sFinalUserName);
-            var iCount = 0;
-
-            while ((user !== null) && (iCount < 10)){
-                sFinalUserName = Math.floor(Math.random() * 2020);
-            }
-        }
-
-    },
-
-    generateAuthTokenId : function()
-    {
-        var hat = require('hat');
-        return hat();
-    },
-
-    getUserToken : function(user){
-
-        //console.log('calculating token');
-
-        constants = require ('./../../../../bin/constants.js');
-        console.log("SECRET key: "+constants.SESSION_Secret_key);
-
-        var token = jwt.sign({ "id" : user.id}, constants.SESSION_Secret_key, {expiresInMinutes: 60 * 24 * 30* 12 * 5});
-        console.log('token = '+token);
-
-        return token;
-    }
 
 };

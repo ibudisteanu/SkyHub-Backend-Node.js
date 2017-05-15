@@ -90,6 +90,9 @@ app.use(function(err, req, res, next) {
 
 socketJWToken = require('socketio-jwt');
 jwt = require('jsonwebtoken');
+requestPromise = require('request-promise');
+Promise = require('promise');
+constants = require ('./bin/constants.js');
 
 require('run-middleware')(app);
 

@@ -91,12 +91,12 @@ var UserModel = redis.nohm.model('UserModel', {
 
         verified : {type : 'boolean'},
 
-        idFacebook : { type: 'string', },
-        idGoogle : { type: 'string', },
-        idTwitter : { type: 'string', },
-        idLinkedIn : { type: 'string', },
-        idGitHub : { type: 'string', },
-        idReddit : { type: 'string', },
+        idFacebook : { type: 'string', unique: true, },
+        idGoogle : { type: 'string', unique: true,},
+        idTwitter : { type: 'string', unique: true,},
+        idLinkedIn : { type: 'string', unique: true, },
+        idGitHub : { type: 'string', unique: true,},
+        idReddit : { type: 'string', unique: true,},
     },
     methods: { // optional
 

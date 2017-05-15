@@ -3,22 +3,83 @@
  * (C) BIT TECHNOLOGIES
  */
 
-constants = require ('./../../../../bin/constants.js');
-var Promise = require('promise');
-
-
-var options = {
-    uri: '',
-    headers: {'User-Agent': 'Request-Promise'},
-    json: true // Automatically parses the JSON string in the response
-};
-
+var users = require('./users.model.ts');
+var userHelpers = require ('./user.helper.ts');
 
 module.exports = {
+
+
+    registerOAuth2(req, sSocialNetwork, sOAuth2Token, sSocialNetworkUserId){
+
+        return new Promise( (resolve)=> {
+
+            this.validateOAuth2TokenAsync(sSocialNetwork, sOAuth2Token, sSocialNetworkUserId).then ((res)=> {
+
+                if (res == true) {
+
+                    //checking if the user has been registered before already...
+                    users.findUserFromSocialNetwork(sSocialNetwork, sSocialNetworkUserId).then ((user)=> {
+
+                        if (user !== null)
+                            console.log('User found in the DB');
+
+                        //console.log('User already in the DB: ',user);
+
+                        if (user !== null){
+
+                            users.updateLastActivity(user);
+                            resolve({
+                                result : "true",
+                                type : "log in",
+                                user : user.getPrivateInformation(),
+                                token: userHelpers.getUserToken(user),
+                            });
+                        } else
+                        {//registering the new user
+
+                            //I create a special property OAuth to show that there is an OAuth registration
+                            req.OAuth = {
+                                socialNetwork : sSocialNetwork,
+                                socialNetworkUserId : sSocialNetworkUserId,
+                                accessToken : sOAuth2Token
+                            };
+
+                            console.log(req.body);
+
+
+
+                            userHelpers.generateUserName(req.body.firstName||'', req.body.lastName||'', req.body.email||'').then((userName) => {
+
+                                req.body.username = userName;
+                                console.log('Username generated: ',userName);
+
+                                resolve(this.postAuthenticateRegister(req, res));
+
+                            });
+
+                        }
+
+                        console.log('OAUTH validated successfully');
+                    });
+                }
+
+
+
+            });
+
+
+        });
+    },
 
     validateOAuth2TokenAsync: function (sOAuth2SocialNetworkName, sOauth2Token, sSocialNetworkUserId){
 
         try {
+
+            var options = {
+                uri: '',
+                headers: {'User-Agent': 'Request-Promise'},
+                json: true // Automatically parses the JSON string in the response
+            };
 
             return new Promise( (resolve)=> {
 
@@ -26,6 +87,8 @@ module.exports = {
                     switch (sOAuth2SocialNetworkName){
 
                         case 'facebook':
+
+                            //console.log('Validating Facebook TOken....');
 
                             options.uri = 'https://graph.facebook.com/me?access_token='+sOauth2Token;
                             requestPromise(options).promise().bind(this).then(function (res) {
@@ -64,4 +127,4 @@ module.exports = {
         }
 
     }
-}
+};

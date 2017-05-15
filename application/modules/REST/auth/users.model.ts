@@ -56,14 +56,35 @@ module.exports = {
             errorValidation.username = ["Invalid Username"];
         }
 
-        if (typeof (password) === 'string') //it is a simple password
-            user.p('password', this.passwordHash(password));
-        else {
-            let sSocialNetwork = password.socialNetwork;
-            let sSocialNetworkUserId = password.socialNetworkUserId;
-            let sOAuth2Token = password.accessToken;
+        user.p(
+            {
+                username: sUsername,
+                email: sEmail,
+                profilePic: sProfilePic,
+                coverPic: sCoverPic,
+                firstName: sFirstName,
+                lastName: sLastName,
+                country: sCountry.toLowerCase(),
+                city: sCity.toLowerCase(),
+                language: sLanguage.toLowerCase(),
+                dtCreation: new Date(),
+                dtLastActivity: new Date(),
+                age : iAge,
+                gender : sGender,
+                timeZone : sTimeZone
+            }
+        );
 
-            switch (sSocialNetwork){
+        if (password.type === 'string') //it is a simple password
+            user.p('password', this.passwordHash(password.value));
+        else
+        if (password.type === "oauth2") {
+
+            let sSocialNetwork = password.value.socialNetwork;
+            let sSocialNetworkUserId = password.value.socialNetworkUserId;
+            let sOAuth2Token = password.value.accessToken;
+
+            switch (sSocialNetwork) {
                 case 'facebook':
                     user.p('idFacebook', sSocialNetworkUserId);
                     break;
@@ -84,27 +105,8 @@ module.exports = {
                     user.p('idReddit', sSocialNetworkUserId);
                     break;
             }
-
         }
 
-        user.p(
-            {
-                username: sUsername,
-                email: sEmail,
-                profilePic: sProfilePic,
-                coverPic: sCoverPic,
-                firstName: sFirstName,
-                lastName: sLastName,
-                country: sCountry.toLowerCase(),
-                city: sCity.toLowerCase(),
-                language: sLanguage.toLowerCase(),
-                dtCreation: new Date(),
-                dtLastActivity: new Date(),
-                age : iAge,
-                gender : sGender,
-                timeZone : sTimeZone
-            }
-        );
 
         if (dbLatitude != -666) user.p('latitude', dbLatitude);
         if (dbLongitude != -666) user.p('longitude', dbLongitude);
@@ -238,7 +240,8 @@ module.exports = {
         return new Promise ((resolve)=>{
             //find by username
             user.findAndLoad( searchObject, function (err, users) {
-                //console.log("response from username"); console.log(users);
+
+                console.log("response from findUserFromSocialNetwork ", users);
 
                 if (users.length) resolve(users[0]);
                 else resolve(null);
@@ -246,23 +249,6 @@ module.exports = {
         });
     },
 
-
-    passwordHashVerify : function (sPassword, sPasswordHash) {
-
-        if (typeof sPasswordHash === "undefined") sPasswordHash = '$2y$08$9TTThrthZhTOcoHELRjuN.3mJd2iKYIeNlV/CYJUWWRnDfRRw6fD2';
-        if (typeof sPassword === "undefined") sPassword = "secret";
-
-        var bcrypt = require('bcrypt');
-        sPasswordHash = sPasswordHash.replace(/^\$2y(.+)$/i, '\$2a$1');
-
-        return bcrypt.compareSync(sPassword, sPasswordHash);
-    },
-
-    passwordHash : function (sPassword){
-
-        var bcrypt = require('bcrypt');
-        return bcrypt.hashSync(sPassword, 8);
-    },
 
     updateLastActivity: function (Users){ //making the user online
 
@@ -289,7 +275,26 @@ module.exports = {
                 });
         })
 
+    },
 
-    }
+
+
+
+    passwordHashVerify : function (sPassword, sPasswordHash) {
+
+        if (typeof sPasswordHash === "undefined") sPasswordHash = '$2y$08$9TTThrthZhTOcoHELRjuN.3mJd2iKYIeNlV/CYJUWWRnDfRRw6fD2';
+        if (typeof sPassword === "undefined") sPassword = "secret";
+
+        var bcrypt = require('bcrypt');
+        sPasswordHash = sPasswordHash.replace(/^\$2y(.+)$/i, '\$2a$1');
+
+        return bcrypt.compareSync(sPassword, sPasswordHash);
+    },
+
+    passwordHash : function (sPassword){
+
+        var bcrypt = require('bcrypt');
+        return bcrypt.hashSync(sPassword, 8);
+    },
 
 };

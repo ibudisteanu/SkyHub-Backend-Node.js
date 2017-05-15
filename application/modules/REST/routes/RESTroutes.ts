@@ -83,7 +83,7 @@ router.processSocketRoute = function (socket)
 
         authCtrl.postAuthenticateRegisterOAuth(data, '').then ( (res ) => {
 
-            socket.emit("api/auth/register", res);
+            socket.emit("api/auth/register-oauth", res);
         });
 
     });
