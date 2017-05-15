@@ -10,8 +10,8 @@ constants = require ('./bin/constants.js');
 redis = require ('./application/modules/DB/redis_nohm');    //REDIS NOHM
 
 RESTRouter = require('./application/modules/REST/routes/RESTroutes.ts');
-indexRouter = require('./routes/index');
-usersRouter = require('./routes/users');
+indexRouter = require('./routes/index.ts');
+usersRouter = require('./routes/users.ts');
 
 var app = express();
 

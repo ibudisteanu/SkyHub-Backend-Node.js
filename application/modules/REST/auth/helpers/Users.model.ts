@@ -1,18 +1,15 @@
-var redis = require ('../../DB/redis_nohm');
-var userModel = require ('./user.model.ts');
-var Promise = require('promise');
-
+var userModel = require ('./../user.model.ts');
 
 module.exports = {
 
-    createDummyUser : function(iIndex)
+    createDummyUser (iIndex)
     {
         return this.registerUser("emailDummy_"+iIndex+"@yahoo.com","userDummy_"+iIndex, "123456","Gigel",
             "Nume"+iIndex,"RO","Bucharest", "RO", "http://www.gravatar.com/avatar/ee4d1b570eff6ce63"+iIndex+"?default=wavatar&forcedefault=1",
             "http://www.hdfbcover.com/randomcovers/covers/never-stop-dreaming-quote-fb-cover.jpg");
     },
 
-    findUserById : function (sId)
+    findUserById (sId)
     {
         return new Promise( (resolve)=> {
 
@@ -33,12 +30,13 @@ module.exports = {
         });
     },
 
+
     /*
-        REGISTRATION USER
-            using string password => hashed
-            using social network
+     REGISTRATION USER
+     using string password => hashed
+     using social network
      */
-    registerUser : function (sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, iAge, sTimeZone, sGender){
+    registerUser (sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, iAge, sTimeZone, sGender){
 
         sCountry = sCountry || ''; sCity = sCity || ''; sProfilePic = sProfilePic || ''; sCoverPic = sCoverPic || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iAge = iAge || 0; sTimeZone = sTimeZone || ''; sGender = sGender || '';
@@ -137,7 +135,7 @@ module.exports = {
         });
     },
 
-    findUserFromEmailUsernamePassword : function (sEmailUsername, sPassword){
+    findUserFromEmailUsernamePassword (sEmailUsername, sPassword){
         console.log("Checking user password ::: " + sEmailUsername + " ::: " + sPassword);
 
         return new Promise ((resolve) => {
@@ -166,7 +164,7 @@ module.exports = {
 
     },
 
-    findUserFromEmailUsername : function (sEmailUsername){
+    findUserFromEmailUsername (sEmailUsername){
         console.log("Finding user :::  " + sEmailUsername);
 
         return new Promise((resolve) =>{
@@ -185,7 +183,8 @@ module.exports = {
         });
     },
 
-    findUserFromUsername: function (sUsername){
+
+    findUserFromUsername(sUsername){
         var user = redis.nohm.factory('UserModel');
 
         //console.log('Checking user by username ' + sUsername);
@@ -203,7 +202,7 @@ module.exports = {
         });
     },
 
-    findUserFromEmail : function (sEmail){
+    findUserFromEmail (sEmail){
         var user = redis.nohm.factory('UserModel');
 
         console.log('Checking user by email ::: ' + sEmail);
@@ -222,7 +221,7 @@ module.exports = {
         });
     },
 
-    findUserFromSocialNetwork: function (sSocialNetwork, sId){
+    findUserFromSocialNetwork(sSocialNetwork, sId){
         var user = redis.nohm.factory('UserModel');
 
         console.log('Checking user by social network ',sSocialNetwork,'  id ' + sId);
@@ -250,7 +249,7 @@ module.exports = {
     },
 
 
-    updateLastActivity: function (Users){ //making the user online
+    updateLastActivity(Users){ //making the user online
 
         if (!Users.isArray)
             Users = [Users];
@@ -268,19 +267,16 @@ module.exports = {
 
             user.save( function (err) {
 
-                    if (err) {
-                        console.log('Error updating last login');
-                        console.log(err);
-                    }
-                });
+                if (err) {
+                    console.log('Error updating last login');
+                    console.log(err);
+                }
+            });
         })
 
     },
 
-
-
-
-    passwordHashVerify : function (sPassword, sPasswordHash) {
+    passwordHashVerify (sPassword, sPasswordHash) {
 
         if (typeof sPasswordHash === "undefined") sPasswordHash = '$2y$08$9TTThrthZhTOcoHELRjuN.3mJd2iKYIeNlV/CYJUWWRnDfRRw6fD2';
         if (typeof sPassword === "undefined") sPassword = "secret";
@@ -291,10 +287,12 @@ module.exports = {
         return bcrypt.compareSync(sPassword, sPasswordHash);
     },
 
-    passwordHash : function (sPassword){
+    passwordHash (sPassword){
 
         var bcrypt = require('bcrypt');
         return bcrypt.hashSync(sPassword, 8);
     },
 
-};
+}
+
+

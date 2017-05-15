@@ -1,11 +1,14 @@
+
 module.exports = {
-    getZZZ : function(req, res){
+
+    getZZZ (req, res){
 
         return {result: 'zzz'};
         //do something
     },
 
-    getVersion : function (req, res){
+    getVersion (req, res){
         return {version : '2.0'};
-    }
+    },
 }
+

@@ -1,15 +1,17 @@
 var express = require('express');
 var router = express.Router();
 
+var Functions =  require('./../application/modules/REST/functions/functions.controller.ts');
+//import {Functions} from './../application/modules/REST/functions/functions.controller.ts';
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'SkyHub 2 REST - Backend' });
 });
 
 router.get('/zzz', function(req, res, next) {
-    var testCtrl = require('./../application/modules/REST/test/test.controller.ts');
 
-    res.json(testCtrl.getZZZ());
+    res.json(Functions.getZZZ());
 });
 
 module.exports = router;

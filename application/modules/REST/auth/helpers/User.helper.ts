@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var users = require('./users.model.ts');
+var Users =  require ('./Users.model.ts');
 
 module.exports = {
     /*
@@ -11,7 +11,7 @@ module.exports = {
      */
 
     //generate a unique username from firstName, lastName, emailAddress and a unique random number [10 trials]
-    generateUserName : function (sFirstName, sLastName, sEmail){
+     generateUserName (sFirstName, sLastName, sEmail){
 
         var randomGeneratorNumber = 2020;
         var sUserNamePrefix = (sFirstName !== "" ? sFirstName+'_' : '')+sLastName; //first from firstName and lastName
@@ -36,7 +36,7 @@ module.exports = {
                 else{
                     var sFinalUserName = sUserNamePrefix + Math.floor(Math.random() * randomGeneratorNumber);
 
-                    users.findUserFromUsername(sFinalUserName).then ((user)=>{
+                    Users.findUserFromUsername(sFinalUserName).then ((user)=>{
 
                         if (user === null) resolve (sFinalUserName);
                         else
@@ -52,7 +52,7 @@ module.exports = {
         return new Promise( (resolve)=>{
 
             var sFinalUserName = sUserNamePrefix;
-            users.findUserFromUsername(sFinalUserName).then ( (user)=>{
+            Users.findUserFromUsername(sFinalUserName).then ( (user)=>{
 
                 if (user === null) resolve(sFinalUserName);
                 else  nextRandomUser(sUserNamePrefix, 20).then ( (userNameFinal) =>{
@@ -64,22 +64,22 @@ module.exports = {
         });
     },
 
-    generateAuthTokenId : function()
+    generateAuthTokenId ()
     {
         var hat = require('hat');
         return hat();
     },
 
-    getUserToken : function(user){
+
+    getUserToken (user){
 
         //console.log('calculating token');
-
-        constants = require ('./../../../../bin/constants.js');
         console.log("SECRET key: "+constants.SESSION_Secret_key);
 
         var token = jwt.sign({ "id" : user.id}, constants.SESSION_Secret_key, {expiresInMinutes: 60 * 24 * 30* 12 * 5});
         console.log('token = '+token);
 
         return token;
-    }
-};
+    },
+
+}

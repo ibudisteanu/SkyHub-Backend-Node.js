@@ -3,8 +3,10 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var users = require('./users.model.ts');
-var userHelpers = require ('./user.helper.ts');
+var Users =  require('./helpers/Users.model.ts');
+var UsersHelper =  require('./helpers/User.helper.ts');
+// import {Users} from './helpers/Users.model.ts';
+// import {UserHelper} from './helpers/User.helper.ts';
 
 module.exports = {
 
@@ -13,12 +15,13 @@ module.exports = {
 
         return new Promise( (resolve)=> {
 
+
             this.validateOAuth2TokenAsync(sSocialNetwork, sOAuth2Token, sSocialNetworkUserId).then ((res)=> {
 
                 if (res == true) {
 
                     //checking if the user has been registered before already...
-                    users.findUserFromSocialNetwork(sSocialNetwork, sSocialNetworkUserId).then ((user)=> {
+                    Users.findUserFromSocialNetwork(sSocialNetwork, sSocialNetworkUserId).then ((user)=> {
 
                         if (user !== null)
                             console.log('User found in the DB');
@@ -27,12 +30,12 @@ module.exports = {
 
                         if (user !== null){
 
-                            users.updateLastActivity(user);
+                            Users.updateLastActivity(user);
                             resolve({
                                 result : "true",
                                 type : "log in",
                                 user : user.getPrivateInformation(),
-                                token: userHelpers.getUserToken(user),
+                                token: UserHelper.getUserToken(user),
                             });
                         } else
                         {//registering the new user
@@ -48,7 +51,7 @@ module.exports = {
 
 
 
-                            userHelpers.generateUserName(req.body.firstName||'', req.body.lastName||'', req.body.email||'').then((userName) => {
+                            UserHelper.generateUserName(req.body.firstName||'', req.body.lastName||'', req.body.email||'').then((userName) => {
 
                                 req.body.username = userName;
                                 console.log('Username generated: ',userName);
@@ -71,7 +74,7 @@ module.exports = {
         });
     },
 
-    validateOAuth2TokenAsync: function (sOAuth2SocialNetworkName, sOauth2Token, sSocialNetworkUserId){
+    validateOAuth2TokenAsync(sOAuth2SocialNetworkName, sOauth2Token, sSocialNetworkUserId){
 
         try {
 
@@ -84,41 +87,41 @@ module.exports = {
             return new Promise( (resolve)=> {
 
 
-                    switch (sOAuth2SocialNetworkName){
+                switch (sOAuth2SocialNetworkName){
 
-                        case 'facebook':
+                    case 'facebook':
 
-                            //console.log('Validating Facebook TOken....');
+                        //console.log('Validating Facebook TOken....');
 
-                            options.uri = 'https://graph.facebook.com/me?access_token='+sOauth2Token;
-                            requestPromise(options).promise().bind(this).then(function (res) {
+                        options.uri = 'https://graph.facebook.com/me?access_token='+sOauth2Token;
+                        requestPromise(options).promise().bind(this).then(function (res) {
 
-                                if (res.hasOwnProperty('id')){
+                            if (res.hasOwnProperty('id')){
 
-                                    if (res.id === sSocialNetworkUserId) {
-                                        resolve(true);
-                                    }
+                                if (res.id === sSocialNetworkUserId) {
+                                    resolve(true);
+                                }
 
-                                } else
+                            } else
 
                                 console.log("OAUTH invalid facebook TOKEN ", res);
 
-                                resolve(false);
+                            resolve(false);
 
-                            });
+                        });
 
-                            //data = jwt.verify(sOauth2Token, constants.OAUTH2_Facebook_Secret);
+                        //data = jwt.verify(sOauth2Token, constants.OAUTH2_Facebook_Secret);
 
-                            break;
+                        break;
 
-                        case 'google' :
-                            break;
+                    case 'google' :
+                        break;
 
-                        case 'twitter' :
-                            break;
-                    }
+                    case 'twitter' :
+                        break;
+                }
 
-                });
+            });
 
         } catch (Exception){
 
@@ -126,5 +129,8 @@ module.exports = {
 
         }
 
-    }
-};
+    },
+
+}
+
+

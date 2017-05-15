@@ -49,7 +49,9 @@ Temporary Items
 .apdisk
 .idea/workspace.xml
 .idea/
+.idea\
 
 node_modules/
 .idea/
 tmp/
+build/

@@ -1,14 +1,19 @@
-var users = require('./users.model.ts');
-var oauth2 = require('./oauth2.controller.ts');
-var userHelpers = require ('./user.helper.ts');
+var UserHelper = require('./helpers/User.helper.ts');
+var Users = require('./helpers/Users.model.ts');
+
+var OAuth2 = require('./oauth2.controller.ts');
+
+//import {UserHelper} from './helpers/user.helper.ts'
+//import {Users} from './helpers/Users.model.ts';
+//import {OAuth2} from './oauth2.controller.ts';
 
 module.exports = {
 
     /*
-        REST API
+     REST API
      */
 
-    postAuthenticateLogin : function (req, res){
+    postAuthenticateLogin (req, res){
 
         var sEmailUsername = '', sUserPassword = '';
 
@@ -23,7 +28,7 @@ module.exports = {
 
         return new Promise ( (resolve) => {
 
-            users.findUserFromEmailUsernamePassword(sEmailUsername, sUserPassword).then ( (answer)=>{
+            Users.findUserFromEmailUsernamePassword(sEmailUsername, sUserPassword).then ( (answer)=>{
 
                 // passport.authenticate('local','','', function (req, res){
                 //
@@ -36,21 +41,21 @@ module.exports = {
                     //console.log(loggedInUser.getFullName());
                     //console.log(loggedInUser.getPublicInformation());
 
-                    users.updateLastActivity(answer.user);
+                    Users.updateLastActivity(answer.user);
 
                     resolve( {
                         result: 'true',
                         message: 'Welcome back, '+answer.user.getFullName(),
                         user :  answer.user.getPublicInformation(),
-                        token: userHelpers.getUserToken(answer.user),
-                        auth_key: userHelpers.generateAuthTokenId(),
+                        token: UserHelper.getUserToken(answer.user),
+                        auth_key: UserHelper.generateAuthTokenId(),
                     });
 
                 } else
-                resolve({
-                    result: 'false',
-                    message: answer.message,
-                });
+                    resolve({
+                        result: 'false',
+                        message: answer.message,
+                    });
 
             });
 
@@ -58,7 +63,8 @@ module.exports = {
 
     },
 
-    postAuthenticateTokenAsync: function (req, res){
+
+    postAuthenticateTokenAsync(req, res){
 
         var sToken = '';
         if (req.hasOwnProperty('body')) {
@@ -72,9 +78,9 @@ module.exports = {
             try{
                 var userAuthenticatedData = jwt.verify(sToken, constants.SESSION_Secret_key);
 
-                users.findUserById(userAuthenticatedData.id).then ((userAuthenticated)=>{
+                Users.findUserById(userAuthenticatedData.id).then ((userAuthenticated)=>{
 
-                    users.updateLastActivity(userAuthenticated);
+                    Users.updateLastActivity(userAuthenticated);
 
                     console.log(userAuthenticated.getPublicInformation());
 
@@ -97,7 +103,8 @@ module.exports = {
         });
     },
 
-    postAuthenticateRegister: function (req, res){
+
+    postAuthenticateRegister(req, res){
 
         var sEmail = '', sUsername = '', password = {type: "string", value: ""}, sFirstName = '', sLastName = '', sLastName='', sCountry='', sCity='',sLanguage='', sProfilePic='', sCoverPic='', dbLatitude = 0, dbLongitude = 0, iAge = 0, sTimeZone = 0, sGender = 0;
 
@@ -134,10 +141,11 @@ module.exports = {
 
         console.log('Registering: ', sEmail);
 
-        return users.registerUser(sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, iAge, sTimeZone, sGender);
+        return Users.registerUser(sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, iAge, sTimeZone, sGender);
     },
 
-    postAuthenticateRegisterOAuth: function (req, res){
+
+    postAuthenticateRegisterOAuth(req, res){
 
         var sSocialNetwork='', sOAuth2Token = '', sSocialNetworkUserId = '';
 
@@ -149,8 +157,8 @@ module.exports = {
 
         console.log('Registering with OAuth 2 token ',sSocialNetwork, sOAuth2Token, sSocialNetworkUserId);
 
-        let oauthCtrl = require ('./oauth2.controller.ts');
-        return oauthCtrl.registerOAuth2(req, sSocialNetwork, sOAuth2Token, sSocialNetworkUserId);
+        OAuth2.registerOAuth2(req, sSocialNetwork, sOAuth2Token, sSocialNetworkUserId);
     },
 
-};
+}
+
