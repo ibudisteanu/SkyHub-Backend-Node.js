@@ -4,7 +4,8 @@
  */
 
 var Users =  require('./helpers/Users.model.ts');
-var UsersHelper =  require('./helpers/User.helper.ts');
+var UserHelper =  require('./helpers/User.helper.ts');
+
 // import {Users} from './helpers/Users.model.ts';
 // import {UserHelper} from './helpers/User.helper.ts';
 
@@ -31,6 +32,7 @@ module.exports = {
                         if (user !== null){
 
                             Users.updateLastActivity(user);
+
                             resolve({
                                 result : "true",
                                 type : "log in",
@@ -56,7 +58,8 @@ module.exports = {
                                 req.body.username = userName;
                                 console.log('Username generated: ',userName);
 
-                                resolve(this.postAuthenticateRegister(req, res));
+                                var Authenticate = require ('./Authenticate.controller.ts');
+                                resolve(Authenticate.postAuthenticateRegister(req, res));
 
                             });
 

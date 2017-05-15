@@ -1,7 +1,7 @@
 var UserHelper = require('./helpers/User.helper.ts');
 var Users = require('./helpers/Users.model.ts');
 
-var OAuth2 = require('./oauth2.controller.ts');
+var OAuth2 = require('./OAuth2.controller.ts');
 
 //import {UserHelper} from './helpers/user.helper.ts'
 //import {Users} from './helpers/Users.model.ts';
@@ -106,7 +106,8 @@ module.exports = {
 
     postAuthenticateRegister(req, res){
 
-        var sEmail = '', sUsername = '', password = {type: "string", value: ""}, sFirstName = '', sLastName = '', sLastName='', sCountry='', sCity='',sLanguage='', sProfilePic='', sCoverPic='', dbLatitude = 0, dbLongitude = 0, iAge = 0, sTimeZone = 0, sGender = 0;
+        var sEmail = '', sUsername = '', password = {type: "string", value: ""}, sFirstName = '', sLastName = '', sLastName='', sCountry='', sCity='',sLanguage='', sProfilePic='', sCoverPic='';
+        var dbLatitude = 0, dbLongitude = 0, iAge = 0, sTimeZone = 0, sGender = 0, bVerified = false;  var sShortBio = '';
 
         if (req.hasOwnProperty('body')){
             sEmail = req.body.email || '';
@@ -125,23 +126,27 @@ module.exports = {
 
             sLanguage = req.body.language || sCountry;
             iAge = req.body.age || 0;
-            sTimeZone = sTimeZone || 0;
+            sTimeZone = req.body.timeZone || '0';
             sGender = sGender || '';
 
             sProfilePic = req.body.profilePic || '';
             sCoverPic = req.body.coverPic || '';
+
+            sShortBio = req.body.shortBio || '';
         }
 
         if (req.hasOwnProperty(('OAuth'))){
             password = {
                 type: "oauth2",
                 value: req.OAuth,
-            }
+            };
+
+            bVerified = req.body.verified || false;
         }
 
         console.log('Registering: ', sEmail);
 
-        return Users.registerUser(sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, iAge, sTimeZone, sGender);
+        return Users.registerUser(sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, sShortBio,  iAge, sTimeZone, sGender, bVerified);
     },
 
 
@@ -157,7 +162,7 @@ module.exports = {
 
         console.log('Registering with OAuth 2 token ',sSocialNetwork, sOAuth2Token, sSocialNetworkUserId);
 
-        OAuth2.registerOAuth2(req, sSocialNetwork, sOAuth2Token, sSocialNetworkUserId);
+        return OAuth2.registerOAuth2(req, sSocialNetwork, sOAuth2Token, sSocialNetworkUserId);
     },
 
 }
