@@ -1,5 +1,5 @@
-var UserModel = require ('./../user.model.ts');
-
+var userModel = require ('./../models/User.model.ts');
+var UserProperties = require ('./../models/User.properties.ts');
 
 module.exports = {
 
@@ -44,14 +44,9 @@ module.exports = {
 
         sLanguage = sLanguage || sCountry;
 
-        console.log('processing gender');
-        console.log(UserModel.UserGenderEnum.NOT_SPECIFIED);
-        console.log('calculating');
+        //console.log('processing gender'); console.log(UserProperties.UserGenderEnum.NOT_SPECIFIED); console.log('calculating');
 
-        var UserHelper =  require('./User.helper.ts');
-        enGender = UserHelper.convertGenderString(enGender) || UserModel.UserGenderEnum.NOT_SPECIFIED;
-
-        console.log('Gender finished');
+        enGender = UserProperties.convertGenderString(enGender) || UserProperties.UserGenderEnum.NOT_SPECIFIED;
 
         sUsername = sUsername.toLowerCase();
 
@@ -81,7 +76,7 @@ module.exports = {
                 timeZone : sTimeZone,
                 verified : bVerified,
                 shortBio : sShortBio,
-                role : UserModel.UserRolesEnum.USER,
+                role : UserProperties.UserRolesEnum.USER,
             }
         );
 

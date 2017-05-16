@@ -4,8 +4,6 @@
  */
 
 var Users =  require ('./Users.model.ts');
-var UserModel =  require ('./../user.model.ts');
-//var constants = require ('./../../../../../bin/constants.js');
 
 module.exports = {
     /*
@@ -83,39 +81,5 @@ module.exports = {
 
         return token;
     },
-
-    convertGenderString (sGender){
-
-        sGender = sGender.toLowerCase();
-
-        switch (sGender){
-            case 'male': return UserModel.UserGenderEnum.MALE;
-            case 'female': return UserModel.UserGenderEnum.FEMALE;
-            case 'not specified':
-            default:
-                return UserModel.UserGenderEnum.NOT_SPECIFIED;
-        }
-    },
-
-    convertRoleType (sUserRoleType){
-
-        sUserRoleType = sUserRoleType.toLowerCase();
-
-        switch (sUserRoleType){
-            case 'user': return UserModel.UserRolesEnum.USER;
-            case 'admin':
-            case 'administrator':
-                return UserModel.UserRolesEnum.ADMIN;
-            case 'moderator': return UserModel.UserRolesEnum.MODERATOR;
-            case 'sys admin':
-            case 'system admin':
-                return UserModel.UserRolesEnum.SYS_ADMIN;
-            case 'not registered':
-            case 'anonymous':
-                return UserModel.UserRolesEnum.NOT_REGISTERED;
-            default:
-                return UserModel.UserRolesEnum.USER;
-        }
-    }
 
 }

@@ -1,21 +1,4 @@
-var redis = require ('../../DB/redis_nohm');
-
-module.exports =
-    {
-        UserGenderEnum: {
-            MALE: 0,
-            FEMALE: 1,
-            NOT_SPECIFIED: 2,
-        },
-
-        UserRolesEnum: {
-            NOT_REGISTERED: 0,
-            USER: 3,
-            MODERATOR: 5,
-            ADMIN: 8,
-            SYS_ADMIN: 666,
-        }
-    }
+var redis = require ('../../../DB/redis_nohm');
 
 var UserModel = redis.nohm.model('UserModel', {
     properties: {
@@ -158,35 +141,6 @@ var UserModel = redis.nohm.model('UserModel', {
                 return true;
             else
                 return false;
-        },
-
-        getTimeZone : function (){
-            return this.timeZone;
-        },
-
-        getGenderString : function (){
-
-            switch (this.gender){
-                case UserGenderEnum.FEMALE: return 'female';
-                case UserGenderEnum.MALE: return 'male';
-                case UserGenderEnum.NOT_SPECIFIED:
-                default: return 'not specified';
-            }
-        },
-
-        getRoleString : function (role){
-
-            if (typeof role === "udnefined") role = this.role;
-
-            switch (this.role){
-
-                case UserRolesEnum.ADMIN: return 'admin';
-                case UserRolesEnum.MODERATOR: return 'moderator';
-                case UserRolesEnum.NOT_REGISTERED: return 'not registered';
-                case UserRolesEnum.SYS_ADMIN: return 'system admin';
-                case UserRolesEnum.USER: return 'user';
-                default: return 'not specified';
-            }
         },
 
         // ... here you'll define your custom methods
