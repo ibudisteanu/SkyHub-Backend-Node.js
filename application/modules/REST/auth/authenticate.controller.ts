@@ -1,5 +1,5 @@
 var UserHelper = require('./helpers/User.helper.ts');
-var Users = require('./helpers/Users.model.ts');
+var UsersHelper = require('./helpers/Users.hepers.ts');
 
 var OAuth2 = require('./OAuth2.controller.ts');
 
@@ -28,7 +28,7 @@ module.exports = {
 
         return new Promise ( (resolve) => {
 
-            Users.findUserFromEmailUsernamePassword(sEmailUsername, sUserPassword).then ( (answer)=>{
+            UsersHelper.findUserFromEmailUsernamePassword(sEmailUsername, sUserPassword).then ( (answer)=>{
 
                 // passport.authenticate('local','','', function (req, res){
                 //
@@ -41,7 +41,7 @@ module.exports = {
                     //console.log(loggedInUser.getFullName());
                     //console.log(loggedInUser.getPublicInformation());
 
-                    Users.updateLastActivity(answer.user);
+                    UsersHelper.updateLastActivity(answer.user);
 
                     resolve( {
                         result: 'true',
@@ -78,9 +78,9 @@ module.exports = {
             try{
                 var userAuthenticatedData = jwt.verify(sToken, constants.SESSION_Secret_key);
 
-                Users.findUserById(userAuthenticatedData.id).then ((userAuthenticated)=>{
+                UsersHelper.findUserById(userAuthenticatedData.id).then ((userAuthenticated)=>{
 
-                    Users.updateLastActivity(userAuthenticated);
+                    UsersHelper.updateLastActivity(userAuthenticated);
 
                     console.log(userAuthenticated.getPublicInformation());
 
@@ -146,7 +146,7 @@ module.exports = {
 
         console.log('Registering: ', sEmail);
 
-        return Users.registerUser(sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, sShortBio,  iAge, sTimeZone, sGender, bVerified);
+        return UsersHelper.registerUser(sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, sShortBio,  iAge, sTimeZone, sGender, bVerified);
     },
 
 

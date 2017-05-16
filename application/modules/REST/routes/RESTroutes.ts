@@ -3,7 +3,7 @@ var router = express.Router();
 var Promise = require('promise');
 
 var Authenticate = require ('../auth/Authenticate.controller.ts');
-var Functions = require ('../functions/functions.controller.ts');
+var Functions = require ('./../common/functions/functions.controller.ts');
 //import {Authenticate} from '../auth/authenticate.controller.ts';
 //import {Functions} from '../functions/functions.controller.ts';
 

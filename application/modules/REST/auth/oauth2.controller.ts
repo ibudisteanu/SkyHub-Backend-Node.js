@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var Users =  require('./helpers/Users.model.ts');
+var UsersHelper =  require('./helpers/Users.hepers.ts');
 var UserHelper =  require('./helpers/User.helper.ts');
 
 // import {Users} from './helpers/Users.model.ts';
@@ -22,7 +22,7 @@ module.exports = {
                 if (res == true) {
 
                     //checking if the user has been registered before already...
-                    Users.findUserFromSocialNetwork(sSocialNetwork, sSocialNetworkUserId).then ((user)=> {
+                    UsersHelper.findUserFromSocialNetwork(sSocialNetwork, sSocialNetworkUserId).then ((user)=> {
 
                         if (user !== null)
                             console.log('User found in the DB');
@@ -31,7 +31,7 @@ module.exports = {
 
                         if (user !== null){
 
-                            Users.updateLastActivity(user);
+                            UsersHelper.updateLastActivity(user);
 
                             resolve({
                                 result : "true",

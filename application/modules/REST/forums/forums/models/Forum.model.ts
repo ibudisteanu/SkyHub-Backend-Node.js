@@ -1,10 +1,14 @@
-var redis = require ('../../../DB/redis_nohm');
+/**
+ * Created by Alexandru Ionut Budisteanu - SkyHub on 5/16/2017.
+ * (C) BIT TECHNOLOGIES
+ */
 
-var modelIterator = require ('../../common/model.iterator.ts');
+var redis = require ('../../../../DB/redis_nohm');
+var modelIterator = require ('../../../common/model.iterator.ts');
 
-var UserModel = redis.nohm.model('UserModel', {
+var ForumModel = redis.nohm.model('UserModel', {
     properties: {
-        username: {
+        title: {
             type: 'string',
             unique: true,
             validations: [
@@ -15,56 +19,44 @@ var UserModel = redis.nohm.model('UserModel', {
 
             ]
         },
-        email: {
+        URL: {
             type: 'string',
             unique: true,
+            validations: [
+                ['notEmpty'],
+                ['length', {
+                    min: 4
+                }]
+
+            ]
         },
-        password: {
+        description: {
+            type: 'string',
+            unique: true,
+            validations: [
+                ['notEmpty'],
+                ['length', {
+                    min: 4
+                }]
+
+            ]
+        },
+        authorId: {
+            defaultValue: '',
+            type: 'string',
+            validations: [
+                ['notEmpty'],
+            ]
+        },
+        parentId: {
             defaultValue: '',
             type: 'string',
         },
-        profilePic: {
+        parents: {
+            defaultValue: '',
             type: 'string',
         },
-        coverPic: {
-            type: 'string',
-        },
-        firstName: {
-            type: 'string',
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 1
-                }]
 
-            ]
-        },
-        lastName: {
-            type: 'string',
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 2
-                }]
-            ]
-        },
-
-        age: { type: 'number', },
-        timeZone: { type: 'number', },
-        gender: { type: "number", },
-
-        role: { type: "number", },
-
-        shortBio: { type: 'string', },
-
-        verified : {type : 'boolean'},
-
-        idFacebook : { type: 'string', unique: true, },
-        idGoogle : { type: 'string', unique: true,},
-        idTwitter : { type: 'string', unique: true,},
-        idLinkedIn : { type: 'string', unique: true, },
-        idGitHub : { type: 'string', unique: true,},
-        idReddit : { type: 'string', unique: true,},
 
         /*
          COMMON PROPERTIES
@@ -101,9 +93,10 @@ var UserModel = redis.nohm.model('UserModel', {
         dtCreation: {type: 'timestamp'},
         dtLastActivity: {type: 'timestamp',},
 
+
     },
     idGenerator: function (callback){
-        return modelIterator.generateCommonIterator(callback,"us");
+        return modelIterator.generateCommonIterator(callback,"fm");
     },
     methods: { // optional
 
@@ -135,10 +128,10 @@ var UserModel = redis.nohm.model('UserModel', {
             var timeDiff = new Date().getTime() - this.p('dtLastActivity') ;
 
             /*console.log('calcuating diff time');
-            console.log('time');
-            console.log(new Date().getTime());
-            console.log(this.p('dtLastActivity'));
-            console.log(timeDiff);*/
+             console.log('time');
+             console.log(new Date().getTime());
+             console.log(this.p('dtLastActivity'));
+             console.log(timeDiff);*/
 
             if (timeDiff / 1000 < 3 )
                 return true;
