@@ -1,15 +1,15 @@
 /**
- * Created by Alexandru Ionut Budisteanu - SkyHub on 5/16/2017.
+ * Created by Alexandru Ionut Budisteanu - SkyHub on 5/22/2017.
  * (C) BIT TECHNOLOGIES
  */
 
 var redis = require ('../../../../DB/redis_nohm');
 var modelIterator = require ('../../../common/model.iterator.ts');
 
-var ForumModel = redis.nohm.model('UserModel', {
+var ReplyModel = redis.nohm.model('UserModel', {
 
     idGenerator: function (callback){
-        return modelIterator.generateCommonIterator(callback,"frm");
+        return modelIterator.generateCommonIterator(callback,"rep");
     },
 
     properties: {
@@ -52,6 +52,10 @@ var ForumModel = redis.nohm.model('UserModel', {
             validations: [
                 ['notEmpty'],
             ]
+        },
+        replyParentId: {
+            defaultValue: '',
+            type: 'string',
         },
         parentId: {
             defaultValue: '',
@@ -103,6 +107,7 @@ var ForumModel = redis.nohm.model('UserModel', {
 
 
     },
+
     methods: {
 
         getFullName : function () {

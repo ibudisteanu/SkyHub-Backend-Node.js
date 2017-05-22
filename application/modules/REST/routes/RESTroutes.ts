@@ -4,6 +4,10 @@ var Promise = require('promise');
 
 var Authenticate = require ('../auth/Authenticate.controller.ts');
 var Functions = require ('./../common/functions/functions.controller.ts');
+
+var AuthenticatedUser = ('../auth/AuthenticatedUser.model.ts');
+
+var Forums = require ('../forums/forums/Forums.controller');
 //import {Authenticate} from '../auth/authenticate.controller.ts';
 //import {Functions} from '../functions/functions.controller.ts';
 
@@ -37,6 +41,7 @@ router.get('/profile', function (req, res, next){
 
 router.processSocketRoute = function (socket)
 {
+    var UserAuthenticated = AuthenticatedUser.loginUserFromSocket(socket);
 
     socket.on("api/auth/login", function (data){
         data.body = data;
@@ -84,7 +89,6 @@ router.processSocketRoute = function (socket)
 
         Authenticate.postAuthenticateRegisterOAuth(data, '').then ( (res ) => {
 
-            console.log('emitting register oauth');
             socket.emit("api/auth/register-oauth", res);
         });
 
@@ -98,6 +102,14 @@ router.processSocketRoute = function (socket)
     });
 
 
+    socket.on("api/forums/add", function (data){
+        data.body = data;
+
+        Forums.postAddForum(data, '').then ( (res ) => {
+            socket.emit("api/forums/add", res);
+        });
+
+    });
 
 
 };
