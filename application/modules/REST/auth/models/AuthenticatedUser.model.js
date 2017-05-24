@@ -3,10 +3,13 @@
  * (C) BIT TECHNOLOGIES
  */
 
-export class AuthenticatedUser {
+class AuthenticatedUser {
 
-    public user = {};
-    public bLoggedIn = false;
+
+    constructor(){
+        this.user = {};
+        this.bLoggedIn = false;
+    }
 
     loginUserFromSocket(socket){
 
@@ -25,6 +28,6 @@ export class AuthenticatedUser {
 
     }
 
-
-
 }
+
+module.exports = new AuthenticatedUser();

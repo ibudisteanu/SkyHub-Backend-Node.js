@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var Functions =  require('./../application/modules/REST/common/functions/functions.controller.ts');
-//import {Functions} from './../application/modules/REST/functions/functions.controller.ts';
+//import {FunctionsCtrl} from './../application/modules/REST/functions/functions.controller.ts';
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
