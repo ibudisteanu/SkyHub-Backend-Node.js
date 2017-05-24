@@ -9,8 +9,8 @@ var OAuth2 = require('./OAuth2.controller.ts');
 
 module.exports = {
 
-    /*
-     REST API
+     /*
+        REST API
      */
 
     postAuthenticateLogin (req, res){

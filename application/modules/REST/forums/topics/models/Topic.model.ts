@@ -6,7 +6,7 @@
 var redis = require ('../../../../DB/redis_nohm');
 var modelIterator = require ('../../../common/model.iterator.ts');
 
-var TopicModel = redis.nohm.model('UserModel', {
+var TopicModel = redis.nohm.model('TopicModel', {
 
     idGenerator: function (callback){
         return modelIterator.generateCommonIterator(callback,"top");
@@ -71,7 +71,7 @@ var TopicModel = redis.nohm.model('UserModel', {
         },
         parents: {
             defaultValue: '',
-            type: 'string',
+            type: 'string',     //ID,ID2,ID3
         },
 
         breadCrumbs: {

@@ -6,7 +6,7 @@
 var redis = require ('../../../../DB/redis_nohm');
 var modelIterator = require ('../../../common/model.iterator.ts');
 
-var ForumModel = redis.nohm.model('UserModel', {
+var ForumModel = redis.nohm.model('ForumModel', {
 
     idGenerator: function (callback){
         return modelIterator.generateCommonIterator(callback,"frm");
