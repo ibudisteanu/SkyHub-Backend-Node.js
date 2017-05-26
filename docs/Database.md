@@ -30,7 +30,7 @@ Science      =>    Physics =>  Computer Science => Software Engineering => C++
            
 ## Knowing the most POPULAR topics/forums using POPULARITY TABLE ##
            
-In order to calculate which are the best topics on Frontpage or Any Forum (eq: Science), we will keep another table **popularity for Parent X**
+In order to calculate which are the best topics on Front-page or Any Forum (eq: Science), we will keep another table **popularity for Parent X**
 
                 
 Frontpage => Children for Id = NULL (**topics where Parent or Materialized Parents include Id=NULL**)                
@@ -57,4 +57,14 @@ Each time, there is an event (Vote, Comment) that **MAY CHANGE the POPULARITY CO
 ### How to Read the popularity and show the most popular topics
 
 1. O(1) Read the POPULARITY TABLE for parent = NULL (Frontend), it will return `Top1333, Top1553, Top 102`, where N = the number of returned results 
-2. O(1) * N, read each topic returned from (1) and render it to the frontpage
+2. O(1) * N, read each topic returned from (1) and render it to the frontpage.
+
+
+#### REAL COMPLEXITY (PROS AND CONS)
+
+PROS:
+1. For Front-page with an Infinite Scroll which shows the TOP 8 topics. The DB calculations is HASH O(1) for POPULARITY TABLE of Front-page + HASH O(1) * N (where N = 8 Topics). Thus the **final complexity is O(9)**, but it includes 9 finding operations with the complexity of O(1)
+
+CONS:
+
+1. An event that has been triggered needs to make multiple updates namely to all materialized Parents. Let's suppose, there is an event on `Topic1553 New IDEs for Node.js`. This Topic has 4 Materialized Parents namely `1,2,3,4`. So when the event has been triggered (new vote), the coefficient is being recalculated and then, the updating algorithm must update **4 DIFFERENT POPULARITY TABLES for ALL 4 PARENTS.** So, the EVENT TRIGGERING UPDATE complexity is **O(1) * number of MATERIALIZED PARENTS**, so, in this case O(4).   
