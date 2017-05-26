@@ -28,7 +28,7 @@ Science      =>    Physics =>  Computer Science => Software Engineering => C++
 | Materialized Parents |   NULL  |    1    |        1,2       |         1,2,3        | 1,2,3,4 |    1,2,3,4,5   |                1,2,3               | 1,2,3,4                        |
            
            
-## Knowing the most POPULAR topics/forums ##
+## Knowing the most POPULAR topics/forums using POPULARITY TABLE ##
            
 In order to calculate which are the best topics on Frontpage or Any Forum (eq: Science), we will keep another table **popularity for Parent X**
 
@@ -48,3 +48,13 @@ Software Engineering => Children for Id = 4 (**topics where Parent or Materializ
 |------------------|:--------:|:--------------------:|:----------------------:|
 | 1                |  Top1553 | New IDEs for Node.js |          22.1          |
 | 2                |  Top102  |    C++ is Awesome    |          13.2          |
+
+### Keeping the POPULARITY TABLE
+
+Each time, there is an event (Vote, Comment) that **MAY CHANGE the POPULARITY COEFFICIENT**, a function will be triggered that will recalculate the POPULARITY Coefficient and Update all the POPULARITY TABLES that contains that element. So for this, we will get and update all the POPULARITY tables for each MATERIALIZED PARENT thus **updating the new position of the Topic based on its popularity in  its materialized grand-parents & parent**.
+
+
+### How to Read the popularity and show the most popular topics
+
+1. O(1) Read the POPULARITY TABLE for parent = NULL (Frontend), it will return `Top1333, Top1553, Top 102`, where N = the number of returned results 
+2. O(1) * N, read each topic returned from (1) and render it to the frontpage
