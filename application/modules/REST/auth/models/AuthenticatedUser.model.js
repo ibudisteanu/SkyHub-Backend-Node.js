@@ -7,7 +7,7 @@ class AuthenticatedUser {
 
 
     constructor(){
-        this.user = {};
+        this.user = null;
         this.bLoggedIn = false;
     }
 
@@ -15,17 +15,22 @@ class AuthenticatedUser {
 
         this.user = socket.userAuthenticated;
 
-        if (this.user != {})
-            this.bLoggedIn = true;
-        else
-            this.bLoggedIn = false;
+        if (this.user !== null)  this.bLoggedIn = true;
+        else this.bLoggedIn = false;
 
-        return this.user;
+        return this;
 
     }
 
     loginUserFromCookies(req, res){
+        return this;
+    }
 
+    getUserId(){
+        if (this.bLoggedIn)
+            return this.user.id;
+        else
+            return '';
     }
 
 }

@@ -10,5 +10,8 @@ module.exports = {
     getVersion (req, res){
         return {version : '2.0'};
     },
+
+
+
 }
 

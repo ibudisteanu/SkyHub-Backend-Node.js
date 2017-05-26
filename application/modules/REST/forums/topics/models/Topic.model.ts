@@ -4,12 +4,12 @@
  */
 
 var redis = require ('../../../../DB/redis_nohm');
-var modelIterator = require ('../../../common/model.iterator.ts');
+var modelIterator = require ('../../../../DB/nohm/nohm.iterator.ts');
 
 var TopicModel = redis.nohm.model('TopicModel', {
 
     idGenerator: function (callback){
-        return modelIterator.generateCommonIterator(callback,"top");
+        return nohmIterator.generateCommonIterator(callback,"top");
     },
 
     properties: {
@@ -110,6 +110,7 @@ var TopicModel = redis.nohm.model('TopicModel', {
         },
         latitude : {type: 'number'},
         longitude : {type: 'number'},
+        timeZone: { type: 'number', },
         dtCreation: {type: 'timestamp'},
         dtLastActivity: {type: 'timestamp',},
 

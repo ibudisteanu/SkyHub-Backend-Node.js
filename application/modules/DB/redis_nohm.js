@@ -8,6 +8,9 @@
 var redis = require('redis');
 var nohm = require('nohm').Nohm;
 
+nohm.setExtraValidations(__dirname+'/nohm/nohm.validation.ts');
+nohm.setExtraValidations(__dirname+'/nohm/nohm.iterator.ts');
+
 console.log("===> Connecting REDIS CLIENT");
 var redisClient = redis.createClient(constants.DB_RedisPort, constants.DB_RedisHost); //creates a new client
 

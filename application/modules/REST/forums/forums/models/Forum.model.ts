@@ -4,12 +4,12 @@
  */
 
 var redis = require ('../../../../DB/redis_nohm');
-var modelIterator = require ('../../../common/model.iterator.ts');
+var nohmIterator = require   ('../../../../DB/nohm/nohm.iterator.ts');
 
 var ForumModel = redis.nohm.model('ForumModel', {
 
     idGenerator: function (callback){
-        return modelIterator.generateCommonIterator(callback,"frm");
+        return nohmIterator.generateCommonIterator(callback,"frm");
     },
 
     properties: {
@@ -37,13 +37,18 @@ var ForumModel = redis.nohm.model('ForumModel', {
         },
         description: {
             type: 'string',
-            unique: true,
             validations: [
                 ['notEmpty'],
                 ['length', {
-                    min: 4
+                    min: 5
                 }]
 
+            ]
+        },
+        keywords : {
+            type: 'string',
+            validations: [
+                'validateKeywords'
             ]
         },
         authorId: {
@@ -64,6 +69,16 @@ var ForumModel = redis.nohm.model('ForumModel', {
 
         breadCrumbs: {
             type: 'json',
+        },
+
+        iconPic: {
+            defaultValue: '',
+            type: 'string',
+        },
+
+        coverPic: {
+            defaultValue: '',
+            type: 'string',
         },
 
         /*
@@ -98,6 +113,7 @@ var ForumModel = redis.nohm.model('ForumModel', {
         },
         latitude : {type: 'number'},
         longitude : {type: 'number'},
+        timeZone: { type: 'number', },
         dtCreation: {type: 'timestamp'},
         dtLastActivity: {type: 'timestamp',},
 

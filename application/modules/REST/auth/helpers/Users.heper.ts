@@ -37,10 +37,10 @@ module.exports = {
      using string password => hashed
      using social network
      */
-    registerUser (sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, sShortBio, iAge, sTimeZone, enGender, bVerified){
+    registerUser (sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, sShortBio, iAge, iTimeZone, enGender, bVerified){
 
         sCountry = sCountry || ''; sCity = sCity || ''; sProfilePic = sProfilePic || ''; sCoverPic = sCoverPic || '';
-        dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iAge = iAge || 0; sTimeZone = sTimeZone || ''; var bVerified = bVerified || false, sShortBio = sShortBio||'';
+        dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iAge = iAge || 0; iTimeZone = iTimeZone || 0; var bVerified = bVerified || false, sShortBio = sShortBio||'';
 
         sLanguage = sLanguage || sCountry;
 
@@ -52,11 +52,6 @@ module.exports = {
 
         var user = redis.nohm.factory('UserModel');
         var errorValidation = {};
-
-        //if (! /^[^`<>[\]'"\s~!@#%^&*()|\\?,.:{}=+\xA6-\xDF\x00-\x20\x7F\xF0-\xFF]+$/g.test(sUsername)){
-        if (! /^(?=.{4,30}$)(?![_.-])(?!.*[_.$-]{2})[a-zA-Z0-9._$-]+$/g.test(sUsername)){
-            errorValidation.username = ["Invalid Username"];
-        }
 
         user.p(
             {
@@ -73,7 +68,7 @@ module.exports = {
                 dtLastActivity: new Date(),
                 age : iAge,
                 gender : enGender,
-                timeZone : sTimeZone,
+                timeZone : iTimeZone,
                 verified : bVerified,
                 shortBio : sShortBio,
                 role : UserProperties.UserRolesEnum.USER,

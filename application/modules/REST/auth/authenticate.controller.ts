@@ -1,5 +1,5 @@
 var UserHelper = require('./helpers/User.helper.ts');
-var UsersHelper = require('./helpers/Users.hepers.ts');
+var UsersHelper = require('./helpers/Users.heper.ts');
 
 var OAuth2 = require('./OAuth2.controller.ts');
 
@@ -104,10 +104,10 @@ module.exports = {
     },
 
 
-    postAuthenticateRegister(req, res){
+    postAuthenticateRegister(req, res, OAuth){
 
         var sEmail = '', sUsername = '', password = {type: "string", value: ""}, sFirstName = '', sLastName = '', sLastName='', sCountry='', sCity='',sLanguage='', sProfilePic='', sCoverPic='';
-        var dbLatitude = 0, dbLongitude = 0, iAge = 0, sTimeZone = 0, sGender = 0, bVerified = false;  var sShortBio = '';
+        var dbLatitude = 0, dbLongitude = 0, iAge = 0, iTimeZone = 0, sGender = 0, bVerified = false;  var sShortBio = '';
 
         if (req.hasOwnProperty('body')){
             sEmail = req.body.email || '';
@@ -126,7 +126,7 @@ module.exports = {
 
             sLanguage = req.body.language || sCountry;
             iAge = req.body.age || 0;
-            sTimeZone = req.body.timeZone || '0';
+            iTimeZone = req.body.timeZone || 0;
             sGender = sGender || '';
 
             sProfilePic = req.body.profilePic || '';
@@ -135,18 +135,26 @@ module.exports = {
             sShortBio = req.body.shortBio || '';
         }
 
-        if (req.hasOwnProperty(('OAuth'))){
+        if (typeof OAuth !== "undefined"){
             password = {
                 type: "oauth2",
-                value: req.OAuth,
+                value: OAuth,
             };
-
             bVerified = req.body.verified || false;
         }
 
+        // if (req.hasOwnProperty(('OAuth'))){
+        //     password = {
+        //         type: "oauth2",
+        //         value: req.OAuth,
+        //     };
+        //
+        //     bVerified = req.body.verified || false;
+        // }
+
         console.log('Registering: ', sEmail);
 
-        return UsersHelper.registerUser(sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, sShortBio,  iAge, sTimeZone, sGender, bVerified);
+        return UsersHelper.registerUser(sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, sShortBio,  iAge, iTimeZone, sGender, bVerified);
     },
 
 

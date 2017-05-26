@@ -1,6 +1,5 @@
 var redis = require ('../../../DB/redis_nohm');
-
-var modelIterator = require ('../../common/model.iterator.ts');
+var nohmIterator = require ('../../../DB/nohm/nohm.iterator.ts');
 
 var UserModel = redis.nohm.model('UserModel', {
     properties: {
@@ -11,8 +10,8 @@ var UserModel = redis.nohm.model('UserModel', {
                 ['notEmpty'],
                 ['length', {
                     min: 4
-                }]
-
+                }],
+                'validateUsername',
             ]
         },
         email: {
@@ -50,7 +49,6 @@ var UserModel = redis.nohm.model('UserModel', {
         },
 
         age: { type: 'number', },
-        timeZone: { type: 'number', },
         gender: { type: "number", },
 
         role: { type: "number", },
@@ -98,12 +96,13 @@ var UserModel = redis.nohm.model('UserModel', {
         },
         latitude : {type: 'number'},
         longitude : {type: 'number'},
+        timeZone: { type: 'number', },
         dtCreation: {type: 'timestamp'},
         dtLastActivity: {type: 'timestamp',},
 
     },
     idGenerator: function (callback){
-        return modelIterator.generateCommonIterator(callback,"us");
+        return nohmIterator.generateCommonIterator(callback,"us");
     },
     methods: { // optional
 

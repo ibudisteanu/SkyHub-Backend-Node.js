@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var UsersHelper =  require('./helpers/Users.hepers.ts');
+var UsersHelper =  require('./helpers/Users.heper.ts');
 var UserHelper =  require('./helpers/User.helper.ts');
 
 // import {Users} from './helpers/Users.model.ts';
@@ -43,7 +43,7 @@ module.exports = {
                         {//registering the new user
 
                             //I create a special property OAuth to show that there is an OAuth registration
-                            req.OAuth = {
+                            var OAuth = {
                                 socialNetwork : sSocialNetwork,
                                 socialNetworkUserId : sSocialNetworkUserId,
                                 accessToken : sOAuth2Token
@@ -59,7 +59,7 @@ module.exports = {
                                 console.log('Username generated: ',userName);
 
                                 var Authenticate = require ('./Authenticate.controller.ts');
-                                resolve(Authenticate.postAuthenticateRegister(req, res));
+                                resolve(Authenticate.postAuthenticateRegister(req, res, OAuth));
 
                             });
 

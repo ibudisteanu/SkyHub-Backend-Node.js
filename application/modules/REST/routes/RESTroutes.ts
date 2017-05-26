@@ -26,6 +26,12 @@ router.get('/auth/register', function(req, res, next) {
 
 });
 
+router.get('/forums/add-forum', function (req, res, next){
+    AuthenticateCtrl.postAuthenticateRegisterOAuth(req, '').then ( (answer) => {
+        res.json( answer );
+    });
+});
+
 router.get('/version', function(req, res, next) {
     res.json( FunctionsCtrl.getVersion(req, res) );
 });
@@ -42,18 +48,21 @@ router.get('/profile', function (req, res, next){
 
 router.processSocketRoute = function (socket)
 {
-    var UserAuthenticated = AuthenticatedUser.loginUserFromSocket(socket);
 
     socket.on("api/auth/login", function (data){
         data.body = data;
 
-        AuthenticateCtrl.postAuthenticateLogin(data, '').then ( (res ) => {
+        AuthenticateCtrl.postAuthenticateLogin(data, socket).then ( (res ) => {
 
             socket.bAuthenticated = false; socket.userAuthenticated = null;
             if (res.result == "true"){
                 socket.bAuthenticated = true;
                 socket.userAuthenticated = jwt.verify(res.token, constants.SESSION_Secret_key);
+
+                console.log('===============AUTHENTICATING TOKEN!!!!!');
             }
+
+            console.log("===============AUTH LOGIN ANSWER", res);
 
             socket.emit("api/auth/login", res);
         });
@@ -62,12 +71,14 @@ router.processSocketRoute = function (socket)
     socket.on("api/auth/login-token", function (data){
         data.body = data;
 
-        AuthenticateCtrl.postAuthenticateTokenAsync(data, '').then ((answer)=>{
+        AuthenticateCtrl.postAuthenticateTokenAsync(data, socket).then ((answer)=>{
 
             socket.bAuthenticated = false; socket.userAuthenticated = null;
             if (answer.result == "true"){
                 socket.bAuthenticated = true;
                 socket.userAuthenticated = answer.user;
+
+                console.log('====================AUTHENTICATING TOKEN!!!!!');
             }
 
             socket.emit("api/auth/login-token", answer);
@@ -78,9 +89,17 @@ router.processSocketRoute = function (socket)
     socket.on("api/auth/register", function (data){
         data.body = data;
 
-        AuthenticateCtrl.postAuthenticateRegister(data, '').then ( (res ) => {
+        AuthenticateCtrl.postAuthenticateRegister(data, socket).then ( (answer ) => {
 
-            socket.emit("api/auth/register", res);
+            socket.bAuthenticated = false; socket.userAuthenticated = null;
+            if (answer.result == "true"){
+                socket.bAuthenticated = true;
+                socket.userAuthenticated = answer.user;
+
+                console.log('====================AUTHENTICATING TOKEN OAUTH2!!!!!');
+            }
+
+            socket.emit("api/auth/register", answer);
         });
 
     });
@@ -88,26 +107,52 @@ router.processSocketRoute = function (socket)
     socket.on("api/auth/register-oauth", function (data){
         data.body = data;
 
-        AuthenticateCtrl.postAuthenticateRegisterOAuth(data, '').then ( (res ) => {
+        AuthenticateCtrl.postAuthenticateRegisterOAuth(data, socket).then ( ( answer ) => {
 
-            socket.emit("api/auth/register-oauth", res);
+            socket.bAuthenticated = false; socket.userAuthenticated = null;
+            if (answer.result == "true"){
+                socket.bAuthenticated = true;
+                socket.userAuthenticated = answer.user;
+
+                console.log('====================AUTHENTICATING TOKEN OAUTH2!!!!!');
+            }
+
+            socket.emit("api/auth/register-oauth", answer);
         });
+
+    });
+
+    socket.on("api/auth/logout", function (data){
+
+        socket.bAuthenticated = false;
+        socket.userAuthenticated = null;
+
+        console.log("===================LOGOUT");
+
+        socket.emit("api/logout", {"result":true});
 
     });
 
 
     socket.on("api/version", function (data){
-        socket.emit("api/version",FunctionsCtrl.getVersion(data, ''));
+        socket.emit("api/version",FunctionsCtrl.getVersion(data, socket));
 
         console.log("Sending Version...")
     });
 
 
-    socket.on("api/forums/add", function (data){
+    socket.on("api/forums/add-forum", function (data){
         data.body = data;
 
-        ForumsCtrl.postAddForum(data, '').then ( (res ) => {
-            socket.emit("api/forums/add", res);
+        //var UserAuthenticated = AuthenticatedUser.loginUserFromSocket(data.token);
+        var UserAuthenticated = AuthenticatedUser.loginUserFromSocket(socket);
+
+         console.log('');console.log('');console.log('');console.log('');console.log('');
+         console.log("socket.userAuthenticated", socket.userAuthenticated);
+         console.log("userAuthenticated", UserAuthenticated);
+
+        ForumsCtrl.postAddForum(data, socket, UserAuthenticated).then ( (res ) => {
+            socket.emit("api/forums/add-forum", res);
         });
 
     });
