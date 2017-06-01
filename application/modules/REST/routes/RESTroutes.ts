@@ -40,6 +40,11 @@ router.get('/profile', function (req, res, next){
     res.json( {message: 'Great! You are logged in' });
 });
 
+router.get('/test/TopContent', function (req, res, next){
+    var TopContentCtrl = require ('../forums/content/TopContent.controller.js');
+    res.json( {message: TopContentCtrl.test() });
+});
+
 
 /*
             FOR SOCKET REST

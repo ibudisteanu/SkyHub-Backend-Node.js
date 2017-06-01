@@ -1,5 +1,5 @@
 var redis = require ('../../../DB/redis_nohm');
-var nohmIterator = require ('../../../DB/nohm/nohm.iterator.ts');
+var nohmIterator = require ('../../../DB/Redis/nohm/nohm.iterator.ts');
 
 var UserModel = redis.nohm.model('UserModel', {
     properties: {

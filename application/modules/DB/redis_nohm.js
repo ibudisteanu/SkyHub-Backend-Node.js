@@ -8,8 +8,8 @@ console.log("%%%% LOADING REDIS_NOHM.js");
 var redis = require('redis');
 var nohm = require('nohm').Nohm;
 
-nohm.setExtraValidations(__dirname+'/nohm/nohm.validation.ts');
-nohm.setExtraValidations(__dirname+'/nohm/nohm.iterator.ts');
+nohm.setExtraValidations(__dirname+'/Redis/nohm/nohm.validation.ts');
+nohm.setExtraValidations(__dirname+'/Redis/nohm/nohm.iterator.ts');
 
 console.log("===> Connecting REDIS CLIENT");
 try{

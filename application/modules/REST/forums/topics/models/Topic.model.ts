@@ -4,7 +4,7 @@
  */
 
 var redis = require ('../../../../DB/redis_nohm');
-var modelIterator = require ('../../../../DB/nohm/nohm.iterator.ts');
+var modelIterator = require ('../../../../DB/Redis/nohm/nohm.iterator.ts');
 
 var TopicModel = redis.nohm.model('TopicModel', {
 
