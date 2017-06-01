@@ -10,7 +10,7 @@ module.exports = {
             "http://www.hdfbcover.com/randomcovers/covers/never-stop-dreaming-quote-fb-cover.jpg");
     },
 
-    findUserById (sId){
+    async findUserById (sId){
 
         return new Promise( (resolve)=> {
 
@@ -36,7 +36,7 @@ module.exports = {
      using string password => hashed
      using social network
      */
-    registerUser (sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, sShortBio, iAge, iTimeZone, enGender, bVerified){
+    async registerUser (sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, sShortBio, iAge, iTimeZone, enGender, bVerified){
 
         sCountry = sCountry || ''; sCity = sCity || ''; sProfilePic = sProfilePic || ''; sCoverPic = sCoverPic || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iAge = iAge || 0; iTimeZone = iTimeZone || 0; var bVerified = bVerified || false, sShortBio = sShortBio||'';
@@ -146,56 +146,55 @@ module.exports = {
         });
     },
 
-    findUserFromEmailUsernamePassword (sEmailUsername, sPassword){
+    async findUserFromEmailUsernamePassword (sEmailUsername, sPassword){
         console.log("Checking user password ::: " + sEmailUsername + " ::: " + sPassword);
+
+        var foundUser = await this.findUserFromEmailUsername(sEmailUsername);
 
         return new Promise ((resolve) => {
 
-            this.findUserFromEmailUsername(sEmailUsername).then ((foundUser )=> {
+            //checking the stored Hash is the same with the input password
+            if (foundUser === null) resolve ({result:"false", message: "No User Found"});
+            else {
 
-                //checking the stored Hash is the same with the input password
-                if (foundUser === null) resolve ({result:"false", message: "No User Found"});
-                else {
+                /*
+                 console.log(foundUser);
+                 console.log(foundUser.p('password'));
+                 */
 
-                    /*
-                     console.log(foundUser);
-                     console.log(foundUser.p('password'));
-                     */
+                if (this.passwordHashVerify(sPassword, foundUser.p('password')))
+                    resolve({result:"true", user: foundUser});
+                else
+                    resolve({result:"false", message: "Password Incorrect"});
 
-                    if (this.passwordHashVerify(sPassword, foundUser.p('password')))
-                        resolve({result:"true", user: foundUser});
-                    else
-                        resolve({result:"false", message: "Password Incorrect"});
-
-                }
-
-            });
+            }
 
         });
 
     },
 
-    findUserFromEmailUsername (sEmailUsername){
+    async findUserFromEmailUsername (sEmailUsername){
         console.log("Finding user :::  " + sEmailUsername);
 
+        var userFound = await this.findUserFromEmail(sEmailUsername);
+
         return new Promise((resolve) =>{
-            this.findUserFromEmail(sEmailUsername).then ( (userFound) => {
 
-                //console.log('USER FOUND'); console.log(userFound);
-                //console.log('answer from email....'); console.log(res);
+            //console.log('USER FOUND'); console.log(userFound);
+            //console.log('answer from email....'); console.log(res);
 
-                if (userFound != null) resolve (userFound);
-                else
-                    this.findUserFromUsername(sEmailUsername).then ( (userFound) => {
+            if (userFound != null) resolve (userFound);
+            else {
+                this.findUserFromUsername(sEmailUsername).then ( (answer) => {
+                    resolve( answer ) ;
+                });
+            }
 
-                        resolve (userFound);
-                    })
-            });
         });
     },
 
 
-    findUserFromUsername(sUsername){
+    async findUserFromUsername(sUsername){
         var UserModel = redis.nohm.factory('UserModel');
 
         //console.log('Checking user by username ' + sUsername);
@@ -213,7 +212,7 @@ module.exports = {
         });
     },
 
-    findUserFromEmail (sEmail){
+    async findUserFromEmail (sEmail){
         var UserModel = redis.nohm.factory('UserModel');
 
         console.log('Checking UserModel by email ::: ' + sEmail);
@@ -232,7 +231,7 @@ module.exports = {
         });
     },
 
-    findUserFromSocialNetwork(sSocialNetwork, sId){
+    async findUserFromSocialNetwork(sSocialNetwork, sId){
         var user = redis.nohm.factory('UserModel');
 
         console.log('Checking user by social network ',sSocialNetwork,'  id ' + sId);
@@ -259,8 +258,19 @@ module.exports = {
         });
     },
 
+    async updateLastActivityUser(user){
+        user.p('dtLastActivity',new Date().toISOString());
 
-    updateLastActivity(Users){ //making the user online
+        user.save( function (err) {
+
+            if (err) {
+                console.log('Error updating last login');
+                console.log(err);
+            }
+        });
+    },
+
+    async updateLastActivity(Users){ //making the user online
 
         if (!Users.isArray)
             Users = [Users];
@@ -271,18 +281,12 @@ module.exports = {
             var user = userIterator;
 
             if (typeof user === 'string'){
-                user = this.findUserById(user);
-            }
+                this.findUserById(user).then ( (foundUser)=>{
+                    this.updateLastActivityUser(foundUser);
+                });
+            } else
+                this.updateLastActivityUser(user);
 
-            user.p('dtLastActivity',new Date().toISOString());
-
-            user.save( function (err) {
-
-                if (err) {
-                    console.log('Error updating last login');
-                    console.log(err);
-                }
-            });
         })
 
     },

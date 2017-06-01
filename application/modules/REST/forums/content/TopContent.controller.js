@@ -2,7 +2,7 @@
  * Created by BIT TECHNOLOGIES on 6/1/2017.
  */
 
-SortedList = require ('../../../DB/Redis/sorted_list/sortedList.controller.js');
+SortedList = require ('../../../DB/Redis/sorted-list/SortedList.controller.js');
 
 class TopContent {
 
@@ -20,7 +20,12 @@ class TopContent {
         this.sortedList.addElement("",66,"Salut3");
         this.sortedList.addElement("",626,"Salut4");
         this.sortedList.addElement("",26,"Salut5");
-        this.sortedList.addElement("",6,"Salut6");
+        this.sortedList.addElement("",15,"Salut6");
+        this.sortedList.addElement("",6,"Salut7");
+
+        console.log("DELETE Salut4 ",await this.sortedList.deleteElement("","Salut4"));
+
+        console.log("UPDATE SALUT3", await this.sortedList.updateElement("",2666,"Salut3"));
 
 
         console.log("rank1", await this.sortedList.getRankItem("","Salut5"));
@@ -29,7 +34,13 @@ class TopContent {
 
         console.log("COUNT LIST BETWEEN ", await this.sortedList.countListBetweenMinMax("",50,400));
 
-        console.log("GET ITEM", await this.sortedList.getItem("",2));
+        for (var i=0; i<7; i++)
+            console.log("GET ITEM "+i+"   ", await this.sortedList.getItemsMatching(""));
+
+
+        console.log("GET LIST RANGE BY SORTED INDEX ", await this.sortedList.getListRangeBySortedIndex("",1,5));
+
+        console.log("GET LIST RANGE BY SCORE ", await this.sortedList.getListRangeByScore("",30,600));
 
     }
     
