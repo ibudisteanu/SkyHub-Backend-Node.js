@@ -3,7 +3,7 @@
     //TUTORIAL http://maritz.github.io/nohm/
  */
 
-
+console.log("%%%% LOADING REDIS_NOHM.js");
 
 var redis = require('redis');
 var nohm = require('nohm').Nohm;
@@ -12,7 +12,11 @@ nohm.setExtraValidations(__dirname+'/nohm/nohm.validation.ts');
 nohm.setExtraValidations(__dirname+'/nohm/nohm.iterator.ts');
 
 console.log("===> Connecting REDIS CLIENT");
-var redisClient = redis.createClient(constants.DB_RedisPort, constants.DB_RedisHost); //creates a new client
+try{
+    var redisClient = redis.createClient(constants.DB_RedisPort, constants.DB_RedisHost); //creates a new client
+}catch (exception) {
+    console.error("============== ERROR REDIS CLIENT");
+}
 
 redisClient.on('connect', function() {
     console.log('===> REDIS connected\n');

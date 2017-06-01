@@ -12,7 +12,7 @@ var http = require('http');
 //FOR TESTING ONLY
 //var redis = require('./../application/modules/DB/redis_test.js');
 
-//JugglingDB no working
+//JugglingDB it's NOT working
 //var redis = require ('./../application/modules/DB/redisJugglingDB');
 
 /**
@@ -106,5 +106,6 @@ server.listen(port, function(){
     SOCKET IO SERVER
  */
 
+console.log("IMPORTING serverSocket");
 serverSocket = require('../application/modules/socketServer/socketServer.controller.ts');
 serverSocket = serverSocket.serverSocket;

@@ -8,28 +8,75 @@ var commonFunctions = require ('../../../common/helpers/common-functions.helper.
 
 module.exports = {
 
-    createDummyForum (iIndex)
-    {
-        return this.registerUser("emailDummy_"+iIndex+"@yahoo.com","userDummy_"+iIndex, "123456","Gigel",
+    createDummyForum (iIndex){
+
+        iIndex = iIndex || 0;
+
+        return this.addForum("forum_"+iIndex,"userDummy_"+iIndex, "123456","Gigel",
             "Nume"+iIndex,"RO","Bucharest", "RO", "http://www.gravatar.com/avatar/ee4d1b570eff6ce63"+iIndex+"?default=wavatar&forcedefault=1",
             "http://www.hdfbcover.com/randomcovers/covers/never-stop-dreaming-quote-fb-cover.jpg");
     },
 
-    findForumById (sId)
-    {
+    /*
+        FINDING & LOADING FORUM from ID, URL
+     */
+    findForum(sRequest){
+
+        console.log("Finding forum :::  " + sRequest);
+
+        return new Promise((resolve) =>{
+            this.findForumById(sRequest).then ( (forumFound) => {
+
+                //console.log('USER FOUND'); console.log(userFound);
+                //console.log('answer from email....'); console.log(res);
+
+                if (forumFound != null) resolve (forumFound);
+                else
+                    this.findForumByURL(sRequest).then ( (forumFound) => {
+                        resolve (forumFound);
+                    })
+            });
+        });
+
+    },
+
+    findForumById (sId){
+
         return new Promise( (resolve)=> {
-                if ((typeof sId === 'undefined') || (sId == []) || (sId === null)) {
-                    resolve(null);
+
+            if ((typeof sId === 'undefined') || (sId == []) || (sId === null))
+                resolve(null);
+            else
+
+            //console.log('finding forum '+sId);
+
+            var forum = redis.nohm.factory('ForumModel', sId, function (err) {
+                if (err) resolve (null);
+                else resolve (forum);
+            });
+
+        });
+    },
+
+    findForumByURL (sURL)
+    {
+        sURL = sURL || "";
+        return new Promise( (resolve)=> {
+            if ((typeof sURL === 'undefined') || (sURL == []) || (sURL === null))
+                resolve(null);
+            else
                 return null;
-            }
 
             //console.log('finding user '+sId);
 
-            var forum = redis.nohm.factory('ForumModel', sId, function (err) {
-                if (err)  // db error or id not found
-                    resolve (null);
-                else
-                    resolve (forum);
+            var ForumModel = redis.nohm.factory('ForumModel');
+            ForumModel.findAndLoad({
+                    URL: sURL,
+            }, function (err, forums) {
+                //console.log("response forums : from URL ", forums);
+
+                if (forums.length) resolve(forums[0]);
+                else resolve (null);
             });
 
         });

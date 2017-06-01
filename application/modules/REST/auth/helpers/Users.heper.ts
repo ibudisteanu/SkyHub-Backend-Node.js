@@ -3,21 +3,20 @@ var UserProperties = require ('./../models/User.properties.ts');
 
 module.exports = {
 
-    createDummyUser (iIndex)
-    {
+    createDummyUser (iIndex){
+
         return this.registerUser("emailDummy_"+iIndex+"@yahoo.com","userDummy_"+iIndex, "123456","Gigel",
             "Nume"+iIndex,"RO","Bucharest", "RO", "http://www.gravatar.com/avatar/ee4d1b570eff6ce63"+iIndex+"?default=wavatar&forcedefault=1",
             "http://www.hdfbcover.com/randomcovers/covers/never-stop-dreaming-quote-fb-cover.jpg");
     },
 
-    findUserById (sId)
-    {
+    findUserById (sId){
+
         return new Promise( (resolve)=> {
 
-            if ((typeof sId === 'undefined') || (sId == []) || (sId === null)) {
+            if ((typeof sId === 'undefined') || (sId == []) || (sId === null))
                 resolve(null);
-                return null;
-            }
+            else
 
             //console.log('finding user '+sId);
 
@@ -197,16 +196,16 @@ module.exports = {
 
 
     findUserFromUsername(sUsername){
-        var user = redis.nohm.factory('UserModel');
+        var UserModel = redis.nohm.factory('UserModel');
 
         //console.log('Checking user by username ' + sUsername);
 
         return new Promise ((resolve)=>{
             //find by username
-            user.findAndLoad({
+            UserModel.findAndLoad({
                 username: sUsername,
             }, function (err, users) {
-                //console.log("response from username"); console.log(users);
+                //console.log("response from username   ",users);
 
                 if (users.length) resolve(users[0]);
                 else resolve(null);
@@ -215,14 +214,14 @@ module.exports = {
     },
 
     findUserFromEmail (sEmail){
-        var user = redis.nohm.factory('UserModel');
+        var UserModel = redis.nohm.factory('UserModel');
 
-        console.log('Checking user by email ::: ' + sEmail);
+        console.log('Checking UserModel by email ::: ' + sEmail);
 
         return new Promise ((resolve)=>{
             //find by username
 
-            user.findAndLoad({
+            UserModel.findAndLoad({
                 email: sEmail,
             }, function (err, users) {
                 //console.log("response from useremail "); console.log(users);

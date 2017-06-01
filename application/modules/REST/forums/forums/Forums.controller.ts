@@ -36,6 +36,20 @@ module.exports = {
         console.log('Creating a Forum : ', sTitle);
 
         return ForumsHelper.addForum(UserAuthenticated, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, dbLatitude, dbLongitude, iTimeZone);
+    },
+
+    getForum (req, res, UserAuthenticated){
+
+        var sURL = '', sID = '';
+
+        if (req.hasOwnProperty('body')){
+            sURL = req.body.URL || '';
+            sID = req.body.ID ||  '';
+        }
+
+        console.log('Creating a Forum : ', sTitle);
+
+        return ForumsHelper.getForum(UserAuthenticated, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, dbLatitude, dbLongitude, iTimeZone);
 
     },
 
