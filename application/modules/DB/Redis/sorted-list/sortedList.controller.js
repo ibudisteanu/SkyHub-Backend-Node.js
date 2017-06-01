@@ -6,7 +6,7 @@
  */
 
 //var redis = require ('./../m../modules/DB/redis_nohm.js');
-var redis = require ('../../..//DB/redis_nohm.js');
+var redis = require ('../../../DB/redis_nohm.js');
 
 var SortedList = class{
 
@@ -145,6 +145,19 @@ var SortedList = class{
             });
 
         });
+    }
+
+    async keepSortedObject(tablePrefix, key, score, parents ){
+
+        if (typeof parents === "string") parents = [parents];
+
+        for (var i = 0, len = parents.length; i < len; i++) {
+            parent = arr[i];
+
+            await this.addElement(tablePrefix+":"+parent,score,key);
+        }
+
+        return true;
     }
 
 };

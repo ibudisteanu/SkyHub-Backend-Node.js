@@ -9,17 +9,6 @@ module.exports = {
      HELPER FUNCTIONS
      */
 
-    getMaterializedParents(sParentsList){
-
-       return sParentsList.splot(",");
-
-    },
-
-    findMaterializedParents(sParentsList){
-
-        var arrParentsList = this.getMaterializedParents(sParentsList);
-
-    }
 
 }
 

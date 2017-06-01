@@ -86,7 +86,7 @@ module.exports = {
     /*
      CREATING A NEW FORUM
      */
-    addForum (UserAuthenticated, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, dbLatitude, dbLongitude, iTimeZone){
+    addForum (UserAuthenticated, sParentId, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, dbLatitude, dbLongitude, iTimeZone){
 
         sCountry = sCountry || ''; sCity = sCity || ''; sIconPic = sIconPic || ''; sCoverPic = sCoverPic || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iTimeZone = iTimeZone || 0;
@@ -111,6 +111,7 @@ module.exports = {
                 dtCreation: new Date(),
                 dtLastActivity: new Date(),
                 timeZone : iTimeZone,
+                parentId: sParentId,
             }
         );
 
