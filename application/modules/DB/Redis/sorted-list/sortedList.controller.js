@@ -14,42 +14,81 @@ var SortedList = class{
         this.tablePrefix = tablePrefix || "ZLIST";
     }
 
-    addElement(tableName, score, value){
+    async addElement(tableName, score, key){
 
-        if (typeof value !== "string")
-            value = JSON.stringify(value);
+        if (typeof key !== "string")
+            key = JSON.stringify(key);
 
-        return redis.redisClient.zadd(this.tablePrefix+":"+tableName, score, value);
-
-    }
-
-    updateElement(tableName, score, object){
-
-    }
-
-    async deleteElement(tableName, object){
         return new Promise( (resolve)=> {
-            redis.redisClient.zrem(this.tablePrefix + ":" + tableName, iRangeA, iRangeB, function (err, answer){
+
+            redis.redisClient.zadd(this.tablePrefix+":"+tableName, score, key, function (err, answer){
+                resolve (err === null ? null : answer );
+            });
+
+        });
+    }
+
+    async updateElement(tableName, value, key){
+
+        var iCurrentScore = await this.getItemsMatching(tableName,key,0,1);
+
+        try {
+            iCurrentScore = iCurrentScore[1][1];
+        }catch (ex){
+            console.error("ERROR READING PREVIOUS SCORE for: ",tableName, value, key);
+            iCurrentScore = 0;
+        }
+        console.log("CURRENT SCORE",);
+
+        return new Promise( (resolve)=> {
+
+            redis.redisClient.zincrby(this.tablePrefix + ":" + tableName, value-iCurrentScore, key, function (err, answer){
                 resolve (err === null ? null : answer );
             });
         });
     }
 
-    getListRangeByScore(tableName, iRangeA, iRangeB){
-        return redis.redisClient.zrangebyscore(this.tablePrefix+":"+tableName, iRangeA, iRangeB);
+    async deleteElement(tableName, key){
+        return new Promise( (resolve)=> {
+            redis.redisClient.zrem(this.tablePrefix + ":" + tableName, key, function (err, answer){
+                resolve (err === null ? null : answer );
+            });
+        });
+    }
+
+    /*
+        Time complexity: O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements being returned. If M is constant (e.g. always asking for the first 10 elements with LIMIT), you can consider it O(log(N)).
+     */
+
+    async getListRangeByScore(tableName, iScoreMin, iScoreMax){
+
+        return new Promise( (resolve) => {
+
+            redis.redisClient.zrangebyscore(this.tablePrefix + ":" + tableName, iScoreMin, iScoreMax, function (err, answer){
+                if (err === null) resolve(answer);
+                else resolve ([]);
+            });
+        });
     }
 
     /*
         Time complexity: O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements returned.
      */
-    getListRange(tableName, iPageIndex, iArticlesPerPage){
+    async getListRangeBySortedIndex(tableName, iPageIndex, iArticlesPerPage){
         iPageIndex = iPageIndex || 0;
         iArticlesPerPage = iArticlesPerPage || 8;
 
         var start = (iPageIndex-1) * iArticlesPerPage;
         var end = start + iArticlesPerPage - 1;
 
-        var ids = redis.redisClient.zrange(this.tablePrefix+":"+tableName, start, end);
+        return new Promise( (resolve) => {
+
+            redis.redisClient.zrange(this.tablePrefix+":"+tableName, start, end, function (err, answer){
+                if (err == null) resolve(answer);
+                else resolve ([]);
+            });
+
+        });
 
         return ids;
     }
@@ -59,10 +98,12 @@ var SortedList = class{
         Time complexity: O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection..
      */
 
-    async getItem(tableName, iIndex){
+    async getItemsMatching(tableName, sMatch, iOffset, iCount){
+
+        sMatch = sMatch || '';
 
         return new Promise( (resolve)=> {
-            redis.redisClient.zscan(this.tablePrefix + ":" + tableName || "", 0, 'MATCH', '*'+iIndex + '*', function (err, answer) {
+            redis.redisClient.zscan(this.tablePrefix + ":" + tableName || "", iOffset||0, 'MATCH', '*'+(sMatch !== '' ? sMatch+ '*' : ''),function (err, answer) {
 
                 if (err === null) resolve(answer);
                 else resolve('');
