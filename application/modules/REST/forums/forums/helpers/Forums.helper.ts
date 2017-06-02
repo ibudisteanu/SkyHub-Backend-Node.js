@@ -5,6 +5,7 @@
 
 var forumModel = require ('./../models/Forum.model.ts');
 var commonFunctions = require ('../../../common/helpers/common-functions.helper.ts');
+var MaterializedParentsHelper = require ('../../../../DB/Redis/materialized-parents/MaterializedParents.helper.js');
 
 module.exports = {
 
@@ -20,27 +21,27 @@ module.exports = {
     /*
         FINDING & LOADING FORUM from ID, URL
      */
-    findForum(sRequest){
+    async findForum(sRequest){
 
         console.log("Finding forum :::  " + sRequest);
 
+        var forumFound = await this.findForumById(sRequest);
+
         return new Promise((resolve) =>{
-            this.findForumById(sRequest).then ( (forumFound) => {
 
-                //console.log('USER FOUND'); console.log(userFound);
-                //console.log('answer from email....'); console.log(res);
+            //console.log('FORUM FOUND'); console.log(userFound);
+            //console.log('answer from email....'); console.log(res);
 
-                if (forumFound != null) resolve (forumFound);
-                else
-                    this.findForumByURL(sRequest).then ( (forumFound) => {
-                        resolve (forumFound);
-                    })
-            });
+            if (forumFound != null) resolve (forumFound);
+            else
+                this.findForumByURL(sRequest).then ( (forumFound) => {
+                    resolve (forumFound);
+                })
         });
 
     },
 
-    findForumById (sId){
+    async findForumById (sId){
 
         return new Promise( (resolve)=> {
 
@@ -48,9 +49,9 @@ module.exports = {
                 resolve(null);
             else
 
-            //console.log('finding forum '+sId);
+            //  console.log('finding forum '+sId);
 
-            var forum = redis.nohm.factory('ForumModel', sId, function (err) {
+            redis.nohm.factory('ForumModel', sId, function (err, forum) {
                 if (err) resolve (null);
                 else resolve (forum);
             });
@@ -93,10 +94,10 @@ module.exports = {
 
         sLanguage = sLanguage || sCountry;
 
-        var forum = redis.nohm.factory('ForumModel');
+        var ForumModel = redis.nohm.factory('ForumModel');
         var errorValidation = {};
 
-        forum.p(
+        ForumModel.p(
             {
                 title: sTitle,
                 URL: commonFunctions.url_slug(sTitle),
@@ -112,11 +113,12 @@ module.exports = {
                 dtLastActivity: new Date(),
                 timeZone : iTimeZone,
                 parentId: sParentId,
+                parents: MaterializedParentsHelper.findAllMaterializedParents(),
             }
         );
 
-        if (dbLatitude != -666) forum.p('latitude', dbLatitude);
-        if (dbLongitude != -666) forum.p('longitude', dbLongitude);
+        if (dbLatitude != -666) ForumModel.p('latitude', dbLatitude);
+        if (dbLongitude != -666) ForumModel.p('longitude', dbLongitude);
 
         return new Promise( (resolve)=> {
 
@@ -126,17 +128,17 @@ module.exports = {
                 return false;
             }
 
-            forum.save(function (err) {
+            ForumModel.save(function (err) {
                 if (err) {
                     console.log("==> Error Saving Forum");
-                    console.log(forum.errors); // the errors in validation
+                    console.log(ForumModel.errors); // the errors in validation
 
-                    resolve({result:"false", errors: forum.errors });
+                    resolve({result:"false", errors: ForumModel.errors });
                 } else {
                     console.log("Saving Forum Successfully");
-                    console.log(forum.getPrivateInformation());
+                    console.log(ForumModel.getPrivateInformation());
 
-                    resolve( {result:"true", forum: forum.getPrivateInformation() });
+                    resolve( {result:"true", forum: ForumModel.getPrivateInformation() });
                 }
             });
 

@@ -45,6 +45,11 @@ router.get('/test/TopContent', function (req, res, next){
     res.json( {message: TopContentCtrl.test() });
 });
 
+router.get('/test/MaterializedParents', function (req, res, next){
+    var MaterializedParentsCtrl = require ('../../DB/Redis/materialized-parents/MaterializedParents.helper.js');
+    res.json( {message: MaterializedParentsCtrl.test() });
+});
+
 
 /*
             FOR SOCKET REST

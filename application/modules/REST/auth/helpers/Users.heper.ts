@@ -12,15 +12,18 @@ module.exports = {
 
     async findUserById (sId){
 
+        var UserModel = redis.nohm.factory('UserModel');
+
         return new Promise( (resolve)=> {
 
             if ((typeof sId === 'undefined') || (sId == []) || (sId === null))
                 resolve(null);
             else
 
-            //console.log('finding user '+sId);
+            redis.nohm.factory('UserModel', sId, function (err, user) {
 
-            var user = redis.nohm.factory('UserModel', sId, function (err) {
+                //console.log("********* findUserById: ##"+sId+"##",err, user);
+
                 if (err)  // db error or id not found
                     resolve (null);
                 else

@@ -6,8 +6,6 @@ SortedList = require ('../../../DB/Redis/sorted-list/SortedList.controller.js');
 
 class TopContent {
 
-
-
     //sortedList
     constructor(){
         this.sortedList = new SortedList("TopContent");
