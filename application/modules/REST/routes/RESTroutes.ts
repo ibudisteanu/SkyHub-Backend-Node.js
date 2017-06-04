@@ -8,6 +8,7 @@ var FunctionsCtrl = require ('./../common/functions/functions.controller.ts');
 var AuthenticatedUser = require('../auth/models/AuthenticatedUser.model.ts');
 
 var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
+var TopContentCtrl = require ('../forums/content/TopContent.controller.ts');
 
 //import {AuthenticateCtrl} from '../auth/authenticate.controller.ts';
 //import {FunctionsCtrl} from '../functions/functions.controller.ts';
@@ -41,12 +42,12 @@ router.get('/profile', function (req, res, next){
 });
 
 router.get('/test/TopContent', function (req, res, next){
-    var TopContentCtrl = require ('../forums/content/helpers/TopContent.helper');
+    var TopContentCtrl = require ('../forums/content/helpers/TopContent.helper.ts');
     res.json( {message: TopContentCtrl.test() });
 });
 
 router.get('/test/MaterializedParents', function (req, res, next){
-    var MaterializedParentsCtrl = require ('../../DB/common/materialized-parents/MaterializedParents.helper');
+    var MaterializedParentsCtrl = require ('../../DB/common/materialized-parents/MaterializedParents.helper.ts');
     res.json( {message: MaterializedParentsCtrl.test() });
 });
 
@@ -171,7 +172,7 @@ router.processSocketRoute = function (socket)
 
         var UserAuthenticated = AuthenticatedUser.loginUserFromSocket(socket);
 
-        ForumsCtrl.postAddForum(data, socket, UserAuthenticated).then ( (res ) => {
+        TopContentCtrl.postGetTopContent(data, socket, UserAuthenticated).then ( (res ) => {
             socket.emit("api/content/get-top-content", res);
         });
 

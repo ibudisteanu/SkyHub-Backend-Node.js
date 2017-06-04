@@ -84,13 +84,14 @@ var SortedList = class{
         return new Promise( (resolve) => {
 
             redis.redisClient.zrange(this.tablePrefix+":"+tableName, start, end, function (err, answer){
+
+                console.log("ITEMS MATCHING ",answer);
+
                 if (err == null) resolve(answer);
                 else resolve ([]);
             });
 
         });
-
-        return ids;
     }
 
 
@@ -105,8 +106,10 @@ var SortedList = class{
         return new Promise( (resolve)=> {
             redis.redisClient.zscan(this.tablePrefix + ":" + tableName || "", iOffset||0, 'MATCH', '*'+(sMatch !== '' ? sMatch+ '*' : ''),function (err, answer) {
 
+                console.log("ITEMS MATCHING ",answer);
+
                 if (err === null) resolve(answer);
-                else resolve('');
+                else resolve([]);
 
             });
         });
@@ -119,10 +122,11 @@ var SortedList = class{
 
         var iOffset = 0;
 
-        if (iPageIndex !== 0)
+        if (iPageIndex > 0)
             iOffset = iPageIndex * iArticlesPerPage;
 
-        return this.getItemsMatching(tableName, '', iOffset, iArticlesPerPage);
+        //return this.getItemsMatching(tableName, '', iOffset, iArticlesPerPage); //unstable, it returns different values
+        return this.getListRangeBySortedIndex(tableName, iPageIndex, iArticlesPerPage);
 
     }
 

@@ -31,13 +31,12 @@ var MaterializedParents = class{
         var iRedisDB = sObjectId.substring(0,iDelimitatorPosLeft);
         var sObjectType = sObjectId.substring(iDelimitatorPosLeft+1,iDelimitatorPosRight);
 
-        console.log("finding OBJECT ID: ", iRedisDB, " :::: ", sObjectType, " :::: ", sObjectId);
+        //console.log("finding OBJECT ID: ", iRedisDB, " :::: ", sObjectType, " :::: ", sObjectId);
 
         if ((iRedisDB !== 0) && (sObjectType !== ''))
             return {redisDB : iRedisDB, objectType : sObjectType};
         else
             return null
-
     }
 
     async findObjectFromId(sObjectId){
@@ -52,7 +51,7 @@ var MaterializedParents = class{
 
                 var UsersHelper = require('../../../REST/auth/helpers/Users.heper.ts');
 
-                return UsersHelper.findUserById(sObjectId);
+                return await UsersHelper.findUserById(sObjectId);
 
             case 'frm':
 
@@ -60,7 +59,7 @@ var MaterializedParents = class{
 
                 var ForumsHelper = require ('../../../REST/forums/forums/helpers/Forums.helper.ts');
 
-                return ForumsHelper.findForumById(sObjectId);
+                return await ForumsHelper.findForumById(sObjectId);
         }
 
         return null;
@@ -73,14 +72,15 @@ var MaterializedParents = class{
 
         if (typeof sObjectURL !== "string") return null;
 
+        return null;
     }
 
     async findObject(objectToSearch){
 
         var idData = this.extractDataFromIds(objectToSearch);
 
-        if (idData !== null) return this.findObjectFromId(objectToSearch);
-        else return this.findObjectFromURL(objectToSearch);
+        if (idData !== null) return await this.findObjectFromId(objectToSearch);
+        else return await this.findObjectFromURL(objectToSearch);
 
         return null;
     }
@@ -109,6 +109,8 @@ var MaterializedParents = class{
     }
 
     getObjectId(objectToSearch){
+
+        if (objectToSearch === '') return '';
 
         var idData = this.extractDataFromIds(objectToSearch);
 

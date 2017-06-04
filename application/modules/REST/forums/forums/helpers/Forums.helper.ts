@@ -87,13 +87,14 @@ module.exports = {
     /*
      CREATING A NEW FORUM
      */
-    addForum (UserAuthenticated, parent, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, dbLatitude, dbLongitude, iTimeZone){
+    addForum (UserAuthenticated, parent, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone){
 
         sCountry = sCountry || ''; sCity = sCity || ''; sIconPic = sIconPic || ''; sCoverPic = sCoverPic || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iTimeZone = iTimeZone || 0;
 
         sLanguage = sLanguage || sCountry;
         parent = parent || '';
+        sCoverColor = sCoverColor || "#"+((1<<24)*Math.random()|0).toString(16);
 
         var forum = redis.nohm.factory('ForumModel');
         var errorValidation = {};
@@ -111,6 +112,7 @@ module.exports = {
                 keywords: commonFunctions.convertKeywordsArrayToString(arrKeywords),
                 iconPic: sIconPic,
                 coverPic: sCoverPic,
+                coverColor: sCoverColor,
                 country: sCountry.toLowerCase(),
                 city: sCity.toLowerCase(),
                 language: sLanguage.toLowerCase(),

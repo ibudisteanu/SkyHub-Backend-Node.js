@@ -81,6 +81,11 @@ var ForumModel = redis.nohm.model('ForumModel', {
             type: 'string',
         },
 
+        coverColor:{
+            defaultValue: '',
+            type: 'string',
+        },
+
         /*
          COMMON PROPERTIES
          */

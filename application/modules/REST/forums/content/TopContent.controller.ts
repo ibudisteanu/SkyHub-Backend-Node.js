@@ -10,17 +10,19 @@ module.exports = {
      REST API
      */
 
-    getTopContent (req, res, UserAuthenticated){
+    postGetTopContent (req, res, UserAuthenticated){
 
-        var sParent = '';
+        let sParent = ''; let iPageIndex=1; let iPageCount = 8;
 
         if (req.hasOwnProperty('body')){
             sParent = req.body.parent || '';
+            iPageIndex = req.body.pageIndex || 1;
+            iPageCount = req.body.pageCount || 8;
         }
 
         console.log('Creating a Forum : ', sParent);
 
-        return TopContentHelper.getTopContent(UserAuthenticated, sParent);
+        return TopContentHelper.getTopContent(UserAuthenticated, sParent, iPageIndex, iPageCount);
 
     },
 

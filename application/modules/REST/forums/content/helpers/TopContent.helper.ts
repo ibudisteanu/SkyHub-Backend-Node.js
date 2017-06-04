@@ -12,11 +12,55 @@ class TopContent {
         this.sortedList = new SortedList("TopContent");
     }
 
-    async getTopContent(UserAuthenticated, parent){
+    async getTopContent(UserAuthenticated, parent, pageIndex, pageCount){
 
         var sParentId = MaterializedParents.getObjectId(parent);
 
-        this.sortedList.getFastItems(sParentId, 0, 8 );
+        pageCount = Math.min(pageCount|| 8,10);
+
+        let listTopContent = await this.sortedList.getFastItems(sParentId, pageIndex||1, pageCount );
+
+        if (listTopContent !== []){
+
+            let listTopContentObjects = [];
+
+            /* method using zscan...
+            for (let i=0; i<listTopContent[1].length/2; i++){
+                let id = listTopContent[1][2*i];
+                let score = listTopContent[1][2*i+1];
+            */
+            for (let i=0; i<listTopContent.length; i++){
+
+                let id = listTopContent[i];
+
+                let object = await MaterializedParents.findObject(id);
+
+                //console.log("LIST TOP CONTENT :::: ",id, score);
+                //console.log("TOP CONTENT OBJECT FOUND: ", object);
+
+                if (object !== null){
+                    listTopContentObjects.push({
+                        object : object.getPublicInformation(),
+                        //score: score,
+                    })
+                }
+
+            }
+
+            return({
+                result: "true",
+                next: listTopContent.length !== pageCount,
+                newPageIndex: pageIndex+1,
+                content: listTopContentObjects,
+            });
+
+        } else
+        {
+            return({
+                result: "false",
+                content: [],
+            });
+        }
 
     }
 
@@ -41,8 +85,8 @@ class TopContent {
 
         console.log("COUNT LIST BETWEEN ", await this.sortedList.countListBetweenMinMax("",50,400));
 
-        for (var i=0; i<7; i++)
-            console.log("GET ITEM "+i+"   ", await this.sortedList.getItemsMatching(""));
+
+        console.log("GET ITEMS   ", await this.sortedList.getItemsMatching(""));
 
 
         console.log("GET LIST RANGE BY SORTED INDEX ", await this.sortedList.getListRangeBySortedIndex("",1,5));

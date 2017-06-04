@@ -12,10 +12,10 @@ module.exports = {
 
     postAddForum (req, res, UserAuthenticated){
 
-        var sTitle = '', sDescription = '', arrKeywords = [], sCountry='', sCity='',sLanguage='', sIconPic='', sCoverPic='';
-        var dbLatitude = 0, dbLongitude = 0, iTimeZone = 0;
+        let sTitle = '', sDescription = '', arrKeywords = [], sCountry='', sCity='',sLanguage='', sIconPic='', sCoverPic='', sCoverColor = '';
+        let dbLatitude = 0, dbLongitude = 0, iTimeZone = 0;
 
-        var parent = '';
+        let parent = '';
 
         if (req.hasOwnProperty('body')){
             sTitle = req.body.title || '';
@@ -33,12 +33,13 @@ module.exports = {
 
             sIconPic = req.body.iconPic || '';
             sCoverPic = req.body.coverPic || '';
+            sCoverColor = req.body.coverColor || '';
             parent = req.body.parent || '';
         }
 
         console.log('Creating a Forum : ', sTitle);
 
-        return ForumsHelper.addForum(UserAuthenticated, parent, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, dbLatitude, dbLongitude, iTimeZone);
+        return ForumsHelper.addForum(UserAuthenticated, parent, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone);
     },
 
     getForum (req, res, UserAuthenticated){
