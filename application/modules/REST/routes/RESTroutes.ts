@@ -5,7 +5,7 @@ var Promise = require('promise');
 var AuthenticateCtrl = require ('../auth/Authenticate.controller.ts');
 var FunctionsCtrl = require ('./../common/functions/functions.controller.ts');
 
-var AuthenticatedUser = require('../auth/models/AuthenticatedUser.model.js');
+var AuthenticatedUser = require('../auth/models/AuthenticatedUser.model.ts');
 
 var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
 
@@ -41,12 +41,12 @@ router.get('/profile', function (req, res, next){
 });
 
 router.get('/test/TopContent', function (req, res, next){
-    var TopContentCtrl = require ('../forums/content/TopContent.controller.js');
+    var TopContentCtrl = require ('../forums/content/helpers/TopContent.helper');
     res.json( {message: TopContentCtrl.test() });
 });
 
 router.get('/test/MaterializedParents', function (req, res, next){
-    var MaterializedParentsCtrl = require ('../../DB/Redis/materialized-parents/MaterializedParents.helper.js');
+    var MaterializedParentsCtrl = require ('../../DB/common/materialized-parents/MaterializedParents.helper');
     res.json( {message: MaterializedParentsCtrl.test() });
 });
 
@@ -154,7 +154,6 @@ router.processSocketRoute = function (socket)
     socket.on("api/forums/add-forum", function (data){
         data.body = data;
 
-        //var UserAuthenticated = AuthenticatedUser.loginUserFromSocket(data.token);
         var UserAuthenticated = AuthenticatedUser.loginUserFromSocket(socket);
 
          console.log('');console.log('');console.log('');console.log('');console.log('');
@@ -163,6 +162,17 @@ router.processSocketRoute = function (socket)
 
         ForumsCtrl.postAddForum(data, socket, UserAuthenticated).then ( (res ) => {
             socket.emit("api/forums/add-forum", res);
+        });
+
+    });
+
+    socket.on("api/content/get-top-content", function (data){
+        data.body = data;
+
+        var UserAuthenticated = AuthenticatedUser.loginUserFromSocket(socket);
+
+        ForumsCtrl.postAddForum(data, socket, UserAuthenticated).then ( (res ) => {
+            socket.emit("api/content/get-top-content", res);
         });
 
     });

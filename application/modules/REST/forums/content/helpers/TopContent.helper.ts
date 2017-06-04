@@ -2,13 +2,22 @@
  * Created by BIT TECHNOLOGIES on 6/1/2017.
  */
 
-SortedList = require ('../../../DB/Redis/sorted-list/SortedList.controller.js');
+var SortedList = require ('../../../../DB/Redis/sorted-list/SortedList.helper.ts');
+var MaterializedParents = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 
 class TopContent {
 
     //sortedList
     constructor(){
         this.sortedList = new SortedList("TopContent");
+    }
+
+    async getTopContent(UserAuthenticated, parent){
+
+        var sParentId = MaterializedParents.getObjectId(parent);
+
+        this.sortedList.getFastItems(sParentId, 0, 8 );
+
     }
 
     async test(){

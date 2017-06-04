@@ -143,7 +143,22 @@ var ForumModel = redis.nohm.model('ForumModel', {
                 return true;
 
             return false;
-        }
+        },
+
+        calculateHotnessCoefficient : function (){
+
+            var ScoreCoefficientHelper = require ('../../../../DB/common/score-coefficient/ScoreCoefficient.helper.ts');
+
+            return ScoreCoefficientHelper.calculateHotnessScoreCoefficient(this);
+        },
+
+        keepSortedList : function (bDelete){
+
+            var TopContentHelper = require ('../../content/helpers/TopContent.helper.ts');
+
+            return TopContentHelper.sortedList.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parents'), bDelete);
+
+        },
 
     },
     //client: redis.someRedisClient // optional

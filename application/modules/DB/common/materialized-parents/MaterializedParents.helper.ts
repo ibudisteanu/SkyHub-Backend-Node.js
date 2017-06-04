@@ -2,15 +2,10 @@
  * Created by Alexandru Ionut Budisteanu - SkyHub on 6/1/2017.
  * (C) BIT TECHNOLOGIES
  */
-/**
- * Created by BIT TECHNOLOGIES on 6/1/2017.
- *
- * TUTORIAL based on https://stackoverflow.com/questions/30725358/node-js-redis-zadd-objects-to-a-set
- *
- */
+
 
 //var redis = require ('./../m../modules/DB/redis_nohm.js');
-var redis = require ('../../../DB/redis_nohm.js');
+var redis = require ('../../redis_nohm.js');
 
 var MaterializedParents = class{
 
@@ -20,12 +15,15 @@ var MaterializedParents = class{
 
 
     /*
-     This method loads forum/topic/reply from the Id
+     Loading forum/topic/reply from the Id
 
      sObjectId contains inside also the type of the object example: 1_frm_14958198943447852
 
      */
-    async findObjectFromId(sObjectId){
+
+    extractDataFromIds(sObjectId){
+
+        if (typeof sObjectId !== "string") return null;
 
         var iDelimitatorPosLeft = sObjectId.indexOf("_");
         var iDelimitatorPosRight = sObjectId.indexOf("_",iDelimitatorPosLeft+1);
@@ -35,7 +33,20 @@ var MaterializedParents = class{
 
         console.log("finding OBJECT ID: ", iRedisDB, " :::: ", sObjectType, " :::: ", sObjectId);
 
-        switch (sObjectType) {
+        if ((iRedisDB !== 0) && (sObjectType !== ''))
+            return {redisDB : iRedisDB, objectType : sObjectType};
+        else
+            return null
+
+    }
+
+    async findObjectFromId(sObjectId){
+
+        var idData = this.extractDataFromIds(sObjectId);
+
+        if (idData === null) return null;
+
+        switch (idData.objectType) {
             case 'us':
                 //var UserModel = redis.nohm.factory('UserModel');
 
@@ -53,7 +64,25 @@ var MaterializedParents = class{
         }
 
         return null;
+    }
 
+    /*
+        Loading objects from URL
+     */
+    async findObjectFromURL(sObjectURL){
+
+        if (typeof sObjectURL !== "string") return null;
+
+    }
+
+    async findObject(objectToSearch){
+
+        var idData = this.extractDataFromIds(objectToSearch);
+
+        if (idData !== null) return this.findObjectFromId(objectToSearch);
+        else return this.findObjectFromURL(objectToSearch);
+
+        return null;
     }
 
 
@@ -79,6 +108,20 @@ var MaterializedParents = class{
         return arrParentsOutput;
     }
 
+    getObjectId(objectToSearch){
+
+        var idData = this.extractDataFromIds(objectToSearch);
+
+        var id = '';
+
+        if (idData !== null) id = objectToSearch; // valid id... it means it is the ID
+        else {
+            var object = this.findObjectFromURL(objectToSearch);
+            if (object !== null) id = object.id;
+        }
+
+        return id;
+    }
 
 
     /*
@@ -113,7 +156,12 @@ var MaterializedParents = class{
     }
 
     async findAllMaterializedParents (Object){
-        return this.findAllMaterializedParentsByMergingItsMaterializedGrandParents(Object.parentId+','+Object.parents);
+
+        var sParentId = '';
+        if (typeof Object === "string") sParentId = Object;
+        else sParentId = Object.parentId+','+Object.parents;
+
+        return this.findAllMaterializedParentsByMergingItsMaterializedGrandParents(sParentId);
     }
 
     async test(){

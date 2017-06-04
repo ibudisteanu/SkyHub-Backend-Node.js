@@ -5,7 +5,7 @@
 
 var forumModel = require ('./../models/Forum.model.ts');
 var commonFunctions = require ('../../../common/helpers/common-functions.helper.ts');
-var MaterializedParentsHelper = require ('../../../../DB/Redis/materialized-parents/MaterializedParents.helper.js');
+var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 
 module.exports = {
 
@@ -51,9 +51,9 @@ module.exports = {
 
             //  console.log('finding forum '+sId);
 
-            redis.nohm.factory('ForumModel', sId, function (err, forum) {
+            forumModel = redis.nohm.factory('ForumModel', sId, function (err, forum) {
                 if (err) resolve (null);
-                else resolve (forum);
+                else resolve (forumModel);
             });
 
         });
@@ -87,17 +87,22 @@ module.exports = {
     /*
      CREATING A NEW FORUM
      */
-    addForum (UserAuthenticated, sParentId, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, dbLatitude, dbLongitude, iTimeZone){
+    addForum (UserAuthenticated, parent, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, dbLatitude, dbLongitude, iTimeZone){
 
         sCountry = sCountry || ''; sCity = sCity || ''; sIconPic = sIconPic || ''; sCoverPic = sCoverPic || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iTimeZone = iTimeZone || 0;
 
         sLanguage = sLanguage || sCountry;
+        parent = parent || '';
 
-        var ForumModel = redis.nohm.factory('ForumModel');
+        var forum = redis.nohm.factory('ForumModel');
         var errorValidation = {};
 
-        ForumModel.p(
+
+        //get object from parent
+
+
+        forum.p(
             {
                 title: sTitle,
                 URL: commonFunctions.url_slug(sTitle),
@@ -112,13 +117,13 @@ module.exports = {
                 dtCreation: new Date(),
                 dtLastActivity: new Date(),
                 timeZone : iTimeZone,
-                parentId: sParentId,
-                parents: MaterializedParentsHelper.findAllMaterializedParents(),
+                parentId: MaterializedParentsHelper.getObjectId(parent),
+                parents: MaterializedParentsHelper.findAllMaterializedParents(parent),
             }
         );
 
-        if (dbLatitude != -666) ForumModel.p('latitude', dbLatitude);
-        if (dbLongitude != -666) ForumModel.p('longitude', dbLongitude);
+        if (dbLatitude != -666) forum.p('latitude', dbLatitude);
+        if (dbLongitude != -666) forum.p('longitude', dbLongitude);
 
         return new Promise( (resolve)=> {
 
@@ -128,17 +133,19 @@ module.exports = {
                 return false;
             }
 
-            ForumModel.save(function (err) {
+            forum.save(function (err) {
                 if (err) {
                     console.log("==> Error Saving Forum");
-                    console.log(ForumModel.errors); // the errors in validation
+                    console.log(forum.errors); // the errors in validation
 
-                    resolve({result:"false", errors: ForumModel.errors });
+                    resolve({result:"false", errors: forum.errors });
                 } else {
                     console.log("Saving Forum Successfully");
-                    console.log(ForumModel.getPrivateInformation());
 
-                    resolve( {result:"true", forum: ForumModel.getPrivateInformation() });
+                    forum.keepSortedList();
+                    console.log(forum.getPrivateInformation());
+
+                    resolve( {result:"true", forum: forum.getPrivateInformation() });
                 }
             });
 

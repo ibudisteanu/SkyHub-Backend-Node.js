@@ -80,14 +80,26 @@ module.exports = {
 
                 UsersHelper.findUserById(userAuthenticatedData.id).then ((userAuthenticated)=>{
 
-                    UsersHelper.updateLastActivity(userAuthenticated);
+                    if (userAuthenticated !== null){
+                        UsersHelper.updateLastActivity(userAuthenticated);
 
-                    console.log(userAuthenticated.getPublicInformation());
+                        console.log('updating last activity');
+                        console.log('');console.log('');console.log('');console.log('');console.log('');console.log('');
+                        console.log(userAuthenticated);
+                        console.log(userAuthenticated.getPublicInformation());
+                        console.log('finished updating last activity');
 
-                    resolve({
-                        result: "true",
-                        user: userAuthenticated.getPublicInformation(),
-                    });
+                        resolve({
+                            result: "true",
+                            user: userAuthenticated.getPublicInformation(),
+                        });
+                    } else
+                    {
+                        resolve({
+                            result: "false",
+                            message: "Error. Invalid User",
+                        });
+                    }
 
                 });
 

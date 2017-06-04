@@ -10,9 +10,7 @@ module.exports = {
             "http://www.hdfbcover.com/randomcovers/covers/never-stop-dreaming-quote-fb-cover.jpg");
     },
 
-    async findUserById (sId){
-
-        var UserModel = redis.nohm.factory('UserModel');
+    findUserById (sId){
 
         return new Promise( (resolve)=> {
 
@@ -20,14 +18,14 @@ module.exports = {
                 resolve(null);
             else
 
-            redis.nohm.factory('UserModel', sId, function (err, user) {
+            var UserModel = redis.nohm.factory('UserModel', sId, function (err, user) {
 
                 //console.log("********* findUserById: ##"+sId+"##",err, user);
 
                 if (err)  // db error or id not found
                     resolve (null);
                 else
-                    resolve (user);
+                    resolve (UserModel);
             });
 
         });
@@ -264,12 +262,16 @@ module.exports = {
     async updateLastActivityUser(user){
         user.p('dtLastActivity',new Date().toISOString());
 
-        user.save( function (err) {
+        return new Promise ((resolve)=> {
+            user.save(function (err, user) {
 
-            if (err) {
-                console.log('Error updating last login');
-                console.log(err);
-            }
+                if (err) {
+                    console.log('Error updating last login');
+                    console.log(err);
+                    resolve (null);
+                } else
+                    resolve (user);
+            });
         });
     },
 
@@ -280,17 +282,15 @@ module.exports = {
 
         console.log('updating last activity');
 
-        Users.forEach( function(userIterator, index){
-            var user = userIterator;
+        for (var i=0; i<Users.length; i++){
+            var user = Users[i];
 
-            if (typeof user === 'string'){
-                this.findUserById(user).then ( (foundUser)=>{
-                    this.updateLastActivityUser(foundUser);
-                });
-            } else
-                this.updateLastActivityUser(user);
+            if (typeof user === 'string')
+                user = await this.findUserById(user);
 
-        })
+
+            return this.updateLastActivityUser(user);
+        }
 
     },
 

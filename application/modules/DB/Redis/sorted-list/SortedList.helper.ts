@@ -112,6 +112,20 @@ var SortedList = class{
         });
     }
 
+    async getFastItems(tableName, iPageIndex, iArticlesPerPage){
+
+        iPageIndex = iPageIndex || 0;
+        iArticlesPerPage = iArticlesPerPage || 8;
+
+        var iOffset = 0;
+
+        if (iPageIndex !== 0)
+            iOffset = iPageIndex * iArticlesPerPage;
+
+        return this.getItemsMatching(tableName, '', iOffset, iArticlesPerPage);
+
+    }
+
     async getRankItem(tableName, item){
 
         return new Promise( (resolve)=> {
@@ -147,14 +161,17 @@ var SortedList = class{
         });
     }
 
-    async keepSortedObject(tablePrefix, key, score, parents ){
+    async keepSortedObject( key, score, parents, bDelete ){
 
         if (typeof parents === "string") parents = [parents];
 
         for (var i = 0, len = parents.length; i < len; i++) {
-            parent = arr[i];
+            var parent = parents[i];
 
-            await this.addElement(tablePrefix+":"+parent,score,key);
+            if (bDelete||false == true)
+                await this.deleteElement(parent,key);
+            else
+                await this.addElement(parent,score,key);
         }
 
         return true;

@@ -15,6 +15,8 @@ module.exports = {
         var sTitle = '', sDescription = '', arrKeywords = [], sCountry='', sCity='',sLanguage='', sIconPic='', sCoverPic='';
         var dbLatitude = 0, dbLongitude = 0, iTimeZone = 0;
 
+        var parent = '';
+
         if (req.hasOwnProperty('body')){
             sTitle = req.body.title || '';
             sDescription = req.body.description ||  '';
@@ -31,25 +33,25 @@ module.exports = {
 
             sIconPic = req.body.iconPic || '';
             sCoverPic = req.body.coverPic || '';
+            parent = req.body.parent || '';
         }
 
         console.log('Creating a Forum : ', sTitle);
 
-        return ForumsHelper.addForum(UserAuthenticated, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, dbLatitude, dbLongitude, iTimeZone);
+        return ForumsHelper.addForum(UserAuthenticated, parent, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, dbLatitude, dbLongitude, iTimeZone);
     },
 
     getForum (req, res, UserAuthenticated){
 
-        var sURL = '', sID = '';
+        var sId = '';
 
         if (req.hasOwnProperty('body')){
-            sURL = req.body.URL || '';
-            sID = req.body.ID ||  '';
+            sId = req.body.id || '';
         }
 
-        console.log('Creating a Forum : ', sTitle);
+        console.log('Creating a Forum : ', sId);
 
-        return ForumsHelper.getForum(UserAuthenticated, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, dbLatitude, dbLongitude, iTimeZone);
+        return ForumsHelper.getForum(UserAuthenticated, sId);
 
     },
 
