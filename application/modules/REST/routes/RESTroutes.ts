@@ -8,7 +8,7 @@ var FunctionsCtrl = require ('./../common/functions/functions.controller.ts');
 var AuthenticatedUser = require('../auth/models/AuthenticatedUser.model.ts');
 
 var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
-var TopContentCtrl = require ('../forums/content/TopContent.controller.ts');
+var TopContentCtrl = require ('../common/content/TopContent.controller.ts');
 
 //import {AuthenticateCtrl} from '../auth/authenticate.controller.ts';
 //import {FunctionsCtrl} from '../functions/functions.controller.ts';
@@ -42,13 +42,18 @@ router.get('/profile', function (req, res, next){
 });
 
 router.get('/test/TopContent', function (req, res, next){
-    var TopContentCtrl = require ('../forums/content/helpers/TopContent.helper.ts');
+    var TopContentCtrl = require ('../common/content/helpers/TopContent.helper.ts');
     res.json( {message: TopContentCtrl.test() });
 });
 
 router.get('/test/MaterializedParents', function (req, res, next){
     var MaterializedParentsCtrl = require ('../../DB/common/materialized-parents/MaterializedParents.helper.ts');
     res.json( {message: MaterializedParentsCtrl.test() });
+});
+
+router.get('/test/URLHash', function (req, res, next){
+    var URLHashCtrl = require ('../common/URLs/helpers/URLHash.helper.ts');
+    res.json( {message: URLHashCtrl.test() });
 });
 
 

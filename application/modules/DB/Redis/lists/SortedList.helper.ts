@@ -5,8 +5,8 @@
  *
  */
 
-//var redis = require ('./../m../modules/DB/redis_nohm.js');
-var redis = require ('../../../DB/redis_nohm.js');
+
+var redis = require ('../../redis_nohm.js');
 
 var SortedList = class{
 
@@ -22,7 +22,7 @@ var SortedList = class{
         return new Promise( (resolve)=> {
 
             redis.redisClient.zadd(this.tablePrefix+":"+tableName, score, key, function (err, answer){
-                resolve (err === null ? null : answer );
+                resolve (err === null ? answer : null);
             });
 
         });
@@ -43,7 +43,7 @@ var SortedList = class{
         return new Promise( (resolve)=> {
 
             redis.redisClient.zincrby(this.tablePrefix + ":" + tableName, value-iCurrentScore, key, function (err, answer){
-                resolve (err === null ? null : answer );
+                resolve (err === null ? answer : null);
             });
         });
     }
@@ -51,7 +51,7 @@ var SortedList = class{
     async deleteElement(tableName, key){
         return new Promise( (resolve)=> {
             redis.redisClient.zrem(this.tablePrefix + ":" + tableName, key, function (err, answer){
-                resolve (err === null ? null : answer );
+                resolve (err === null ? answer : null);
             });
         });
     }

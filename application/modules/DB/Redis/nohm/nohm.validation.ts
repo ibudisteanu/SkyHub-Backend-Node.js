@@ -26,3 +26,24 @@ exports.validateUsername = function (value, options, callback){
     } else
         callback(true);
 };
+
+exports.validateUniqueURL = function (value, options, callback){
+
+    var URLHash = require ('../../../REST/common/URLs/helpers/URLHash.helper.ts');
+
+    //console.log("VALIDATE UNIQUE URL", options, this.p(''));
+
+    this.p('URL','NEW-URL');
+
+    console.log("VALIDATE UNIQUE URL", this.p('URL'),this.id, this);
+
+    URLHash.replaceOldURL(this.p('URL'),value).then( (answer)=>{
+
+        if (answer === null)
+            callback(true);
+        else
+            callback(false);
+
+    });
+
+};

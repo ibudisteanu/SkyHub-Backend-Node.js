@@ -106,7 +106,7 @@ module.exports = {
         forum.p(
             {
                 title: sTitle,
-                URL: commonFunctions.url_slug(sTitle),
+                URL: '',
                 description: sDescription,
                 authorId: UserAuthenticated.getUserId(),
                 keywords: commonFunctions.convertKeywordsArrayToString(arrKeywords),
@@ -144,10 +144,16 @@ module.exports = {
                 } else {
                     console.log("Saving Forum Successfully");
 
-                    forum.keepSortedList();
-                    console.log(forum.getPrivateInformation());
+                    forum.keepURLSlug().then((answer)=>{
 
-                    resolve( {result:"true", forum: forum.getPrivateInformation() });
+                        console.log("URL SLUG for FORUM: ",answer);
+
+                        forum.keepSortedList();
+
+                        console.log(forum.getPrivateInformation());
+
+                        resolve( {result:"true", forum: forum.getPrivateInformation() });
+                    });
                 }
             });
 

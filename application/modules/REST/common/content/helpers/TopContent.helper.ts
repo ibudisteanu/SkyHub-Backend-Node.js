@@ -2,7 +2,7 @@
  * Created by BIT TECHNOLOGIES on 6/1/2017.
  */
 
-var SortedList = require ('../../../../DB/Redis/sorted-list/SortedList.helper.ts');
+var SortedList = require ('../../../../DB/Redis/lists/SortedList.helper.ts');
 var MaterializedParents = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 
 class TopContent {

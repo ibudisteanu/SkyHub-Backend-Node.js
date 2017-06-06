@@ -55,3 +55,4 @@ node_modules/
 .idea/
 tmp/
 build/
+.idea/workspace.xml

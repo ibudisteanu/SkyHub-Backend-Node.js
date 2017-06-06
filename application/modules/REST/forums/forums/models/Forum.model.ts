@@ -26,14 +26,13 @@ var ForumModel = redis.nohm.model('ForumModel', {
         },
         URL: {
             type: 'string',
-            unique: true,
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 4
-                }]
-
-            ]
+            // validations: [
+            //     ['notEmpty'],
+            //     ['length', {
+            //         min: 2
+            //     }],
+            //     'validateUniqueURL',
+            // ]
         },
         description: {
             type: 'string',
@@ -159,11 +158,18 @@ var ForumModel = redis.nohm.model('ForumModel', {
 
         keepSortedList : function (bDelete){
 
-            var TopContentHelper = require ('../../content/helpers/TopContent.helper.ts');
+            var TopContentHelper = require ('../../../common/content/helpers/TopContent.helper.ts');
 
             return TopContentHelper.sortedList.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parents'), bDelete);
 
         },
+
+        keepURLSlug : function (sOldURL,  bDelete){
+
+            var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
+
+            return URLHashHelper.replaceOldURL(sOldURL, this.p('title'), this.id, bDelete);
+        }
 
     },
     //client: redis.someRedisClient // optional
