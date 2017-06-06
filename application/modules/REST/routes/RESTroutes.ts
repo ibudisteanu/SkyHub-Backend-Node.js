@@ -33,6 +33,16 @@ router.get('/forums/add-forum', function (req, res, next){
     });
 });
 
+router.get('/content/get-content', function (req, res, next){
+
+    var UserAuthenticated = AuthenticatedUser.loginUserFromCookies(req);
+
+    TopContentCtrl.postGetContent(req, res, UserAuthenticated).then ( ( answer ) => {
+        res.json( answer );
+    });
+
+});
+
 router.get('/version', function(req, res, next) {
     res.json( FunctionsCtrl.getVersion(req, res) );
 });

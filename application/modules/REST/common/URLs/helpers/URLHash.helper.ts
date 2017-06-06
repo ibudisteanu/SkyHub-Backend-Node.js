@@ -4,6 +4,7 @@
  */
 
 var HashList = require ('../../../../DB/Redis/lists/HashList.helper.ts');
+var commonFunctions = require ('../../helpers/common-functions.helper.ts');
 
 class URLHash {
 
@@ -12,30 +13,55 @@ class URLHash {
         this.hashList = new HashList("URL");
     }
 
-    async addNewURL(sURL, object){
+    async getId(sURL){
 
-        if (object.constructor === "object") object = object.id;
+        return this.hashList.getHash('',sURL);
+
+    }
+
+    async getFinalNewURL(sURL, object){
+
+        object = object || null;
+        if ((object!==null)&&(object.constructor === "object")) object = object.id;
+        sURL = commonFunctions.url_slug(sURL);
 
         let sFinalNewURL = sURL;
+
+        console.log("SEARCHING FOR ",sFinalNewURL);
 
         let existingHashResult = await this.hashList.getHash('',sFinalNewURL);
 
         let iTrialsLeft = 1000;
 
-        while ((existingHashResult !== null)&&(iTrialsLeft > 0)){
+        while ( (existingHashResult !== object)&&(existingHashResult !== null)&&(iTrialsLeft > 0) ){
 
             sFinalNewURL = sURL+'-'+Math.floor((Math.random() * 10000) + 1);
             existingHashResult = await this.hashList.getHash('',sFinalNewURL);
 
+            console.log("SEARCHING FOR ",sFinalNewURL);
+
             iTrialsLeft--;
         }
+
+        return sFinalNewURL;
+
+    }
+
+    async addNewURL(sURL, object){
+
+        object = object || '';
+        if ((object!==null)&&(object.constructor === "object")) object = object.id;
+        sURL = commonFunctions.url_slug(sURL);
+
+        let sFinalNewURL = await this.getFinalNewURL(sURL, object);
 
         return await this.hashList.setHash('', sFinalNewURL, object);
     }
 
     async replaceOldURL(sOldURL, sNewURL, object, bDeleteAllHashes){
 
-        var commonFunctions = require ('../../helpers/common-functions.helper.ts');
+        object = object || '';
+        if ((object!==null)&&(object.constructor === "object")) object = object.id;
         sNewURL = commonFunctions.url_slug(sNewURL);
 
         if ( (bDeleteAllHashes || false) === true ){

@@ -5,6 +5,7 @@
 
 var forumModel = require ('./../models/Forum.model.ts');
 var commonFunctions = require ('../../../common/helpers/common-functions.helper.ts');
+var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
 var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 
 module.exports = {
@@ -87,7 +88,7 @@ module.exports = {
     /*
      CREATING A NEW FORUM
      */
-    addForum (UserAuthenticated, parent, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone){
+    async addForum (UserAuthenticated, parent, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone){
 
         sCountry = sCountry || ''; sCity = sCity || ''; sIconPic = sIconPic || ''; sCoverPic = sCoverPic || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iTimeZone = iTimeZone || 0;
@@ -106,7 +107,7 @@ module.exports = {
         forum.p(
             {
                 title: sTitle,
-                URL: '',
+                URL: await(URLHashHelper.getFinalNewURL(sTitle,null)), //Getting a NEW URL
                 description: sDescription,
                 authorId: UserAuthenticated.getUserId(),
                 keywords: commonFunctions.convertKeywordsArrayToString(arrKeywords),
@@ -144,16 +145,12 @@ module.exports = {
                 } else {
                     console.log("Saving Forum Successfully");
 
-                    forum.keepURLSlug().then((answer)=>{
+                    forum.keepURLSlug(); //.then((answer)=>{
+                    forum.keepSortedList();
 
-                        console.log("URL SLUG for FORUM: ",answer);
+                    console.log(forum.getPrivateInformation());
 
-                        forum.keepSortedList();
-
-                        console.log(forum.getPrivateInformation());
-
-                        resolve( {result:"true", forum: forum.getPrivateInformation() });
-                    });
+                    resolve( {result:"true", forum: forum.getPrivateInformation() });
                 }
             });
 

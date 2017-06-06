@@ -20,11 +20,27 @@ module.exports = {
             iPageCount = req.body.pageCount || 8;
         }
 
-        console.log('Creating a Forum : ', sParent);
+        console.log('Getting Top Content : ', sParent);
 
         return TopContentHelper.getTopContent(UserAuthenticated, sParent, iPageIndex, iPageCount);
 
     },
+
+    postGetContent (req, res, UserAuthenticated){
+
+        let sId = '';
+
+        if (req.hasOwnProperty('body')){
+
+            sId = req.body.id ||'';
+
+        }
+
+        console.log('Getting Top Content : ', sId);
+
+        return TopContentHelper.getContent(UserAuthenticated, sId);
+
+    }
 
 
 }

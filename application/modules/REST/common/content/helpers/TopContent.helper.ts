@@ -54,13 +54,30 @@ class TopContent {
                 content: listTopContentObjects,
             });
 
-        } else
-        {
-            return({
-                result: "false",
-                content: [],
-            });
         }
+
+        return({
+            result: "false",
+            content: [],
+        });
+
+    }
+
+    async getContent(UserAuthenticated, id){
+
+        let object = await MaterializedParents.findObject(id);
+
+        if (object !== null){
+            return({
+                result: true,
+                content: object.getPublicInformation(),
+            })
+        }
+
+        return({
+            result: false,
+            content: [],
+        })
 
     }
 

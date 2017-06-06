@@ -34,7 +34,7 @@ var HashList = class{
         return new Promise( (resolve)=> {
             redis.redisClient.hget (this.tablePrefix + ":" + tableName, key, function (err, answer) {
 
-                console.log("getHash ",err,answer);
+                console.log("getHash ##",key,"###",err,answer);
                 resolve (err === null ? answer : null);
             });
         });

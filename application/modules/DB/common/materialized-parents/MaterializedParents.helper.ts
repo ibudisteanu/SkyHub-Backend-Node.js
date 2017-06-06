@@ -6,6 +6,7 @@
 
 //var redis = require ('./../m../modules/DB/redis_nohm.js');
 var redis = require ('../../redis_nohm.js');
+var URLHashHelper = require ('../../../../modules/REST/common/URLs/helpers/URLHash.helper.ts');
 
 var MaterializedParents = class{
 
@@ -25,11 +26,11 @@ var MaterializedParents = class{
 
         if (typeof sObjectId !== "string") return null;
 
-        var iDelimitatorPosLeft = sObjectId.indexOf("_");
-        var iDelimitatorPosRight = sObjectId.indexOf("_",iDelimitatorPosLeft+1);
+        let iDelimitatorPosLeft = sObjectId.indexOf("_");
+        let iDelimitatorPosRight = sObjectId.indexOf("_",iDelimitatorPosLeft+1);
 
-        var iRedisDB = sObjectId.substring(0,iDelimitatorPosLeft);
-        var sObjectType = sObjectId.substring(iDelimitatorPosLeft+1,iDelimitatorPosRight);
+        let iRedisDB = sObjectId.substring(0,iDelimitatorPosLeft);
+        let sObjectType = sObjectId.substring(iDelimitatorPosLeft+1,iDelimitatorPosRight);
 
         //console.log("finding OBJECT ID: ", iRedisDB, " :::: ", sObjectType, " :::: ", sObjectId);
 
@@ -39,9 +40,18 @@ var MaterializedParents = class{
             return null
     }
 
+    async findIdFromURL(sObjectURL){
+
+        if ( sObjectURL === null) return null;
+        if ( sObjectURL.constructor === "Object") return sObjectURL;
+
+        return await URLHashHelper.getId(sObjectURL);
+
+    }
+
     async findObjectFromId(sObjectId){
 
-        var idData = this.extractDataFromIds(sObjectId);
+        let idData = this.extractDataFromIds(sObjectId);
 
         if (idData === null) return null;
 
@@ -49,7 +59,7 @@ var MaterializedParents = class{
             case 'us':
                 //var UserModel = redis.nohm.factory('UserModel');
 
-                var UsersHelper = require('../../../REST/auth/helpers/Users.heper.ts');
+                let UsersHelper = require('../../../REST/auth/helpers/Users.heper.ts');
 
                 return await UsersHelper.findUserById(sObjectId);
 
@@ -57,7 +67,7 @@ var MaterializedParents = class{
 
                 //var ForumModel = redis.nohm.factory('ForumModel');
 
-                var ForumsHelper = require ('../../../REST/forums/forums/helpers/Forums.helper.ts');
+                let ForumsHelper = require ('../../../REST/forums/forums/helpers/Forums.helper.ts');
 
                 return await ForumsHelper.findForumById(sObjectId);
         }
@@ -70,14 +80,21 @@ var MaterializedParents = class{
      */
     async findObjectFromURL(sObjectURL){
 
-        if (typeof sObjectURL !== "string") return null;
+        if ( sObjectURL === null) return null;
+        if ( sObjectURL.constructor === "Object") return sObjectURL;
+
+        let sId = await this.findIdFromURL(sObjectURL);
+
+        if (sId !== null)
+            return await this.findObjectFromId(sId);
 
         return null;
     }
 
     async findObject(objectToSearch){
 
-        var idData = this.extractDataFromIds(objectToSearch);
+
+        let idData = this.extractDataFromIds(objectToSearch);
 
         if (idData !== null) return await this.findObjectFromId(objectToSearch);
         else return await this.findObjectFromURL(objectToSearch);
@@ -95,11 +112,11 @@ var MaterializedParents = class{
 
         if (typeof arrParentsOutput === "undefined") arrParentsOutput = [];
 
-        for (var i=0; i<parentsList.length; i++){
+        for (let i=0; i<parentsList.length; i++){
 
-            var arrParentsBuffer = parentsList[i].split(",")
+            let arrParentsBuffer = parentsList[i].split(",");
 
-            for (var j=0; j<arrParentsBuffer.length; j++)//check for duplicity
+            for (let j=0; j<arrParentsBuffer.length; j++)//check for duplicity
                 if (arrParentsOutput.indexOf(arrParentsBuffer[j]) < 0 )
                 {
                     arrParentsOutput.push(arrParentsBuffer[j]);
@@ -110,19 +127,21 @@ var MaterializedParents = class{
 
     getObjectId(objectToSearch){
 
+        if (objectToSearch === null) return '';
         if (objectToSearch === '') return '';
+        if (objectToSearch.constructor === "object" ) return objectToSearch.id;//in case their is a Model Object, we will return its ID
 
-        var idData = this.extractDataFromIds(objectToSearch);
-
-        var id = '';
-
-        if (idData !== null) id = objectToSearch; // valid id... it means it is the ID
+        //in case the argument is actually and ID
+        if (this.extractDataFromIds(objectToSearch) !== null)
+            return objectToSearch; //  valid id... it means it is the ID
         else {
-            var object = this.findObjectFromURL(objectToSearch);
-            if (object !== null) id = object.id;
+            let object = this.findObjectFromURL(objectToSearch);
+
+            if (object !== null)
+                return object.id;
         }
 
-        return id;
+        return '';
     }
 
 
@@ -136,14 +155,14 @@ var MaterializedParents = class{
         if (typeof parentsIds === "string") parentsIds = [parentsIds];
         if (typeof iNestedLevel === "undefined")  iNestedLevel = 1000;
 
-        for ( var i=0; i < parentsIds.length; i++)
+        for ( let i=0; i < parentsIds.length; i++)
             arrParentsOutput = this.getMaterializedParentsFromStringList(parentsIds[i], arrParentsOutput);
 
 
-        for (var j=0; j<arrParentsOutput.length; j++){
+        for (let j=0; j<arrParentsOutput.length; j++){
 
-            var sMaterializedParent = arrParentsOutput[j];
-            var objectParent = await this.findObjectFromId(sMaterializedParent);
+            let sMaterializedParent = arrParentsOutput[j];
+            let objectParent = await this.findObjectFromId(sMaterializedParent);
 
             if (objectParent !== null){
 
@@ -154,12 +173,11 @@ var MaterializedParents = class{
         }
 
         return arrParentsOutput;
-
     }
 
     async findAllMaterializedParents (Object){
 
-        var sParentId = '';
+        let sParentId = '';
         if (typeof Object === "string") sParentId = Object;
         else sParentId = Object.parentId+','+Object.parents;
 

@@ -6,6 +6,7 @@
 var redis = require ('../../../../DB/redis_nohm');
 var nohmIterator = require   ('../../../../DB/Redis/nohm/nohm.iterator.ts');
 
+
 var ForumModel = redis.nohm.model('ForumModel', {
 
     idGenerator: function (callback){
@@ -167,8 +168,7 @@ var ForumModel = redis.nohm.model('ForumModel', {
         keepURLSlug : function (sOldURL,  bDelete){
 
             var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
-
-            return URLHashHelper.replaceOldURL(sOldURL, this.p('title'), this.id, bDelete);
+            return URLHashHelper.replaceOldURL(sOldURL, this.p('URL'), this.id, bDelete);
         }
 
     },
