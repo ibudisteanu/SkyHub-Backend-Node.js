@@ -28,8 +28,33 @@ https://github.com/expressjs/express/tree/master/examples
 
 https://github.com/1602/jugglingdb
 
+
+# TO DOs
+
 ##### Working functions
 
-1. Login
+1. Login    
 2. Registration
-3. Socket.io
+    2.1. Facebook & Google integration
+3. REST
+    3.1. Socket.io
+        3.1.1 JWT Authentication
+4. Forums                
+    4.1 Add Topic
+            
+## To DOs            
+            
+4. Topics
+    4.1 Add Topic
+    4.2 Edit Topic
+    4.3 Delete Topic
+5. Replies
+    5.1 Add Reply
+    5.2 Edit Reply
+    5.3 Delete Reply
+6. Voting
+    6.1 Add Voting (Up and Downs)
+    6.2 Unvote
+    6.3 Keeping Voting in the DB
+    
+    

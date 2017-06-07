@@ -83,11 +83,11 @@ module.exports = {
                     if (userAuthenticated !== null){
                         UsersHelper.updateLastActivity(userAuthenticated);
 
-                        console.log('updating last activity');
-                        console.log('');console.log('');console.log('');console.log('');console.log('');console.log('');
-                        console.log(userAuthenticated);
-                        console.log(userAuthenticated.getPublicInformation());
-                        console.log('finished updating last activity');
+                        // console.log('updating last activity');
+                        // console.log('');console.log('');console.log('');console.log('');console.log('');console.log('');
+                        // console.log(userAuthenticated);
+                        // console.log(userAuthenticated.getPublicInformation());
+                        // console.log('finished updating last activity');
 
                         resolve({
                             result: "true",

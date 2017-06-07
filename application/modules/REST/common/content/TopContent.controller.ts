@@ -10,7 +10,7 @@ module.exports = {
      REST API
      */
 
-    postGetTopContent (req, res, UserAuthenticated){
+    async postGetTopContent (req, res, UserAuthenticated){
 
         let sParent = ''; let iPageIndex=1; let iPageCount = 8;
 
@@ -26,7 +26,7 @@ module.exports = {
 
     },
 
-    postGetContent (req, res, UserAuthenticated){
+    async postGetContent (req, res, UserAuthenticated){
 
         let sId = '';
 
@@ -36,7 +36,9 @@ module.exports = {
 
         }
 
-        console.log('Getting Top Content : ', sId);
+        console.log(""); console.log(""); console.log(""); console.log("");
+        //console.log(req);
+        console.log('Getting Content : ', sId);
 
         return TopContentHelper.getContent(UserAuthenticated, sId);
 

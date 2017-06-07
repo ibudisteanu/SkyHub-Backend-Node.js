@@ -33,9 +33,9 @@ router.get('/forums/add-forum', function (req, res, next){
     });
 });
 
-router.get('/content/get-content', function (req, res, next){
+router.post('/content/get-content', function (req, res, next){
 
-    var UserAuthenticated = AuthenticatedUser.loginUserFromCookies(req);
+    let UserAuthenticated = AuthenticatedUser.loginUserFromCookies(req);
 
     TopContentCtrl.postGetContent(req, res, UserAuthenticated).then ( ( answer ) => {
         res.json( answer );
@@ -172,9 +172,9 @@ router.processSocketRoute = function (socket)
 
         var UserAuthenticated = AuthenticatedUser.loginUserFromSocket(socket);
 
-         console.log('');console.log('');console.log('');console.log('');console.log('');
-         console.log("socket.userAuthenticated", socket.userAuthenticated);
-         console.log("userAuthenticated", UserAuthenticated);
+         // console.log('');console.log('');console.log('');console.log('');console.log('');
+         // console.log("socket.userAuthenticated", socket.userAuthenticated);
+         // console.log("userAuthenticated", UserAuthenticated);
 
         ForumsCtrl.postAddForum(data, socket, UserAuthenticated).then ( (res ) => {
             socket.emit("api/forums/add-forum", res);
