@@ -22,22 +22,46 @@ var MaterializedParents = class{
 
      */
 
-    extractDataFromIds(sObjectId){
+    extractDataFromIds(objectId) {
 
-        if (typeof sObjectId !== "string") return null;
+        if (typeof objectId === "object") objectId = objectId.id;
+        if (typeof objectId !== "string") return null;
 
-        let iDelimitatorPosLeft = sObjectId.indexOf("_");
-        let iDelimitatorPosRight = sObjectId.indexOf("_",iDelimitatorPosLeft+1);
+        //console.log("extract data from Ids",objectId);
 
-        let iRedisDB = sObjectId.substring(0,iDelimitatorPosLeft);
-        let sObjectType = sObjectId.substring(iDelimitatorPosLeft+1,iDelimitatorPosRight);
+        var iDelimitatorPosLeft = objectId.indexOf("_");
+        var iDelimitatorPosRight = objectId.indexOf("_", iDelimitatorPosLeft + 1);
+
+        var iRedisDB = objectId.substring(0, iDelimitatorPosLeft);
+        var sObjectType = objectId.substring(iDelimitatorPosLeft + 1, iDelimitatorPosRight);
 
         //console.log("finding OBJECT ID: ", iRedisDB, " :::: ", sObjectType, " :::: ", sObjectId);
 
         if ((iRedisDB !== 0) && (sObjectType !== ''))
-            return {redisDB : iRedisDB, objectType : sObjectType};
+            return {redisDB: iRedisDB, objectType: sObjectType};
         else
             return null
+    }
+
+    extractObjectTypeFromId(object) {
+
+        let extractedIdData = this.extractDataFromIds(object);
+
+        if (extractedIdData === null) return 'none';
+
+        switch (extractedIdData.objectType || '') {
+            case 'frm':
+                return 'forum';
+
+            case 'us':
+                return 'user';
+
+            case 'top':
+                return 'topic';
+
+        }
+
+        return 'none'
     }
 
     async findIdFromURL(sObjectURL){
