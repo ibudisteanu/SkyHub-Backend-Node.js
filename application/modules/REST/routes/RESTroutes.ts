@@ -20,8 +20,8 @@ router.get('/auth/login', function(req, res, next) {
     });
 });
 
-router.get('/auth/login-token', function(req, res){
-    AuthenticateCtrl.postAuthenticateTokenAsync(req, res).then ((answer)=>{
+router.get('/auth/login-session', function(req, res){
+    AuthenticateCtrl.postAuthenticateSession(req, res).then ((answer)=>{
         res.json(answer);
     });
 });
@@ -105,10 +105,10 @@ router.processSocketRoute = function (socket)
         });
     });
 
-    socket.on("api/auth/login-token", function (data){
+    socket.on("api/auth/login-session", function (data){
         data.body = data;
 
-        AuthenticateCtrl.postAuthenticateTokenAsync(data, socket).then ((answer)=>{
+        AuthenticateCtrl.postAuthenticateSession(data, socket).then ((answer)=>{
 
             socket.bAuthenticated = false; socket.userAuthenticated = null;
             if (answer.result == "true"){
@@ -151,7 +151,7 @@ router.processSocketRoute = function (socket)
                 socket.bAuthenticated = true;
                 socket.userAuthenticated = answer.user;
 
-                console.log('====================AUTHENTICATING TOKEN OAUTH2!!!!!');
+                console.log('====================AUTHENTICATING TOKEN OAUTH2!!!!!', answer);
             }
 
             socket.emit("api/auth/register-oauth", answer);

@@ -13,7 +13,7 @@ module.exports = {
         REST API
      */
 
-    postAuthenticateLogin (req, res){
+    async postAuthenticateLogin (req, res){
 
         var sEmailUsername = '', sUserPassword = '';
 
@@ -26,93 +26,87 @@ module.exports = {
         console.log(sEmailUsername);
         console.log(sUserPassword);
 
-        return new Promise ( (resolve) => {
 
-            UsersHelper.findUserFromEmailUsernamePassword(sEmailUsername, sUserPassword).then ( (answer)=>{
+        let answer = await UsersHelper.findUserFromEmailUsernamePassword(sEmailUsername, sUserPassword);
 
-                // passport.authenticate('local','','', function (req, res){
-                //
-                // });
+        // passport.authenticate('local','','', function (req, res){
+        //
+        // });
 
-                console.log('User answer',answer);
+        console.log('User answer',answer);
 
-                if (answer.result === "true")
-                {
-                    //console.log(loggedInUser.getFullName());
-                    //console.log(loggedInUser.getPublicInformation());
+        if (answer.result === "true")
+        {
+            //console.log(loggedInUser.getFullName());
+            //console.log(loggedInUser.getPublicInformation());
 
-                    UsersHelper.updateLastActivity(answer.user);
+            UsersHelper.updateLastActivity(answer.user);
 
-                    resolve( {
-                        result: 'true',
-                        message: 'Welcome back, '+answer.user.getFullName(),
-                        user :  answer.user.getPublicInformation(),
-                        token: UserHelper.getUserToken(answer.user),
-                        auth_key: UserHelper.generateAuthTokenId(),
-                    });
-
-                } else
-                    resolve({
-                        result: 'false',
-                        message: answer.message,
-                    });
-
+            return ( {
+                result: 'true',
+                message: 'Welcome back, '+answer.user.getFullName(),
+                user :  answer.user.getPublicInformation(),
+                sessionId: await UserHelper.createAuthSession(answer.user),
             });
 
-        });
+        } else
+            return ({
+                result: 'false',
+                message: answer.message,
+            });
+
 
     },
 
 
-    postAuthenticateTokenAsync(req, res){
+    async postAuthenticateSession(req, res){
 
-        var sToken = '';
-        if (req.hasOwnProperty('body')) {
-            sToken = req.body.token || '';
-        }
+        var sSessionId = req.sessionId||'';
+        if (req.hasOwnProperty('body'))
+            sSessionId = req.body.sessionId || '';
 
-        console.log("Token", sToken);
+        if (sSessionId === "")
+            return {
+                result: "false",
+                message: "Error. Invalid Session - session is empty",
+            };
 
-        return new Promise ( (resolve) => {
+        console.log("@@@@@@@@@@@@ SESSION ID", sSessionId);
 
-            try{
-                var userAuthenticatedData = jwt.verify(sToken, constants.SESSION_Secret_key);
 
-                UsersHelper.findUserById(userAuthenticatedData.id).then ((userAuthenticated)=>{
+        //var userAuthenticatedData = jwt.verify(sToken, constants.SESSION_Secret_key);
+        //userId = userAuthenticatedData.id
 
-                    if (userAuthenticated !== null){
-                        UsersHelper.updateLastActivity(userAuthenticated);
+        let HashListHelper = require('./sessions/helpers/SessionHash.helper.ts');
+        let userAuthenticatedId = await HashListHelper.checkSession(sSessionId);
 
-                        // console.log('updating last activity');
-                        // console.log('');console.log('');console.log('');console.log('');console.log('');console.log('');
-                        // console.log(userAuthenticated);
-                        // console.log(userAuthenticated.getPublicInformation());
-                        // console.log('finished updating last activity');
+        if ((userAuthenticatedId === null)||(userAuthenticatedId===''))
+            return {
+                result: "false",
+                message: "Error. Invalid Session Id",
+            };
 
-                        resolve({
-                            result: "true",
-                            user: userAuthenticated.getPublicInformation(),
-                        });
-                    } else
-                    {
-                        resolve({
-                            result: "false",
-                            message: "Error. Invalid User",
-                        });
-                    }
+        let userAuthenticated = await UsersHelper.findUserById(userAuthenticatedId);
 
-                });
+        if (userAuthenticated !== null) {
+            UsersHelper.updateLastActivity(userAuthenticated);
 
-            } catch (err){
+            // console.log('updating last activity');
+            // console.log('');console.log('');console.log('');console.log('');console.log('');console.log('');
+            // console.log(userAuthenticated);
+            // console.log(userAuthenticated.getPublicInformation());
+            // console.log('finished updating last activity');
 
-                resolve({
-                    result: "false",
-                    message: "Error. Invalid token",
-                });
-
+            return {
+                result: "true",
+                user: userAuthenticated.getPublicInformation(),
+            };
+        } else {
+            return {
+                result: "false",
+                message: "Error. Invalid User",
             }
-
-        });
+        }
     },
 
 
@@ -170,7 +164,7 @@ module.exports = {
     },
 
 
-    postAuthenticateRegisterOAuth(req, res){
+    async postAuthenticateRegisterOAuth(req, res){
 
         var sSocialNetwork='', sOAuth2Token = '', sSocialNetworkUserId = '';
 

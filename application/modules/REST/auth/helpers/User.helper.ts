@@ -64,10 +64,10 @@ module.exports = {
         });
     },
 
-    generateAuthTokenId ()
+    async createAuthSession (user)
     {
-        var hat = require('hat');
-        return hat();
+        var SessionHashHelper = require('./../sessions/helpers/SessionHash.helper.ts');
+        return await SessionHashHelper.createSession(user);
     },
 
 

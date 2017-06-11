@@ -16,7 +16,14 @@ class SessionHash {
     }
 
     async checkSession(sessionId){
-        return this.hashList.getHash('',sessionId);
+        let userId = await this.hashList.getHash('',sessionId);
+
+        if (userId === null)
+            return null;
+
+        let realUserSession = userId.substring(0,userId.indexOf("__"));
+
+        return realUserSession;
     }
 
     async createSession(UserAuthenticated){
@@ -39,8 +46,7 @@ class SessionHash {
 
         if (userId === '') return false;
 
-        let realUserSession = await this.hashList.getHash('', sessionId);
-        realUserSession = realUserSession.substring(0,realUserSession.indexOf("__"));
+        let realUserSession = await this.hashList.checkSession('', sessionId);
 
         if (realUserSession !== userId){
 
