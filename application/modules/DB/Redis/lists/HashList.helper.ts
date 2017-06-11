@@ -45,7 +45,7 @@ var HashList = class{
         return new Promise( (resolve)=> {
             redis.redisClient.hdel(this.tablePrefix + ":" + tableName, key, function (err, answer){
 
-                console.log("deleteHash ",err,answer);
+                console.log("deleteHash ",err, answer);
                 resolve (err === null ? answer : null);
             });
         });

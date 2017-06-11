@@ -58,18 +58,23 @@ router.get('/profile', function (req, res, next){
 });
 
 router.get('/test/TopContent', function (req, res, next){
-    var TopContentCtrl = require ('../common/content/helpers/TopContent.helper.ts');
-    res.json( {message: TopContentCtrl.test() });
+    var TopContentHelper = require ('../common/content/helpers/TopContent.helper.ts');
+    res.json( {message: TopContentHelper.test() });
 });
 
 router.get('/test/MaterializedParents', function (req, res, next){
-    var MaterializedParentsCtrl = require ('../../DB/common/materialized-parents/MaterializedParents.helper.ts');
-    res.json( {message: MaterializedParentsCtrl.test() });
+    var MaterializedParentsHelper = require ('../../DB/common/materialized-parents/MaterializedParents.helper.ts');
+    res.json( {message: MaterializedParentsHelper.test() });
 });
 
 router.get('/test/URLHash', function (req, res, next){
-    var URLHashCtrl = require ('../common/URLs/helpers/URLHash.helper.ts');
-    res.json( {message: URLHashCtrl.test() });
+    var URLHashHelper = require ('../common/URLs/helpers/URLHash.helper.ts');
+    res.json( {message: URLHashHelper.test() });
+});
+
+router.get('/test/Session', function (req, res, next){
+    var SessionHash = require ('../../REST/auth/sessions/helpers/SessionHash.helper.ts');
+    res.json( {message: SessionHash.test() });
 });
 
 

@@ -3,16 +3,12 @@
  * (C) BIT TECHNOLOGIES
  */
 
-/**
- * Created by BIT TECHNOLOGIES on 6/1/2017.
- */
-
 var HashList = require ('../../../../DB/Redis/lists/HashList.helper.ts');
 var SessionsHashList = require ('./SessionsHashList.helper.ts');
 
 var hat = require('hat');
 
-class SessionsHash {
+class SessionHash {
 
     //sortedList
     constructor(){
@@ -29,8 +25,13 @@ class SessionsHash {
 
         if (userId === '') return false;
 
-        let sessionId = hat();
-        return this.hashList.setHash('',sessionId,userId);
+        let sessionId = hat()+hat()+hat();
+
+        await this.hashList.setHash('',sessionId,userId+'__'+new Date().toISOString());
+
+        await SessionsHashList.addSession(UserAuthenticated, sessionId);
+
+        return sessionId;
     }
 
     async deleteSession(sessionId, UserAuthenticated){
@@ -38,16 +39,23 @@ class SessionsHash {
 
         if (userId === '') return false;
 
-        return this.hashList.deleteHash('',sessionId);
+        let realUserSession = await this.hashList.getHash('', sessionId);
+        realUserSession = realUserSession.substring(0,realUserSession.indexOf("__"));
+
+        if (realUserSession !== userId){
+
+            return false;
+
+        }
+
+        await this.hashList.deleteHash('',sessionId);
+
+        return SessionsHashList.deleteSession(sessionId, UserAuthenticated);
     }
 
     async clearAllSessions(UserAuthenticated){
 
-        let userId = this.getUserId(UserAuthenticated);
-
-        if (userId === '') return false;
-
-        return this.hashList
+        return SessionsHashList.clearAllSessions(UserAuthenticated);;
     }
 
     getUserId(UserAuthenticated){
@@ -62,39 +70,34 @@ class SessionsHash {
             if ((UserAuthenticated.hasOwnProperty('user'))&&(UserAuthenticated.user.hasOwnProperty('id')))
                 userId = UserAuthenticated.user.id;
         }
+
+        return userId;
     }
 
     async test(){
 
-        this.sortedList.addElement("",33,"Salut1");
-        this.sortedList.addElement("",55,"Salut2");
-        this.sortedList.addElement("",66,"Salut3");
-        this.sortedList.addElement("",626,"Salut4");
-        this.sortedList.addElement("",26,"Salut5");
-        this.sortedList.addElement("",15,"Salut6");
-        this.sortedList.addElement("",6,"Salut7");
+        let user1 = await this.createSession("user1");
+        await this.createSession("user2");
+        let user3 = await this.createSession("user3");
+        await this.createSession("user1");
+        await this.createSession("user2");
+        await this.createSession("user2");
 
-        console.log("DELETE Salut4 ",await this.sortedList.deleteElement("","Salut4"));
+        await this.createSession("user5");
+        let user4 = await this.createSession("user4");
 
-        console.log("UPDATE SALUT3", await this.sortedList.updateElement("",2666,"Salut3"));
+        console.log(await this.deleteSession(user1,"user1"));
+        console.log(await this.deleteSession(user3,"user3"));
+        console.log(await this.deleteSession(user4,"user444"));
 
+        await this.clearAllSessions("user2");
+        await this.clearAllSessions("user4444");
+        await this.clearAllSessions("user5");
 
-        console.log("rank1", await this.sortedList.getRankItem("","Salut5"));
-        console.log("rank1", await this.sortedList.getRankItem("","Salut3"));
-        console.log("COUNT LIST: ",await this.sortedList.countList(""));
-
-        console.log("COUNT LIST BETWEEN ", await this.sortedList.countListBetweenMinMax("",50,400));
-
-
-        console.log("GET ITEMS   ", await this.sortedList.getItemsMatching(""));
-
-
-        console.log("GET LIST RANGE BY SORTED INDEX ", await this.sortedList.getListRangeBySortedIndex("",1,5));
-
-        console.log("GET LIST RANGE BY SCORE ", await this.sortedList.getListRangeByScore("",30,600));
+        await this.clearAllSessions("user1");
 
     }
 
 };
 
-module.exports = new TopContent();
+module.exports = new SessionHash();
