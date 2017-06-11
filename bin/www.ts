@@ -25,7 +25,8 @@ server = http.createServer(app);
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+//var port = normalizePort(process.env.PORT || '4000');
+var port = normalizePort('4000');
 app.set('port', port);
 
 /**
@@ -36,7 +37,7 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-//server.listen(normalizePort(process.env.PORT || '3000'), "127.0.0.1");
+//server.listen(normalizePort(process.env.PORT || '4000'), "127.0.0.1");
 
 /**
  * Normalize a port into a number, string, or false.

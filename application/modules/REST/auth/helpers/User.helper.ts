@@ -76,7 +76,8 @@ module.exports = {
         console.log('calculating token');
         console.log("SECRET key: "+constants.SESSION_Secret_key);
 
-        var token = jwt.sign({ "id" : user.id}, constants.SESSION_Secret_key, {expiresInMinutes: 60 * 24 * 30* 12 * 5});
+        //var token = jwt.sign({ "id" : user.id}, constants.SESSION_Secret_key, {expiresInMinutes: 60 * 24 * 30* 12 * 5});
+        var token = jwt.sign({ "id" : user.id}, constants.SESSION_Secret_key, {expiresIn: 60 * 24 * 30* 12 * 5});
         console.log('token = '+token);
 
         return token;

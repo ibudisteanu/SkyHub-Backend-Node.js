@@ -12,6 +12,15 @@ console.log('===> Creating SOCKET SERVER');
 var socketIo = require('socket.io');
 var serverSocket = socketIo.listen(server);
 
+serverSocket.set('transports',[
+    'websocket',
+    'flashsocket',
+    'htmlfile',
+    'xhr-polling',
+    'jsonp-polling',
+    'polling'
+]);
+
 
 // serverSocket.use(passportSocketIoRedis.authorize({
 //     //cookieParser: cookieParser,   // the name of the cookie where express/connect stores its session_id
@@ -121,7 +130,7 @@ serverSocket.on("connection", function (socket) {
             //     console.log(response);
             // });
 
-            app.runMiddleware('http://127.0.0.1:3000/zzz', {method: 'post', body: data}, function (responseCode, body, headers){
+            app.runMiddleware('http://127.0.0.1:4000/zzz', {method: 'post', body: data}, function (responseCode, body, headers){
                 console.log('Answer from SERVER:::::');
                 console.log(responseCode);
                 console.log(body);

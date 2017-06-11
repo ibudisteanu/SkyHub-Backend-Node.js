@@ -20,6 +20,12 @@ router.get('/auth/login', function(req, res, next) {
     });
 });
 
+router.get('/auth/login-token', function(req, res){
+    AuthenticateCtrl.postAuthenticateTokenAsync(req, res).then ((answer)=>{
+        res.json(answer);
+    });
+});
+
 router.get('/auth/register', function(req, res, next) {
     AuthenticateCtrl.postAuthenticateRegister(req, '').then ( (answer ) => {
         res.json(answer);
