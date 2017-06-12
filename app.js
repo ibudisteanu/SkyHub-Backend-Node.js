@@ -9,9 +9,7 @@ constants = require ('./bin/constants.js');
 
 redis = require ('./application/modules/DB/redis_nohm');    //REDIS NOHM
 
-RESTRouter = require('./application/modules/REST/routes/RESTroutes.ts');
-indexRouter = require('./routes/index.ts');
-usersRouter = require('./routes/users.ts');
+
 
 var app = express();
 
@@ -33,6 +31,12 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+
+
+/* ROUTING */
+var RESTRouter = require('./application/modules/REST/routes/RESTroutes.ts');
+var indexRouter = require('./routes/index.ts');
+var usersRouter = require('./routes/users.ts');
 
 app.use('/', indexRouter);
 app.use('/api', RESTRouter);

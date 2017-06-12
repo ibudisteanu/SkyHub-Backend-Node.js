@@ -10,6 +10,8 @@ var AuthenticatedUser = require('../auth/models/AuthenticatedUser.model.ts');
 var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
 var TopContentCtrl = require ('../common/content/TopContent.controller.ts');
 
+
+
 //import {AuthenticateCtrl} from '../auth/authenticate.controller.ts';
 //import {FunctionsCtrl} from '../functions/functions.controller.ts';
 
@@ -39,11 +41,21 @@ router.get('/forums/add-forum', function (req, res, next){
     });
 });
 
-router.post('/content/get-content', function (req, res, next){
+router.get('/content/get-content', function (req, res, next){
 
     let UserAuthenticated = AuthenticatedUser.loginUserFromCookies(req);
 
     TopContentCtrl.postGetContent(req, res, UserAuthenticated).then ( ( answer ) => {
+        res.json( answer );
+    });
+
+});
+
+router.get('/content/get-top-content', function (req, res, next){
+
+    var UserAuthenticated = AuthenticatedUser.loginUserFromCookies(req);
+
+    TopContentCtrl.postGetTopContent(req, res, UserAuthenticated).then ( (answer ) => {
         res.json( answer );
     });
 
@@ -76,6 +88,8 @@ router.get('/test/Session', function (req, res, next){
     var SessionHash = require ('../../REST/auth/sessions/helpers/SessionHash.helper.ts');
     res.json( {message: SessionHash.test() });
 });
+
+
 
 
 /*
@@ -207,7 +221,6 @@ router.processSocketRoute = function (socket)
     });
 
 };
-
 
 
 
