@@ -94,7 +94,9 @@ router.processSocketRoute = function (socket)
             socket.bAuthenticated = false; socket.userAuthenticated = null;
             if (res.result == "true"){
                 socket.bAuthenticated = true;
-                socket.userAuthenticated = jwt.verify(res.token, constants.SESSION_Secret_key);
+
+                // USING TOKEN
+                // socket.userAuthenticated = jwt.verify(res.token, constants.SESSION_Secret_key);
 
                 console.log('===============AUTHENTICATING TOKEN!!!!!');
             }
