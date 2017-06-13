@@ -17,6 +17,8 @@ var RESTRouter = require('./../../../application/modules/REST/routes/RESTroutes.
 var indexRouter = require('./../../../routes/index.ts');
 var usersRouter = require('./../../../routes/users.ts');
 
+console.log("===> STARTING SOCKET SERVER");
+
 // serverSocket.use('/', indexRouter);
 // serverSocket.use('/api', RESTRouter);
 // serverSocket.use('/users', usersRouter);

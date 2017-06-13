@@ -106,7 +106,7 @@ router.processSocketRoute = function (socket)
         AuthenticateCtrl.postAuthenticateLogin(data, socket).then ( (res ) => {
 
             socket.bAuthenticated = false; socket.userAuthenticated = null;
-            if (res.result == "true"){
+            if (res.result == true){
                 socket.bAuthenticated = true;
 
                 // USING TOKEN
@@ -127,7 +127,7 @@ router.processSocketRoute = function (socket)
         AuthenticateCtrl.postAuthenticateSession(data, socket).then ((answer)=>{
 
             socket.bAuthenticated = false; socket.userAuthenticated = null;
-            if (answer.result == "true"){
+            if (answer.result == true){
                 socket.bAuthenticated = true;
                 socket.userAuthenticated = answer.user;
 
@@ -145,7 +145,7 @@ router.processSocketRoute = function (socket)
         AuthenticateCtrl.postAuthenticateRegister(data, socket).then ( (answer ) => {
 
             socket.bAuthenticated = false; socket.userAuthenticated = null;
-            if (answer.result == "true"){
+            if (answer.result == true){
                 socket.bAuthenticated = true;
                 socket.userAuthenticated = answer.user;
 
@@ -163,7 +163,7 @@ router.processSocketRoute = function (socket)
         AuthenticateCtrl.postAuthenticateRegisterOAuth(data, socket).then ( ( answer ) => {
 
             socket.bAuthenticated = false; socket.userAuthenticated = null;
-            if (answer.result == "true"){
+            if (answer.result == true){
                 socket.bAuthenticated = true;
                 socket.userAuthenticated = answer.user;
 

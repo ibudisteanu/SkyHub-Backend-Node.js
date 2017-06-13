@@ -35,7 +35,7 @@ module.exports = {
 
         console.log('User answer',answer);
 
-        if (answer.result === "true")
+        if (answer.result === true)
         {
             //console.log(loggedInUser.getFullName());
             //console.log(loggedInUser.getPublicInformation());
@@ -43,7 +43,7 @@ module.exports = {
             UsersHelper.updateLastActivity(answer.user);
 
             return ( {
-                result: 'true',
+                result: true,
                 message: 'Welcome back, '+answer.user.getFullName(),
                 user :  answer.user.getPublicInformation(),
                 sessionId: await UserHelper.createAuthSession(answer.user),
@@ -51,7 +51,7 @@ module.exports = {
 
         } else
             return ({
-                result: 'false',
+                result: false,
                 message: answer.message,
             });
 
@@ -67,7 +67,7 @@ module.exports = {
 
         if (sSessionId === "")
             return {
-                result: "false",
+                result: false,
                 message: "Error. Invalid Session - session is empty",
             };
 
@@ -82,7 +82,7 @@ module.exports = {
 
         if ((userAuthenticatedId === null)||(userAuthenticatedId===''))
             return {
-                result: "false",
+                result: false,
                 message: "Error. Invalid Session Id",
             };
 
@@ -98,12 +98,12 @@ module.exports = {
             // console.log('finished updating last activity');
 
             return {
-                result: "true",
+                result: true,
                 user: userAuthenticated.getPublicInformation(),
             };
         } else {
             return {
-                result: "false",
+                result: false,
                 message: "Error. Invalid User",
             }
         }

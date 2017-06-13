@@ -31,7 +31,7 @@ module.exports = {
                 UsersHelper.updateLastActivity(user);
 
                 return ({
-                    result: "true",
+                    result: true,
                     type: "log in",
                     user: user.getPrivateInformation(),
                     sessionId: await UserHelper.createAuthSession(user),

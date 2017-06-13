@@ -48,7 +48,7 @@ class TopContent {
             }
 
             return({
-                result: "true",
+                result: true,
                 next: listTopContent.length !== pageCount,
                 newPageIndex: pageIndex+1,
                 content: listTopContentObjects,
@@ -57,7 +57,7 @@ class TopContent {
         }
 
         return({
-            result: "false",
+            result: false,
             content: [],
         });
 

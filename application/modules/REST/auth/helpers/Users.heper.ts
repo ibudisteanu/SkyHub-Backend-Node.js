@@ -125,7 +125,7 @@ module.exports = {
 
             if (Object.keys(errorValidation).length !== 0 ){
 
-                resolve({result: "false", errors: errorValidation});
+                resolve({result: false, errors: errorValidation});
 
                 return;
             }
@@ -135,12 +135,12 @@ module.exports = {
                     console.log("==> Error Saving User");
                     console.log(user.errors); // the errors in validation
 
-                    resolve({result:"false", errors: user.errors });
+                    resolve({result:false, errors: user.errors });
                 } else {
                     console.log("Saving User Successfully");
                     console.log(user.getPrivateInformation());
 
-                    resolve( {result:"true", user: user.getPrivateInformation() });
+                    resolve( {result:true, user: user.getPrivateInformation() });
                 }
             });
 
@@ -155,7 +155,7 @@ module.exports = {
         return new Promise ((resolve) => {
 
             //checking the stored Hash is the same with the input password
-            if (foundUser === null) resolve ({result:"false", message: "No User Found"});
+            if (foundUser === null) resolve ({result:false, message: "No User Found"});
             else {
 
                 /*
@@ -164,9 +164,9 @@ module.exports = {
                  */
 
                 if (this.passwordHashVerify(sPassword, foundUser.p('password')))
-                    resolve({result:"true", user: foundUser});
+                    resolve({result:true, user: foundUser});
                 else
-                    resolve({result:"false", message: "Password Incorrect"});
+                    resolve({result:false, message: "Password Incorrect"});
 
             }
 

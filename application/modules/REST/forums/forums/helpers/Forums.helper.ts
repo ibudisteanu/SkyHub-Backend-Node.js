@@ -132,7 +132,7 @@ module.exports = {
 
             if (Object.keys(errorValidation).length !== 0 ){
 
-                resolve({result: "false", errors: errorValidation});
+                resolve({result: false, errors: errorValidation});
                 return false;
             }
 
@@ -141,7 +141,7 @@ module.exports = {
                     console.log("==> Error Saving Forum");
                     console.log(forum.errors); // the errors in validation
 
-                    resolve({result:"false", errors: forum.errors });
+                    resolve({result:false, errors: forum.errors });
                 } else {
                     console.log("Saving Forum Successfully");
 
@@ -150,7 +150,7 @@ module.exports = {
 
                     console.log(forum.getPrivateInformation());
 
-                    resolve( {result:"true", forum: forum.getPrivateInformation() });
+                    resolve( {result:true, forum: forum.getPrivateInformation() });
                 }
             });
 
