@@ -39,12 +39,11 @@ module.exports = {
         if (req.hasOwnProperty('body')){
 
             sId = req.body.id ||'';
-
         }
 
         console.log(""); console.log(""); console.log(""); console.log("");
         //console.log(req);
-        console.log('Getting Content : ', sId);
+        console.log('Getting Forum Content : ', '"'+sId+'"');
 
         return TopContentHelper.getContent(userAuthenticated, sId);
 

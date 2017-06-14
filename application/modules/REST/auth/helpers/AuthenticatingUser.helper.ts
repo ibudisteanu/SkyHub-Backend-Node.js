@@ -13,15 +13,24 @@ class AuthenticatedUser {
     constructor(){
     }
 
-    async loginUser(req){
-
+    getSessionId(req){
         let sSessionId = '';
-        if (req.hasOwnProperty('sessionId')) sSessionId = req.sessionId;
-        if (req.hasOwnProperty('body'))
+        if ((typeof req !== "undefined")&&(req.hasOwnProperty('sessionId'))) sSessionId = req.sessionId;
+        if ((typeof req !== "undefined")&&(req.hasOwnProperty('body')))
             if (req.body.hasOwnProperty('sessionId'))
                 sSessionId = req.body.sessionId||'';
 
         if (sSessionId === "") {
+            console.log("Error. Invalid Session - session is empty");
+            return null;
+        }
+    }
+
+    async loginUser(req){
+
+        let sSessionId = this.getSessionId(req);
+
+        if ((sSessionId === "")||(sSessionId === null)) {
             console.log("Error. Invalid Session - session is empty");
             return null;
         }

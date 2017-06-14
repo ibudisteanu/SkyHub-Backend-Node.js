@@ -19,7 +19,7 @@ class TopContent {
     }
 
     async getContent(userAuthenticated, id){
-        return this.topObjectsList.getContent(userAuthenticated, id);
+        return this.topObjectsList.getObject(userAuthenticated, id);
     }
 
     keepSortedObject( key, score, parents, bDelete ){
