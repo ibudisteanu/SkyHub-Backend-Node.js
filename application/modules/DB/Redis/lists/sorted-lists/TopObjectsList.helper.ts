@@ -2,24 +2,25 @@
  * Created by BIT TECHNOLOGIES on 6/1/2017.
  */
 
-var SortedList = require ('../../../../DB/Redis/lists/SortedList.helper.ts');
-var MaterializedParents = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
+var SortedList = require ('./SortedList.helper.ts');
+var MaterializedParents = require ('../../../common/materialized-parents/MaterializedParents.helper.ts');
 
-class TopContent {
+class TopObjectsList {
 
     //sortedList
-    constructor(){
-        this.sortedList = new SortedList("TopContent");
+    constructor(sPrefix){
+        this.sortedList = new SortedList("TopObjectsList:"+sPrefix);
     }
 
-    async getTopContent(UserAuthenticated, parent, pageIndex, pageCount){
+    async getTopObjects(userAuthenticated, parent, pageIndex, pageCount){
 
         var sParentId = MaterializedParents.getObjectId(parent);
 
-        pageCount = Math.min(pageCount|| 8,10);
+        pageCount = Math.min(pageCount|| 8, 20);
 
         let listTopContent = await this.sortedList.getFastItems(sParentId, pageIndex||1, pageCount );
 
+        console.log("LIST TOP CONTENT :::: ");
         if (listTopContent !== []){
 
             let listTopContentObjects = [];
@@ -35,8 +36,7 @@ class TopContent {
 
                 let object = await MaterializedParents.findObject(id);
 
-                //console.log("LIST TOP CONTENT :::: ",id, score);
-                //console.log("TOP CONTENT OBJECT FOUND: ", object);
+                console.log("TOP CONTENT OBJECT FOUND: ", object.p('title'));
 
                 if (object !== null){
                     listTopContentObjects.push({
@@ -63,7 +63,7 @@ class TopContent {
 
     }
 
-    async getContent(UserAuthenticated, id){
+    async getObject(userAuthenticated, id){
 
         let object = await MaterializedParents.findObject(id);
 
@@ -79,6 +79,10 @@ class TopContent {
             content: [],
         })
 
+    }
+
+    keepSortedObject( key, score, parents, bDelete ){
+        return this.sortedList.keepSortedObject(key, score, parents, bDelete);
     }
 
     async test(){
@@ -114,4 +118,4 @@ class TopContent {
     
 };
 
-module.exports = new TopContent();
+module.exports = TopObjectsList;

@@ -16,7 +16,6 @@ var ForumModel = redis.nohm.model('ForumModel', {
     properties: {
         title: {
             type: 'string',
-            unique: true,
             validations: [
                 ['notEmpty'],
                 ['length', {
@@ -55,7 +54,7 @@ var ForumModel = redis.nohm.model('ForumModel', {
             defaultValue: '',
             type: 'string',
             validations: [
-                ['notEmpty'],
+                'validateExistingAuthorId'
             ]
         },
         parentId: {
@@ -159,9 +158,9 @@ var ForumModel = redis.nohm.model('ForumModel', {
 
         keepSortedList : function (bDelete){
 
-            var TopContentHelper = require ('../../../common/content/helpers/TopContent.helper.ts');
+            var TopForumsHelper = require ('./../../content/helpers/TopForums.helper.ts');
 
-            return TopContentHelper.sortedList.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parents'), bDelete);
+            return TopForumsHelper.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parents'), bDelete);
 
         },
 

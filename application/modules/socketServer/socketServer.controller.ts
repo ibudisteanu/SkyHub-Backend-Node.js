@@ -68,6 +68,9 @@ serverSocket.set('transports',[
 // }));
 
 serverSocket.use( function(socket, next){
+
+    /*
+    USING TOKEN authentication
     console.log("Query: ", socket.handshake.query.token);
 
     var token = socket.handshake.query.token;
@@ -85,6 +88,7 @@ serverSocket.use( function(socket, next){
         socket.userAuthenticated = userAuthenticated;
     } catch (err){
     }
+    */
 
     next();
 });

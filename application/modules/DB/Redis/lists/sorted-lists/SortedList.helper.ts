@@ -6,7 +6,7 @@
  */
 
 
-var redis = require ('../../redis_nohm.js');
+var redis = require ('../../../redis_nohm.js');
 
 var SortedList = class{
 

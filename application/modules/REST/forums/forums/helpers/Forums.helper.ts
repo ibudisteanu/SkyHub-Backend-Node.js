@@ -88,7 +88,7 @@ module.exports = {
     /*
      CREATING A NEW FORUM
      */
-    async addForum (UserAuthenticated, parent, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone){
+    async addForum (userAuthenticated, parent, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone){
 
         sCountry = sCountry || ''; sCity = sCity || ''; sIconPic = sIconPic || ''; sCoverPic = sCoverPic || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iTimeZone = iTimeZone || 0;
@@ -102,14 +102,14 @@ module.exports = {
 
 
         //get object from parent
-
+        console.log("addForum ===============", userAuthenticated);
 
         forum.p(
             {
                 title: sTitle,
                 URL: await(URLHashHelper.getFinalNewURL(sTitle,null)), //Getting a NEW URL
                 description: sDescription,
-                authorId: UserAuthenticated.getUserId(),
+                authorId: (userAuthenticated !== null ? userAuthenticated.id : ''),
                 keywords: commonFunctions.convertKeywordsArrayToString(arrKeywords),
                 iconPic: sIconPic,
                 coverPic: sCoverPic,

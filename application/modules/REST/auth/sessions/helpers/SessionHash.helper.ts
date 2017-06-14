@@ -26,9 +26,9 @@ class SessionHash {
         return realUserSession;
     }
 
-    async createSession(UserAuthenticated){
+    async createSession(userAuthenticated){
 
-        let userId = this.getUserId(UserAuthenticated);
+        let userId = this.getUserId(userAuthenticated);
 
         if (userId === '') return false;
 
@@ -36,13 +36,13 @@ class SessionHash {
 
         await this.hashList.setHash('',sessionId,userId+'__'+new Date().toISOString());
 
-        await SessionsHashList.addSession(UserAuthenticated, sessionId);
+        await SessionsHashList.addSession(userAuthenticated, sessionId);
 
         return sessionId;
     }
 
-    async deleteSession(sessionId, UserAuthenticated){
-        let userId = this.getUserId(UserAuthenticated);
+    async deleteSession(sessionId, userAuthenticated){
+        let userId = this.getUserId(userAuthenticated);
 
         if (userId === '') return false;
 
@@ -56,25 +56,25 @@ class SessionHash {
 
         await this.hashList.deleteHash('',sessionId);
 
-        return SessionsHashList.deleteSession(sessionId, UserAuthenticated);
+        return SessionsHashList.deleteSession(sessionId, userAuthenticated);
     }
 
-    async clearAllSessions(UserAuthenticated){
+    async clearAllSessions(userAuthenticated){
 
-        return SessionsHashList.clearAllSessions(UserAuthenticated);;
+        return SessionsHashList.clearAllSessions(userAuthenticated);;
     }
 
-    getUserId(UserAuthenticated){
+    getUserId(userAuthenticated){
         let userId = '';
-        if (typeof UserAuthenticated === "string") userId = UserAuthenticated;
+        if (typeof userAuthenticated === "string") userId = userAuthenticated;
         else
-        if (typeof UserAuthenticated === "object"){
+        if (typeof userAuthenticated === "object"){
 
-            if (UserAuthenticated.hasOwnProperty('id'))
-                userId = UserAuthenticated.id;
+            if (userAuthenticated.hasOwnProperty('id'))
+                userId = userAuthenticated.id;
             else
-            if ((UserAuthenticated.hasOwnProperty('user'))&&(UserAuthenticated.user.hasOwnProperty('id')))
-                userId = UserAuthenticated.user.id;
+            if ((userAuthenticated.hasOwnProperty('user'))&&(userAuthenticated.user.hasOwnProperty('id')))
+                userId = userAuthenticated.user.id;
         }
 
         return userId;

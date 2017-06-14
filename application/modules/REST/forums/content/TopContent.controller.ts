@@ -3,6 +3,7 @@
  */
 
 var TopContentHelper = require('./helpers/TopContent.helper.ts');
+var AuthenticatingUser = require('../../auth/helpers/AuthenticatingUser.helper.ts');
 
 module.exports = {
 
@@ -10,7 +11,9 @@ module.exports = {
      REST API
      */
 
-    async postGetTopContent (req, res, UserAuthenticated){
+    async postGetTopContent (req, res){
+
+        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let sParent = ''; let iPageIndex=1; let iPageCount = 8;
 
@@ -22,11 +25,13 @@ module.exports = {
 
         console.log('Getting Top Content : ', sParent);
 
-        return TopContentHelper.getTopContent(UserAuthenticated, sParent, iPageIndex, iPageCount);
+        return TopContentHelper.getTopContent(userAuthenticated, sParent, iPageIndex, iPageCount);
 
     },
 
-    async postGetContent (req, res, UserAuthenticated){
+    async postGetContent (req, res){
+
+        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let sId = '';
 
@@ -40,7 +45,7 @@ module.exports = {
         //console.log(req);
         console.log('Getting Content : ', sId);
 
-        return TopContentHelper.getContent(UserAuthenticated, sId);
+        return TopContentHelper.getContent(userAuthenticated, sId);
 
     }
 

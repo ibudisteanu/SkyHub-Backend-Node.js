@@ -4,18 +4,24 @@
 
 var ForumsHelper = require('./helpers/Forums.helper.ts');
 
+var AuthenticatingUser = require('../../auth/helpers/AuthenticatingUser.helper.ts');
+
 module.exports = {
 
     /*
      REST API
      */
 
-    postAddForum (req, res, UserAuthenticated){
+    async postAddForum (req, res){
+
+        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let sTitle = '', sDescription = '', arrKeywords = [], sCountry='', sCity='',sLanguage='', sIconPic='', sCoverPic='', sCoverColor = '';
         let dbLatitude = 0, dbLongitude = 0, iTimeZone = 0;
 
         let parent = '';
+
+        console.log("@@@@@@@@@@@@@@ psotAddForm request",req.body);
 
         if (req.hasOwnProperty('body')){
             sTitle = req.body.title || '';
@@ -39,10 +45,12 @@ module.exports = {
 
         console.log('Creating a Forum : ', sTitle);
 
-        return ForumsHelper.addForum(UserAuthenticated, parent, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone);
+        return await ForumsHelper.addForum(userAuthenticated, parent, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone);
     },
 
-    getForum (req, res, UserAuthenticated){
+    async getForum (req, res){
+
+        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         var sId = '';
 
@@ -52,7 +60,7 @@ module.exports = {
 
         console.log('Creating a Forum : ', sId);
 
-        return ForumsHelper.getForum(UserAuthenticated, sId);
+        return await ForumsHelper.getForum(userAuthenticated, sId);
 
     },
 

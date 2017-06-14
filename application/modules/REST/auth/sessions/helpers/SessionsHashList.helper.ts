@@ -13,8 +13,8 @@ class SessionsHashList {
         this.hashList = new HashList("SessionsLists");
     }
 
-    async getSessions(UserAuthenticated){
-        let userId = this.getUserId(UserAuthenticated);
+    async getSessions(userAuthenticated){
+        let userId = this.getUserId(userAuthenticated);
 
         if (userId === '') return [];
 
@@ -26,14 +26,14 @@ class SessionsHashList {
         return SessionsList;
     }
 
-    async addSession(UserAuthenticated, sessionId) {
+    async addSession(userAuthenticated, sessionId) {
 
-        let userId = this.getUserId(UserAuthenticated);
+        let userId = this.getUserId(userAuthenticated);
 
         if (userId === '') return [];
 
 
-        let CurrentSessionsList = await this.getSessions(UserAuthenticated);
+        let CurrentSessionsList = await this.getSessions(userAuthenticated);
 
 
         let index = CurrentSessionsList.indexOf(sessionId);
@@ -46,8 +46,8 @@ class SessionsHashList {
     }
 
 
-    async deleteSession(sessionId, UserAuthenticated){
-        let userId = this.getUserId(UserAuthenticated);
+    async deleteSession(sessionId, userAuthenticated){
+        let userId = this.getUserId(userAuthenticated);
 
         if (userId === '') return false;
 
@@ -63,8 +63,8 @@ class SessionsHashList {
     }
 
 
-    async clearAllSessions(UserAuthenticated){
-        let userId = this.getUserId(UserAuthenticated);
+    async clearAllSessions(userAuthenticated){
+        let userId = this.getUserId(userAuthenticated);
 
         if (userId === '') return false;
 
@@ -74,24 +74,24 @@ class SessionsHashList {
 
         for (let i=CurrentSessionsList.length-1; i>=0; i--)
         {
-            SessionHash.deleteSession(CurrentSessionsList[i], UserAuthenticated);
+            SessionHash.deleteSession(CurrentSessionsList[i], userAuthenticated);
         }
 
         return this.hashList.deleteHash('',userId);
     }
 
 
-    getUserId(UserAuthenticated){
+    getUserId(userAuthenticated){
         let userId = '';
-        if (typeof UserAuthenticated === "string") userId = UserAuthenticated;
+        if (typeof userAuthenticated === "string") userId = userAuthenticated;
         else
-        if (typeof UserAuthenticated === "object"){
+        if (typeof userAuthenticated === "object"){
 
-            if (UserAuthenticated.hasOwnProperty('id'))
-                userId = UserAuthenticated.id;
+            if (userAuthenticated.hasOwnProperty('id'))
+                userId = userAuthenticated.id;
             else
-            if ((UserAuthenticated.hasOwnProperty('user'))&&(UserAuthenticated.user.hasOwnProperty('id')))
-                userId = UserAuthenticated.user.id;
+            if ((userAuthenticated.hasOwnProperty('user'))&&(userAuthenticated.user.hasOwnProperty('id')))
+                userId = userAuthenticated.user.id;
         }
         return userId;
     }

@@ -47,3 +47,29 @@ exports.validateUniqueURL = function (value, options, callback){
     });
 
 };
+
+/*
+        VALIDATE THE EXISTANCE OF THE AUTHOR ID
+ */
+exports.validateExistingAuthorId = function (value, options, callback){
+
+    var UsersHelper = require ('../../../REST/auth/helpers/Users.heper.ts');
+
+    console.log("VALIDATE Existing AuthorId", value);
+
+    if (value.length < 5) {
+        callback(false);
+        return;
+    }
+
+    UsersHelper.findUserById(value).then( (answer)=>{
+
+        if (answer !== null)
+            callback(true);
+        else
+            callback(false);
+
+    });
+
+};
+

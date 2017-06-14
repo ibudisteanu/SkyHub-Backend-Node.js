@@ -1,6 +1,8 @@
 var UserHelper = require('./helpers/User.helper.ts');
 var UsersHelper = require('./helpers/Users.heper.ts');
 
+var AuthenticatingUser = require('./helpers/AuthenticatingUser.helper.ts');
+
 var OAuth2 = require('./OAuth2.controller.ts');
 
 //import {UserHelper} from './helpers/user.helper.ts'
@@ -61,52 +63,19 @@ module.exports = {
 
     async postAuthenticateSession(req, res){
 
-        var sSessionId = req.sessionId||'';
-        if (req.hasOwnProperty('body'))
-            sSessionId = req.body.sessionId || '';
+        let authenticatedUser = await AuthenticatingUser.loginUser(req);
 
-        if (sSessionId === "")
+        if (authenticatedUser === null){
             return {
                 result: false,
-                message: "Error. Invalid Session - session is empty",
-            };
-
-        console.log("@@@@@@@@@@@@ SESSION ID", sSessionId);
-
-
-        //var userAuthenticatedData = jwt.verify(sToken, constants.SESSION_Secret_key);
-        //userId = userAuthenticatedData.id
-
-        let HashListHelper = require('./sessions/helpers/SessionHash.helper.ts');
-        let userAuthenticatedId = await HashListHelper.checkSession(sSessionId);
-
-        if ((userAuthenticatedId === null)||(userAuthenticatedId===''))
-            return {
-                result: false,
-                message: "Error. Invalid Session Id",
-            };
-
-        let userAuthenticated = await UsersHelper.findUserById(userAuthenticatedId);
-
-        if (userAuthenticated !== null) {
-            UsersHelper.updateLastActivity(userAuthenticated);
-
-            // console.log('updating last activity');
-            // console.log('');console.log('');console.log('');console.log('');console.log('');console.log('');
-            // console.log(userAuthenticated);
-            // console.log(userAuthenticated.getPublicInformation());
-            // console.log('finished updating last activity');
-
+                message: "Error. Invalid Session",
+            }
+        } else
             return {
                 result: true,
-                user: userAuthenticated.getPublicInformation(),
+                user: authenticatedUser.getPublicInformation(),
             };
-        } else {
-            return {
-                result: false,
-                message: "Error. Invalid User",
-            }
-        }
+
     },
 
 
@@ -178,6 +147,11 @@ module.exports = {
 
         return OAuth2.registerOAuth2(req, sSocialNetwork, sOAuth2Token, sSocialNetworkUserId);
     },
+
+
+    async logout(){
+
+    }
 
 }
 
