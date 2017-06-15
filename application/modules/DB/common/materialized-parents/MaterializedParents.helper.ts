@@ -69,6 +69,8 @@ var MaterializedParents = class{
         if ( sObjectURL === null) return null;
         if ( sObjectURL.constructor === "Object") return sObjectURL;
 
+        sObjectURL = sObjectURL.toLowerCase();// I am storing low-case URLs
+
         return await URLHashHelper.getId(sObjectURL);
 
     }
@@ -107,16 +109,15 @@ var MaterializedParents = class{
         if ( sObjectURL === null) return null;
         if ( sObjectURL.constructor === "Object") return sObjectURL;
 
-        let sId = await this.findIdFromURL(sObjectURL);
+        let sIdExtracted = await this.findIdFromURL(sObjectURL);
 
-        if (sId !== null)
-            return await this.findObjectFromId(sId);
+        if (sIdExtracted !== null)
+            return await this.findObjectFromId(sIdExtracted);
 
         return null;
     }
 
     async findObject(objectToSearch){
-
 
         let idData = this.extractDataFromIds(objectToSearch);
 
@@ -149,7 +150,7 @@ var MaterializedParents = class{
         return arrParentsOutput;
     }
 
-    getObjectId(objectToSearch){
+    async getObjectId(objectToSearch){
 
         if (objectToSearch === null) return '';
         if (objectToSearch === '') return '';
@@ -159,7 +160,7 @@ var MaterializedParents = class{
         if (this.extractDataFromIds(objectToSearch) !== null)
             return objectToSearch; //  valid id... it means it is the ID
         else {
-            let object = this.findObjectFromURL(objectToSearch);
+            let object = await this.findObjectFromURL(objectToSearch);
 
             if (object !== null)
                 return object.id;
@@ -212,7 +213,7 @@ var MaterializedParents = class{
             if (objectParent !== null){
 
                 if ( iNestedLevel > 0)
-                    arrParentsOutput = this.findAllMaterializedParentsByMergingItsMaterializedGrandParents(objectParent.p('parentId')+','+objectParent.p('parents'), arrParentsOutput, iNestedLevel-1, arrCheckedAlready);
+                    arrParentsOutput = await this.findAllMaterializedParentsByMergingItsMaterializedGrandParents(objectParent.p('parentId')+','+objectParent.p('parents'), arrParentsOutput, iNestedLevel-1, arrCheckedAlready);
             }
 
         }
@@ -228,7 +229,7 @@ var MaterializedParents = class{
 
         console.log("parents",sParentId);
 
-        return this.findAllMaterializedParentsByMergingItsMaterializedGrandParents(sParentId);
+        return await this.findAllMaterializedParentsByMergingItsMaterializedGrandParents(sParentId);
     }
 
     async test(){
@@ -236,7 +237,7 @@ var MaterializedParents = class{
         console.log("Finding object by Id ",await this.findObjectFromId("1_frm_14958198943447852") );
         console.log("Finding object by Id ",await this.findObjectFromId("1_us_14958408645963304") );
 
-        var object = await this.findObjectFromId("1_frm_14975503108041748");
+        var object = await this.findObjectFromId("1_frm_14974606406414877");
         console.log("find object", object.id);
         console.log("find all MATERIALIZED PARENTS ",await this.findAllMaterializedParents(object) );
     }

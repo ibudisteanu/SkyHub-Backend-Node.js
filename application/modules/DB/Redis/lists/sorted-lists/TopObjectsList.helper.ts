@@ -14,7 +14,10 @@ class TopObjectsList {
 
     async getTopObjects(userAuthenticated, parent, pageIndex, pageCount){
 
-        var sParentId = MaterializedParents.getObjectId(parent);
+        var sParentId = await MaterializedParents.getObjectId(parent);
+
+
+        console.log('              top objects ',parent,sParentId);
 
         pageCount = Math.min(pageCount|| 8, 20);
 

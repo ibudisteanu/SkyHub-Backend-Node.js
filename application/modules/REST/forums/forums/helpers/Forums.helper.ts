@@ -121,8 +121,8 @@ module.exports = {
                 dtCreation: new Date(),
                 dtLastActivity: new Date(),
                 timeZone : iTimeZone,
-                parentId: MaterializedParentsHelper.getObjectId(parent),
-                parents: MaterializedParentsHelper.findAllMaterializedParents(parent).toString(),
+                parentId: await MaterializedParentsHelper.getObjectId(parent),
+                parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),
             }
         );
 
