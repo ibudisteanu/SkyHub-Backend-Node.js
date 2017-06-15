@@ -166,6 +166,15 @@ var SortedList = class{
         });
     }
 
+
+    async intersectionInStore(tableName, table1, table2){
+        return new Promise( (resolve)=>{
+
+
+
+        });
+    }
+
     async keepSortedObject( key, score, parents, bDelete ){
 
         if (typeof parents === "string") parents = [parents];
