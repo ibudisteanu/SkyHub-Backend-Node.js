@@ -9,7 +9,7 @@ var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
 
 var TopContentCtrl = require ('../forums/content/TopContent.controller.ts');
 var TopForumsCtrl = require ('../forums/content/TopForums.controller.ts');
-
+var ContentCtrl = require ('../forums/content/Content.controller.ts');
 
 router.get('/auth/login', function(req, res, next) {
 
@@ -68,14 +68,18 @@ router.get('/content/get-top-content', function (req, res, next){
     TopContentCtrl.postGetTopContent(req, res).then ( (answer ) => {
         res.json( answer );
     });
-
 });
 
 router.get('/content/get-content', function (req, res, next){
     TopContentCtrl.postGetContent(req, res).then ( ( answer ) => {
         res.json( answer );
     });
+});
 
+router.get('/content/get-URL-slug', function (req, res, next){
+    ContentCtrl.postGetURLSlug(req, res).then ( ( answer ) => {
+        res.json( answer );
+    });
 });
 
 
@@ -221,6 +225,13 @@ router.processSocketRoute = function (socket)
             socket.emit("api/content/get-content", res);
         });
 
+    });
+
+    socket.on("api/content/get-URL-slug", function (data) {
+        data.body = data;
+        ContentCtrl.postGetURLSlug(data, socket).then ( ( answer ) => {
+            socket.emit("api/content/get-URL-slug", answer);
+        });
     });
 
 };

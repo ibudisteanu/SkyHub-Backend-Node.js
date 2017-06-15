@@ -81,7 +81,7 @@ class TopObjectsList {
 
     }
 
-    keepSortedObject( key, score, parents, bDelete ){
+    async keepSortedObject( key, score, parents, bDelete ){
         return this.sortedList.keepSortedObject(key, score, parents, bDelete);
     }
 

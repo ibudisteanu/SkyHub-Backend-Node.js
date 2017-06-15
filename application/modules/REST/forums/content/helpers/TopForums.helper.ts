@@ -24,7 +24,7 @@ class TopForums {
         return this.topObjectsList.getObject(userAuthenticated, id);
     }
 
-    keepSortedObject( key, score, parents, bDelete ){
+    async keepSortedObject( key, score, parents, bDelete ){
         return this.topObjectsList.keepSortedObject(key, score, parents, bDelete);
     }
 

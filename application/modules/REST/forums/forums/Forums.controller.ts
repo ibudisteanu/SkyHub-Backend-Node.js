@@ -16,15 +16,16 @@ module.exports = {
 
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
-        let sTitle = '', sDescription = '', arrKeywords = [], sCountry='', sCity='',sLanguage='', sIconPic='', sCoverPic='', sCoverColor = '';
+        let sName = '', sTitle = '', sDescription = '', arrKeywords = [], sCountry='', sCity='',sLanguage='', sIconPic='', sCoverPic='', sCoverColor = '';
         let dbLatitude = 0, dbLongitude = 0, iTimeZone = 0;
 
         let parent = '';
 
-        console.log("@@@@@@@@@@@@@@ psotAddForm request",req.body);
+        console.log("@@@@@@@@@@@@@@ psotAddForm request", userAuthenticated);
 
         if (req.hasOwnProperty('body')){
             sTitle = req.body.title || '';
+            sName= req.body.name || '';
             sDescription = req.body.description ||  '';
             arrKeywords = req.body.keywords || [];
 
@@ -45,7 +46,7 @@ module.exports = {
 
         console.log('Creating a Forum : ', sTitle);
 
-        return await ForumsHelper.addForum(userAuthenticated, parent, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone);
+        return await ForumsHelper.addForum(userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone);
     },
 
     async getForum (req, res){

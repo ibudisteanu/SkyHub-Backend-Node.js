@@ -88,7 +88,7 @@ module.exports = {
     /*
      CREATING A NEW FORUM
      */
-    async addForum (userAuthenticated, parent, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone){
+    async addForum (userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone){
 
         sCountry = sCountry || ''; sCity = sCity || ''; sIconPic = sIconPic || ''; sCoverPic = sCoverPic || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iTimeZone = iTimeZone || 0;
@@ -106,8 +106,9 @@ module.exports = {
 
         forum.p(
             {
+                name: sName,
                 title: sTitle,
-                URL: await(URLHashHelper.getFinalNewURL(sTitle,null)), //Getting a NEW URL
+                URL: await(URLHashHelper.getFinalNewURL(sName,null)), //Getting a NEW URL
                 description: sDescription,
                 authorId: (userAuthenticated !== null ? userAuthenticated.id : ''),
                 keywords: commonFunctions.convertKeywordsArrayToString(arrKeywords),
@@ -121,7 +122,7 @@ module.exports = {
                 dtLastActivity: new Date(),
                 timeZone : iTimeZone,
                 parentId: MaterializedParentsHelper.getObjectId(parent),
-                parents: MaterializedParentsHelper.findAllMaterializedParents(parent),
+                parents: MaterializedParentsHelper.findAllMaterializedParents(parent).toString(),
             }
         );
 
@@ -145,12 +146,13 @@ module.exports = {
                 } else {
                     console.log("Saving Forum Successfully");
 
-                    forum.keepURLSlug(); //.then((answer)=>{
-                    forum.keepSortedList();
+                    forum.keepURLSlug().then((answer)=> {
+                        forum.keepSortedList().then ((answer)=>{
+                            console.log(forum.getPrivateInformation());
 
-                    console.log(forum.getPrivateInformation());
-
-                    resolve( {result:true, forum: forum.getPrivateInformation() });
+                            resolve( {result:true, forum: forum.getPrivateInformation() });
+                        });
+                    });
                 }
             });
 

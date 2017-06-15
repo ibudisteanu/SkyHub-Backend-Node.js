@@ -14,6 +14,16 @@ var ForumModel = redis.nohm.model('ForumModel', {
     },
 
     properties: {
+        name: {
+            type: 'string',
+            validations: [
+                ['notEmpty'],
+                ['length', {
+                    min: 3
+                }]
+
+            ]
+        },
         title: {
             type: 'string',
             validations: [
@@ -156,7 +166,7 @@ var ForumModel = redis.nohm.model('ForumModel', {
             return ScoreCoefficientHelper.calculateHotnessScoreCoefficient(this);
         },
 
-        keepSortedList : function (bDelete){
+        keepSortedList : async function (bDelete){
 
             var TopForumsHelper = require ('./../../content/helpers/TopForums.helper.ts');
 
@@ -164,7 +174,7 @@ var ForumModel = redis.nohm.model('ForumModel', {
 
         },
 
-        keepURLSlug : function (sOldURL,  bDelete){
+        keepURLSlug : async function (sOldURL,  bDelete){
 
             var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
             return URLHashHelper.replaceOldURL(sOldURL, this.p('URL'), this.id, bDelete);

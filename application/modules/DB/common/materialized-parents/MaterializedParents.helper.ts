@@ -134,14 +134,14 @@ var MaterializedParents = class{
     getMaterializedParentsFromStringList(parentsList, arrParentsOutput){
         if (typeof parentsList === "string") parentsList = [parentsList];
 
-        if (typeof arrParentsOutput === "undefined") arrParentsOutput = [];
+        if ((typeof arrParentsOutput === "undefined")||(arrParentsOutput === null)) arrParentsOutput = [];
 
         for (let i=0; i<parentsList.length; i++){
 
             let arrParentsBuffer = parentsList[i].split(",");
 
             for (let j=0; j<arrParentsBuffer.length; j++)//check for duplicity
-                if (arrParentsOutput.indexOf(arrParentsBuffer[j]) < 0 )
+                if ((arrParentsBuffer[j]!=="")&&(typeof arrParentsBuffer[j] !== "undefined")&&(arrParentsOutput.indexOf(arrParentsBuffer[j]) < 0 ))
                 {
                     arrParentsOutput.push(arrParentsBuffer[j]);
                 }
@@ -173,25 +173,46 @@ var MaterializedParents = class{
         first solution is go to the parent and merge all his materialized parents
      */
 
-    async findAllMaterializedParentsByMergingItsMaterializedGrandParents(parentsIds, arrParentsOutput, iNestedLevel) {
+    async findAllMaterializedParentsByMergingItsMaterializedGrandParents(parentsIds, arrParentsOutput, iNestedLevel, arrCheckedAlready) {
 
         if (typeof arrParentsOutput === "undefined") arrParentsOutput = [];
         if (typeof parentsIds === "string") parentsIds = [parentsIds];
-        if (typeof iNestedLevel === "undefined")  iNestedLevel = 1000;
+        if (typeof iNestedLevel === "undefined")  iNestedLevel = 100;
+        if (typeof arrCheckedAlready === "undefined") arrCheckedAlready = [];
 
         for ( let i=0; i < parentsIds.length; i++)
             arrParentsOutput = this.getMaterializedParentsFromStringList(parentsIds[i], arrParentsOutput);
 
+        //console.log("parents",parentsIds, arrParentsOutput);
 
+        let todosParents = [];
         for (let j=0; j<arrParentsOutput.length; j++){
 
             let sMaterializedParent = arrParentsOutput[j];
+
+            let bCheckedAlready=false;
+            for (let q=0; q < arrCheckedAlready.length; q++)
+                if (arrCheckedAlready[q] == sMaterializedParent) {
+                    bCheckedAlready=true;
+                    break;
+                }
+
+            if (!bCheckedAlready){
+                arrCheckedAlready.push(sMaterializedParent);
+                todosParents.push(sMaterializedParent);
+            }
+        }
+
+        for (let j=0; j<todosParents.length; j++) {
+
+            let sMaterializedParent = todosParents[j];
+
             let objectParent = await this.findObjectFromId(sMaterializedParent);
 
             if (objectParent !== null){
 
                 if ( iNestedLevel > 0)
-                    arrParentsOutput = this.findAllMaterializedParentsByMergingItsMaterializedGrandParents(objectParent.parentId+','+objectParent.parents, arrParentsOutput, iNestedLevel-1);
+                    arrParentsOutput = this.findAllMaterializedParentsByMergingItsMaterializedGrandParents(objectParent.p('parentId')+','+objectParent.p('parents'), arrParentsOutput, iNestedLevel-1, arrCheckedAlready);
             }
 
         }
@@ -203,7 +224,9 @@ var MaterializedParents = class{
 
         let sParentId = '';
         if (typeof Object === "string") sParentId = Object;
-        else sParentId = Object.parentId+','+Object.parents;
+        else if (Object !== null) sParentId = Object.p('parentId')+','+Object.p('parents');
+
+        console.log("parents",sParentId);
 
         return this.findAllMaterializedParentsByMergingItsMaterializedGrandParents(sParentId);
     }
@@ -213,7 +236,8 @@ var MaterializedParents = class{
         console.log("Finding object by Id ",await this.findObjectFromId("1_frm_14958198943447852") );
         console.log("Finding object by Id ",await this.findObjectFromId("1_us_14958408645963304") );
 
-        var object = await this.findObjectFromId("1_frm_14958198943447852");
+        var object = await this.findObjectFromId("1_frm_14975503108041748");
+        console.log("find object", object.id);
         console.log("find all MATERIALIZED PARENTS ",await this.findAllMaterializedParents(object) );
     }
 

@@ -19,13 +19,17 @@ class URLHash {
 
     }
 
-    async getFinalNewURL(sURL, object){
+    async getFinalNewURL(sInitialURL, object){
+
+        if (typeof sInitialURL !== "string") return null;
+
+        sInitialURL = sInitialURL.toLowerCase(); // lowercase, it doesn't matter in the hash
 
         object = object || null;
         if ((object!==null)&&(object.constructor === "object")) object = object.id;
-        sURL = commonFunctions.url_slug(sURL);
+        sInitialURL = commonFunctions.url_slug(sInitialURL);
 
-        let sFinalNewURL = sURL;
+        let sFinalNewURL = sInitialURL;
 
         console.log("SEARCHING FOR ",sFinalNewURL);
 

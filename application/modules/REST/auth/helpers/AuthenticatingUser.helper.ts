@@ -20,10 +20,12 @@ class AuthenticatedUser {
             if (req.body.hasOwnProperty('sessionId'))
                 sSessionId = req.body.sessionId||'';
 
-        if (sSessionId === "") {
+        if ((sSessionId === "")||(sSessionId === null)) {
             console.log("Error. Invalid Session - session is empty");
             return null;
         }
+
+        return sSessionId;
     }
 
     async loginUser(req){

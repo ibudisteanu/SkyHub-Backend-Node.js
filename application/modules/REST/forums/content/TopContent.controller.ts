@@ -43,7 +43,7 @@ module.exports = {
 
         console.log(""); console.log(""); console.log(""); console.log("");
         //console.log(req);
-        console.log('Getting Content : ', '"'+sId+'"',req);
+        console.log('Getting Content : ', '"'+sId,res.body);
 
         return TopContentHelper.getContent(userAuthenticated, sId);
 

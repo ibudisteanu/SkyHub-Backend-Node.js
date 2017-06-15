@@ -52,6 +52,7 @@ Temporary Items
 .idea\
 
 node_modules/
+node_modules
 .idea/
 tmp/
 build/
