@@ -39,7 +39,7 @@ class URLHash {
 
         while ( (existingHashResult !== object)&&(existingHashResult !== null)&&(iTrialsLeft > 0) ){
 
-            sFinalNewURL = sURL+'-'+Math.floor((Math.random() * 10000) + 1);
+            sFinalNewURL = sInitialURL+'-'+Math.floor((Math.random() * 10000) + 1);
             existingHashResult = await this.hashList.getHash('',sFinalNewURL);
 
             console.log("SEARCHING FOR ",sFinalNewURL);

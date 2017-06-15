@@ -7,6 +7,7 @@
 
 
 var redis = require ('../../../redis_nohm.js');
+var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 
 var SortedList = class{
 
@@ -169,8 +170,10 @@ var SortedList = class{
 
         if (typeof parents === "string") parents = [parents];
 
-        for (var i = 0, len = parents.length; i < len; i++) {
-            var parent = parents[i];
+        let arrParentsUnique = MaterializedParentsHelper.getMaterializedParentsFromStringList(parents, ['']);
+
+        for (let i = 0, len = arrParentsUnique.length; i < len; i++) {
+            let parent = arrParentsUnique[i];
 
             if (bDelete||false == true)
                 await this.deleteElement(parent,key);
