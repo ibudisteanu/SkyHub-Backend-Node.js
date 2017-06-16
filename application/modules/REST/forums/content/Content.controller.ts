@@ -19,17 +19,18 @@ module.exports = {
 
     async postGetURLSlug (req, res){
 
-        let sName = '';
+        let sName = '', sParentURL = '';
 
         if (req.hasOwnProperty('body')){
 
+            sParentURL = req.body.parent || '';
             sName = req.body.name ||'';
         }
 
         if (sName.length < 3)
             return {result:false, message:"To few letters"};
 
-        let urlSlug = await URLHashHelper.getFinalNewURL(sName,null);
+        let urlSlug = await URLHashHelper.getFinalNewURL(sParentURL, sName,null);
 
         if (urlSlug !== null)
             return {result:true, URLSlug: urlSlug, message: "Great URL"};

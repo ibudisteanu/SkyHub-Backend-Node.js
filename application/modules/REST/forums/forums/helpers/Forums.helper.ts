@@ -92,7 +92,9 @@ module.exports = {
 
         sLanguage = sLanguage || sCountry;
         parent = parent || '';
-        sCoverColor = sCoverColor || "#"+((1<<24)*Math.random()|0).toString(16);
+        sCoverColor = sCoverColor || ((1<<24)*Math.random()|0).toString(16);
+
+        while (sCoverColor.length < 6) sCoverColor = sCoverColor + '0';
 
         var forum = redis.nohm.factory('ForumModel');
         var errorValidation = {};
@@ -105,7 +107,7 @@ module.exports = {
             {
                 name: sName,
                 title: sTitle,
-                URL: await(URLHashHelper.getFinalNewURL(sName,null)), //Getting a NEW URL
+                URL: await(URLHashHelper.getFinalNewURL('',sName,null)), //Getting a NEW URL
                 description: sDescription,
                 authorId: (userAuthenticated !== null ? userAuthenticated.id : ''),
                 keywords: commonFunctions.convertKeywordsArrayToString(arrKeywords),

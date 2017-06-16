@@ -18,8 +18,12 @@ class URLHash {
         return this.hashList.getHash('',sURL);
 
     }
+    /*
+         URL:   "forum, topic foarte cool :)) " => forum/topic-misto
 
-    async getFinalNewURL(sInitialURL, object){
+         forum is parentURL, "topic foarte misto" is sInitialURL
+     */
+    async getFinalNewURL(sParentURL, sInitialURL, object){
 
         if (typeof sInitialURL !== "string") return null;
 
@@ -27,7 +31,11 @@ class URLHash {
 
         object = object || null;
         if ((object!==null)&&(object.constructor === "object")) object = object.id;
-        sInitialURL = commonFunctions.url_slug(sInitialURL);
+
+        if (sParentURL !== '')
+            sParentURL = commonFunctions.url_slug(sParentURL);
+
+        sInitialURL = (sParentURL !== '' ? sParentURL + '/' : '') + commonFunctions.url_slug(sInitialURL);
 
         let sFinalNewURL = sInitialURL;
 
@@ -51,13 +59,12 @@ class URLHash {
 
     }
 
-    async addNewURL(sURL, object){
+    async addNewURL(sParentURL, sURL, object){
 
         object = object || '';
         if ((object!==null)&&(object.constructor === "object")) object = object.id;
-        sURL = commonFunctions.url_slug(sURL);
 
-        let sFinalNewURL = await this.getFinalNewURL(sURL, object);
+        let sFinalNewURL = await this.getFinalNewURL(sParentURL, sURL, object);
 
         return await this.hashList.setHash('', sFinalNewURL, object);
     }
@@ -76,7 +83,7 @@ class URLHash {
         if ((sOldURL || '') !== '')
             await this.hashList.deleteHash('',sOldURL);
 
-        return this.addNewURL(sNewURL, object);
+        return this.addNewURL('', sNewURL, object);
     }
 
     async checkUniqueURL(sURL){
@@ -85,14 +92,14 @@ class URLHash {
 
     async test(){
 
-        this.addNewURL("URL1","1");
-        this.addNewURL("URL2","2");
-        this.addNewURL("URL3","3");
-        this.addNewURL("URL3","3");
-        this.addNewURL("URL3","3");
-        this.addNewURL("URL3","3");
-        this.addNewURL("URL4","4");
-        console.log("URL ADD NEW IDENTICALLY ",await this.addNewURL("URL2","3"));
+        this.addNewURL('',"URL1","1");
+        this.addNewURL('',"URL2","2");
+        this.addNewURL('',"URL3","3");
+        this.addNewURL('',"URL3","3");
+        this.addNewURL('',"URL3","3");
+        this.addNewURL('',"URL3","3");
+        this.addNewURL('',"URL4","4");
+        console.log("URL ADD NEW IDENTICALLY ",await this.addNewURL('',"URL2","3"));
 
         console.log("URL REPLACE ",await this.replaceOldURL("URL2","URL2_SCHIMBAT","22_schimbat"));
     }

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Promise = require('promise');
 
+
 var AuthenticateCtrl = require ('../auth/Authenticate.controller.ts');
 var FunctionsCtrl = require ('./../common/functions/functions.controller.ts');
 
@@ -126,11 +127,17 @@ router.get('/test/SearchList', function (req,res,next){
     res.json( {message: SearchList.test() });
 });
 
-router.get('/test/search/Build-Search-List', function (req,res,next){
+router.get('test/search/Build-Search-List', function (req,res,next){
 
     let SearchesHelper = require ('./../../REST/searches/helpers/Searches.helper.ts');
     res.json( {message: SearchesHelper.buildSearchTables() });
 });
+
+
+
+
+
+
 
 /*
             FOR SOCKET REST
