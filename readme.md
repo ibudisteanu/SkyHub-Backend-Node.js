@@ -18,7 +18,7 @@ webpack --watch
 #### Online Versions:
 
 1. myskyhub.ddns.net:8080 for React Frontend
-2. myskyhub.ddns.net:3000 for Express Backend with Redis Database
+2. myskyhub.ddns.net:4000 for Express Backend with Redis Database
 
 ### CODES - EXAMPLES
 

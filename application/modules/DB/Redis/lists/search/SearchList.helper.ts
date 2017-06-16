@@ -9,15 +9,14 @@
 
  */
 var SortedList = require ('./../sorted-lists/SortedList.helper.ts');
+var XRegExp = require ('xregexp');
 
 class SearchList {
 
-    sortedList;
-
-
     //sortedList
     constructor(sPrefix){
-        this.sortedList = new SortedList("Search:"+sPrefix||"name");
+        this.sortedList = new SortedList("Search:"+(sPrefix||"name"));
+        this.minimumWordLength = 3;
     }
 
     /*
@@ -41,32 +40,51 @@ class SearchList {
 
         phrase = phrase.toLowerCase();
 
+        let iCount = 0;
+
+        let regexUnicodeWord = XRegExp('^\\pL+$');
+
         let sPrefix = '';
         for (let i=0; i<phrase.length; i++){
 
-            if (! /^[a-z]+$/g.test(phrase[i])){ //i found a letter
+            if (regexUnicodeWord.test(phrase[i])){ //i found a letter
                 sPrefix = sPrefix+ phrase[i];
             } else
                 sPrefix = '';
 
-            if (sPrefix !== '')
-                this.sortedList.updateElement(sPrefix, score,index);
+            console.log("prefix",sPrefix);
+
+            if (sPrefix !== '') {
+                console.log("creating search prefix", sPrefix);
+                await this.sortedList.updateElement(sPrefix, score, index);
+                iCount++;
+            }
 
         }
+
+        if (sPrefix !== '') {
+            await this.sortedList.updateElement(sPrefix, score, index);
+            iCount++;
+        }
+
+        return iCount;
     }
 
-    async autocompleteSimpleWord(word){
+    async searchSimpleWord(word){
 
         if (word === null) return [];
         if (typeof word !== "string") return [];
-        if (word.length < 3) return []; //to few letters... no autocomplete
+        if (word.length < this.minimumWordLength) return []; //to few letters... no autocomplete
 
         word = word.toLowerCase();
 
         return await this.sortedList.getListRangeBySortedIndex(word,1,10);
     }
 
-    async autocompleteIntersection(phrase){
+    /*
+        USING INTERSECTIONS see docs http://patshaughnessy.net/2011/11/29/two-ways-of-using-redis-to-build-a-nosql-autocomplete-search-index
+     */
+    async searchPhrase(phrase){
 
         if (phrase === null) return false;
         if (typeof phrase !== "string") return false;
@@ -86,61 +104,46 @@ class SearchList {
                 sPrefix = sPrefix+ phrase[i];
             } else {
 
-                if ((sPrefix !== '')&&(sPrefix.length>=3)) arrPartialWordsToSearch.push(sPrefix);
+                if ((sPrefix !== '')&&(sPrefix.length>=this.minimumWordLength)) arrPartialWordsToSearch.push(sPrefix);
 
                 sPrefix = '';
             }
 
         }
 
-        if ((sPrefix !== '')&&(sPrefix.length>=3)) arrPartialWordsToSearch.push(sPrefix);
+        if ((sPrefix !== '')&&(sPrefix.length>=this.minimumWordLength)) arrPartialWordsToSearch.push(sPrefix);
 
-        for (let i=0; i<arrPartialWordsToSearch.length; i++){
+        let sOutputName = '';
 
-            let zlistAnswer = await this.sortedList.getListRangeByScore(arrPartialWordsToSearch[i], 1, 100); // first 100 elements
+        for (let i=0; i<arrPartialWordsToSearch.length; i++)
+            sOutputName = sOutputName + arrPartialWordsToSearch[i]+ '|';
 
-            if (zlistAnswer.length > 0){
-                arrPartialResults.push(zlistAnswer);
-            }
+        sOutputName.replace(/|$/,"");
+
+        let result = await this.sortedList.intersectionInStore(sOutputName, arrPartialWordsToSearch);
+
+        if (result !== null){
+            return await this.sortedList.getListRangeBySortedIndex(sOutputName,1,10);
         }
 
-        let answer = [];
-
-        if (arrPartialResults.length > 0)  //computing the intersections https://redis.io/commands/zinterstore
-            for (let i=0; i<arrPartialResults.length; i++){
-
-            }
-
-        return answer;
-
+        return [];
     }
 
 
     async test(){
 
 
+        console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("MAMA ARE MERE SI TATA SE DUCE ACASA",1,5));
+        console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("TATA ARE MASINA SI MAMA ARE PERE",2,5));
+        console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("SkyHub is fucking awesome",2,5));
+        console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("I hope search is working and SkyHub is great",2,5));
 
-        console.log("DELETE Salut4 ",await this.sortedList.deleteElement("","Salut4"));
-
-        console.log("UPDATE SALUT3", await this.sortedList.updateElement("",2666,"Salut3"));
-
-
-        console.log("rank1", await this.sortedList.getRankItem("","Salut5"));
-        console.log("rank1", await this.sortedList.getRankItem("","Salut3"));
-        console.log("COUNT LIST: ",await this.sortedList.countList(""));
-
-        console.log("COUNT LIST BETWEEN ", await this.sortedList.countListBetweenMinMax("",50,400));
-
-
-        console.log("GET ITEMS   ", await this.sortedList.getItemsMatching(""));
-
-
-        console.log("GET LIST RANGE BY SORTED INDEX ", await this.sortedList.getListRangeBySortedIndex("",1,5));
-
-        console.log("GET LIST RANGE BY SCORE ", await this.sortedList.getListRangeByScore("",30,600));
+        console.log("simple search",await this.searchSimpleWord("MASINA"));
+        console.log("simple search",await this.searchSimpleWord("MAMA"));
+        console.log("simple search",await this.searchSimpleWord("SkyH"));
 
     }
 
 };
 
-module.exports = TopObjectsList;
+module.exports = SearchList;

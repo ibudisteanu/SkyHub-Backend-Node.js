@@ -39,14 +39,17 @@ var SortedList = class{
             console.error("ERROR READING PREVIOUS SCORE for: ",tableName, value, key);
             iCurrentScore = 0;
         }
-        console.log("CURRENT SCORE",);
 
-        return new Promise( (resolve)=> {
+        console.log("CURRENT SCORE", iCurrentScore);
+        if (typeof iCurrentScore === "undefined")  //creating a new value, in case it didn't exist
+            return this.addElement(tableName, value, key);
+        else //updating the value
+            return new Promise( (resolve)=> {
 
-            redis.redisClient.zincrby(this.tablePrefix + ":" + tableName, value-iCurrentScore, key, function (err, answer){
-                resolve (err === null ? answer : null);
+                redis.redisClient.zincrby(this.tablePrefix + ":" + tableName, value-iCurrentScore, key, function (err, answer){
+                    resolve (err === null ? answer : null);
+                });
             });
-        });
     }
 
     async deleteElement(tableName, key){
@@ -167,10 +170,16 @@ var SortedList = class{
     }
 
 
-    async intersectionInStore(tableName, table1, table2){
+    async intersectionInStore(tableOutputName, argumentsIntersection){
         return new Promise( (resolve)=>{
 
+            let cmd = [tableOutputName, argumentsIntersection.length];
+            redis.redisClient.zinterstore(cmd.concat(argumentsIntersection), function (err, answer){
 
+                if (err === null) resolve(answer);
+                else resolve (null);
+
+            })
 
         });
     }

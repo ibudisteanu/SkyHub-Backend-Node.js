@@ -8,15 +8,22 @@
     "webpack": "webpack"
   },
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
+    "hat": "0.0.3",
     "jade": "~1.11.0",
+    "jsonwebtoken": "^7.4.1",
     "morgan": "~1.8.1",
+    "nohm": "^0.9.8",
+    "redis": "^2.7.1",
     "request-promise": "^4.2.1",
+    "run-middleware": "^0.6.6",
     "serve-favicon": "~2.4.2",
-    "socket.io": "1.x"
+    "socket.io": "1.x",
+    "xregexp": "^3.2.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

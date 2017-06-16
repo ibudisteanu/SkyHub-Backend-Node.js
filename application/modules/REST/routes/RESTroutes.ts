@@ -111,7 +111,12 @@ router.get('/test/Session', function (req, res, next){
     res.json( {message: SessionHash.test() });
 });
 
+router.get('/test/SearchList', function (req,res,next){
+    var SearchList = require ('../../DB/Redis/lists/search/SearchList.helper.ts');
 
+    SearchList = new SearchList();
+    res.json( {message: SearchList.test() });
+});
 
 
 /*
