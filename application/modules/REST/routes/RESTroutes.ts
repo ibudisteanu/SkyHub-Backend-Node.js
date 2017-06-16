@@ -13,6 +13,7 @@ var TopForumsCtrl = require ('../forums/content/TopForums.controller.ts');
 var ContentCtrl = require ('../forums/content/Content.controller.ts');
 
 var SearchesController = require ('../../REST/searches/Searches.controller.ts');
+var MetaExtractorController = require ('../../utils/meta-extractor/MetaExtractor.controller.ts');
 
 router.get('/auth/login', function(req, res, next) {
 
@@ -91,6 +92,12 @@ router.get('/search/parents', function (req, res, next){
     });
 });
 
+router.get('/meta-extractor/extract-url', function (req, res, next){
+    MetaExtractorController.extractDataFromLink(req, res).then ( ( answer ) => {
+        res.json( answer );
+    });
+});
+
 
 router.get('/version', function(req, res, next) {
     res.json( FunctionsCtrl.getVersion(req, res) );
@@ -127,13 +134,17 @@ router.get('/test/SearchList', function (req,res,next){
     res.json( {message: SearchList.test() });
 });
 
-router.get('test/search/Build-Search-List', function (req,res,next){
+router.get('/test/search/Build-Search-List', function (req,res,next){
 
     let SearchesHelper = require ('./../../REST/searches/helpers/Searches.helper.ts');
     res.json( {message: SearchesHelper.buildSearchTables() });
 });
 
+router.get('/test/meta-extractor', function (req,res,next){
 
+    let MetaExtractorHelper = require ('./../../utils/meta-extractor/helpers/MetaExtractor.helper.ts');
+    res.json( {message: MetaExtractorHelper.test() });
+});
 
 
 

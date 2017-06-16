@@ -6,7 +6,7 @@
 // based on this https://www.npmjs.com/package/node-metainspector
 
 var MetaInspector = require('node-metainspector');
-
+var MetaExtractorHashList = require('./../meta-extractor-list/MetaExtractorHashList.helper.ts');
 
 module.exports = {
 
@@ -14,7 +14,7 @@ module.exports = {
      REST API
      */
 
-    async fetchData(sLink){
+    async fetchURLData(sLink){
 
         return new Promise( (resolve)=> {
 
@@ -25,17 +25,30 @@ module.exports = {
                 resolve(client);
             });
 
+            client.on("error", function(err){
+                console.log("fetching url data ",err);
+                resolve(null);
+            });
+
+            client.fetch();
+
         });
 
     },
 
     async extractDataFromLink (sLink){
 
-        let client = await this.fetchData(sLink);
+        sLink = MetaExtractorHashList.fixURL(sLink); //fixing the URL, avoiding duplicate URLs
+        if (!MetaExtractorHashList.isValidURL(sLink)) return null;
+
+        let hashData = await MetaExtractorHashList.getMetaData(sLink);
+        if (hashData !== null) return hashData;
+
+        let client = await this.fetchURLData(sLink);
 
         if (client !== null){
 
-            return {
+            let data = {
                 url: client.url,
                 scheme: client.scheme,
                 rootUrl: client.rootUrl,
@@ -46,16 +59,38 @@ module.exports = {
                 author: client.author,
                 keywords: client.keywords,
                 charset: client.charset,
-                image: client.image,
-                images: client.images,
+                image: client.ogImage||client.image,
+                images: Array.isArray(client.images) ? client.images : [],
 
                 type: client.type,
                 updatedTime: client.ogUpdatedTime,
                 locale: client.ogLocale,
-            }
+
+                date: new Date(),
+            };
+
+            MetaExtractorHashList.setMetaData(sLink, data);
+            console.log("saving");
+
+            return data;
 
         }
 
+        return null;
+
     },
+
+    async test(){
+
+        console.log(await this.extractDataFromLink("http://google.ro"));
+        console.log(await this.extractDataFromLink("http://facebook.com"));
+        console.log(await this.extractDataFromLink("facebook.com"));
+        console.log(await this.extractDataFromLink("facebook.com"));
+        console.log(await this.extractDataFromLink("http://facebook.com"));
+        console.log(await this.extractDataFromLink("http://money.cnn.com/2016/11/10/technology/tech-reaction-election-trump/index.html"));
+
+        console.log("DONE");
+
+    }
 
 }

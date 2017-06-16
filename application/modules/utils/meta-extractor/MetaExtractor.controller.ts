@@ -23,7 +23,12 @@ module.exports = {
 
         console.log('extracting data from link: ', sLink);
 
-        return MetaExtractor.extractDataFromLink(sLink);
+        let result = MetaExtractor.extractDataFromLink(sLink);
+
+        if (result !== null)
+            return {result:true, data: result};
+        else
+            return {result:false, message: "error extracting the data"};
 
     },
 
