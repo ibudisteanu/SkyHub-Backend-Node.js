@@ -9,7 +9,7 @@
 
  */
 var SortedList = require ('./../sorted-lists/SortedList.helper.ts');
-var XRegExp = require ('xregexp');
+var commonFunctions = require ('../../../../REST/common/helpers/common-functions.helper.ts');
 
 class SearchList {
 
@@ -42,19 +42,17 @@ class SearchList {
 
         let iCount = 0;
 
-        let regexUnicodeWord = XRegExp('^\\pL+$');
-
         let sPrefix = '';
         for (let i=0; i<phrase.length; i++){
 
-            if (regexUnicodeWord.test(phrase[i])){ //i found a letter
-                sPrefix = sPrefix+ phrase[i];
+            if (commonFunctions.validateUnicodeString(phrase[i])){ //i found a letter
+                sPrefix = sPrefix+ commonFunctions.transliterate(phrase[i]);
             } else
                 sPrefix = '';
 
             console.log("prefix",sPrefix);
 
-            if (sPrefix !== '') {
+            if ((sPrefix !== '')&&(sPrefix.length > this.minimumWordLength)) {
                 console.log("creating search prefix", sPrefix);
                 await this.sortedList.updateElement(sPrefix, score, index);
                 iCount++;
@@ -62,7 +60,7 @@ class SearchList {
 
         }
 
-        if (sPrefix !== '') {
+        if ((sPrefix !== '')&&(sPrefix.length > this.minimumWordLength)) {
             await this.sortedList.updateElement(sPrefix, score, index);
             iCount++;
         }
@@ -77,6 +75,7 @@ class SearchList {
         if (word.length < this.minimumWordLength) return []; //to few letters... no autocomplete
 
         word = word.toLowerCase();
+        word = commonFunctions.transliterate(word);
 
         return await this.sortedList.getListRangeBySortedIndex(word,1,10);
     }
@@ -100,8 +99,8 @@ class SearchList {
         let sPrefix = '';
         for (let i=0; i<phrase.length; i++){
 
-            if (! /^[a-z]+$/g.test(phrase[i])){ //i found a letter
-                sPrefix = sPrefix+ phrase[i];
+            if (commonFunctions.validateUnicodeString(phrase[i])){ //i found a letter
+                sPrefix = sPrefix + commonFunctions.transliterate(phrase[i]);
             } else {
 
                 if ((sPrefix !== '')&&(sPrefix.length>=this.minimumWordLength)) arrPartialWordsToSearch.push(sPrefix);
@@ -137,6 +136,8 @@ class SearchList {
         console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("TATA ARE MASINA SI MAMA ARE PERE",2,5));
         console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("SkyHub is fucking awesome",2,5));
         console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("I hope search is working and SkyHub is great",2,5));
+        console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("側経意責家方家閉討店暖育田庁載社転",2,5));
+        console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("Русский",2,5));
 
         console.log("simple search",await this.searchSimpleWord("MASINA"));
         console.log("simple search",await this.searchSimpleWord("MAMA"));

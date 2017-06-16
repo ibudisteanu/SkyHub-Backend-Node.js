@@ -3,43 +3,14 @@
  * (C) BIT TECHNOLOGIES
  */
 
+var XRegExp = require ('xregexp');
+let regexUnicodeWord = XRegExp('^\\pL+$');
+
 module.exports = {
-    /**
-     * Create a web friendly URL slug from a string.
-     *
-     * Requires XRegExp (http://xregexp.com) with unicode add-ons for UTF-8 support.
-     *
-     * Although supported, transliteration is discouraged because
-     *     1) most web browsers support UTF-8 characters in URLs
-     *     2) transliteration causes a loss of information
-     *
-     * @author Sean Murphy <sean@iamseanmurphy.com>
-     * @copyright Copyright 2012 Sean Murphy. All rights reserved.
-     * @license http://creativecommons.org/publicdomain/zero/1.0/
-     *
-     * @param string s
-     * @param object opt
-     * @return string
-     */
-    url_slug(s, opt)
-    {
-        s = String(s);
-        opt = Object(opt);
 
-        var defaults = {
-            'delimiter': '-',
-            'limit': undefined,
-            'lowercase': false,
-            'replacements': {},
-            'transliterate': (typeof(XRegExp) === 'undefined') ? true : false
-        };
 
-        // Merge options
-        for (var k in defaults) {
-            if (!opt.hasOwnProperty(k)) {
-                opt[k] = defaults[k];
-            }
-        }
+    // Transliterate characters to ASCII
+    transliterate(word){
 
         var char_map = {
             // Latin
@@ -108,6 +79,55 @@ module.exports = {
             'š': 's', 'ū': 'u', 'ž': 'z'
         };
 
+        for (var k in char_map) {
+            word = word.replace(RegExp(k, 'g'), char_map[k]);
+        }
+
+        return word;
+    },
+
+    validateUnicodeString(word){ //check if the word contains only Unicode Letters
+        return regexUnicodeWord.test(word);
+    },
+
+    /**
+     * Create a web friendly URL slug from a string.
+     *
+     * Requires XRegExp (http://xregexp.com) with unicode add-ons for UTF-8 support.
+     *
+     * Although supported, transliteration is discouraged because
+     *     1) most web browsers support UTF-8 characters in URLs
+     *     2) transliteration causes a loss of information
+     *
+     * @author Sean Murphy <sean@iamseanmurphy.com>
+     * @copyright Copyright 2012 Sean Murphy. All rights reserved.
+     * @license http://creativecommons.org/publicdomain/zero/1.0/
+     *
+     * @param string s
+     * @param object opt
+     * @return string
+     */
+    url_slug(s, opt)
+    {
+        s = String(s);
+        opt = Object(opt);
+
+        var defaults = {
+            'delimiter': '-',
+            'limit': undefined,
+            'lowercase': false,
+            'replacements': {},
+            'transliterate': (typeof(XRegExp) === 'undefined') ? true : false
+        };
+
+        // Merge options
+        for (var k in defaults) {
+            if (!opt.hasOwnProperty(k)) {
+                opt[k] = defaults[k];
+            }
+        }
+
+
         // Make custom replacements
         for (var k in opt.replacements) {
             s = s.replace(RegExp(k, 'g'), opt.replacements[k]);
@@ -115,9 +135,7 @@ module.exports = {
 
         // Transliterate characters to ASCII
         if (opt.transliterate) {
-            for (var k in char_map) {
-                s = s.replace(RegExp(k, 'g'), char_map[k]);
-            }
+            s = this.transliterate(s);
         }
 
         // Replace non-alphanumeric characters with our delimiter
