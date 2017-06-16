@@ -45,8 +45,9 @@ module.exports = {
             'ş': 's', 'ı': 'i', 'ç': 'c', 'ü': 'u', 'ö': 'o', 'ğ': 'g',
 
             // Russian
-            'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D', 'Е': 'E', 'Ё': 'Yo', 'Ж': 'Zh',
-            'З': 'Z', 'И': 'I', 'Й': 'J', 'К': 'K', 'Л': 'L', 'М': 'M', 'Н': 'N', 'О': 'O',
+            'А': 'A', 'Б': 'B', 'Е': 'E', 'О': 'O',
+            'В': 'V', 'Г': 'G', 'Д': 'D',  'Ё': 'Yo', 'Ж': 'Zh',
+            'З': 'Z', 'И': 'I', 'Й': 'J', 'К': 'K', 'Л': 'L', 'М': 'M', 'Н': 'N',
             'П': 'P', 'Р': 'R', 'С': 'S', 'Т': 'T', 'У': 'U', 'Ф': 'F', 'Х': 'H', 'Ц': 'C',
             'Ч': 'Ch', 'Ш': 'Sh', 'Щ': 'Sh', 'Ъ': '', 'Ы': 'Y', 'Ь': '', 'Э': 'E', 'Ю': 'Yu',
             'Я': 'Ya',
@@ -134,9 +135,10 @@ module.exports = {
         }
 
         // Transliterate characters to ASCII
-        if (opt.transliterate) {
-            s = this.transliterate(s);
-        }
+        // NO LONGER LITERATING
+        // if (opt.transliterate) {
+        //     s = this.transliterate(s);
+        // }
 
         // Replace non-alphanumeric characters with our delimiter
         var alnum = (typeof(XRegExp) === 'undefined') ? RegExp('[^a-z0-9]+', 'ig') : XRegExp('[^\\p{L}\\p{N}]+', 'ig');

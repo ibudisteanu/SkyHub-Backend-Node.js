@@ -9,6 +9,8 @@
 
  */
 var SortedList = require ('./../sorted-lists/SortedList.helper.ts');
+var AutoCompleteStringsHashList = require ('./AutoCompleteStringsHashList.helper.ts');
+
 var commonFunctions = require ('../../../../REST/common/helpers/common-functions.helper.ts');
 
 class SearchList {
@@ -33,12 +35,17 @@ class SearchList {
         tabel|E    => index|score
 
      */
-    async createSearchPrefixes(phrase, index, score){
+    async createSearchPrefixes(phrase, parent, score){
 
         if (phrase === null) return false;
         if (typeof phrase !== "string") return false;
 
+        let autoCompleteHashIndex = await AutoCompleteStringsHashList.addAutoCompleteString(phrase, parent );
+        // let type = MaterializedParents.extractObjectTypeFromId(parent);
+        // let autoCompleteHashIndex = parent;
+
         phrase = phrase.toLowerCase();
+        phrase = commonFunctions.transliterate(phrase);
 
         let iCount = 0;
 
@@ -46,22 +53,22 @@ class SearchList {
         for (let i=0; i<phrase.length; i++){
 
             if (commonFunctions.validateUnicodeString(phrase[i])){ //i found a letter
-                sPrefix = sPrefix+ commonFunctions.transliterate(phrase[i]);
+                sPrefix = sPrefix+ phrase[i];
             } else
                 sPrefix = '';
 
             console.log("prefix",sPrefix);
 
-            if ((sPrefix !== '')&&(sPrefix.length > this.minimumWordLength)) {
+            if ((sPrefix !== '')&&(sPrefix.length >= this.minimumWordLength)) {
                 console.log("creating search prefix", sPrefix);
-                await this.sortedList.updateElement(sPrefix, score, index);
+                await this.sortedList.updateElement(sPrefix, score, autoCompleteHashIndex);
                 iCount++;
             }
 
         }
 
-        if ((sPrefix !== '')&&(sPrefix.length > this.minimumWordLength)) {
-            await this.sortedList.updateElement(sPrefix, score, index);
+        if ((sPrefix !== '')&&(sPrefix.length >= this.minimumWordLength)) {
+            await this.sortedList.updateElement(sPrefix, score, autoCompleteHashIndex);
             iCount++;
         }
 
@@ -73,11 +80,10 @@ class SearchList {
         if (word === null) return [];
         if (typeof word !== "string") return [];
         if (word.length < this.minimumWordLength) return []; //to few letters... no autocomplete
-
         word = word.toLowerCase();
         word = commonFunctions.transliterate(word);
 
-        return await this.sortedList.getListRangeBySortedIndex(word,1,10);
+        return await AutoCompleteStringsHashList.getAutoComplete(await this.sortedList.getListRangeBySortedIndex(word,1,10));
     }
 
     /*
@@ -88,8 +94,8 @@ class SearchList {
         if (phrase === null) return false;
         if (typeof phrase !== "string") return false;
         if (phrase.length < 3) return [];
-
         phrase = phrase.toLowerCase();
+        phrase = commonFunctions.transliterate(phrase);
 
         let arrPartialWordsToSearch = []; // the extracted words used for interogating
         let arrPartialResults = []; // partial results from the DB
@@ -100,7 +106,7 @@ class SearchList {
         for (let i=0; i<phrase.length; i++){
 
             if (commonFunctions.validateUnicodeString(phrase[i])){ //i found a letter
-                sPrefix = sPrefix + commonFunctions.transliterate(phrase[i]);
+                sPrefix = sPrefix + phrase[i];
             } else {
 
                 if ((sPrefix !== '')&&(sPrefix.length>=this.minimumWordLength)) arrPartialWordsToSearch.push(sPrefix);
@@ -122,7 +128,7 @@ class SearchList {
         let result = await this.sortedList.intersectionInStore(sOutputName, arrPartialWordsToSearch);
 
         if (result !== null){
-            return await this.sortedList.getListRangeBySortedIndex(sOutputName,1,10);
+            return await AutoCompleteStringsHashList.getAutoComplete(await this.sortedList.getListRangeBySortedIndex(sOutputName,1,10));
         }
 
         return [];
@@ -134,14 +140,18 @@ class SearchList {
 
         console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("MAMA ARE MERE SI TATA SE DUCE ACASA",1,5));
         console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("TATA ARE MASINA SI MAMA ARE PERE",2,5));
-        console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("SkyHub is fucking awesome",2,5));
-        console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("I hope search is working and SkyHub is great",2,5));
-        console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("側経意責家方家閉討店暖育田庁載社転",2,5));
-        console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("Русский",2,5));
+        console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("SkyHub is fucking awesome",3,5));
+        console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("I hope search is working and SkyHub is great",4,5));
+        console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("側経意責家方家閉討店暖育田庁載社転",5,5));
+        console.log("CREATE SEARCH PREFIX", await this.createSearchPrefixes("Русский",6,5));
 
-        console.log("simple search",await this.searchSimpleWord("MASINA"));
-        console.log("simple search",await this.searchSimpleWord("MAMA"));
-        console.log("simple search",await this.searchSimpleWord("SkyH"));
+        console.log("simple search for MASINA ",await this.searchSimpleWord("MASINA"));
+        console.log("simple search for MAMA",await this.searchSimpleWord("MAMA"));
+        console.log("simple search for SkyH",await this.searchSimpleWord("SkyH"));
+
+        console.log("simple search for MASINA ",await this.searchPhrase("MASINA MAMA"));
+        console.log("simple search for MAMA",await this.searchPhrase("MAMA ARE"));
+        console.log("simple search for SkyH",await this.searchPhrase("SkyH"));
 
     }
 
