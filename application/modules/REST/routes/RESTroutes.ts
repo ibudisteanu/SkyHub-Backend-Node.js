@@ -84,6 +84,12 @@ router.get('/content/get-URL-slug', function (req, res, next){
     });
 });
 
+router.get('/search/parents', function (req, res, next){
+    SearchesController.searchParents(req, res).then ( ( answer ) => {
+        res.json( answer );
+    });
+});
+
 
 router.get('/version', function(req, res, next) {
     res.json( FunctionsCtrl.getVersion(req, res) );
@@ -125,7 +131,6 @@ router.get('/test/search/Build-Search-List', function (req,res,next){
     let SearchesHelper = require ('./../../REST/searches/helpers/Searches.helper.ts');
     res.json( {message: SearchesHelper.buildSearchTables() });
 });
-
 
 /*
             FOR SOCKET REST
@@ -244,6 +249,13 @@ router.processSocketRoute = function (socket)
         data.body = data;
         ContentCtrl.postGetURLSlug(data, socket).then ( ( answer ) => {
             socket.emit("api/content/get-URL-slug", answer);
+        });
+    });
+
+    socket.on("api/search/parents", function (data) {
+        data.body = data;
+        SearchesController.searchParents(data, socket).then ( ( answer ) => {
+            socket.emit("api/search/parents", answer);
         });
     });
 

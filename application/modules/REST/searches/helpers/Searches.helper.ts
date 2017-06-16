@@ -77,6 +77,12 @@ class Searches {
         return await this.searchList.createSearchPrefixes(text, index, score);
     }
 
+    async searchParents(text){
+
+        this.searchList.setNewTablePrefix("Forums");
+        return await this.searchList.searchPhrase(text);
+    }
+
     async buildSearchTables(){
 
         let forumModelORM = redis.nohm.factory('ForumModel');
