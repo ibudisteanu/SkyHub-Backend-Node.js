@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var Users =  require ('./Users.heper.ts');
+var Users =  require ('./Users.helper.ts');
 
 module.exports = {
     /*

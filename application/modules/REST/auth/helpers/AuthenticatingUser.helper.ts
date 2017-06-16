@@ -4,7 +4,7 @@
  */
 
 var SessionHash = require ('../sessions/helpers/SessionHash.helper.ts');
-var UsersHelper = require('./Users.heper.ts');
+var UsersHelper = require('./Users.helper.ts');
 let HashListHelper = require('../sessions/helpers/SessionHash.helper.ts');
 
 class AuthenticatedUser {

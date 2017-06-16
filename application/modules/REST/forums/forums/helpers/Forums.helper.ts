@@ -51,10 +51,9 @@ module.exports = {
             else
 
             //  console.log('finding forum '+sId);
-
-            forumModel = redis.nohm.factory('ForumModel', sId, function (err, forum) {
+            var ForumModel  = redis.nohm.factory('ForumModel', sId, function (err, forum) {
                 if (err) resolve (null);
-                else resolve (forumModel);
+                else resolve (ForumModel);
             });
 
         });
@@ -72,9 +71,7 @@ module.exports = {
             //console.log('finding user '+sId);
 
             var ForumModel = redis.nohm.factory('ForumModel');
-            ForumModel.findAndLoad({
-                    URL: sURL,
-            }, function (err, forums) {
+            ForumModel.findAndLoad(  {URL: sURL }, function (err, forums) {
                 //console.log("response forums : from URL ", forums);
 
                 if (forums.length) resolve(forums[0]);

@@ -53,7 +53,7 @@ exports.validateUniqueURL = function (value, options, callback){
  */
 exports.validateExistingAuthorId = function (value, options, callback){
 
-    var UsersHelper = require ('../../../REST/auth/helpers/Users.heper.ts');
+    var UsersHelper = require ('../../../REST/auth/helpers/Users.helper.ts');
 
     console.log("VALIDATE Existing AuthorId", value);
 

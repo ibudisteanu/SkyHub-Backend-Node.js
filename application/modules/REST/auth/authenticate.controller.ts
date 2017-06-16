@@ -1,5 +1,5 @@
 var UserHelper = require('./helpers/User.helper.ts');
-var UsersHelper = require('./helpers/Users.heper.ts');
+var UsersHelper = require('./helpers/Users.helper.ts');
 
 var AuthenticatingUser = require('./helpers/AuthenticatingUser.helper.ts');
 

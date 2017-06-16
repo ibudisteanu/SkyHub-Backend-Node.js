@@ -15,6 +15,10 @@ var SortedList = class{
         this.tablePrefix = tablePrefix || "ZLIST";
     }
 
+    setNewTablePrefix(sNewPrefix){
+        this.tablePrefix = sNewPrefix;
+    }
+
     async addElement(tableName, score, key){
 
         if (typeof key !== "string")
@@ -40,7 +44,7 @@ var SortedList = class{
             iCurrentScore = 0;
         }
 
-        console.log("CURRENT SCORE", iCurrentScore);
+        //console.log("CURRENT SCORE", iCurrentScore);
         if (typeof iCurrentScore === "undefined")  //creating a new value, in case it didn't exist
             return this.addElement(tableName, value, key);
         else //updating the value
@@ -89,7 +93,7 @@ var SortedList = class{
 
             redis.redisClient.zrange(this.tablePrefix+":"+tableName, start, end, function (err, answer){
 
-                console.log("ITEMS MATCHING ",answer);
+                //console.log("ITEMS MATCHING ",answer);
 
                 if (err == null) resolve(answer);
                 else resolve ([]);
@@ -110,7 +114,7 @@ var SortedList = class{
         return new Promise( (resolve)=> {
             redis.redisClient.zscan(this.tablePrefix + ":" + tableName || "", iOffset||0, 'MATCH', '*'+(sMatch !== '' ? sMatch+ '*' : ''),function (err, answer) {
 
-                console.log("ITEMS MATCHING ",answer);
+                //console.log("ITEMS MATCHING ",answer);
 
                 if (err === null) resolve(answer);
                 else resolve([]);
@@ -173,7 +177,11 @@ var SortedList = class{
     async intersectionInStore(tableOutputName, argumentsIntersection){
         return new Promise( (resolve)=>{
 
-            let cmd = [tableOutputName, argumentsIntersection.length];
+            //creating the prefixes
+            for (let i = 0; i<argumentsIntersection.length; i++)
+                argumentsIntersection[i] = this.tablePrefix+":"+argumentsIntersection[i];
+
+            let cmd = [this.tablePrefix+":"+tableOutputName, argumentsIntersection.length];
             redis.redisClient.zinterstore(cmd.concat(argumentsIntersection), function (err, answer){
 
                 if (err === null) resolve(answer);

@@ -21,6 +21,10 @@ class SearchList {
         this.minimumWordLength = 3;
     }
 
+    setNewTablePrefix(sNewPrefix){
+        this.sortedList.setNewTablePrefix("Search:"+sNewPrefix);
+    }
+
     /*
         PREFIX BUILDING...
 
@@ -57,10 +61,10 @@ class SearchList {
             } else
                 sPrefix = '';
 
-            console.log("prefix",sPrefix);
+            //console.log("prefix",sPrefix);
 
             if ((sPrefix !== '')&&(sPrefix.length >= this.minimumWordLength)) {
-                console.log("creating search prefix", sPrefix);
+                //console.log("creating search prefix", sPrefix);
                 await this.sortedList.updateElement(sPrefix, score, autoCompleteHashIndex);
                 iCount++;
             }
@@ -121,11 +125,13 @@ class SearchList {
         let sOutputName = '';
 
         for (let i=0; i<arrPartialWordsToSearch.length; i++)
-            sOutputName = sOutputName + arrPartialWordsToSearch[i]+ '|';
+            sOutputName = sOutputName + arrPartialWordsToSearch[i]+ '&';
 
-        sOutputName.replace(/|$/,"");
+        sOutputName = sOutputName.replace(/.$/,"");
 
         let result = await this.sortedList.intersectionInStore(sOutputName, arrPartialWordsToSearch);
+
+        //console.log("@@@@@@@@@@@@ answer ", result,"@@@@@", sOutputName);
 
         if (result !== null){
             return await AutoCompleteStringsHashList.getAutoComplete(await this.sortedList.getListRangeBySortedIndex(sOutputName,1,10));
@@ -149,9 +155,9 @@ class SearchList {
         console.log("simple search for MAMA",await this.searchSimpleWord("MAMA"));
         console.log("simple search for SkyH",await this.searchSimpleWord("SkyH"));
 
-        console.log("simple search for MASINA ",await this.searchPhrase("MASINA MAMA"));
-        console.log("simple search for MAMA",await this.searchPhrase("MAMA ARE"));
-        console.log("simple search for SkyH",await this.searchPhrase("SkyH"));
+        console.log("SEARCH MASINA ",await this.searchPhrase("MASINA MAMA"));
+        console.log("SEARCH for MAMA",await this.searchPhrase("MAMA ARE"));
+        console.log("SEARCH for SkyH",await this.searchPhrase("SkyH"));
 
     }
 

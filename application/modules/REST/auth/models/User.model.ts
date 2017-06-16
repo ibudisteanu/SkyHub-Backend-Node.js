@@ -129,6 +129,13 @@ var UserModel = redis.nohm.model('UserModel', {
             return properties;
         },
 
+        calculateHotnessCoefficient : function (){
+
+            var ScoreCoefficientHelper = require ('../../../DB/common/score-coefficient/ScoreCoefficient.helper.ts');
+
+            return ScoreCoefficientHelper.calculateHotnessScoreCoefficient(this);
+        },
+
         getConnectedStatus : function () {
 
             var timeDiff = new Date().getTime() - this.p('dtLastActivity') ;

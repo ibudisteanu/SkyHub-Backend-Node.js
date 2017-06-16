@@ -11,6 +11,8 @@ var TopContentCtrl = require ('../forums/content/TopContent.controller.ts');
 var TopForumsCtrl = require ('../forums/content/TopForums.controller.ts');
 var ContentCtrl = require ('../forums/content/Content.controller.ts');
 
+var SearchesController = require ('../../REST/searches/Searches.controller.ts');
+
 router.get('/auth/login', function(req, res, next) {
 
     AuthenticateCtrl.postAuthenticateLogin(req, res).then ((answer) =>{
@@ -116,6 +118,12 @@ router.get('/test/SearchList', function (req,res,next){
 
     SearchList = new SearchList();
     res.json( {message: SearchList.test() });
+});
+
+router.get('/test/search/Build-Search-List', function (req,res,next){
+
+    let SearchesHelper = require ('./../../REST/searches/helpers/Searches.helper.ts');
+    res.json( {message: SearchesHelper.buildSearchTables() });
 });
 
 

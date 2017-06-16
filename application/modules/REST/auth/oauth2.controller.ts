@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var UsersHelper =  require('./helpers/Users.heper.ts');
+var UsersHelper =  require('./helpers/Users.helper.ts');
 var UserHelper =  require('./helpers/User.helper.ts');
 
 // import {Users} from './helpers/Users.model.ts';
