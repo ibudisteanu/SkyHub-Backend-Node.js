@@ -24,39 +24,12 @@ var TopicModel = redis.nohm.model('TopicModel', {
 
             ]
         },
-        URL: {
-            type: 'string',
-            unique: true,
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 4
-                }]
-
-            ]
+        attachments: {
+            type: 'json',
+            //it contains link and  thumbnail
         },
         description: {
             type: 'string',
-            unique: true,
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 4
-                }]
-
-            ]
-        },
-        shortDescription: {
-            type: 'string',
-            unique: true,
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 4,
-                    max: 400,
-                }]
-
-            ]
         },
         authorId: {
             defaultValue: '',
@@ -81,6 +54,16 @@ var TopicModel = redis.nohm.model('TopicModel', {
         /*
          COMMON PROPERTIES
          */
+        URL: {
+            type: 'string',
+            // validations: [
+            //     ['notEmpty'],
+            //     ['length', {
+            //         min: 2
+            //     }],
+            //     'validateUniqueURL',
+            // ]
+        },
         country: {
             type: 'string',
             validations: [

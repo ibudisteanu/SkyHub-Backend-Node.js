@@ -28,18 +28,8 @@ module.exports = {
 
         var forumFound = await this.findForumById(sRequest);
 
-        return new Promise((resolve) =>{
-
-            //console.log('FORUM FOUND'); console.log(userFound);
-            //console.log('answer from email....'); console.log(res);
-
-            if (forumFound != null) resolve (forumFound);
-            else
-                this.findForumByURL(sRequest).then ( (forumFound) => {
-                    resolve (forumFound);
-                })
-        });
-
+        if (forumFound !== null) return forumFound;
+        else return await this.findForumByURL(sRequest);
     },
 
     async findForumById (sId){
@@ -49,8 +39,6 @@ module.exports = {
             if ((typeof sId === 'undefined') || (sId == []) || (sId === null))
                 resolve(null);
             else
-
-            //  console.log('finding forum '+sId);
             var ForumModel  = redis.nohm.factory('ForumModel', sId, function (err, forum) {
                 if (err) resolve (null);
                 else resolve (ForumModel);
@@ -59,8 +47,8 @@ module.exports = {
         });
     },
 
-    findForumByURL (sURL)
-    {
+    findForumByURL (sURL){
+
         sURL = sURL || "";
         return new Promise( (resolve)=> {
             if ((typeof sURL === 'undefined') || (sURL == []) || (sURL === null))
@@ -68,13 +56,9 @@ module.exports = {
             else
                 return null;
 
-            //console.log('finding user '+sId);
-
-            var ForumModel = redis.nohm.factory('ForumModel');
-            ForumModel.findAndLoad(  {URL: sURL }, function (err, forums) {
-                //console.log("response forums : from URL ", forums);
-
-                if (forums.length) resolve(forums[0]);
+            var TopicModel = redis.nohm.factory('ForumModel');
+            TopicModel.findAndLoad(  {URL: sURL }, function (err, topics) {
+                if (topics.length) resolve(topics[0]);
                 else resolve (null);
             });
 

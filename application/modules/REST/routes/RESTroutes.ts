@@ -7,6 +7,7 @@ var AuthenticateCtrl = require ('../auth/Authenticate.controller.ts');
 var FunctionsCtrl = require ('./../common/functions/functions.controller.ts');
 
 var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
+var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
 
 var TopContentCtrl = require ('../forums/content/TopContent.controller.ts');
 var TopForumsCtrl = require ('../forums/content/TopForums.controller.ts');
@@ -64,6 +65,12 @@ router.get('/forums/get-top-forums', function (req, res, next){
 
 router.get('/forums/get-forum', function (req, res, next){
     TopForumsCtrl.postGetForum(req, res).then ( (answer) => {
+        res.json( answer );
+    });
+});
+
+router.get('/topics/add-topic', function (req, res, next){
+    TopicsCtrl.postAddTopic(req, res).then ( (answer ) => {
         res.json( answer );
     });
 });
@@ -224,7 +231,6 @@ router.processSocketRoute = function (socket)
         ForumsCtrl.postAddForum(data, socket).then ( (res ) => {
             socket.emit("api/forums/add-forum", res);
         });
-
     });
 
     socket.on("api/forums/get-forum", function (data){
@@ -242,8 +248,18 @@ router.processSocketRoute = function (socket)
         TopForumsCtrl.postGetTopForums(data, socket).then ( (res ) => {
             socket.emit("api/forums/get-top-forums", res);
         });
-
     });
+
+    socket.on("api/topics/add-topic", function (data){
+        data.body = data;
+
+        TopicsCtrl.postAddTopic(data, socket).then ( (res ) => {
+            socket.emit("api/topics/add-topic", res);
+        });
+    });
+
+
+
 
     socket.on("api/content/get-top-content", function (data){
         data.body = data;
@@ -251,7 +267,6 @@ router.processSocketRoute = function (socket)
         TopContentCtrl.postGetTopContent(data, socket).then ( (res ) => {
             socket.emit("api/content/get-top-content", res);
         });
-
     });
 
     socket.on("api/content/get-content", function (data){

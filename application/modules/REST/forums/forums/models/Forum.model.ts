@@ -34,16 +34,6 @@ var ForumModel = redis.nohm.model('ForumModel', {
 
             ]
         },
-        URL: {
-            type: 'string',
-            // validations: [
-            //     ['notEmpty'],
-            //     ['length', {
-            //         min: 2
-            //     }],
-            //     'validateUniqueURL',
-            // ]
-        },
         description: {
             type: 'string',
             validations: [
@@ -98,6 +88,16 @@ var ForumModel = redis.nohm.model('ForumModel', {
         /*
          COMMON PROPERTIES
          */
+        URL: {
+            type: 'string',
+            // validations: [
+            //     ['notEmpty'],
+            //     ['length', {
+            //         min: 2
+            //     }],
+            //     'validateUniqueURL',
+            // ]
+        },
         country: {
             type: 'string',
             validations: [
