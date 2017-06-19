@@ -72,7 +72,7 @@ module.exports = {
     async addTopic (userAuthenticated, parent,  sTitle, sImage, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude){
 
         sCountry = sCountry || ''; sCity = sCity || '';
-        dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iTimeZone = iTimeZone || 0;
+        dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666;
 
         sLanguage = sLanguage || sCountry;
         parent = parent || '';
@@ -81,7 +81,7 @@ module.exports = {
         var errorValidation = {};
 
         //get object from parent
-        console.log("addForum ===============", userAuthenticated);
+        //console.log("addTopic ===============", userAuthenticated);
 
         topic.p(
             {

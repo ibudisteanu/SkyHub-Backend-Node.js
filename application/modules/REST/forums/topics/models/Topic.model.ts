@@ -30,6 +30,9 @@ var TopicModel = redis.nohm.model('TopicModel', {
         description: {
             type: 'string',
         },
+        image: {
+            type: 'string',
+        },
         keywords : {
             type: 'string',
             /*validations: [   //not necessary
@@ -138,8 +141,8 @@ var TopicModel = redis.nohm.model('TopicModel', {
 
         keepSortedList : async function (bDelete){
 
-            var TopForumsHelper = require ('./../../content/helpers/TopForums.helper.ts');
-            return TopForumsHelper.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parents'), bDelete);
+            var TopContentHelper = require ('./../../content/helpers/TopContent.helper.ts');
+            return TopContentHelper.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parents'), bDelete);
 
         },
 

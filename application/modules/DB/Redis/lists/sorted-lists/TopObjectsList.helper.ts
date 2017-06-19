@@ -39,9 +39,8 @@ class TopObjectsList {
 
                 let object = await MaterializedParents.findObject(id);
 
-                console.log("TOP CONTENT OBJECT FOUND: ", object.p('title'));
-
                 if (object !== null){
+                    console.log("TOP CONTENT OBJECT FOUND: ", object.p('title'));
                     listTopContentObjects.push({
                         object : object.getPublicInformation(),
                         //score: score,

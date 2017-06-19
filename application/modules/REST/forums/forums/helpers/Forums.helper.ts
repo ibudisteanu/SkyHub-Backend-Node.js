@@ -85,7 +85,7 @@ module.exports = {
 
 
         //get object from parent
-        console.log("addForum ===============", userAuthenticated);
+        //console.log("addForum ===============", userAuthenticated);
 
         forum.p(
             {
