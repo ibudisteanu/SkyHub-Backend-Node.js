@@ -7,7 +7,7 @@ var AuthenticateCtrl = require ('../auth/Authenticate.controller.ts');
 var FunctionsCtrl = require ('./../common/functions/functions.controller.ts');
 
 var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
-var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
+var TopicsCtrl = require ('../forums/topics/Topics.controller.ts');
 
 var TopContentCtrl = require ('../forums/content/TopContent.controller.ts');
 var TopForumsCtrl = require ('../forums/content/TopForums.controller.ts');
@@ -289,6 +289,13 @@ router.processSocketRoute = function (socket)
         data.body = data;
         SearchesController.searchParents(data, socket).then ( ( answer ) => {
             socket.emit("api/search/parents", answer);
+        });
+    });
+
+    socket.on("api/meta-extractor/extract-url", function (data) {
+        data.body = data;
+        MetaExtractorController.extractDataFromLink(data, socket).then ( ( answer ) => {
+            socket.emit("api/meta-extractor/extract-url", answer);
         });
     });
 

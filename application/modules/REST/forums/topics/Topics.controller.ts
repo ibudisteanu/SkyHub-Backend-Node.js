@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var ForumsHelper = require('./helpers/Forums.helper.ts');
+var TopicsHelper = require('./helpers/Topics.helper.ts');
 
 var AuthenticatingUser = require('../../auth/helpers/AuthenticatingUser.helper.ts');
 
@@ -13,7 +13,7 @@ module.exports = {
      REST API
      */
 
-    async postAddForum (req, res){
+    async postAddTopic (req, res){
 
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
@@ -47,10 +47,10 @@ module.exports = {
 
         console.log('Creating a Forum : ', sTitle);
 
-        return await ForumsHelper.addForum(userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone);
+        return await TopicsHelper.addTopic(userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone);
     },
 
-    async getForum (req, res){
+    async getTopic (req, res){
 
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
@@ -60,19 +60,19 @@ module.exports = {
             sId = req.body.id || '';
         }
 
-        console.log('Creating a Forum : ', sId);
+        console.log('Creating a Topic : ', sId);
 
-        return await ForumsHelper.getForum(userAuthenticated, sId);
-
-    },
-
-    postEditForum (req, res){
-
-
+        return await TopicsHelper.getTopic(userAuthenticated, sId);
 
     },
 
-    postDeleteForum (req, res){
+    postEditTopic (req, res){
+
+
+
+    },
+
+    postDeleteTopic (req, res){
 
 
 

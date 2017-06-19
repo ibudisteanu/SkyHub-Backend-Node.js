@@ -31,6 +31,12 @@ var TopicModel = redis.nohm.model('TopicModel', {
         description: {
             type: 'string',
         },
+        keywords : {
+            type: 'string',
+            /*validations: [   //not necessary
+                'validateKeywords'
+            ]*/
+        },
         authorId: {
             defaultValue: '',
             type: 'string',

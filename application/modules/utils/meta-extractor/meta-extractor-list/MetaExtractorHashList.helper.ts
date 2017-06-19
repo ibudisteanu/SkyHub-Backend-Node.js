@@ -40,7 +40,9 @@ class MetaExtractorHashList {
         url = this.fixURL(url);
         if (!this.isValidURL(url)) return null;
 
-        return JSON.parse( await this.hashList.getHash('',url) );
+        let res = await this.hashList.getHash('',url);
+        if (res !== null)
+            return JSON.parse( res );
     }
 
     async setMetaData(url, data){

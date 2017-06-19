@@ -39,6 +39,7 @@ module.exports = {
     async extractDataFromLink (sLink){
 
         sLink = MetaExtractorHashList.fixURL(sLink); //fixing the URL, avoiding duplicate URLs
+        console.log('processing link...',sLink);
         if (!MetaExtractorHashList.isValidURL(sLink)) return null;
 
         let hashData = await MetaExtractorHashList.getMetaData(sLink);

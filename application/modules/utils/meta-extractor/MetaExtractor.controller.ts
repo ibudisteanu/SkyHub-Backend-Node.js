@@ -23,7 +23,7 @@ module.exports = {
 
         console.log('extracting data from link: ', sLink);
 
-        let result = MetaExtractor.extractDataFromLink(sLink);
+        let result = await MetaExtractor.extractDataFromLink(sLink);
 
         if (result !== null)
             return {result:true, data: result};
