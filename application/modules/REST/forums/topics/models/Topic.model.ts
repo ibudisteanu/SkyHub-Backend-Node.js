@@ -4,7 +4,7 @@
  */
 
 var redis = require ('../../../../DB/redis_nohm');
-var modelIterator = require ('../../../../DB/Redis/nohm/nohm.iterator.ts');
+var nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator.ts');
 
 var TopicModel = redis.nohm.model('TopicModel', {
 
@@ -15,7 +15,6 @@ var TopicModel = redis.nohm.model('TopicModel', {
     properties: {
         title: {
             type: 'string',
-            unique: true,
             validations: [
                 ['notEmpty'],
                 ['length', {
@@ -53,7 +52,7 @@ var TopicModel = redis.nohm.model('TopicModel', {
             type: 'string',     //ID,ID2,ID3
         },
 
-        breadCrumbs: {
+        breadcrumbs: {
             type: 'json',
         },
 
@@ -129,8 +128,42 @@ var TopicModel = redis.nohm.model('TopicModel', {
                 return true;
 
             return false;
+        },
+
+        calculateHotnessCoefficient : function (){
+
+            var ScoreCoefficientHelper = require ('../../../../DB/common/score-coefficient/ScoreCoefficient.helper.ts');
+            return ScoreCoefficientHelper.calculateHotnessScoreCoefficient(this);
+        },
+
+        keepSortedList : async function (bDelete){
+
+            var TopForumsHelper = require ('./../../content/helpers/TopForums.helper.ts');
+            return TopForumsHelper.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parents'), bDelete);
+
+        },
+
+        keepURLSlug : async function (sOldURL,  bDelete){
+
+            var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
+            return URLHashHelper.replaceOldURL(sOldURL, this.p('URL'), this.id, bDelete);
         }
 
     },
-    //client: redis.someRedisClient // optional
+    //client: redis.redisClient.RedisClient, // the 2nd client to enable notifications
 });
+
+// redis.nohm.factory('TopicModel').subscribe('create', function (event) {
+//     console.log('topic with id'+event.target.id+' was created and now looks like this:', event.target.properties);
+//     console.log("previous", this);
+// });
+//
+// redis.nohm.factory('TopicModel').subscribe('update', function (event) {
+//     console.log('topic with id'+event.target.id+' was updated and now looks like this:', event.target.properties);
+//     console.log("previous", this);
+// });
+//
+// redis.nohm.factory('TopicModel').subscribe('delete', function (event) {
+//     console.log('topic with id'+event.target.id+' was deleted and now looks like this:', event.target.properties);
+//     console.log("previous", this);
+// });

@@ -2,6 +2,14 @@
 Thumbs.db
 ehthumbs.db
 
+node_modules/
+node_modules
+node_modules\
+.idea/
+tmp/
+build/
+.idea/workspace.xml
+
 # Folder config file
 Desktop.ini
 
@@ -51,9 +59,4 @@ Temporary Items
 .idea/
 .idea\
 
-node_modules/
-node_modules
-.idea/
-tmp/
-build/
-.idea/workspace.xml
+

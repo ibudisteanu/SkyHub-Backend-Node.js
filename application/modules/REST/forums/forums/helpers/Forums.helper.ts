@@ -105,6 +105,7 @@ module.exports = {
                 dtLastActivity: new Date(),
                 parentId: await MaterializedParentsHelper.getObjectId(parent),
                 parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),
+                breadcrumbs: await MaterializedParentsHelper.createBreadcrumbs(parent),
             }
         );
 

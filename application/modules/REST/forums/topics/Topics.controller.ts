@@ -18,7 +18,7 @@ module.exports = {
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let sTitle = '', sImage = '', sDescription = '', arrAttachments=[], arrKeywords = [], sCountry='', sCity='',sLanguage='';
-        let dbLatitude = 0, dbLongitude = 0, iTimeZone = 0;
+        let dbLatitude = 0, dbLongitude = 0;
 
         let parent = '';
 
@@ -40,14 +40,13 @@ module.exports = {
             dbLongitude = req.body.longitude || -666;
 
             sLanguage = req.body.language || sCountry;
-            iTimeZone = req.body.timeZone || 0;
 
             parent = req.body.parent || '';
         }
 
-        console.log('Creating a Forum : ', sTitle);
+        console.log('Creating a Topic : ', sTitle);
 
-        return await TopicsHelper.addTopic(userAuthenticated, parent, sTitle, sImage, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, iTimeZone);
+        return await TopicsHelper.addTopic(userAuthenticated, parent, sTitle, sImage, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude);
     },
 
     async getTopic (req, res){

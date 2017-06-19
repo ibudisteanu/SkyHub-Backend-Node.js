@@ -6,7 +6,6 @@
 var redis = require ('../../../../DB/redis_nohm');
 var nohmIterator = require   ('../../../../DB/Redis/nohm/nohm.iterator.ts');
 
-
 var ForumModel = redis.nohm.model('ForumModel', {
 
     idGenerator: function (callback){
@@ -66,7 +65,7 @@ var ForumModel = redis.nohm.model('ForumModel', {
             type: 'string',
         },
 
-        breadCrumbs: {
+        breadcrumbs: {
             type: 'json',
         },
 
@@ -161,14 +160,12 @@ var ForumModel = redis.nohm.model('ForumModel', {
         calculateHotnessCoefficient : function (){
 
             var ScoreCoefficientHelper = require ('../../../../DB/common/score-coefficient/ScoreCoefficient.helper.ts');
-
             return ScoreCoefficientHelper.calculateHotnessScoreCoefficient(this);
         },
 
         keepSortedList : async function (bDelete){
 
             var TopForumsHelper = require ('./../../content/helpers/TopForums.helper.ts');
-
             return TopForumsHelper.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parents'), bDelete);
 
         },
@@ -180,5 +177,21 @@ var ForumModel = redis.nohm.model('ForumModel', {
         }
 
     },
-    //client: redis.someRedisClient // optional
+    //client: redis.redisClient.RedisClient, // the 2nd client to enable notifications
 });
+//
+// redis.nohm.factory('ForumModel').subscribe('create', function (event) {
+//     console.log('ForumModel with id'+event.target.id+' was created and now looks like this:', event.target.properties);
+//     console.log("previous", this);
+// });
+//
+// redis.nohm.factory('ForumModel').subscribe('update', function (event) {
+//     console.log('ForumModel with id'+event.target.id+' was updated and now looks like this:', event.target.properties);
+//     console.log("previous", this);
+// });
+//
+// redis.nohm.factory('ForumModel').subscribe('delete', function (event) {
+//     console.log('ForumModel with id'+event.target.id+' was deleted and now looks like this:', event.target.properties);
+//     console.log("previous", this);
+// });
+//

@@ -69,7 +69,7 @@ module.exports = {
     /*
      CREATING A NEW Topic
      */
-    async addTopic (userAuthenticated, parent,  sTitle, sImage, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, iTimeZone){
+    async addTopic (userAuthenticated, parent,  sTitle, sImage, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude){
 
         sCountry = sCountry || ''; sCity = sCity || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iTimeZone = iTimeZone || 0;
@@ -97,9 +97,9 @@ module.exports = {
                 language: sLanguage.toLowerCase(),
                 dtCreation: new Date(),
                 dtLastActivity: new Date(),
-                timeZone : iTimeZone,
                 parentId: await MaterializedParentsHelper.getObjectId(parent),
                 parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),
+                breadcrumbs: await MaterializedParentsHelper.createBreadcrumbs(parent),
             }
         );
 
@@ -138,7 +138,5 @@ module.exports = {
     },
 
 
-
 }
-
 

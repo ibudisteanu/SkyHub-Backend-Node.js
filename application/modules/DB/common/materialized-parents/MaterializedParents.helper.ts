@@ -56,7 +56,7 @@ var MaterializedParents = class{
             case 'us':
                 return 'user';
 
-            case 'top':
+            case 'tpc':
                 return 'topic';
 
         }
@@ -84,18 +84,21 @@ var MaterializedParents = class{
         switch (idData.objectType) {
             case 'us':
                 //var UserModel = redis.nohm.factory('UserModel');
-
                 let UsersHelper = require('../../../REST/auth/helpers/Users.helper.ts');
 
                 return await UsersHelper.findUserById(sObjectId);
 
             case 'frm':
-
                 //var ForumModel = redis.nohm.factory('ForumModel');
-
                 let ForumsHelper = require ('../../../REST/forums/forums/helpers/Forums.helper.ts');
 
                 return await ForumsHelper.findForumById(sObjectId);
+
+            case 'tpc':
+                //var ForumModel = redis.nohm.factory('ForumModel');
+                let TopicsHelper = require ('../../../REST/forums/topics/helpers/Topics.helper.ts');
+
+                return await TopicsHelper.findTopicById(sObjectId);
         }
 
         return null;
@@ -167,6 +170,36 @@ var MaterializedParents = class{
         }
 
         return '';
+    }
+
+    async createBreadcrumbs(parent){
+        let currentBreadcrumbs = [];
+        parent = await this.findObject(parent);
+        if (parent !== null){
+            currentBreadcrumbs = parent.breadCrumbs||[];
+
+            let newBreadcrumb = {
+                url: parent.URL,
+                name: parent.title||parent.name,
+            };
+
+            switch (this.extractObjectTypeFromId(parent.id)){
+                case 'us':  newBreadcrumb.type = "user";
+                            break;
+                case 'frm': newBreadcrumb.type = "forum";
+                            break;
+                case 'tpc': newBreadcrumb.type = "topic";
+                            break;
+            }
+
+            if (parent.Name === "ForumModel") newBreadcrumb.type = "forum";
+            else
+            if (parent.Name === "TopicModel") newBreadcrumb.type = "topic";
+
+            currentBreadcrumbs.push(newBreadcrumb);
+        }
+
+        return currentBreadcrumbs;
     }
 
 
