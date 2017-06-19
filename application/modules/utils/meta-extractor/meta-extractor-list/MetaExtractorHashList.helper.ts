@@ -26,6 +26,11 @@ class MetaExtractorHashList {
 
         if (url.indexOf("www.") < 3) url.replace("www.","");
 
+        if (url.indexOf("youtube.com") >= 0) {   // https://www.youtube.com/watch?v=jylD0pLXn1k => https://youtu.be/jylD0pLXn1k =>
+            url.replace("watch?v=","");
+            url.replace("youtube.com","youtu.be");
+        }
+
         return url;
 
     }
@@ -43,6 +48,8 @@ class MetaExtractorHashList {
         let res = await this.hashList.getHash('',url);
         if (res !== null)
             return JSON.parse( res );
+
+        return null;
     }
 
     async setMetaData(url, data){

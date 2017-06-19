@@ -39,15 +39,20 @@ module.exports = {
     async extractDataFromLink (sLink){
 
         sLink = MetaExtractorHashList.fixURL(sLink); //fixing the URL, avoiding duplicate URLs
-        console.log('processing link...',sLink);
+        //console.log('processing link...',sLink);
         if (!MetaExtractorHashList.isValidURL(sLink)) return null;
 
         let hashData = await MetaExtractorHashList.getMetaData(sLink);
-        if (hashData !== null) return hashData;
+        if ((hashData !== null)&&(typeof hashData !== "undefined")) return hashData;
 
         let client = await this.fetchURLData(sLink);
 
         if (client !== null){
+
+            // if (sLink.indexOf("youtu.be") >= 0){ //extract youtube image
+            //     //https://youtu.be/jylD0pLXn1k => => http://img.youtube.com/vi/jylD0pLXn1k/0.jpg
+            //     client.image = "http://img.youtube.com/vi/"+ sLink.substring(sLink.indexOf("youtu.be")+"youtu.be".length+1);
+            // }
 
             let data = {
                 url: client.url,
