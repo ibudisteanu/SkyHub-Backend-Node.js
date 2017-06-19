@@ -69,35 +69,29 @@ module.exports = {
     /*
      CREATING A NEW Topic
      */
-    async addTopic (userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone){
+    async addTopic (userAuthenticated, parent,  sTitle, sImage, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, iTimeZone){
 
-        sCountry = sCountry || ''; sCity = sCity || ''; sIconPic = sIconPic || ''; sCoverPic = sCoverPic || '';
+        sCountry = sCountry || ''; sCity = sCity || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iTimeZone = iTimeZone || 0;
 
         sLanguage = sLanguage || sCountry;
         parent = parent || '';
-        sCoverColor = sCoverColor || ((1<<24)*Math.random()|0).toString(16);
 
-        while (sCoverColor.length < 6) sCoverColor = sCoverColor + '0';
-
-        var forum = redis.nohm.factory('ForumModel');
+        var topic = redis.nohm.factory('TopicModel');
         var errorValidation = {};
-
 
         //get object from parent
         console.log("addForum ===============", userAuthenticated);
 
-        forum.p(
+        topic.p(
             {
-                name: sName,
                 title: sTitle,
-                URL: await(URLHashHelper.getFinalNewURL('',sName,null)), //Getting a NEW URL
+                URL: await(URLHashHelper.getFinalNewURL('',sTitle,null)), //Getting a NEW URL
+                image: sImage,
+                attachments: arrAttachments,
                 description: sDescription,
                 authorId: (userAuthenticated !== null ? userAuthenticated.id : ''),
                 keywords: commonFunctions.convertKeywordsArrayToString(arrKeywords),
-                iconPic: sIconPic,
-                coverPic: sCoverPic,
-                coverColor: sCoverColor,
                 country: sCountry.toLowerCase(),
                 city: sCity.toLowerCase(),
                 language: sLanguage.toLowerCase(),
@@ -109,8 +103,8 @@ module.exports = {
             }
         );
 
-        if (dbLatitude != -666) forum.p('latitude', dbLatitude);
-        if (dbLongitude != -666) forum.p('longitude', dbLongitude);
+        if (dbLatitude != -666) topic.p('latitude', dbLatitude);
+        if (dbLongitude != -666) topic.p('longitude', dbLongitude);
 
         return new Promise( (resolve)=> {
 
@@ -120,20 +114,20 @@ module.exports = {
                 return false;
             }
 
-            forum.save(function (err) {
+            topic.save(function (err) {
                 if (err) {
-                    console.log("==> Error Saving Forum");
-                    console.log(forum.errors); // the errors in validation
+                    console.log("==> Error Saving Topic");
+                    console.log(topic.errors); // the errors in validation
 
-                    resolve({result:false, errors: forum.errors });
+                    resolve({result:false, errors: topic.errors });
                 } else {
                     console.log("Saving Forum Successfully");
 
-                    forum.keepURLSlug().then((answer)=> {
-                        forum.keepSortedList().then ((answer)=>{
-                            console.log(forum.getPrivateInformation());
+                    topic.keepURLSlug().then((answer)=> {
+                        topic.keepSortedList().then ((answer)=>{
+                            console.log(topic.getPrivateInformation());
 
-                            resolve( {result:true, forum: forum.getPrivateInformation() });
+                            resolve( {result:true, topic: topic.getPrivateInformation() });
                         });
                     });
                 }

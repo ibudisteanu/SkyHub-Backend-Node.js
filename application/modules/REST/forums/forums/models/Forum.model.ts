@@ -127,7 +127,6 @@ var ForumModel = redis.nohm.model('ForumModel', {
         },
         latitude : {type: 'number'},
         longitude : {type: 'number'},
-        timeZone: { type: 'number', },
         dtCreation: {type: 'timestamp'},
         dtLastActivity: {type: 'timestamp',},
 

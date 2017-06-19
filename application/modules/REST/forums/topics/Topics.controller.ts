@@ -17,18 +17,21 @@ module.exports = {
 
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
-        let sName = '', sTitle = '', sDescription = '', arrKeywords = [], sCountry='', sCity='',sLanguage='', sIconPic='', sCoverPic='', sCoverColor = '';
+        let sTitle = '', sImage = '', sDescription = '', arrAttachments=[], arrKeywords = [], sCountry='', sCity='',sLanguage='';
         let dbLatitude = 0, dbLongitude = 0, iTimeZone = 0;
 
         let parent = '';
 
-        console.log("@@@@@@@@@@@@@@ psotAddForm request", userAuthenticated);
+        console.log("@@@@@@@@@@@@@@ postAddTopic request", userAuthenticated);
 
         if (req.hasOwnProperty('body')){
             sTitle = req.body.title || '';
-            sName= req.body.name || '';
+
+            sImage= req.body.image || '';
             sDescription = req.body.description ||  '';
+
             arrKeywords = req.body.keywords || [];
+            arrAttachments = req.body.attachments || [];
 
             sCountry = req.body.country || '';
             sCity = req.body.city || '';
@@ -39,15 +42,12 @@ module.exports = {
             sLanguage = req.body.language || sCountry;
             iTimeZone = req.body.timeZone || 0;
 
-            sIconPic = req.body.iconPic || '';
-            sCoverPic = req.body.coverPic || '';
-            sCoverColor = req.body.coverColor || '';
             parent = req.body.parent || '';
         }
 
         console.log('Creating a Forum : ', sTitle);
 
-        return await TopicsHelper.addTopic(userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone);
+        return await TopicsHelper.addTopic(userAuthenticated, parent, sTitle, sImage, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, iTimeZone);
     },
 
     async getTopic (req, res){

@@ -99,7 +99,6 @@ var TopicModel = redis.nohm.model('TopicModel', {
         },
         latitude : {type: 'number'},
         longitude : {type: 'number'},
-        timeZone: { type: 'number', },
         dtCreation: {type: 'timestamp'},
         dtLastActivity: {type: 'timestamp',},
 

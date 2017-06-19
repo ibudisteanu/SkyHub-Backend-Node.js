@@ -17,7 +17,7 @@ module.exports = {
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let sName = '', sTitle = '', sDescription = '', arrKeywords = [], sCountry='', sCity='',sLanguage='', sIconPic='', sCoverPic='', sCoverColor = '';
-        let dbLatitude = 0, dbLongitude = 0, iTimeZone = 0;
+        let dbLatitude = 0, dbLongitude = 0;
 
         let parent = '';
 
@@ -36,7 +36,6 @@ module.exports = {
             dbLongitude = req.body.longitude || -666;
 
             sLanguage = req.body.language || sCountry;
-            iTimeZone = req.body.timeZone || 0;
 
             sIconPic = req.body.iconPic || '';
             sCoverPic = req.body.coverPic || '';
@@ -46,7 +45,7 @@ module.exports = {
 
         console.log('Creating a Forum : ', sTitle);
 
-        return await ForumsHelper.addForum(userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, iTimeZone);
+        return await ForumsHelper.addForum(userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude);
     },
 
     async getForum (req, res){
