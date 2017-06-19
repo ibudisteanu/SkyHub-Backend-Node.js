@@ -5,6 +5,7 @@
 
 var redis = require ('../../../../DB/redis_nohm');
 var nohmIterator = require   ('../../../../DB/Redis/nohm/nohm.iterator.ts');
+var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
 
 var ForumModel = redis.nohm.model('ForumModel', {
 
@@ -88,7 +89,9 @@ var ForumModel = redis.nohm.model('ForumModel', {
          COMMON PROPERTIES
          */
         URL: {
-            type: 'string',
+            type: function changeURL(newValue, key, oldValue){
+                return URLHashHelper.replaceOldURL(oldValue, newValue, this.id);
+            },
             // validations: [
             //     ['notEmpty'],
             //     ['length', {
@@ -172,7 +175,6 @@ var ForumModel = redis.nohm.model('ForumModel', {
 
         keepURLSlug : async function (sOldURL,  bDelete){
 
-            var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
             return URLHashHelper.replaceOldURL(sOldURL, this.p('URL'), this.id, bDelete);
         }
 
