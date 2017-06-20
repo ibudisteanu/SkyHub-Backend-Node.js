@@ -3,8 +3,6 @@
  * (C) BIT TECHNOLOGIES
  */
 
-
-
 var TopObjectsList = require('../../../../DB/Redis/lists/sorted-lists/TopObjectsList.helper.ts');
 
 

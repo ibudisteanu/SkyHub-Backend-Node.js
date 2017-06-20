@@ -10,7 +10,7 @@ var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
 var ForumModel = redis.nohm.model('ForumModel', {
 
     idGenerator: function (callback){
-        return nohmIterator.generateCommonIterator(callback,"frm");
+        return nohmIterator.generateCommonIterator(callback,"forum");
     },
 
     properties: {
@@ -89,9 +89,7 @@ var ForumModel = redis.nohm.model('ForumModel', {
          COMMON PROPERTIES
          */
         URL: {
-            type: function changeURL(newValue, key, oldValue){
-                return URLHashHelper.replaceOldURL(oldValue, newValue, this.id);
-            },
+            type: 'string',
             // validations: [
             //     ['notEmpty'],
             //     ['length', {

@@ -102,7 +102,7 @@ var UserModel = redis.nohm.model('UserModel', {
 
     },
     idGenerator: function (callback){
-        return nohmIterator.generateCommonIterator(callback,"us");
+        return nohmIterator.generateCommonIterator(callback,"user");
     },
     methods: { // optional
 

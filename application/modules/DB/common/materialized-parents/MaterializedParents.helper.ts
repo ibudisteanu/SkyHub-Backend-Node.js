@@ -50,13 +50,13 @@ var MaterializedParents = class{
         if (extractedIdData === null) return 'none';
 
         switch (extractedIdData.objectType || '') {
-            case 'frm':
+            case 'forum':
                 return 'forum';
 
-            case 'us':
+            case 'user':
                 return 'user';
 
-            case 'tpc':
+            case 'topic':
                 return 'topic';
 
         }
@@ -82,19 +82,19 @@ var MaterializedParents = class{
         if (idData === null) return null;
 
         switch (idData.objectType) {
-            case 'us':
+            case 'user':
                 //var UserModel = redis.nohm.factory('UserModel');
                 let UsersHelper = require('../../../REST/auth/helpers/Users.helper.ts');
 
                 return await UsersHelper.findUserById(sObjectId);
 
-            case 'frm':
+            case 'forum':
                 //var ForumModel = redis.nohm.factory('ForumModel');
                 let ForumsHelper = require ('../../../REST/forums/forums/helpers/Forums.helper.ts');
 
                 return await ForumsHelper.findForumById(sObjectId);
 
-            case 'tpc':
+            case 'topic':
                 //var ForumModel = redis.nohm.factory('ForumModel');
                 let TopicsHelper = require ('../../../REST/forums/topics/helpers/Topics.helper.ts');
 
@@ -184,11 +184,11 @@ var MaterializedParents = class{
             };
 
             switch (this.extractObjectTypeFromId(parent.id)){
-                case 'us':  newBreadcrumb.type = "user";
+                case 'user':  newBreadcrumb.type = "user";
                             break;
-                case 'frm': newBreadcrumb.type = "forum";
+                case 'forum': newBreadcrumb.type = "forum";
                             break;
-                case 'tpc': newBreadcrumb.type = "topic";
+                case 'topic': newBreadcrumb.type = "topic";
                             break;
             }
 

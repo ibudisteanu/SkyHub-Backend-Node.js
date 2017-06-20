@@ -9,7 +9,7 @@ var nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator.ts');
 var TopicModel = redis.nohm.model('TopicModel', {
 
     idGenerator: function (callback){
-        return nohmIterator.generateCommonIterator(callback,"top");
+        return nohmIterator.generateCommonIterator(callback,"topic");
     },
 
     properties: {
