@@ -7,6 +7,7 @@ var topicModel = require ('./../models/Topic.model.ts');
 var commonFunctions = require ('../../../common/helpers/common-functions.helper.ts');
 var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
 var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
+var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
 
 module.exports = {
 
@@ -83,10 +84,13 @@ module.exports = {
         //get object from parent
         //console.log("addTopic ===============", userAuthenticated);
 
+        let parentObject = await MaterializedParentsHelper.findObject(parent);
+
+
         topic.p(
             {
                 title: sTitle,
-                URL: await(URLHashHelper.getFinalNewURL('',sTitle,null)), //Getting a NEW URL
+                URL: await(URLHashHelper.getFinalNewURL(( parentObject !==  null ? parentObject.p('URL') : '') , sTitle,null)), //Getting a NEW URL with this template: skyhub.me/forum-name/topic-name
                 image: sImage,
                 attachments: arrAttachments,
                 description: sDescription,
@@ -97,9 +101,9 @@ module.exports = {
                 language: sLanguage.toLowerCase(),
                 dtCreation: new Date(),
                 dtLastActivity: new Date(),
-                parentId: await MaterializedParentsHelper.getObjectId(parent),
+                parentId: await MaterializedParentsHelper.getObjectId(parentObject),
                 parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),
-                breadcrumbs: await MaterializedParentsHelper.createBreadcrumbs(parent),
+                breadcrumbs: await MaterializedParentsHelper.createBreadcrumbs(parentObject),
             }
         );
 
@@ -114,22 +118,21 @@ module.exports = {
                 return false;
             }
 
-            topic.save(function (err) {
+            topic.save(async function (err) {
                 if (err) {
                     console.log("==> Error Saving Topic");
                     console.log(topic.errors); // the errors in validation
 
                     resolve({result:false, errors: topic.errors });
                 } else {
-                    console.log("Saving Forum Successfully");
+                    console.log("Saving Topic Successfully");
 
-                    topic.keepURLSlug().then((answer)=> {
-                        topic.keepSortedList().then ((answer)=>{
-                            console.log(topic.getPrivateInformation());
+                    await topic.keepURLSlug();
+                    await topic.keepSortedList();
+                    SearchesHelper.addForumToSearch(null,topic); //async, but not awaited
+                    console.log(topic.getPrivateInformation() );
 
-                            resolve( {result:true, topic: topic.getPrivateInformation() });
-                        });
-                    });
+                    resolve( {result:true, topic: topic.getPrivateInformation() });
                 }
             });
 

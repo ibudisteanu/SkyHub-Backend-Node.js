@@ -66,7 +66,7 @@ var MaterializedParents = class{
 
     async findIdFromURL(sObjectURL){
 
-        if ( sObjectURL === null) return null;
+        if (( sObjectURL === null)||(typeof sObjectURL === "udnefined")) return null;
         if ( sObjectURL.constructor === "Object") return sObjectURL;
 
         sObjectURL = sObjectURL.toLowerCase();// I am storing low-case URLs
@@ -109,7 +109,7 @@ var MaterializedParents = class{
      */
     async findObjectFromURL(sObjectURL){
 
-        if ( sObjectURL === null) return null;
+        if (( sObjectURL === null)||(typeof sObjectURL === "undefined")) return null;
         if ( sObjectURL.constructor === "Object") return sObjectURL;
 
         let sIdExtracted = await this.findIdFromURL(sObjectURL);
@@ -121,6 +121,9 @@ var MaterializedParents = class{
     }
 
     async findObject(objectToSearch){
+
+        if (objectToSearch === null) return null;
+        if ((typeof objectToSearch !== "undefined") && (typeof objectToSearch !== "string") && (objectToSearch.constructor === "object")) return objectToSearch; //already and object
 
         let idData = this.extractDataFromIds(objectToSearch);
 
@@ -155,7 +158,7 @@ var MaterializedParents = class{
 
     async getObjectId(objectToSearch){
 
-        if (objectToSearch === null) return '';
+        if ((objectToSearch === null)||(typeof objectToSearch === "undefined")) return '';
         if (objectToSearch === '') return '';
         if (objectToSearch.constructor === "object" ) return objectToSearch.id;//in case their is a Model Object, we will return its ID
 
@@ -178,7 +181,7 @@ var MaterializedParents = class{
         if (parent !== null){
             currentBreadcrumbs = parent.p('breadcrumbs')||[];
 
-            console.log(currentBreadcrumbs, typeof currentBreadcrumbs);
+            //console.log(currentBreadcrumbs, typeof currentBreadcrumbs);
             if (typeof currentBreadcrumbs === "string") currentBreadcrumbs = JSON.parse(currentBreadcrumbs);
 
             let newBreadcrumb = {
