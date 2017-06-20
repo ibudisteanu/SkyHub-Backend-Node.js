@@ -7,6 +7,7 @@ var forumModel = require ('./../models/Forum.model.ts');
 var commonFunctions = require ('../../../common/helpers/common-functions.helper.ts');
 var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
 var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
+var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
 
 module.exports = {
 
@@ -72,7 +73,7 @@ module.exports = {
     async addForum (userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude){
 
         sCountry = sCountry || ''; sCity = sCity || ''; sIconPic = sIconPic || ''; sCoverPic = sCoverPic || '';
-        dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iTimeZone = iTimeZone || 0;
+        dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666;
 
         sLanguage = sLanguage || sCountry;
         parent = parent || '';
@@ -120,7 +121,7 @@ module.exports = {
                 return false;
             }
 
-            forum.save(function (err) {
+            forum.save(async function (err) {
                 if (err) {
                     console.log("==> Error Saving Forum");
                     console.log(forum.errors); // the errors in validation
@@ -129,13 +130,20 @@ module.exports = {
                 } else {
                     console.log("Saving Forum Successfully");
 
-                    forum.keepURLSlug().then((answer)=> {
-                        forum.keepSortedList().then ((answer)=>{
-                            console.log(forum.getPrivateInformation());
+                    await forum.keepURLSlug();
+                    await forum.keepSortedList();
+                    SearchesHelper.addForumToSearch(null,forum); //async, but not awaited
+                    console.log(forum.getPrivateInformation());
 
-                            resolve( {result:true, forum: forum.getPrivateInformation() });
-                        });
-                    });
+                    resolve( {result:true, forum: forum.getPrivateInformation() });
+
+                    // forum.keepURLSlug().then((answer)=> {
+                    //     forum.keepSortedList().then ((answer)=>{
+                    //         console.log(forum.getPrivateInformation());
+                    //
+                    //         resolve( {result:true, forum: forum.getPrivateInformation() });
+                    //     });
+                    // });
                 }
             });
 

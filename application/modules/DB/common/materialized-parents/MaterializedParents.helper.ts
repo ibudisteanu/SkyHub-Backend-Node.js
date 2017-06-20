@@ -176,25 +176,16 @@ var MaterializedParents = class{
         let currentBreadcrumbs = [];
         parent = await this.findObject(parent);
         if (parent !== null){
-            currentBreadcrumbs = parent.breadCrumbs||[];
+            currentBreadcrumbs = parent.p('breadcrumbs')||[];
+
+            console.log(currentBreadcrumbs, typeof currentBreadcrumbs);
+            if (typeof currentBreadcrumbs === "string") currentBreadcrumbs = JSON.parse(currentBreadcrumbs);
 
             let newBreadcrumb = {
-                url: parent.URL,
-                name: parent.title||parent.name,
+                url: parent.p('URL'),
+                name: parent.p('title')||parent.p('name'),
+                type: this.extractObjectTypeFromId(parent.id),
             };
-
-            switch (this.extractObjectTypeFromId(parent.id)){
-                case 'user':  newBreadcrumb.type = "user";
-                            break;
-                case 'forum': newBreadcrumb.type = "forum";
-                            break;
-                case 'topic': newBreadcrumb.type = "topic";
-                            break;
-            }
-
-            if (parent.Name === "ForumModel") newBreadcrumb.type = "forum";
-            else
-            if (parent.Name === "TopicModel") newBreadcrumb.type = "topic";
 
             currentBreadcrumbs.push(newBreadcrumb);
         }
@@ -271,8 +262,11 @@ var MaterializedParents = class{
         console.log("Finding object by Id ",await this.findObjectFromId("1_us_14958408645963304") );
 
         var object = await this.findObjectFromId("1_frm_14974606406414877");
-        console.log("find object", object.id);
+        console.log("find object - ", (object !== null ? object.id : 'not found'));
         console.log("find all MATERIALIZED PARENTS ",await this.findAllMaterializedParents(object) );
+
+        let newBreadCrumbs = await this.createBreadcrumbs("1_forum_14979701092538550");
+        console.log("new bread crumbs",newBreadCrumbs, typeof newBreadCrumbs);
     }
 
 };
