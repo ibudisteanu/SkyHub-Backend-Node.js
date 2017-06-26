@@ -24,6 +24,7 @@ router.get('/auth/login', function(req, res, next) {
 });
 
 router.get('/auth/login-session', function(req, res){
+    console.log("login-session")
     AuthenticateCtrl.postAuthenticateSession(req, res).then ((answer)=>{
         res.json(answer);
     });

@@ -20,7 +20,7 @@ class AuthenticatedUser {
             if (req.body.hasOwnProperty('sessionId'))
                 sSessionId = req.body.sessionId||'';
 
-        if ((sSessionId === "")||(sSessionId === null)) {
+        if ((sSessionId === "")||(sSessionId === null)||(sSessionId.length < 5)) {
             console.log("Error. Invalid Session - session is empty");
             return null;
         }
@@ -32,7 +32,7 @@ class AuthenticatedUser {
 
         let sSessionId = this.getSessionId(req);
 
-        if ((sSessionId === "")||(sSessionId === null)) {
+        if ((sSessionId === "")||(sSessionId === null)||(sSessionId.length < 5)) {
             console.log("Error. Invalid Session - session is empty");
             return null;
         }

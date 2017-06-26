@@ -66,8 +66,11 @@ var MaterializedParents = class{
 
     async findIdFromURL(sObjectURL){
 
-        if (( sObjectURL === null)||(typeof sObjectURL === "udnefined")) return null;
+        if (( sObjectURL === null)||(typeof sObjectURL === "undefined")) return null;
         if ( sObjectURL.constructor === "Object") return sObjectURL;
+
+        if ((sObjectURL.length > 1)&&(sObjectURL[1] === '/' )) sObjectURL = sObjectURL.substr(1); //removing the /prefix
+        console.log("FIND ID FROM URL    ",sObjectURL);
 
         sObjectURL = sObjectURL.toLowerCase();// I am storing low-case URLs
 
