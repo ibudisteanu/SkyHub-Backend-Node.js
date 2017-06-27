@@ -74,30 +74,12 @@ var TopicModel = redis.nohm.model('TopicModel', {
         },
         country: {
             type: 'string',
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 1
-                }]
-            ]
         },
         city: {
             type: 'string',
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 2
-                }]
-            ],
         },
         language: {
             type: 'string',
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 2
-                }]
-            ]
         },
         latitude : {type: 'number'},
         longitude : {type: 'number'},

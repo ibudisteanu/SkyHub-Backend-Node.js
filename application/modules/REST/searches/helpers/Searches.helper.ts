@@ -6,7 +6,6 @@
 var SearchList = require('../../../DB/Redis/lists/search/SearchList.helper.ts');
 
 var forumModel = require ('./../../forums/forums/models/Forum.model.ts');
-var ForumsHelper = require ('./../../forums/forums/helpers/Forums.helper.ts');
 
 var userModel = require ('./../../auth/models/User.model.ts');
 var UsersHelper = require ('./../../auth/helpers/Users.helper.ts');
@@ -51,8 +50,12 @@ class Searches {
         let forum = null;
         if (text === null ){
 
-            if (typeof index === "string")
+            console.log(index, ForumsHelper);
+
+            if (typeof index === "string") {
+                var ForumsHelper = require ('./../../forums/forums/helpers/Forums.helper.ts');
                 forum = await ForumsHelper.findForumById(index);
+            }
             else forum = index;
 
             if (forum !== null) {
@@ -92,7 +95,7 @@ class Searches {
 
         forumModelORM.find(function (err, ids){
 
-            let SearchesHelper = require ('./Searches.helper.ts');
+            var SearchesHelper = require ('./Searches.helper.ts');
 
             for (let i=0; i<ids.length; i++)
                 SearchesHelper.addForumToSearch(null,ids[i], 0);
