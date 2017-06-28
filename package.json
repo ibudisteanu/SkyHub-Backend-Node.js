@@ -8,11 +8,8 @@
     "webpack": "webpack"
   },
   "dependencies": {
-<<<<<<< HEAD
-=======
     "asn1": "^0.2.3",
     "axios": "^0.16.2",
->>>>>>> bfc0c3b5145c57bb85077844469e788b26bf832c
     "bcrypt": "^1.0.2",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
