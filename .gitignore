@@ -2,7 +2,10 @@
 Thumbs.db
 ehthumbs.db
 
+# Dependency directories
 node_modules/
+jspm_packages/
+
 node_modules
 node_modules\
 .idea/
