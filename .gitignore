@@ -7,7 +7,7 @@ node_modules/
 jspm_packages/
 
 node_modules
-node_modules\
+public/uploads/
 .idea/
 tmp/
 build/
@@ -60,6 +60,5 @@ Temporary Items
 .apdisk
 .idea/workspace.xml
 .idea/
-.idea\
 
 

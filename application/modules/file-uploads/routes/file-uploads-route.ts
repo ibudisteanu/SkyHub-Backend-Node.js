@@ -57,7 +57,8 @@ const storage = multer.diskStorage({
         }
 
 
-        let sNewOriginalName = file.originalname.replace("/","");
+        let sNewOriginalName = file.originalname;
+        sNewOriginalName = sNewOriginalName.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'_');
         sNewOriginalName = sNewOriginalName.slice(0, file.originalname.toLowerCase().indexOf(ext)) + Date.now() + ext;
 
         cb(null,  sNewOriginalName);
