@@ -1,5 +1,6 @@
 var redis = require ('../../../DB/redis_nohm');
 var nohmIterator = require ('../../../DB/Redis/nohm/nohm.iterator.ts');
+var md5 = require ('md5');
 
 var UserModel = redis.nohm.model('UserModel', {
     properties: {
@@ -110,10 +111,27 @@ var UserModel = redis.nohm.model('UserModel', {
             return this.p('firstName') + ' ' + this.p('lastName');
         },
 
+        getAvatar : function (){
+
+
+            if ( this.p('profilePic').length > 0 )
+                return this.p('profilePic');
+
+            /*
+                wavatar Gravatar sample https://www.gravatar.com/avatar/00000000000000000000000000000000?d=wavatar&f=y
+                documentation: https://en.gravatar.com/site/implement/images/
+             */
+
+            let gravatarId = md5(this.id);
+            return 'https://www.gravatar.com/avatar/'+gravatarId+'?d=wavatar&f=y';
+
+        },
+
         getPublicInformation : function (){
             var properties = this.allProperties();
 
             properties.connected = this.getConnectedStatus();
+            properties.profilePic = this.getAvatar();
             delete properties.password;
             delete properties.email;
 
