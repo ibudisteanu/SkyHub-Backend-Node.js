@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var ForumsHelper = require('./helpers/Forums.helper.ts');
+var RepliesHelper = require('./helpers/Replies.helper.ts');
 
 var AuthenticatingUser = require('../../auth/helpers/AuthenticatingUser.helper.ts');
 
@@ -17,7 +17,7 @@ module.exports = {
 
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
-        let sName = '', sTitle = '', sDescription = '', arrKeywords = [], sCountry='', sCity='',sLanguage='', sIconPic='', sCoverPic='', sCoverColor = '';
+        let parent='', parentReply = '', sName = '', sTitle = '', sDescription = '', arrKeywords = [], arrAttachments = [], sCountry='', sCity='',sLanguage='';
         let dbLatitude = 0, dbLongitude = 0;
 
         let parent = '';
@@ -26,27 +26,25 @@ module.exports = {
 
         if (req.hasOwnProperty('body')){
             sTitle = req.body.title || '';
-            sName= req.body.name || '';
+
             sDescription = req.body.description ||  '';
             arrKeywords = req.body.keywords || [];
+            arrAttachments = req.body.attachments || [];
 
             sCountry = req.body.country || '';
             sCity = req.body.city || '';
+            sLanguage = req.body.language || sCountry;
 
             dbLatitude = req.body.latitude || -666;
             dbLongitude = req.body.longitude || -666;
 
-            sLanguage = req.body.language || sCountry;
-
-            sIconPic = req.body.iconPic || '';
-            sCoverPic = req.body.coverPic || '';
-            sCoverColor = req.body.coverColor || '';
+            parentReply = req.body.parentReply || '';
             parent = req.body.parent || '';
         }
 
-        console.log('Creating a Forum : ', sTitle);
+        console.log('Creating a Reply : ', sTitle);
 
-        return await ForumsHelper.addForum(userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude);
+        return await RepliesHelper.addReply(userAuthenticated, parent, parentReply, sTitle, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude);
     },
 
     async getReply (req, res){
@@ -59,9 +57,9 @@ module.exports = {
             sId = req.body.id || '';
         }
 
-        console.log('Creating a Forum : ', sId);
+        console.log('getting a Reply : ', sId);
 
-        return await ForumsHelper.getForum(userAuthenticated, sId);
+        return await RepliesHelper.getReply(userAuthenticated, sId);
 
     },
 

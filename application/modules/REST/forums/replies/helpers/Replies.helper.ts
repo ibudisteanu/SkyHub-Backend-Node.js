@@ -97,7 +97,7 @@ module.exports = {
             {
                 title: sTitle,
                 // URL template: skyhub.com/forum/topic#reply-name
-                URL: await( URLHashHelper.getFinalNewURL( parentObject.p('URL') , (sTitle.length > 0 ? sTitle : hat()) , null , '#' ),null), //Getting a NEW URL
+                URL: await URLHashHelper.getFinalNewURL( parentObject.p('URL') , (sTitle.length > 0 ? sTitle : hat()) , null , '#' ), //Getting a NEW URL
                 description: sDescription,
                 authorId: (userAuthenticated !== null ? userAuthenticated.id : ''),
                 keywords: commonFunctions.convertKeywordsArrayToString(arrKeywords),
@@ -107,6 +107,7 @@ module.exports = {
                 language: sLanguage.toLowerCase(),
                 dtCreation: new Date(),
                 dtLastActivity: new Date(),
+                replyParentId: await MaterializedParentsHelper.getObjectId(parentReply),
                 parentId: await MaterializedParentsHelper.getObjectId(parent),
                 parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),
             }

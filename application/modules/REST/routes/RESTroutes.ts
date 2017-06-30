@@ -8,6 +8,7 @@ var FunctionsCtrl = require ('./../common/functions/functions.controller.ts');
 
 var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
 var TopicsCtrl = require ('../forums/topics/Topics.controller.ts');
+var RepliesCtrl = require ('../forums/replies/Replies.controller.ts');
 
 var TopContentCtrl = require ('../forums/content/TopContent.controller.ts');
 var TopForumsCtrl = require ('../forums/content/TopForums.controller.ts');
@@ -93,6 +94,33 @@ router.get('/content/get-URL-slug', function (req, res, next){
         res.json( answer );
     });
 });
+
+router.get('/forums/add-forum', function (req, res, next){
+    ForumsCtrl.postAddForum(req, res).then ( (answer ) => {
+        res.json( answer );
+    });
+});
+
+// router.get('/replies/get-top-replies', function (req, res, next){
+//
+//     TopForumsCtrl.postGetTopForums(req, res).then ( (answer) => {
+//         res.json( answer );
+//     });
+// });
+
+
+// router.get('/replies/get-reply', function (req, res, next){
+//     TopForumsCtrl.postGetForum(req, res).then ( (answer) => {
+//         res.json( answer );
+//     });
+// });
+
+router.get('/replies/add-reply', function (req, res, next){
+    RepliesCtrl.postAddReply(req, res).then ( (answer ) => {
+        res.json( answer );
+    });
+});
+
 
 router.get('/search/parents', function (req, res, next){
     SearchesController.searchParents(req, res).then ( ( answer ) => {
@@ -250,6 +278,32 @@ router.processSocketRoute = function (socket)
             socket.emit("api/forums/get-top-forums", res);
         });
     });
+
+
+
+    socket.on("api/replies/add-reply", function (data){
+        data.body = data;
+
+        RepliesCtrl.postAddReply(data, socket).then ( (res ) => {
+            socket.emit("api/replies/add-reply", res);
+        });
+    });
+
+    // socket.on("api/forums/get-forum", function (data){
+    //     data.body = data;
+    //
+    //     TopForumsCtrl.postGetForum(data, socket).then ( (res ) => {
+    //         socket.emit("api/forums/get-forum", res);
+    //     });
+    // });
+
+    // socket.on("api/forums/get-top-forums", function (data){
+    //     data.body = data;
+    //
+    //     TopForumsCtrl.postGetTopForums(data, socket).then ( (res ) => {
+    //         socket.emit("api/forums/get-top-forums", res);
+    //     });
+    // });
 
     socket.on("api/topics/add-topic", function (data){
         data.body = data;

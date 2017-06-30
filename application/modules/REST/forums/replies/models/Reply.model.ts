@@ -46,6 +46,12 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
 
             ]
         },
+        keywords : {
+            type: 'string',
+            /*validations: [   //not necessary
+             'validateKeywords'
+             ]*/
+        },
         authorId: {
             defaultValue: '',
             type: 'string',
