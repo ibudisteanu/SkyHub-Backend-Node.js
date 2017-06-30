@@ -115,6 +115,8 @@ class Searches {
             }
         }
 
+        console.log('reply',text, index, score);
+
         await this.addContent(text, index, score);
 
         this.searchList.setNewTablePrefix("Replies");
@@ -136,26 +138,26 @@ class Searches {
 
         let parent = this;
 
-        forumModelORM.find(function (err, ids){
+        forumModelORM.find(async function (err, ids){
 
             for (let i=0; i<ids.length; i++)
-                SearchesHelper.addForumToSearch(null,ids[i], 0);
+                await this.addForumToSearch(null,ids[i], 0);
         }.bind(this) );
 
-        userModelORM.find(function (err, ids){
+        userModelORM.find(async function (err, ids){
 
             for (let i=0; i<ids.length; i++)
-                SearchesHelper.addUserToSearch(null,ids[i], 0);
+                await this.addUserToSearch(null,ids[i], 0);
         }.bind(this) );
 
-        topicModelORM.find(function (err, ids){
+        topicModelORM.find(async function (err, ids){
             for (let i=0; i<ids.length; i++)
-                SearchesHelper.addTopicToSearch(null,ids[i], 0);
+                await this.addTopicToSearch(null,ids[i], 0);
         }.bind(this) );
 
-        replyModelORM.find(function (err, ids){
+        replyModelORM.find(async function (err, ids){
             for (let i=0; i<ids.length; i++)
-                SearchesHelper.addReplyToSearch(null,ids[i], 0);
+                await this.addReplyToSearch(null,ids[i], 0);
         }.bind(this) );
 
     }

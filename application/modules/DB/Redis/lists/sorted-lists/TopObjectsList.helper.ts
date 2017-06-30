@@ -12,14 +12,16 @@ class TopObjectsList {
         this.sortedList = new SortedList("TopObjectsList:"+sPrefix);
     }
 
-    async getTopObjects(userAuthenticated, parent, pageIndex, pageCount){
+    async getTopObjects(userAuthenticated, parent, pageIndex, pageCount, iNumberOfMaximumResults){
+
+        if (typeof iNumberOfMaximumResults === 'undefined') iNumberOfMaximumResults = 20;
 
         var sParentId = await MaterializedParents.getObjectId(parent);
 
 
         console.log('              top objects ',parent,sParentId);
 
-        pageCount = Math.min(pageCount|| 8, 20);
+        pageCount = Math.min(pageCount|| 8, iNumberOfMaximumResults);
 
         let listTopContent = await this.sortedList.getFastItems(sParentId, pageIndex||1, pageCount );
 

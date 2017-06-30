@@ -53,6 +53,9 @@ var MaterializedParents = class{
             case 'forum':
                 return 'forum';
 
+            case 'reply':
+                return 'reply';
+
             case 'user':
                 return 'user';
 
@@ -96,6 +99,11 @@ var MaterializedParents = class{
                 let ForumsHelper = require ('../../../REST/forums/forums/helpers/Forums.helper.ts');
 
                 return await ForumsHelper.findForumById(sObjectId);
+
+            case 'reply':
+                let RepliesHelper = require('../../../REST/forums/replies/helpers/Replies.helper.ts');
+
+                return await RepliesHelper.findReplyById(sObjectId);
 
             case 'topic':
                 //var ForumModel = redis.nohm.factory('ForumModel');

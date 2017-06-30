@@ -12,36 +12,29 @@ var RepliesCtrl = require ('../forums/replies/Replies.controller.ts');
 
 var TopContentCtrl = require ('../forums/content/TopContent.controller.ts');
 var TopForumsCtrl = require ('../forums/content/TopForums.controller.ts');
+var TopRepliesCtrl = require ('../forums/content/TopReplies.controller.ts');
+
 var ContentCtrl = require ('../forums/content/Content.controller.ts');
 
 var SearchesController = require ('../../REST/searches/Searches.controller.ts');
 var MetaExtractorController = require ('../../utils/meta-extractor/MetaExtractor.controller.ts');
 
 router.get('/auth/login', function(req, res, next) {
-
-    AuthenticateCtrl.postAuthenticateLogin(req, res).then ((answer) =>{
-        res.json(answer);
-    });
+    AuthenticateCtrl.postAuthenticateLogin(req, res).then ((answer) =>{ res.json(answer); });
 });
 
 router.get('/auth/login-session', function(req, res){
-    console.log("login-session")
-    AuthenticateCtrl.postAuthenticateSession(req, res).then ((answer)=>{
-        res.json(answer);
-    });
+
+    AuthenticateCtrl.postAuthenticateSession(req, res).then ((answer)=>{ res.json(answer); });
 });
 
 router.get('/auth/register', function(req, res, next) {
-    AuthenticateCtrl.postAuthenticateRegister(req, res).then ( (answer ) => {
-        res.json(answer);
-    });
+    AuthenticateCtrl.postAuthenticateRegister(req, res).then ( (answer ) => { res.json(answer); });
 
 });
 
 router.get('/auth/register', function(req, res, next) {
-    AuthenticateCtrl.postAuthenticateRegister(req, res).then ( (answer ) => {
-        res.json(answer);
-    });
+    AuthenticateCtrl.postAuthenticateRegister(req, res).then ( (answer ) => { res.json(answer); });
 });
 
 router.get("auth/logout", function (req, res){
@@ -50,88 +43,68 @@ router.get("auth/logout", function (req, res){
     res.json({result:true});
 });
 
+//              FORUMS
 
 router.get('/forums/add-forum', function (req, res, next){
-    ForumsCtrl.postAddForum(req, res).then ( (answer ) => {
-        res.json( answer );
-    });
+    ForumsCtrl.postAddForum(req, res).then ( (answer ) => { res.json( answer ); });
 });
 
 router.get('/forums/get-top-forums', function (req, res, next){
-
-    TopForumsCtrl.postGetTopForums(req, res).then ( (answer) => {
-        res.json( answer );
-    });
+    TopForumsCtrl.postGetTopForums(req, res).then ( (answer) => { res.json( answer ); });
 });
 
 
 router.get('/forums/get-forum', function (req, res, next){
-    TopForumsCtrl.postGetForum(req, res).then ( (answer) => {
-        res.json( answer );
-    });
+    TopForumsCtrl.postGetForum(req, res).then ( (answer) => { res.json( answer ); });
 });
 
+//              TOPICS
+
 router.get('/topics/add-topic', function (req, res, next){
-    TopicsCtrl.postAddTopic(req, res).then ( (answer ) => {
-        res.json( answer );
-    });
+    TopicsCtrl.postAddTopic(req, res).then ( (answer ) => { res.json( answer ); });
 });
 
 router.get('/content/get-top-content', function (req, res, next){
-    TopContentCtrl.postGetTopContent(req, res).then ( (answer ) => {
-        res.json( answer );
-    });
+    TopContentCtrl.postGetTopContent(req, res).then ( (answer ) => { res.json( answer ); });
 });
 
 router.get('/content/get-content', function (req, res, next){
-    TopContentCtrl.postGetContent(req, res).then ( ( answer ) => {
-        res.json( answer );
-    });
+    TopContentCtrl.postGetContent(req, res).then ( ( answer ) => { res.json( answer ); });
 });
 
-router.get('/content/get-URL-slug', function (req, res, next){
-    ContentCtrl.postGetURLSlug(req, res).then ( ( answer ) => {
-        res.json( answer );
-    });
+
+
+//              REPLIES
+
+router.get('/replies/get-all-replies', function (req, res, next){
+    TopRepliesCtrl.postGetAllReplies(req, res).then ( (answer) => { res.json( answer ); });
 });
 
-router.get('/forums/add-forum', function (req, res, next){
-    ForumsCtrl.postAddForum(req, res).then ( (answer ) => {
-        res.json( answer );
-    });
+router.get('/replies/get-top-replies', function (req, res, next){
+    TopRepliesCtrl.postGetTopReplies(req, res).then ( (answer) => { res.json( answer ); });
 });
 
-// router.get('/replies/get-top-replies', function (req, res, next){
-//
-//     TopForumsCtrl.postGetTopForums(req, res).then ( (answer) => {
-//         res.json( answer );
-//     });
-// });
-
-
-// router.get('/replies/get-reply', function (req, res, next){
-//     TopForumsCtrl.postGetForum(req, res).then ( (answer) => {
-//         res.json( answer );
-//     });
-// });
+router.get('/replies/get-reply', function (req, res, next){
+    TopRepliesCtrl.postGetForum(req, res).then ( (answer) => { res.json( answer ); });
+});
 
 router.get('/replies/add-reply', function (req, res, next){
-    RepliesCtrl.postAddReply(req, res).then ( (answer ) => {
-        res.json( answer );
-    });
+    RepliesCtrl.postAddReply(req, res).then ( (answer ) => { res.json( answer ); });
 });
+
+//              SEARCH/META/SLUGs
 
 
 router.get('/search/parents', function (req, res, next){
-    SearchesController.searchParents(req, res).then ( ( answer ) => {
-        res.json( answer );
-    });
+    SearchesController.searchParents(req, res).then ( ( answer ) => { res.json( answer ); });
+});
+
+router.get('/content/get-URL-slug', function (req, res, next){
+    ContentCtrl.postGetURLSlug(req, res).then ( ( answer ) => { res.json( answer ); });
 });
 
 router.get('/meta-extractor/extract-url', function (req, res, next){
-    MetaExtractorController.extractDataFromLink(req, res).then ( ( answer ) => {
-        res.json( answer );
-    });
+    MetaExtractorController.extractDataFromLink(req, res).then ( ( answer ) => { res.json( answer ); });
 });
 
 
@@ -289,21 +262,23 @@ router.processSocketRoute = function (socket)
         });
     });
 
-    // socket.on("api/forums/get-forum", function (data){
-    //     data.body = data;
-    //
-    //     TopForumsCtrl.postGetForum(data, socket).then ( (res ) => {
-    //         socket.emit("api/forums/get-forum", res);
-    //     });
-    // });
+    socket.on("api/replies/get-all-replies", function (data){
+        data.body = data;
 
-    // socket.on("api/forums/get-top-forums", function (data){
-    //     data.body = data;
-    //
-    //     TopForumsCtrl.postGetTopForums(data, socket).then ( (res ) => {
-    //         socket.emit("api/forums/get-top-forums", res);
-    //     });
-    // });
+        TopRepliesCtrl.postGetAllReplies(data, socket).then ( (res ) => {
+            socket.emit("api/replies/get-all-replies", res);
+        });
+    });
+
+    socket.on("api/replies/get-top-replies", function (data){
+        data.body = data;
+
+        TopRepliesCtrl.postGetTopReplies(data, socket).then ( (res ) => {
+            socket.emit("api/replies/get-top-replies", res);
+        });
+    });
+
+    //              TOPICS
 
     socket.on("api/topics/add-topic", function (data){
         data.body = data;
@@ -312,8 +287,6 @@ router.processSocketRoute = function (socket)
             socket.emit("api/topics/add-topic", res);
         });
     });
-
-
 
 
     socket.on("api/content/get-top-content", function (data){

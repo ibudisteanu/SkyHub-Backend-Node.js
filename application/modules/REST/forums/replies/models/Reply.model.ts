@@ -9,7 +9,7 @@ var nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator.ts');
 var ReplyModel = redis.nohm.model('ReplyModel', {
 
     idGenerator: function (callback){
-        return nohmIterator.generateCommonIterator(callback,"rep");
+        return nohmIterator.generateCommonIterator(callback,"reply");
     },
 
     properties: {
@@ -109,8 +109,8 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
 
         keepSortedList : async function (bDelete){
 
-            // var TopContentHelper = require ('./../../content/helpers/TopContent.helper.ts');
-            // return TopContentHelper.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parents'), bDelete);
+            var TopRepliesHelper = require ('./../../content/helpers/TopReplies.helper.ts');
+            return TopRepliesHelper.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parent'), bDelete);
 
         },
 

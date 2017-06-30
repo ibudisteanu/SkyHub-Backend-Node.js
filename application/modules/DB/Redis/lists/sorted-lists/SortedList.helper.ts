@@ -192,11 +192,12 @@ var SortedList = class{
         });
     }
 
-    async keepSortedObject( key, score, parents, bDelete ){
+    async keepSortedObject( key, score, parents, bDelete , enableNullParent ){
 
+        if (typeof enableNullParent === "undefined" ) enableNullParent = true;
         if (typeof parents === "string") parents = [parents];
 
-        let arrParentsUnique = MaterializedParentsHelper.getMaterializedParentsFromStringList(parents, ['']);
+        let arrParentsUnique = MaterializedParentsHelper.getMaterializedParentsFromStringList(parents, (enableNullParent ? [''] : []) );
 
         for (let i = 0, len = arrParentsUnique.length; i < len; i++) {
             let parent = arrParentsUnique[i];

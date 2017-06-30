@@ -40,9 +40,9 @@ module.exports = {
             if ((typeof sId === 'undefined') || (sId == []) || (sId === null))
                 resolve(null);
             else
-                var ReplyModel  = redis.nohm.factory('ReplyModel', sId, function (err, forum) {
+                var ReplyModel  = redis.nohm.factory('ReplyModel', sId, function (err, reply) {
                     if (err) resolve (null);
-                    else resolve (ForumModel);
+                    else resolve (ReplyModel);
                 });
 
         });
