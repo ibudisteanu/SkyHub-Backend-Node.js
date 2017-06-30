@@ -23,11 +23,9 @@ class URLHash {
 
          forum is parentURL, "topic foarte misto" is sInitialURL
      */
-    async getFinalNewURL(sParentURL, sInitialURL, object){
+    async getFinalNewURL(sParentURL, sInitialURL, object, sSpecialCharSeparator){
 
         if (typeof sInitialURL !== "string") return null;
-
-        sInitialURL = sInitialURL.toLowerCase(); // lowercase, it doesn't matter in the hash
 
         object = object || null;
         if ((object!==null)&&(object.constructor === "object")) object = object.id;
@@ -35,20 +33,20 @@ class URLHash {
         if (sParentURL !== '')
             sParentURL = commonFunctions.url_slug(sParentURL);
 
-        sInitialURL = (sParentURL !== '' ? sParentURL + '/' : '') + commonFunctions.url_slug(sInitialURL);
+        sInitialURL = (sParentURL !== '' ? sParentURL + '/' : '') + (typeof sSpecialCharSeparator === 'string' ? sSpecialCharSeparator : '') + commonFunctions.url_slug(sInitialURL);
 
         let sFinalNewURL = sInitialURL;
 
         console.log("SEARCHING FOR ",sFinalNewURL);
 
-        let existingHashResult = await this.hashList.getHash('',sFinalNewURL);
+        let existingHashResult = await this.hashList.getHash('',sFinalNewURL.toLowerCase() );
 
         let iTrialsLeft = 1000;
 
         while ( (existingHashResult !== object)&&(existingHashResult !== null)&&(iTrialsLeft > 0) ){
 
             sFinalNewURL = sInitialURL+'-'+Math.floor((Math.random() * 10000) + 1);
-            existingHashResult = await this.hashList.getHash('',sFinalNewURL);
+            existingHashResult = await this.hashList.getHash('',sFinalNewURL.toLowerCase() );
 
             console.log("SEARCHING FOR ",sFinalNewURL);
 

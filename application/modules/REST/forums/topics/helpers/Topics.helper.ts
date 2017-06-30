@@ -86,11 +86,10 @@ module.exports = {
 
         let parentObject = await MaterializedParentsHelper.findObject(parent);
 
-
         topic.p(
             {
                 title: sTitle,
-                URL: await(URLHashHelper.getFinalNewURL(( parentObject !==  null ? parentObject.p('URL') : '') , sTitle,null)), //Getting a NEW URL with this template: skyhub.me/forum-name/topic-name
+                URL: await(URLHashHelper.getFinalNewURL( (parentObject !== null ? parentObject.p('URL') : 'home') , sTitle,null)), //Getting a NEW URL with this template: skyhub.me/forum-name/topic-name
                 image: sImage,
                 attachments: arrAttachments,
                 description: sDescription,
