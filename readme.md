@@ -35,26 +35,34 @@ https://github.com/1602/jugglingdb
 
 1. Login    
 2. Registration
-    2.1. Facebook & Google integration
+    1. Facebook & Google integration
 3. REST
-    3.1. Socket.io
-        3.1.1 JWT Authentication
+    1. Socket.io
+        1. JWT Authentication
 4. Forums                
-    4.1 Add Topic
+    1. Add Topic    
+5. Topics
+    1. Add Topic          
+6. Replies           
             
-## To DOs            
-            
-4. Topics
-    4.1 Add Topic
-    4.2 Edit Topic
-    4.3 Delete Topic
-5. Replies
-    5.1 Add Reply
+## To DOs        
+    
+0. Webpack
+    1. Aliases for absolute locations   
+    
+
+1. Forums
+    2. Edit Forum
+    3. Delete Forum    
+1. Topics
+    2. Edit Topic
+    3. Delete Topic    
+5. Replies    
     5.2 Edit Reply
-    5.3 Delete Reply
+    5.3 Delete Reply   
 6. Voting
-    6.1 Add Voting (Up and Downs)
-    6.2 Unvote
-    6.3 Keeping Voting in the DB
+    1. Add Voting (Up and Downs)
+    2. Unvote
+    3. Keeping Voting in the DB
     
     
