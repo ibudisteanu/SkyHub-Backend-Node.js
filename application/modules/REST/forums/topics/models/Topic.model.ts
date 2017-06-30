@@ -23,15 +23,15 @@ var TopicModel = redis.nohm.model('TopicModel', {
 
             ]
         },
-        attachments: {
-            type: 'json',
-            //it contains link and  thumbnail
-        },
         description: {
             type: 'string',
         },
-        image: {
+        image: {  //the thumbnail
             type: 'string',
+        },
+        attachments: {
+            type: 'json',
+            //it contains link and  thumbnail
         },
         keywords : {
             type: 'string',

@@ -6,8 +6,15 @@
 var SearchList = require('../../../DB/Redis/lists/search/SearchList.helper.ts');
 
 var forumModel = require ('./../../forums/forums/models/Forum.model.ts');
-
 var userModel = require ('./../../auth/models/User.model.ts');
+var replyModel = require ('./../../forums/replies/models/Reply.model.ts');
+var topicModel = require ('./../../forums/topics/models/Topic.model.ts');
+
+
+
+var ForumsHelper = require ('./../../forums/forums/helpers/Forums.helper.ts');
+var TopicsHelper = require ('./../../forums/topics/helpers/Topics.helper.ts');
+var RepliesHelper = require ('./../../forums/replies/helpers/Replies.helper.ts');
 var UsersHelper = require ('./../../auth/helpers/Users.helper.ts');
 
 class Searches {
@@ -24,12 +31,10 @@ class Searches {
 
     async addUserToSearch(text, index, score){
 
-        let user = null;
         if (text === null ){
 
-            if (typeof index === "string")
-                user = await UsersHelper.findUserById(index);
-            else user =  index;
+            let user = index;
+            if (typeof index === "string") user = await UsersHelper.findUserById(index);
 
             if (user !== null) {
                 text = user.p('username') + ' ' + user.getFullName();
@@ -47,16 +52,10 @@ class Searches {
 
     async addForumToSearch(text, index, score){
 
-        let forum = null;
         if (text === null ){
 
-            console.log(index, ForumsHelper);
-
-            if (typeof index === "string") {
-                var ForumsHelper = require ('./../../forums/forums/helpers/Forums.helper.ts');
-                forum = await ForumsHelper.findForumById(index);
-            }
-            else forum = index;
+            let forum = index;
+            if (typeof index === "string")  forum = await ForumsHelper.findForumById(index);
 
             if (forum !== null) {
                 text = forum.p('name');
@@ -74,9 +73,39 @@ class Searches {
 
     async addTopicToSearch(text, index, score){
 
+        if (text === null ){
+
+            let topic = index;
+            if (typeof index === "string")  topic = await TopicsHelper.findTopicById(index);
+
+            if (topic !== null) {
+                text = topic.p('title');
+                score = topic.calculateHotnessCoefficient();
+            }
+        }
+
         await this.addContent(text, index, score);
 
         this.searchList.setNewTablePrefix("Topics");
+        return await this.searchList.createSearchPrefixes(text, index, score);
+    }
+
+    async addReplyToSearch(text, index, score){
+
+        if (text === null ){
+
+            let reply = index;
+            if (typeof index === "string")  reply = await TopicsHelper.findTopicById(index);
+
+            if (reply !== null) {
+                text = reply.p('title');
+                score = reply.calculateHotnessCoefficient();
+            }
+        }
+
+        await this.addContent(text, index, score);
+
+        this.searchList.setNewTablePrefix("Replies");
         return await this.searchList.createSearchPrefixes(text, index, score);
     }
 
@@ -90,24 +119,32 @@ class Searches {
 
         let forumModelORM = redis.nohm.factory('ForumModel');
         let userModelORM = redis.nohm.factory('UserModel');
+        let topicModelORM = redis.nohm.factory('TopicModel');
+        let replyModelORM = redis.nohm.factory('ReplyModel');
 
         let parent = this;
 
         forumModelORM.find(function (err, ids){
 
-            var SearchesHelper = require ('./Searches.helper.ts');
-
             for (let i=0; i<ids.length; i++)
                 SearchesHelper.addForumToSearch(null,ids[i], 0);
-        });
+        }.bind(this) );
 
         userModelORM.find(function (err, ids){
 
-            let SearchesHelper = require ('./Searches.helper.ts');
-
             for (let i=0; i<ids.length; i++)
                 SearchesHelper.addUserToSearch(null,ids[i], 0);
-        });
+        }.bind(this) );
+
+        topicModelORM.find(function (err, ids){
+            for (let i=0; i<ids.length; i++)
+                SearchesHelper.addTopicToSearch(null,ids[i], 0);
+        }.bind(this) );
+
+        replyModelORM.find(function (err, ids){
+            for (let i=0; i<ids.length; i++)
+                SearchesHelper.addReplyToSearch(null,ids[i], 0);
+        }.bind(this) );
 
     }
 

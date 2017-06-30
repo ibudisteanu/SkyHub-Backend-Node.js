@@ -113,8 +113,8 @@ module.exports = {
             }
         );
 
-        if (dbLatitude != -666) forum.p('latitude', dbLatitude);
-        if (dbLongitude != -666) forum.p('longitude', dbLongitude);
+        if (dbLatitude != -666) reply.p('latitude', dbLatitude);
+        if (dbLongitude != -666) reply.p('longitude', dbLongitude);
 
         return new Promise( (resolve)=> {
 
@@ -126,7 +126,7 @@ module.exports = {
 
             reply.save(async function (err) {
                 if (err) {
-                    console.log("==> Error Saving Forum");
+                    console.log("==> Error Saving Reply");
                     console.log(reply.errors); // the errors in validation
 
                     resolve({result:false, errors: reply.errors });
@@ -135,10 +135,10 @@ module.exports = {
 
                     await reply.keepURLSlug();
                     await reply.keepSortedList();
-                    SearchesHelper.addForumToSearch(null,reply); //async, but not awaited
+                    SearchesHelper.addReplyToSearch(null,reply); //async, but not awaited
                     console.log(reply.getPrivateInformation());
 
-                    resolve( {result:true, forum: reply.getPrivateInformation() });
+                    resolve( {result:true, reply: reply.getPrivateInformation() });
 
                 }
             });

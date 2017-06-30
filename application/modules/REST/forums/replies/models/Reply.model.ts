@@ -15,42 +15,22 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
     properties: {
         title: {
             type: 'string',
-            unique: true,
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 4
-                }]
-
-            ]
-        },
-        URL: {
-            type: 'string',
-            unique: true,
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 4
-                }]
-
-            ]
         },
         description: {
             type: 'string',
-            unique: true,
             validations: [
                 ['notEmpty'],
                 ['length', {
                     min: 4
                 }]
-
             ]
         },
+        attachments: {
+            type: 'json',
+            //it contains link and  thumbnail
+        },
         keywords : {
-            type: 'string',
-            /*validations: [   //not necessary
-             'validateKeywords'
-             ]*/
+            type: 'string', //no validation for keywords
         },
         authorId: {
             defaultValue: '',
@@ -75,39 +55,23 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
         /*
          COMMON PROPERTIES
          */
-        country: {
+        URL: {
             type: 'string',
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 1
-                }]
-            ]
+            // validations: [
+            //     ['notEmpty'],
+            //     ['length', {
+            //         min: 2
+            //     }],
+            //     'validateUniqueURL',
+            // ]
         },
-        city: {
-            type: 'string',
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 2
-                }]
-            ],
-        },
-        language: {
-            type: 'string',
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 2
-                }]
-            ]
-        },
+        country: {type: 'string', }, //country, city, language, latitude, longtitude, are not required...
+        city: { type: 'string', },
+        language: { type: 'string' },
         latitude : {type: 'number'},
         longitude : {type: 'number'},
-        timeZone: { type: 'number', },
         dtCreation: {type: 'timestamp'},
         dtLastActivity: {type: 'timestamp',},
-
 
     },
 
@@ -135,6 +99,25 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
                 return true;
 
             return false;
+        },
+
+        calculateHotnessCoefficient : function (){
+
+            var ScoreCoefficientHelper = require ('../../../../DB/common/score-coefficient/ScoreCoefficient.helper.ts');
+            return ScoreCoefficientHelper.calculateHotnessScoreCoefficient(this);
+        },
+
+        keepSortedList : async function (bDelete){
+
+            // var TopContentHelper = require ('./../../content/helpers/TopContent.helper.ts');
+            // return TopContentHelper.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parents'), bDelete);
+
+        },
+
+        keepURLSlug : async function (sOldURL,  bDelete){
+
+            var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
+            return URLHashHelper.replaceOldURL(sOldURL, this.p('URL'), this.id, bDelete);
         }
 
     },

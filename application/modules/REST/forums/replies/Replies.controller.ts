@@ -17,12 +17,10 @@ module.exports = {
 
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
-        let parent='', parentReply = '', sName = '', sTitle = '', sDescription = '', arrKeywords = [], arrAttachments = [], sCountry='', sCity='',sLanguage='';
+        let parent='', parentReply = '', sTitle = '', sDescription = '', arrKeywords = [], arrAttachments = [], sCountry='', sCity='',sLanguage='';
         let dbLatitude = 0, dbLongitude = 0;
 
-        let parent = '';
-
-        console.log("@@@@@@@@@@@@@@ psotAddForm request", userAuthenticated);
+        console.log("@@@@@@@@@@@@@@ [pstAddRe[;y request", userAuthenticated);
 
         if (req.hasOwnProperty('body')){
             sTitle = req.body.title || '';
