@@ -34,7 +34,10 @@ class Searches {
         if (text === null ){
 
             let user = index;
-            if (typeof index === "string") user = await UsersHelper.findUserById(index);
+            if (typeof index === "string") {
+                var UsersHelper = require ('./../../auth/helpers/Users.helper.ts');
+                user = await UsersHelper.findUserById(index);
+            }
 
             if (user !== null) {
                 text = user.p('username') + ' ' + user.getFullName();
@@ -55,7 +58,10 @@ class Searches {
         if (text === null ){
 
             let forum = index;
-            if (typeof index === "string")  forum = await ForumsHelper.findForumById(index);
+            if (typeof index === "string"){
+                var ForumsHelper = require ('./../../forums/forums/helpers/Forums.helper.ts');
+                forum = await ForumsHelper.findForumById(index);
+            }
 
             if (forum !== null) {
                 text = forum.p('name');
@@ -76,7 +82,10 @@ class Searches {
         if (text === null ){
 
             let topic = index;
-            if (typeof index === "string")  topic = await TopicsHelper.findTopicById(index);
+            if (typeof index === "string"){
+                var TopicsHelper = require ('./../../forums/topics/helpers/Topics.helper.ts');
+                topic = await TopicsHelper.findTopicById(index);
+            }
 
             if (topic !== null) {
                 text = topic.p('title');
@@ -95,7 +104,10 @@ class Searches {
         if (text === null ){
 
             let reply = index;
-            if (typeof index === "string")  reply = await TopicsHelper.findTopicById(index);
+            if (typeof index === "string")  {
+                var RepliesHelper = require ('./../../forums/replies/helpers/Replies.helper.ts');
+                reply = await RepliesHelper.findReplyById(index);
+            }
 
             if (reply !== null) {
                 text = reply.p('title');

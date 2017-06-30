@@ -128,12 +128,14 @@ module.exports = {
 
                     await topic.keepURLSlug();
                     await topic.keepSortedList();
+
+                    var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
                     SearchesHelper.addForumToSearch(null,topic); //async, but not awaited
                     console.log(topic.getPrivateInformation() );
 
                     resolve( {result:true, topic: topic.getPrivateInformation() });
                 }
-            });
+            }.bind(this));
 
         });
 

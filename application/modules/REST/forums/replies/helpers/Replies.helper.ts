@@ -135,13 +135,16 @@ module.exports = {
 
                     await reply.keepURLSlug();
                     await reply.keepSortedList();
-                    SearchesHelper.addReplyToSearch(null,reply); //async, but not awaited
+
+
+                    var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
+                    SearchesHelper.addReplyToSearch(null, reply); //async, but not awaited
                     console.log(reply.getPrivateInformation());
 
                     resolve( {result:true, reply: reply.getPrivateInformation() });
 
                 }
-            });
+            }.bind(this));
 
         });
 
