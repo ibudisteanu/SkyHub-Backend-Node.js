@@ -41,10 +41,10 @@ var HashList = class{
 
     }
 
-    async getAllHash(tableName, key){
+    async getAllHash(tableName){
 
         return new Promise( (resolve)=> {
-            redis.redisClient.hgetall (this.tablePrefix + ":" + tableName, key, function (err, answer) {
+            redis.redisClient.hgetall (this.tablePrefix + ":" + tableName, function (err, answer) {
 
                 console.log("getAllHash ##",key,"###",err,answer);
                 resolve (err === null ? answer : null);
@@ -58,7 +58,7 @@ var HashList = class{
         return new Promise( (resolve)=> {
             redis.redisClient.hincrby (this.tablePrefix + ":" + tableName, key, value, function (err, answer) {
 
-                console.log("getIncrementBy ##",key,"###",err,answer);
+                console.log("getIncrementBy ##",key,' value ',value,"###",err,answer);
                 resolve (err === null ? answer : null);
             });
         });

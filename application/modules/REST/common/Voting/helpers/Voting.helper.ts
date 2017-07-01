@@ -27,7 +27,7 @@ class VotingHash {
     async addVoteValue (parentId, voteType){
 
         let value = 0;
-        switch (VoteType){
+        switch (voteType){
 
             case VoteType.VOTE_UP:
                 value = 1;
@@ -46,7 +46,7 @@ class VotingHash {
 
     async addVote (parentId, authenticatedUser, voteType ){
 
-        if ((typeof authenticatedUser === "undefined")||(authenticatedUser !== null)) return {result: false, message: 'Authenticated User is not defined'};
+        if ((typeof authenticatedUser === "undefined")||(authenticatedUser === null)) return {result: false, message: 'Authenticated User is not defined'};
 
         let userId = authenticatedUser;
         if (typeof authenticatedUser === 'object') userId = authenticatedUser.id||'';
@@ -69,6 +69,32 @@ class VotingHash {
             result: true,
             voteType: voteType,
         };
+
+    }
+
+    //NOT FINISHED
+    async getAllVotes(parentId, authenticatedUser){
+
+        //verific daca authenticatedUser is owner of the parentId
+
+        let hashRests = await this.hashList.getAllHash(parentId);
+
+        let result = [];
+
+        let i = 0;
+        while (i < hashRests.length){
+            let userId = hashRests[i];
+            let voteType = hashRests[i+1];
+
+            result.push({
+                userId: userId,
+                voteType: voteType,
+            });
+
+            i+=2;
+        }
+
+        return result;
 
     }
 
