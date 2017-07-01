@@ -13,19 +13,19 @@ class TopReplies {
         this.topObjectsList = new TopObjectsList("Replies");
     }
 
-    async getTopReplies(userAuthenticated, parent, pageIndex, pageCount){
+    getTopReplies(userAuthenticated, parent, pageIndex, pageCount){
         return this.topObjectsList.getTopObjects(userAuthenticated, parent, pageIndex, pageCount);
     }
 
-    async getAllReplies(userAuthenticated, parent){
+    getAllReplies(userAuthenticated, parent){
         return this.topObjectsList.getTopObjects(userAuthenticated, parent, 0, 10000, 10000);
     }
 
-    async getReply(userAuthenticated, id){
+    getReply(userAuthenticated, id){
         return this.topObjectsList.getObject(userAuthenticated, id);
     }
 
-    async keepSortedObject( key, score, parents, bDelete ){
+    keepSortedObject( key, score, parents, bDelete ){
         return this.topObjectsList.keepSortedObject(key, score, parents, bDelete, false);
     }
 

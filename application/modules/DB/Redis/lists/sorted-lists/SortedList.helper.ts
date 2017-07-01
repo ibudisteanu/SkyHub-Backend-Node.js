@@ -197,15 +197,18 @@ var SortedList = class{
         if (typeof enableNullParent === "undefined" ) enableNullParent = true;
         if (typeof parents === "string") parents = [parents];
 
-        let arrParentsUnique = MaterializedParentsHelper.getMaterializedParentsFromStringList(parents, (enableNullParent ? [''] : []) );
+        let arrParentsUnique = MaterializedParentsHelper.getMaterializedParentsFromStringList(parents, [''] );
 
         for (let i = 0, len = arrParentsUnique.length; i < len; i++) {
             let parent = arrParentsUnique[i];
 
-            if (bDelete||false == true)
-                await this.deleteElement(parent,key);
-            else
-                await this.addElement(parent,score,key);
+            if (((enableNullParent)&&(parent === ''))||(parent !== '')){
+
+                if (bDelete||false == true)
+                    await this.deleteElement(parent,key);
+                else
+                    await this.addElement(parent,score,key);
+            }
         }
 
         return true;

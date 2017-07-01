@@ -107,7 +107,7 @@ module.exports = {
                 language: sLanguage.toLowerCase(),
                 dtCreation: new Date(),
                 dtLastActivity: new Date(),
-                replyParentId: await MaterializedParentsHelper.getObjectId(parentReply),
+                parentReplyId: await MaterializedParentsHelper.getObjectId(parentReply),
                 parentId: await MaterializedParentsHelper.getObjectId(parent),
                 parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),
             }

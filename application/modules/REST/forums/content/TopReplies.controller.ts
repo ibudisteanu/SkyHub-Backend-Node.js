@@ -38,8 +38,9 @@ module.exports = {
             sParent = req.body.parent || '';
 
         console.log('Getting All Replies : ', sParent);
+        console.log('rezultat: ', await TopRepliesHelper.getAllReplies(userAuthenticated, sParent));
 
-        return TopRepliesHelper.getAllReplies(userAuthenticated, sParent);
+        return await TopRepliesHelper.getAllReplies(userAuthenticated, sParent);
     },
 
 
