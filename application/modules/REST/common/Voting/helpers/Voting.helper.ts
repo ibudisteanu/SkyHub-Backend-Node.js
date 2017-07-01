@@ -67,7 +67,10 @@ class VotingHash {
 
         return {
             result: true,
-            voteType: voteType,
+            vote:{
+                value: await this.getVoteValue(parentId),
+                voteType: voteType,
+            }
         };
 
     }
@@ -98,11 +101,15 @@ class VotingHash {
 
     }
 
+    getVoteValue(parentId){
+        return this.hashList.getHash(parentId, 'value');
+    }
+
     async getVote (parentId, authenticatedUser){
 
         if (typeof authenticatedUser === "undefined") authenticatedUser = null;
 
-        let value =  await this.hashList.getHash(parentId, 'value');
+        let value =  await this.getVoteValue(parentId);
         let voteType = VoteType.VOTE_NONE;
         if (value === null) value = 0;
 
@@ -112,13 +119,18 @@ class VotingHash {
             if (typeof authenticatedUser === 'object') userId = authenticatedUser.id;
 
             voteType = await this.hashList.getHash(parentId, userId);
+            if (voteType === null) voteType = VoteType.VOTE_NONE;
 
         }
 
         return {
-            value: value,
-            userVoteType: voteType,
-            votes: [],
+            result:true,
+            vote: {
+                value: value,
+                userVoteType: voteType,
+                parentId: parentId,
+                votes: [],
+            }
         }
 
     }

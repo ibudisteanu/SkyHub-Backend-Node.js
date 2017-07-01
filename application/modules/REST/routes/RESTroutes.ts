@@ -9,6 +9,7 @@ var FunctionsCtrl = require ('./../common/functions/functions.controller.ts');
 var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
 var TopicsCtrl = require ('../forums/topics/Topics.controller.ts');
 var RepliesCtrl = require ('../forums/replies/Replies.controller.ts');
+var VotingCtrl = require ('../common/Voting/Voting.controller.ts');
 
 var TopContentCtrl = require ('../forums/content/TopContent.controller.ts');
 var TopForumsCtrl = require ('../forums/content/TopForums.controller.ts');
@@ -106,6 +107,17 @@ router.get('/content/get-URL-slug', function (req, res, next){
 router.get('/meta-extractor/extract-url', function (req, res, next){
     MetaExtractorController.extractDataFromLink(req, res).then ( ( answer ) => { res.json( answer ); });
 });
+
+//              VOTING
+
+router.get('/voting/get-vote', function (req, res, next){
+    VotingCtrl.postGetVote(req, res).then ( ( answer ) => { res.json( answer ); });
+});
+
+router.get('/voting/submit-vote', function (req, res, next){
+    VotingCtrl.postSubmitVote(req, res).then ( ( answer ) => { res.json( answer ); });
+});
+
 
 
 router.get('/version', function(req, res, next) {
@@ -317,6 +329,8 @@ router.processSocketRoute = function (socket)
         });
     });
 
+    //          SEARCH
+
     socket.on("api/search/parents", function (data) {
         data.body = data;
         SearchesController.searchParents(data, socket).then ( ( answer ) => {
@@ -330,6 +344,18 @@ router.processSocketRoute = function (socket)
             socket.emit("api/meta-extractor/extract-url", answer);
         });
     });
+
+    //          VOTING
+    socket.on("api/voting/get-vote", function (data) {
+        data.body = data;
+        VotingCtrl.postGetVote(data, socket).then ( ( answer ) => { socket.emit('api/voting/get-vote', answer )});
+    });
+
+    socket.on("api/voting/submit-vote", function (data) {
+        data.body = data;
+        VotingCtrl.postSubmitVote(data, socket).then ( ( answer ) => { socket.emit('api/voting/submit-vote',answer ) });
+    });
+
 
 };
 

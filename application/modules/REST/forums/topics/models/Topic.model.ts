@@ -46,10 +46,6 @@ var TopicModel = redis.nohm.model('TopicModel', {
                 ['notEmpty'],
             ]
         },
-        votingId: {
-            defaultValue: '',
-            type: 'string',
-        },
         parentId: {
             defaultValue: '',
             type: 'string',

@@ -39,10 +39,6 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
                 ['notEmpty'],
             ]
         },
-        votingId: {
-            defaultValue: '',
-            type: 'string',
-        },
         parentReplyId: {
             defaultValue: '',
             type: 'string',
