@@ -41,6 +41,30 @@ var HashList = class{
 
     }
 
+    async getAllHash(tableName, key){
+
+        return new Promise( (resolve)=> {
+            redis.redisClient.hgetall (this.tablePrefix + ":" + tableName, key, function (err, answer) {
+
+                console.log("getAllHash ##",key,"###",err,answer);
+                resolve (err === null ? answer : null);
+            });
+        });
+
+    }
+
+    async incrementBy(tableName, key, value){
+
+        return new Promise( (resolve)=> {
+            redis.redisClient.hincrby (this.tablePrefix + ":" + tableName, key, value, function (err, answer) {
+
+                console.log("getIncrementBy ##",key,"###",err,answer);
+                resolve (err === null ? answer : null);
+            });
+        });
+
+    }
+
     async deleteHash(tableName, key){
         return new Promise( (resolve)=> {
             redis.redisClient.hdel(this.tablePrefix + ":" + tableName, key, function (err, answer){

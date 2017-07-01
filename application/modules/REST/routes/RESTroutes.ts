@@ -155,7 +155,11 @@ router.get('/test/meta-extractor', function (req,res,next){
     res.json( {message: MetaExtractorHelper.test() });
 });
 
+router.get('/test/voting', function (req,res,next){
 
+    let VotingHelperHelper = require ('./../../REST/common/Voting/helpers/Voting.helper.ts');
+    res.json( {message: VotingHelperHelper.test() });
+});
 
 
 
