@@ -110,7 +110,7 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
         keepSortedList : async function (bDelete){
 
             var TopRepliesHelper = require ('./../../content/helpers/TopReplies.helper.ts');
-            return TopRepliesHelper.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parent'), bDelete);
+            return TopRepliesHelper.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parentId'), bDelete);
 
         },
 

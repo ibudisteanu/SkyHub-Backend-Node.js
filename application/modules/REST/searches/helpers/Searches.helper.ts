@@ -31,18 +31,14 @@ class Searches {
 
     async addUserToSearch(text, index, score){
 
-        if (text === null ){
+        if (typeof index === "string") {
+            var UsersHelper = require ('./../../auth/helpers/Users.helper.ts');
+            index = await UsersHelper.findUserById(index);
+        }
 
-            let user = index;
-            if (typeof index === "string") {
-                var UsersHelper = require ('./../../auth/helpers/Users.helper.ts');
-                user = await UsersHelper.findUserById(index);
-            }
-
-            if (user !== null) {
-                text = user.p('username') + ' ' + user.getFullName();
-                score = user.calculateHotnessCoefficient();
-            }
+        if ((index !== null)&&(typeof index === 'object')) {
+            text = index.p('username') + ' ' + index.getFullName();
+            score = await index.calculateHotnessCoefficient();
         }
 
         console.log("@@@@@@@@@@@@@@@@@@@@ addUserToSearch ", text, index);
@@ -55,18 +51,14 @@ class Searches {
 
     async addForumToSearch(text, index, score){
 
-        if (text === null ){
+        if (typeof index === "string") {
+            var ForumsHelper = require ('./../../forums/forums/helpers/Forums.helper.ts');
+            index = await ForumsHelper.findForumById(index);
+        }
 
-            let forum = index;
-            if (typeof index === "string"){
-                var ForumsHelper = require ('./../../forums/forums/helpers/Forums.helper.ts');
-                forum = await ForumsHelper.findForumById(index);
-            }
-
-            if (forum !== null) {
-                text = forum.p('name');
-                score = forum.calculateHotnessCoefficient();
-            }
+        if ((index !== null)&&(typeof index === 'object')) {
+            text = index.p('name');
+            score = await index.calculateHotnessCoefficient();
         }
 
         console.log("@@@@@@@@@@@@@@@@@@@@ addForumToSearch ", text, index);
@@ -79,18 +71,14 @@ class Searches {
 
     async addTopicToSearch(text, index, score){
 
-        if (text === null ){
+        if (typeof index === "string") {
+            var TopicsHelper = require ('./../../forums/topics/helpers/Topics.helper.ts');
+            index = await TopicsHelper.findTopicById(index);
+        }
 
-            let topic = index;
-            if (typeof index === "string"){
-                var TopicsHelper = require ('./../../forums/topics/helpers/Topics.helper.ts');
-                topic = await TopicsHelper.findTopicById(index);
-            }
-
-            if (topic !== null) {
-                text = topic.p('title');
-                score = topic.calculateHotnessCoefficient();
-            }
+        if ((index !== null)&&(typeof index === 'object')) {
+            text = index.p('title');
+            score = await index.calculateHotnessCoefficient();
         }
 
         await this.addContent(text, index, score);
@@ -101,21 +89,21 @@ class Searches {
 
     async addReplyToSearch(text, index, score){
 
-        if (text === null ){
-
-            let reply = index;
-            if (typeof index === "string")  {
-                var RepliesHelper = require ('./../../forums/replies/helpers/Replies.helper.ts');
-                reply = await RepliesHelper.findReplyById(index);
-            }
-
-            if (reply !== null) {
-                text = reply.p('title');
-                score = reply.calculateHotnessCoefficient();
-            }
+        if (typeof index === "string") {
+            var RepliesHelper = require('./../../forums/replies/helpers/Replies.helper.ts');
+            index = await RepliesHelper.findReplyById(index);
         }
 
-        console.log('reply',text, index, score);
+        //console.log('add reply to search' , typeof reply, reply !== null);
+
+        if ((index !== null)&&(typeof index === 'object')) {
+            text = index.p('title');
+            score = await index.calculateHotnessCoefficient();
+        }
+
+        //console.log('add reply to search - finally' , text, score);
+
+        console.log('reply',text, score);
 
         await this.addContent(text, index, score);
 

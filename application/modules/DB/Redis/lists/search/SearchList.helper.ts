@@ -43,6 +43,10 @@ class SearchList {
 
         if (phrase === null) return false;
         if (typeof phrase !== "string") return false;
+        if (parent === null) return false;
+
+        if (typeof parent === 'object') parent = parent.id||null; // if it is a NOHM object, then I extract the ID
+        if (parent === null) return false;
 
         let autoCompleteHashIndex = await AutoCompleteStringsHashList.addAutoCompleteString(phrase, parent );
         // let type = MaterializedParents.extractObjectTypeFromId(parent);

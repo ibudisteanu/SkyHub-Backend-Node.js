@@ -20,7 +20,7 @@ module.exports = {
         let parent='', parentReply = '', sTitle = '', sDescription = '', arrKeywords = [], arrAttachments = [], sCountry='', sCity='',sLanguage='';
         let dbLatitude = 0, dbLongitude = 0;
 
-        console.log("@@@@@@@@@@@@@@ [pstAddRe[;y request", userAuthenticated);
+        //console.log("@@@@@@@@@@@@@@ postAddReply request", userAuthenticated);
 
         if (req.hasOwnProperty('body')){
             sTitle = req.body.title || '';
