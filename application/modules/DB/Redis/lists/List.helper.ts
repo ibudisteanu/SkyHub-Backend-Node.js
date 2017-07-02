@@ -122,6 +122,27 @@ var List = class{
 
     }
 
+    /*
+     lrange - find the notifications between index1, index2
+
+     O(S+N) where S is the distance of start offset from HEAD for small lists, from nearest end (HEAD or TAIL) for large lists; and N is the number of elements in the specified range.
+     */
+
+    async listRange(tableName, index1, index2){
+
+        if (typeof index1 === 'undefined') index1 = 0;
+        if (typeof index2 === 'undefined') index2 = 10;
+
+        return new Promise( (resolve)=> {
+            redis.redisClient.lrange(this.tablePrefix + ":" + tableName, index1, index2, function (err, answer) {
+
+                console.log("lrange##",index1, index2,"###",err,answer);
+                resolve (err === null ? answer : null);
+            });
+        });
+
+    }
+
 
 
 };
