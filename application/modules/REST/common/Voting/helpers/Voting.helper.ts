@@ -34,12 +34,12 @@ class VotingHash {
         return voteType;
     }
 
-    async geVotesWithOnlyUserVote(parentId,  userAuthenticated){
+    async getVotesWithOnlyUserVote(parentId,  userAuthenticated){
         if (userAuthenticated !== null){
             let userId = userAuthenticated;
             if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
 
-            let voteType = this.getVoteType(parentId, userAuthenticated);
+            let voteType =  await this.getVoteType(parentId, userAuthenticated);
             return [{userId: userId, voteType: voteType}];
         }
 
@@ -79,7 +79,7 @@ class VotingHash {
 
         let foundVoteType = await this.hashList.getHash(parentId, userId) ;
 
-        if ( foundVoteType === null){
+        if ( foundVoteType !== null){
 
             if (foundVoteType !== VoteType.VOTE_NONE )
                 await this.changeVoteValue(parentId, - foundVoteType)
@@ -94,7 +94,7 @@ class VotingHash {
             vote:{
                 value: await this.getVoteValue(parentId),
                 parentId: parentId,
-                votes: this.geVotesWithOnlyUserVote(parentId, userAuthenticated),
+                votes: await this.getVotesWithOnlyUserVote(parentId, userAuthenticated),
             }
         };
 
@@ -136,16 +136,14 @@ class VotingHash {
         if (typeof userAuthenticated === "undefined") userAuthenticated = null;
 
         let value =  await this.getVoteValue(parentId);
-        let voteType = VoteType.VOTE_NONE;
         if (value === null) value = 0;
-        let votes = [];
 
         return {
             result:true,
             vote: {
                 value: value,
                 parentId: parentId,
-                votes: this.geVotesWithOnlyUserVote(parentId, userAuthenticated),
+                votes: await this.getVotesWithOnlyUserVote(parentId, userAuthenticated),
             }
         }
 
