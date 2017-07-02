@@ -32,6 +32,8 @@ class NotificationsListHelper {
     }
 
     async getUserNotifications(userAuthenticated, pageIndex, pageCount){
+        if (typeof pageCount === 'undefined') pageCount = 8;
+        pageCount = Math.min(pageCount, 20);
 
         let userId = userAuthenticated;
         if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
@@ -44,22 +46,34 @@ class NotificationsListHelper {
         if (answer !== null){
             for (let i=0; i<answer.length; i++) {
                 let obj = JSON.parse(answer[i]); //the data in the DB is stringified
-                result.push(new Notification(obj));
+                let notification = new Notification(obj);
+
+                notification.read = await this.getReadNotification(userAuthenticated, notification.id);
+
+                result.push(notification);
             }
         }
 
         return result;
     }
 
-    async markNotificationRead(userAuthenticated, notificationId, readValue){
+    async markNotification(userAuthenticated, notificationId, markAll, markValue){
 
-        if (typeof readValue === 'undefined') readValue = true;
+
+        if (typeof markValue === 'undefined') readValue = true;
         if (typeof notificationId === 'object') notificationId = notificationId.id;
 
         let userId =  userAuthenticated;
         if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
 
-        this.hashList.setHash('read:'+userId,notificationId, readValue);
+        return this.hashList.setHash('read:'+userId,notificationId, markValue);
+    }
+
+    async getReadNotification(userAuthenticated, notificationId){
+        let userId =  userAuthenticated;
+        if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
+
+        return this.hashList.getHash('read:'+userId,notificationId);
     }
 
     async createNewUserNotification(userId, template, params){
@@ -76,7 +90,6 @@ class NotificationsListHelper {
         });
 
         await this.list.listLeftPush(userId, newNotification.toJSON());
-
 
         if (await this.list.listLength(userId) > NOTIFICATIONS_DB_MAXIMUM){
             let removed = await this.list.listRightPop(userId);
