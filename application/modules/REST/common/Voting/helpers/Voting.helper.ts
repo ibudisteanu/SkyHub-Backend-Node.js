@@ -10,12 +10,7 @@ var nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator.ts');
 
 var HashList = require ('../../../../DB/Redis/lists/HashList.helper.ts');
 var commonFunctions = require ('../../helpers/common-functions.helper.ts');
-
-const VoteType = {
-    VOTE_UP: 1,
-    VOTE_DOWN: -1,
-    VOTE_NONE: 666,
-};
+var VoteType = require ('./../models/VoteType.js');
 
 class VotingHash {
 
@@ -24,7 +19,36 @@ class VotingHash {
         this.hashList = new HashList("Voting");
     }
 
-    async addVoteValue (parentId, voteType){
+    getVoteValue(parentId){
+        return this.hashList.getHash(parentId, 'value');
+    }
+
+    async getVoteType(parentId, userAuthenticated){
+
+        let userId = userAuthenticated;
+        if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
+
+        let voteType = await this.hashList.getHash(parentId, userId);
+        if (voteType === null) voteType = VoteType.VOTE_NONE;
+
+        return voteType;
+    }
+
+    async geVotesWithOnlyUserVote(parentId,  userAuthenticated){
+        if (userAuthenticated !== null){
+            let userId = userAuthenticated;
+            if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
+
+            let voteType = this.getVoteType(parentId, userAuthenticated);
+            return [{userId: userId, voteType: voteType}];
+        }
+
+        return [];
+    }
+
+
+
+    async changeVoteValue (parentId, voteType){
 
         let value = 0;
         switch (voteType){
@@ -44,12 +68,12 @@ class VotingHash {
 
     }
 
-    async addVote (parentId, authenticatedUser, voteType ){
+    async submitVote (parentId, userAuthenticated, voteType ){
 
-        if ((typeof authenticatedUser === "undefined")||(authenticatedUser === null)) return {result: false, message: 'Authenticated User is not defined'};
+        if ((typeof userAuthenticated === "undefined")||(userAuthenticated === null)) return {result: false, message: 'Authenticated User is not defined'};
 
-        let userId = authenticatedUser;
-        if (typeof authenticatedUser === 'object') userId = authenticatedUser.id||'';
+        let userId = userAuthenticated;
+        if (typeof userAuthenticated === 'object') userId = userAuthenticated.id||'';
 
         if (userId === '') return {result: false, message: 'Authenticated User is not defined'};
 
@@ -58,27 +82,30 @@ class VotingHash {
         if ( foundVoteType === null){
 
             if (foundVoteType !== VoteType.VOTE_NONE )
-                await this.addVoteValue(parentId, - foundVoteType)
+                await this.changeVoteValue(parentId, - foundVoteType)
 
         }
 
         await this.hashList.setHash(parentId, userId, voteType);
-        await this.addVoteValue(parentId, voteType);
+        await this.changeVoteValue(parentId, voteType);
 
         return {
             result: true,
             vote:{
                 value: await this.getVoteValue(parentId),
-                voteType: voteType,
+                parentId: parentId,
+                votes: this.geVotesWithOnlyUserVote(parentId, userAuthenticated),
             }
         };
 
     }
 
     //NOT FINISHED
-    async getAllVotes(parentId, authenticatedUser){
+    async getAllVotes(parentId, userAuthenticated){
 
-        //verific daca authenticatedUser is owner of the parentId
+        //verific daca userAuthenticated is owner of the parentId
+        let userAuthenticatedId = userAuthenticated;
+        if (typeof userAuthenticated === 'object') userAuthenticatedId = userAuthenticated.id;
 
         let hashRests = await this.hashList.getAllHash(parentId);
 
@@ -89,10 +116,11 @@ class VotingHash {
             let userId = hashRests[i];
             let voteType = hashRests[i+1];
 
-            result.push({
-                userId: userId,
-                voteType: voteType,
-            });
+            if ((voteType === VoteType.VOTE_UP)||(userId === userAuthenticatedId))
+                result.push({
+                    userId: userId,
+                    voteType: voteType,
+                });
 
             i+=2;
         }
@@ -101,35 +129,23 @@ class VotingHash {
 
     }
 
-    getVoteValue(parentId){
-        return this.hashList.getHash(parentId, 'value');
-    }
 
-    async getVote (parentId, authenticatedUser){
 
-        if (typeof authenticatedUser === "undefined") authenticatedUser = null;
+    async getVote (parentId, userAuthenticated){
+
+        if (typeof userAuthenticated === "undefined") userAuthenticated = null;
 
         let value =  await this.getVoteValue(parentId);
         let voteType = VoteType.VOTE_NONE;
         if (value === null) value = 0;
-
-        if (authenticatedUser !== null){
-
-            let userId = authenticatedUser;
-            if (typeof authenticatedUser === 'object') userId = authenticatedUser.id;
-
-            voteType = await this.hashList.getHash(parentId, userId);
-            if (voteType === null) voteType = VoteType.VOTE_NONE;
-
-        }
+        let votes = [];
 
         return {
             result:true,
             vote: {
                 value: value,
-                userVoteType: voteType,
                 parentId: parentId,
-                votes: [],
+                votes: this.geVotesWithOnlyUserVote(parentId, userAuthenticated),
             }
         }
 
@@ -137,11 +153,11 @@ class VotingHash {
 
     async test(){
 
-        console.log("addVote", await this.addVote('parent1', {id: 22}, VoteType.VOTE_UP ));
-        console.log("addVote", await this.addVote('parent1', {id: 24}, VoteType.VOTE_UP ));
-        console.log("addVote", await this.addVote('parent1', {id: 26}, VoteType.VOTE_DOWN ));
+        console.log("submitVote", await this.submitVote('parent1', {id: 22}, VoteType.VOTE_UP ));
+        console.log("submitVote", await this.submitVote('parent1', {id: 24}, VoteType.VOTE_UP ));
+        console.log("submitVote", await this.submitVote('parent1', {id: 26}, VoteType.VOTE_DOWN ));
         console.log("getVote", await this.getVote('parent1') );
-        console.log("addVote", await this.addVote('parent1', {id: 26}, VoteType.VOTE_UP ));
+        console.log("submitVote", await this.submitVote('parent1', {id: 26}, VoteType.VOTE_UP ));
         console.log("getVote", await this.getVote('parent1') );
 
     }

@@ -4,6 +4,7 @@
  */
 
 var VotingHelper = require('./helpers/Voting.helper.ts');
+var VoteType = require ('./models/VoteType.js');
 
 var AuthenticatingUser = require('../../auth/helpers/AuthenticatingUser.helper.ts');
 
@@ -25,7 +26,7 @@ module.exports = {
             voteType = req.body.voteType || VoteType.VOTE_NONE;
         }
 
-        return await VotingHelper.addVote(parentId, userAuthenticated, voteType);
+        return await VotingHelper.submitVote(parentId, userAuthenticated, voteType);
 
     },
 

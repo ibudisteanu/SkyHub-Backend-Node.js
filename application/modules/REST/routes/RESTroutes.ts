@@ -348,12 +348,12 @@ router.processSocketRoute = function (socket)
     //          VOTING
     socket.on("api/voting/get-vote", function (data) {
         data.body = data;
-        VotingCtrl.postGetVote(data, socket).then ( ( answer ) => { socket.emit('api/voting/get-vote', answer )});
+        VotingCtrl.postGetVote(data, socket).then ( ( answer ) => { socket.emit('api/voting/get-vote'+'/'+answer.vote.parentId, answer )});
     });
 
     socket.on("api/voting/submit-vote", function (data) {
         data.body = data;
-        VotingCtrl.postSubmitVote(data, socket).then ( ( answer ) => { socket.emit('api/voting/submit-vote',answer ) });
+        VotingCtrl.postSubmitVote(data, socket).then ( ( answer ) => { socket.emit('api/voting/submit-vote'+'/'+answer.vote.parentId,answer ) });
     });
 
 
