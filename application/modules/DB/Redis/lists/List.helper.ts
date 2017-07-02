@@ -24,13 +24,13 @@ var List = class{
         O(1)
      */
 
-    async listLeftPush(tableName, key, value){
+    async listLeftPush(tableName, value){
 
         if (typeof value !== "string")
             value = JSON.stringify(value);
 
         return new Promise( (resolve)=> {
-            redis.redisClient.lpush(this.tablePrefix + ":" + tableName, key, value, function (err, answer) {
+            redis.redisClient.lpush(this.tablePrefix + ":" + tableName, value, function (err, answer) {
 
                 console.log("list push ",err,answer);
 
@@ -45,13 +45,13 @@ var List = class{
          O(1)
      */
 
-    async listRightPush(tableName, key, value){
+    async listRightPush(tableName, value){
 
         if (typeof value !== "string")
             value = JSON.stringify(value);
 
         return new Promise( (resolve)=> {
-            redis.redisClient.lpush(this.tablePrefix + ":" + tableName, key, value, function (err, answer) {
+            redis.redisClient.lpush(this.tablePrefix + ":" + tableName, value, function (err, answer) {
 
                 console.log("list push ",err,answer);
 

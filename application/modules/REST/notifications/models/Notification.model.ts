@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-export default class Notification {
+class Notification {
 
     // id = '';
     // dtCreation = 0;
@@ -18,20 +18,23 @@ export default class Notification {
         this.dtCreation = data.dtCreation || '';
         this.authorId = data.authorId || '';
         this.template = data.template || '';
+        this.seen = data.seen || false;
         this.params = data.params || {};
     }
 
-    getJSON(){
+    toJSON(){
 
         return {
             id: this.id,
             dtCreation: this.dtCreation,
             authorId: this.authorId,
+            template: this.template,
+            seen: this.seen,
             params: this.params,
         }
 
     }
 
-
-
 }
+
+module.exports = Notification;

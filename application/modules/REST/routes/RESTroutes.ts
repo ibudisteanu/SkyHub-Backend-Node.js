@@ -132,6 +132,10 @@ router.get('/profile', function (req, res, next){
     res.json( {message: 'Great! You are logged in' });
 });
 
+/*
+        TESTING
+ */
+
 router.get('/test/TopContent', function (req, res, next){
     var TopContentHelper = require ('../../DB/Redis/lists/sorted-lists/TopObjectsList.helper.ts');
     res.json( {message: TopContentHelper.test() });
@@ -160,22 +164,25 @@ router.get('/test/SearchList', function (req,res,next){
 });
 
 router.get('/test/search/Build-Search-List', function (req,res,next){
-
     let SearchesHelper = require ('./../../REST/searches/helpers/Searches.helper.ts');
     res.json( {message: SearchesHelper.buildSearchTables() });
 });
 
 router.get('/test/meta-extractor', function (req,res,next){
-
     let MetaExtractorHelper = require ('./../../utils/meta-extractor/helpers/MetaExtractor.helper.ts');
     res.json( {message: MetaExtractorHelper.test() });
 });
 
 router.get('/test/voting', function (req,res,next){
-
-    let VotingHelperHelper = require ('../voting/helpers/Votings.helper.ts');
-    res.json( {message: VotingHelperHelper.test() });
+    let VotingHelper = require ('../voting/helpers/Votings.helper.ts');
+    res.json( {message: VotingHelper.test() });
 });
+
+router.get('/test/notifications', function (req,res,next){
+    let NotificationsHelper = require ('../notifications/helpers/Notifications.helper.ts');
+    res.json( {message: NotificationsHelper.test() });
+});
+
 
 
 
