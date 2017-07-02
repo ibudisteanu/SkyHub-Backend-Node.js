@@ -179,6 +179,26 @@ var List = class{
 
     }
 
+    /*
+     keys - get all the elements
+
+     O(N)
+     */
+
+    // async listKeys(tableName, regex){
+    //
+    //     if (typeof regex === 'undefined') regex = '';
+    //
+    //     return new Promise( (resolve)=> {
+    //         redis.redisClient.keys(this.tablePrefix + ":" + tableName, regex , function (err, answer) {
+    //
+    //             console.log("keys##","###",err,answer);
+    //             resolve (err === null ? answer : null);
+    //         });
+    //     });
+    //
+    // }
+
 
 
 };

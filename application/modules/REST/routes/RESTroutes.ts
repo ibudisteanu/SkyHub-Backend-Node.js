@@ -10,6 +10,7 @@ var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
 var TopicsCtrl = require ('../forums/topics/Topics.controller.ts');
 var RepliesCtrl = require ('../forums/replies/Replies.controller.ts');
 var VotingCtrl = require ('../Voting/Voting.controller.ts');
+var NotificationsCtrl = require ('../Notifications/Notifications.controller.ts');
 
 var TopContentCtrl = require ('../forums/content/TopContent.controller.ts');
 var TopForumsCtrl = require ('../forums/content/TopForums.controller.ts');
@@ -121,6 +122,18 @@ router.get('/voting/get-all-votes', function (req, res, next){
 router.get('/voting/submit-vote', function (req, res, next){
     VotingCtrl.postSubmitVote(req, res).then ( ( answer ) => { res.json( answer ); });
 });
+
+
+//              NOTIFICATIONS
+
+router.get('/notifications/get-notifications', function (req, res, next){
+    NotificationsCtrl.postGetNotifications(req, res).then ( ( answer ) => { res.json( answer ); });
+});
+
+router.get('/notifications/mark-notification', function (req, res, next){
+    NotificationsCtrl.postMarkNotification(req, res).then ( ( answer ) => { res.json( answer ); });
+});
+
 
 
 
@@ -371,6 +384,18 @@ router.processSocketRoute = function (socket)
     socket.on("api/voting/submit-vote", function (data) {
         data.body = data;
         VotingCtrl.postSubmitVote(data, socket).then ( ( answer ) => { socket.emit('api/voting/submit-vote'+'/'+answer.vote.parentId,answer ) });
+    });
+
+    //              NOTIFICATIONS
+
+    socket.on("api/notifications/get-notifications", function (data) {
+        data.body = data;
+        NotificationsCtrl.postGetNotifications(data, socket).then ( ( answer ) => { socket.emit('api/notifications/get-notifications',answer ) });
+    });
+
+    socket.on("api/notifications/mark-notification", function (data) {
+        data.body = data;
+        NotificationsCtrl.postMarkNotification(data, socket).then ( ( answer ) => { socket.emit('api/notifications/mark-notification',answer ) });
     });
 
 

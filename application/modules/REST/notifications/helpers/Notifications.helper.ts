@@ -59,14 +59,36 @@ class NotificationsListHelper {
 
     async markNotification(userAuthenticated, notificationId, markAll, markValue){
 
-
         if (typeof markValue === 'undefined') readValue = true;
         if (typeof notificationId === 'object') notificationId = notificationId.id;
 
         let userId =  userAuthenticated;
         if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
 
-        return this.hashList.setHash('read:'+userId,notificationId, markValue);
+        if (markAll){
+            let notifications = await this.list.listRange(userId,0, NOTIFICATIONS_DB_MAXIMUM-1);
+
+            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@ notifications', notifications);
+
+            for (let i=0; i<notifications.length; i++) {
+                notifications[i] = new Notification(JSON.parse(notifications[i]));
+            }
+
+            for (let i=0; i<notifications.length; i++)
+                await this.hashList.setHash('read:'+userId, notifications[i].id, markValue);
+
+            if (markValue)
+                await this.hashList.setHash('infoHash:'+userId, 'unread', 0); //all has been read
+            else
+                await this.hashList.setHash('infoHash:'+userId, 'unread', await this.list.listLength(userId)); //none has been read
+
+            return true;
+        }
+
+        await this.hashList.setHash('read:'+userId, notificationId, markValue);
+        await this.hashList.incrementBy('infoHash:'+userId, 'unread', (markValue ? -1 : +1) ); // I have read/unread one notification
+
+        return true;
     }
 
     async getReadNotification(userAuthenticated, notificationId){
@@ -129,6 +151,9 @@ class NotificationsListHelper {
         for (let i=0; i< 120; i++){
             console.log('createNewUserNotificationFromUser', await this.createNewUserNotificationFromUser('user1','template','user'+i,'TITLU2','TEXT2','IMAGE2'));
         }
+
+        this.markNotification('user1','user55', true, true);
+        this.markNotification('user1','user55', false, false);
 
         //console.log('getUserNotifications', await this.getUserNotifications('user1', 1, 8));
 

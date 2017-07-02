@@ -42,7 +42,7 @@ module.exports = {
 
     },
 
-    async postMarkNofication (req, res){
+    async postMarkNotification (req, res){
 
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
@@ -65,7 +65,7 @@ module.exports = {
             }
         }
 
-        let result = await VotingHelper.markNotification(userAuthenticated, notificationId, markAll, markValue);
+        let result = await NotificationsHelper.markNotification(userAuthenticated, notificationId, markAll, markValue);
 
         return {
             result: true,
