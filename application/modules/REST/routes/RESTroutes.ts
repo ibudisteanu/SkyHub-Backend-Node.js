@@ -9,7 +9,7 @@ var FunctionsCtrl = require ('./../common/functions/functions.controller.ts');
 var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
 var TopicsCtrl = require ('../forums/topics/Topics.controller.ts');
 var RepliesCtrl = require ('../forums/replies/Replies.controller.ts');
-var VotingCtrl = require ('../common/Voting/Voting.controller.ts');
+var VotingCtrl = require ('../Voting/Voting.controller.ts');
 
 var TopContentCtrl = require ('../forums/content/TopContent.controller.ts');
 var TopForumsCtrl = require ('../forums/content/TopForums.controller.ts');
@@ -173,7 +173,7 @@ router.get('/test/meta-extractor', function (req,res,next){
 
 router.get('/test/voting', function (req,res,next){
 
-    let VotingHelperHelper = require ('./../../REST/common/Voting/helpers/Voting.helper.ts');
+    let VotingHelperHelper = require ('../Voting/helpers/Voting.helper.ts');
     res.json( {message: VotingHelperHelper.test() });
 });
 

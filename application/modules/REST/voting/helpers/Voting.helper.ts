@@ -4,13 +4,13 @@
  */
 
 
-var HashList = require ('../../../../DB/Redis/lists/HashList.helper.ts');
-var commonFunctions = require ('../../helpers/common-functions.helper.ts');
-var nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator.ts');
+var HashList = require ('../../../DB/Redis/lists/HashList.helper.ts');
+var commonFunctions = require ('../../common/helpers/common-functions.helper.ts');
+var nohmIterator = require ('../../../DB/Redis/nohm/nohm.iterator.ts');
 
-var HashList = require ('../../../../DB/Redis/lists/HashList.helper.ts');
-var commonFunctions = require ('../../helpers/common-functions.helper.ts');
-var VoteType = require ('./../models/VoteType.js');
+var HashList = require ('../../../DB/Redis/lists/HashList.helper.ts');
+var commonFunctions = require ('../../common/helpers/common-functions.helper.ts');
+var VoteType = require ('../models/VoteType.js');
 
 class VotingHash {
 
