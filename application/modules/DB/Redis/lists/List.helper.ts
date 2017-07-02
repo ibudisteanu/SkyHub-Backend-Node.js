@@ -123,6 +123,42 @@ var List = class{
     }
 
     /*
+     llen - count of the list
+
+     O(1)
+     */
+
+    async listLength(tableName){
+        if (typeof tableName === 'undefined') tableName = '';
+
+        return new Promise( (resolve)=> {
+            redis.redisClient.llen (this.tablePrefix + ":" + tableName, function (err, answer) {
+
+                console.log("llen ##",err, answer,"###",err,answer);
+                resolve (err === null ? answer : null);
+            });
+        });
+
+    }
+
+    /*
+     rpop - get and remove last element
+
+     O(1)
+     */
+
+    async listRightPop(tableName){
+        return new Promise( (resolve)=> {
+            redis.redisClient.rpop (this.tablePrefix + ":" + tableName, function (err, answer) {
+
+                console.log("rpop ##","###",err,answer);
+                resolve (err === null ? answer : null);
+            });
+        });
+
+    }
+
+    /*
      lrange - find the notifications between index1, index2
 
      O(S+N) where S is the distance of start offset from HEAD for small lists, from nearest end (HEAD or TAIL) for large lists; and N is the number of elements in the specified range.
