@@ -114,6 +114,10 @@ router.get('/voting/get-vote', function (req, res, next){
     VotingCtrl.postGetVote(req, res).then ( ( answer ) => { res.json( answer ); });
 });
 
+router.get('/voting/get-all-votes', function (req, res, next){
+    VotingCtrl.postGetAllVotes(req, res).then ( ( answer ) => { res.json( answer ); });
+});
+
 router.get('/voting/submit-vote', function (req, res, next){
     VotingCtrl.postSubmitVote(req, res).then ( ( answer ) => { res.json( answer ); });
 });
@@ -350,6 +354,12 @@ router.processSocketRoute = function (socket)
         data.body = data;
         VotingCtrl.postGetVote(data, socket).then ( ( answer ) => { socket.emit('api/voting/get-vote'+'/'+answer.vote.parentId, answer )});
     });
+
+    socket.on("api/voting/get-all-votes", function (data) {
+        data.body = data;
+        VotingCtrl.postGetAllVotes(data, socket).then ( ( answer ) => { socket.emit('api/voting/get-all-votes'+'/'+answer.vote.parentId, answer )});
+    });
+
 
     socket.on("api/voting/submit-vote", function (data) {
         data.body = data;

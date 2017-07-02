@@ -33,14 +33,24 @@ module.exports = {
     async postGetVote (req, res){
 
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
-
         let parentId = '';
 
-        if (req.hasOwnProperty('body')) {
+        if (req.hasOwnProperty('body'))
             parentId = req.body.parentId || '';
-        }
 
         return await VotingHelper.getVote(parentId, userAuthenticated);
+
+    },
+
+    async postGetAllVotes (req, res){
+
+        let userAuthenticated = await AuthenticatingUser.loginUser(req);
+        let parentId = '';
+
+        if (req.hasOwnProperty('body'))
+            parentId = req.body.parentId || '';
+
+        return await VotingHelper.getVote(parentId, userAuthenticated, true);
 
     },
 

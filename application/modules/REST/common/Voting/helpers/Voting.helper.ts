@@ -28,8 +28,10 @@ class VotingHash {
         let userId = userAuthenticated;
         if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
 
-        let voteType = await this.hashList.getHash(parentId, userId);
+        let voteType =  await this.hashList.getHash(parentId, userId);
         if (voteType === null) voteType = VoteType.VOTE_NONE;
+
+        voteType = parseInt(voteType);
 
         return voteType;
     }
@@ -131,9 +133,10 @@ class VotingHash {
 
 
 
-    async getVote (parentId, userAuthenticated){
+    async getVote (parentId, userAuthenticated, onlyUserVote){
 
         if (typeof userAuthenticated === "undefined") userAuthenticated = null;
+        if (typeof onlyUserVote === "undefined") onlyUserVote = true;
 
         let value =  await this.getVoteValue(parentId);
         if (value === null) value = 0;
@@ -143,7 +146,7 @@ class VotingHash {
             vote: {
                 value: value,
                 parentId: parentId,
-                votes: await this.getVotesWithOnlyUserVote(parentId, userAuthenticated),
+                votes: ( onlyUserVote ? await this.getVotesWithOnlyUserVote(parentId, userAuthenticated) : await this.getAllVotes(parentId, userAuthenticated) ),
             }
         }
 
