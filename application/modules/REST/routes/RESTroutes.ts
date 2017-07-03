@@ -138,6 +138,10 @@ router.get('/notifications/mark-notification-read', function (req, res, next){
     NotificationsCtrl.postMarkNotificationRead(req, res).then ( ( answer ) => { res.json( answer ); });
 });
 
+router.get('/notifications/reset-notification-unread-counter', function (req, res, next){
+    NotificationsCtrl.postResetNotificationUnreadCounter(req, res).then ( ( answer ) => { res.json( answer ); });
+});
+
 router.get('/notifications/mark-notification-shown', function (req, res, next){
     NotificationsCtrl.postMarkNotificationShown(req, res).then ( ( answer ) => { res.json( answer ); });
 });
@@ -409,6 +413,11 @@ router.processSocketRoute = function (socket)
     socket.on("api/notifications/mark-notification-read", function (data) {
         data.body = data;
         NotificationsCtrl.postMarkNotificationRead(data, socket).then ( ( answer ) => { socket.emit('api/notifications/mark-notification',answer ) });
+    });
+
+    socket.on("api/notifications/reset-notification-unread-counter", function (data) {
+        data.body = data;
+        NotificationsCtrl.postResetNotificationUnreadCounter(data, socket).then ( ( answer ) => { socket.emit('api/notifications/mark-notification-unread-counter',answer ) });
     });
 
     socket.on("api/notifications/mark-notification-shown", function (data) {

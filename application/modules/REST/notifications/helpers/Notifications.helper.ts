@@ -41,19 +41,27 @@ class NotificationsListHelper {
         let answer = await this.list.listRange(userId, (pageIndex-1)*pageCount, pageIndex*pageCount);
         let result = [];
 
-        console.log('#####',answer);
+        //console.log('#####',answer);
 
         if (answer !== null){
             for (let i=0; i<answer.length; i++) {
                 let obj = JSON.parse(answer[i]); //the data in the DB is stringified
+
                 let notification = new Notification(obj);
 
                 notification.read = await this.getReadNotificationStatus(userAuthenticated, notification.id);
+                if (notification.read === null)  notification.read = false;
+
                 notification.shown = await this.getShownNotificationStatus(userAuthenticated, notification.id);
+                if (notification.shown === null) notification.shown = false;
+
+                notification.x="DDDD";
 
                 result.push(notification);
             }
         }
+
+        console.log('######## ##########', result);
 
         return result;
     }
@@ -104,11 +112,25 @@ class NotificationsListHelper {
         await this.hashList.setHash('shown:'+userId, notificationId, true);
     }
 
+    async resetNotificationsUnreadCounter(userAuthenticated){
+        let userId =  userAuthenticated;
+        if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
+        
+        await this.hashList.setHash('infoHash:'+userId, 'unread', 0 ); // I have read/unread one notification
+    }
+
     async getReadNotificationStatus(userAuthenticated, notificationId){
         let userId =  userAuthenticated;
         if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
 
         return this.hashList.getHash('read:'+userId,notificationId);
+    }
+
+    async getUnreadNotifications(userAuthenticated){
+        let userId =  userAuthenticated;
+        if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
+
+        return parseInt(await this.hashList.getHash('infoHash:'+userId, 'unread' ));
     }
 
     async getShownNotificationStatus(userAuthenticated, notificationId){
@@ -123,7 +145,7 @@ class NotificationsListHelper {
         if (typeof userId === 'object') userId = userId.id;
 
         let newNotification = new Notification({
-            id: nohmIterator.generateCommonIterator(function(){},"topic"),
+            id: nohmIterator.generateCommonIterator(function(){},"notification"),
             dtCreation:  new Date(),
             authorId: userId,
             template: template,
@@ -131,7 +153,7 @@ class NotificationsListHelper {
             params:  params,
         });
 
-        await this.list.listLeftPush(userId, newNotification.toJSON());
+        await this.list.listLeftPush(userId, newNotification.toJSON_REDIS());
 
         if (await this.list.listLength(userId) > NOTIFICATIONS_DB_MAXIMUM){
             let removed = await this.list.listRightPop(userId);
@@ -153,12 +175,12 @@ class NotificationsListHelper {
         return newNotification;
     }
 
-    createNewUserNotificationFromUser(userId, template, userSourceId, title, text, image){
+    createNewUserNotificationFromUser(userId, template, userSourceId, title, body, image){
 
         return this.createNewUserNotification(userId, template, {
             userSourceId: userSourceId,
             title: title,
-            text: text,
+            body: body,
             image: image,
         });
 
@@ -173,8 +195,14 @@ class NotificationsListHelper {
             console.log('createNewUserNotificationFromUser', await this.createNewUserNotificationFromUser('user1','template','user'+i,'TITLU2','TEXT2','IMAGE2'));
         }
 
-        this.markNotificationRead('user1','user55', true, true);
-        this.markNotificationRead('user1','user55', false, false);
+        await this.markNotificationRead('user1','user55', true, true);
+        await this.markNotificationRead('user1','user55', false, false);
+
+        console.log('createNewUserNotificationFromUser', await this.createNewUserNotificationFromUser('1_user_14987719886059997','template','userY','TITLU2','TEXT2','IMAGE2'));
+
+        let userId = '1_user_14979557751049105';
+
+        console.log('createNewUserNotificationFromUser', await this.createNewUserNotificationFromUser(userId,'template','1_user_14987719886059997','TITLU'+await this.list.listLength(userId),'TEXT2','IMAGE2'));
 
         //console.log('getUserNotifications', await this.getUserNotifications('user1', 1, 8));
 

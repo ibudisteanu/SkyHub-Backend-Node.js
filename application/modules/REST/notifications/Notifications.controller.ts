@@ -18,8 +18,6 @@ module.exports = {
 
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
-        let pageIndex = 1;
-        let pageCount = 8;
 
         if (userAuthenticated === null){
             return {
@@ -28,12 +26,12 @@ module.exports = {
             }
         }
 
-        let result = await NotificationsHelper.getUserNotifications(userAuthenticated, pageIndex, pageCount);
+        let notifications = await NotificationsHelper.getUserNotifications(userAuthenticated, 1, 8);
 
         return {
             result:true,
-
-            notifications: result,
+            unreadNotifications: await NotificationsHelper.getUnreadNotifications(userAuthenticated),
+            notifications: notifications,
         }
 
     },
@@ -57,11 +55,12 @@ module.exports = {
             }
         }
 
-        let result = await NotificationsHelper.getUserNotifications(userAuthenticated, pageIndex, pageCount);
+        let notifications = await NotificationsHelper.getUserNotifications(userAuthenticated, pageIndex, pageCount);
 
         return {
             result:true,
-            notifications: result,
+            unreadNotifications: await NotificationsHelper.getUnreadNotifications(userAuthenticated),
+            notifications: notifications,
         }
 
     },
@@ -94,6 +93,25 @@ module.exports = {
         return {
             result: true,
             notifications: result
+        }
+
+    },
+
+    async postResetNotificationUnreadCounter (req, res){
+
+        let userAuthenticated = await AuthenticatingUser.loginUser(req);
+
+        if (userAuthenticated === null){
+            return {
+                result: false,
+                message: 'You are not authenticated',
+            }
+        }
+
+        await NotificationsHelper.resetNotificationsUnreadCounter(userAuthenticated);
+
+        return {
+            result: true,
         }
 
     },

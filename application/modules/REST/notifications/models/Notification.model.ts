@@ -19,14 +19,15 @@ class Notification {
         this.dtCreation = data.dtCreation || '';
         this.authorId = data.authorId || '';
         this.template = data.template || '';
+
         this.params = data.params || {};
     }
 
-    toJSON(){
+    toJSON_REDIS(){
 
         return {
             id: this.id,
-            dtCreation: this.dtCreation,
+            dtCreation: this.dtCreation.getTime(),
             authorId: this.authorId,
             template: this.template,
             params: this.params,
