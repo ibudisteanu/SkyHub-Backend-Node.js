@@ -8,6 +8,7 @@ class Notification {
     // id = '';
     // dtCreation = 0;
     // authorId = '';
+    // template = '';
     // params: {}; //params is a JSON object that contains objects
 
     constructor( data) {

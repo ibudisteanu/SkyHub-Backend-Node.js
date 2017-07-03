@@ -14,6 +14,30 @@ module.exports = {
      REST API
      */
 
+    async postGetLastNotifications (req, res){
+
+        let userAuthenticated = await AuthenticatingUser.loginUser(req);
+
+        let pageIndex = 1;
+        let pageCount = 8;
+
+        if (userAuthenticated === null){
+            return {
+                result:false,
+                message: 'You are not authenticated',
+            }
+        }
+
+        let result = await NotificationsHelper.getUserNotifications(userAuthenticated, pageIndex, pageCount);
+
+        return {
+            result:true,
+
+            notifications: result,
+        }
+
+    },
+
     async postGetNotifications (req, res){
 
         let userAuthenticated = await AuthenticatingUser.loginUser(req);

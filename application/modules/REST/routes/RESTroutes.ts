@@ -130,6 +130,10 @@ router.get('/notifications/get-notifications', function (req, res, next){
     NotificationsCtrl.postGetNotifications(req, res).then ( ( answer ) => { res.json( answer ); });
 });
 
+router.get('/notifications/get-last-notifications', function (req, res, next){
+    NotificationsCtrl.postGetLastNotifications(req, res).then ( ( answer ) => { res.json( answer ); });
+});
+
 router.get('/notifications/mark-notification-read', function (req, res, next){
     NotificationsCtrl.postMarkNotificationRead(req, res).then ( ( answer ) => { res.json( answer ); });
 });
@@ -395,6 +399,11 @@ router.processSocketRoute = function (socket)
     socket.on("api/notifications/get-notifications", function (data) {
         data.body = data;
         NotificationsCtrl.postGetNotifications(data, socket).then ( ( answer ) => { socket.emit('api/notifications/get-notifications',answer ) });
+    });
+
+    socket.on("api/notifications/get-last-notifications", function (data) {
+        data.body = data;
+        NotificationsCtrl.postGetLastNotifications(data, socket).then ( ( answer ) => { socket.emit('api/notifications/get-last-notifications',answer ) });
     });
 
     socket.on("api/notifications/mark-notification-read", function (data) {
