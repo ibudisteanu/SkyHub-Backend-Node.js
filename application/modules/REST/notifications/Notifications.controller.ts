@@ -42,7 +42,7 @@ module.exports = {
 
     },
 
-    async postMarkNotification (req, res){
+    async postMarkNotificationRead (req, res){
 
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
@@ -65,11 +65,36 @@ module.exports = {
             }
         }
 
-        let result = await NotificationsHelper.markNotification(userAuthenticated, notificationId, markAll, markValue);
+        let result = await NotificationsHelper.markNotificationRead(userAuthenticated, notificationId, markAll, markValue);
 
         return {
             result: true,
             notifications: result
+        }
+
+    },
+
+    async postMarkNotificationShown (req, res){
+
+        let userAuthenticated = await AuthenticatingUser.loginUser(req);
+
+        let notificationId = '';
+
+        if (req.hasOwnProperty('body')) {
+            notificationId = req.body.notificationId || '';
+        }
+
+        if (userAuthenticated === null){
+            return {
+                result: false,
+                message: 'You are not authenticated',
+            }
+        }
+
+        let result = await NotificationsHelper.markNotificationShown(userAuthenticated, notificationId);
+
+        return {
+            result: true,
         }
 
     },

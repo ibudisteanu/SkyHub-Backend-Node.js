@@ -130,8 +130,12 @@ router.get('/notifications/get-notifications', function (req, res, next){
     NotificationsCtrl.postGetNotifications(req, res).then ( ( answer ) => { res.json( answer ); });
 });
 
-router.get('/notifications/mark-notification', function (req, res, next){
-    NotificationsCtrl.postMarkNotification(req, res).then ( ( answer ) => { res.json( answer ); });
+router.get('/notifications/mark-notification-read', function (req, res, next){
+    NotificationsCtrl.postMarkNotificationRead(req, res).then ( ( answer ) => { res.json( answer ); });
+});
+
+router.get('/notifications/mark-notification-shown', function (req, res, next){
+    NotificationsCtrl.postMarkNotificationShown(req, res).then ( ( answer ) => { res.json( answer ); });
 });
 
 
@@ -393,10 +397,16 @@ router.processSocketRoute = function (socket)
         NotificationsCtrl.postGetNotifications(data, socket).then ( ( answer ) => { socket.emit('api/notifications/get-notifications',answer ) });
     });
 
-    socket.on("api/notifications/mark-notification", function (data) {
+    socket.on("api/notifications/mark-notification-read", function (data) {
         data.body = data;
-        NotificationsCtrl.postMarkNotification(data, socket).then ( ( answer ) => { socket.emit('api/notifications/mark-notification',answer ) });
+        NotificationsCtrl.postMarkNotificationRead(data, socket).then ( ( answer ) => { socket.emit('api/notifications/mark-notification',answer ) });
     });
+
+    socket.on("api/notifications/mark-notification-shown", function (data) {
+        data.body = data;
+        NotificationsCtrl.postMarkNotificationShown(data, socket).then ( ( answer ) => { socket.emit('api/notifications/mark-shown',answer ) });
+    });
+
 
 
 };

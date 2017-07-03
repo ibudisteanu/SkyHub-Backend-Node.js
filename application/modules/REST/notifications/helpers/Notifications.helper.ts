@@ -48,7 +48,8 @@ class NotificationsListHelper {
                 let obj = JSON.parse(answer[i]); //the data in the DB is stringified
                 let notification = new Notification(obj);
 
-                notification.read = await this.getReadNotification(userAuthenticated, notification.id);
+                notification.read = await this.getReadNotificationStatus(userAuthenticated, notification.id);
+                notification.shown = await this.getShownNotificationStatus(userAuthenticated, notification.id);
 
                 result.push(notification);
             }
@@ -57,7 +58,7 @@ class NotificationsListHelper {
         return result;
     }
 
-    async markNotification(userAuthenticated, notificationId, markAll, markValue){
+    async markNotificationRead(userAuthenticated, notificationId, markAll, markValue){
 
         if (typeof markValue === 'undefined') readValue = true;
         if (typeof notificationId === 'object') notificationId = notificationId.id;
@@ -74,8 +75,10 @@ class NotificationsListHelper {
                 notifications[i] = new Notification(JSON.parse(notifications[i]));
             }
 
-            for (let i=0; i<notifications.length; i++)
-                await this.hashList.setHash('read:'+userId, notifications[i].id, markValue);
+            for (let i=0; i<notifications.length; i++) {
+                await this.hashList.setHash('read:' + userId, notifications[i].id, markValue);
+                await this.hashList.setHash('shown:' + userId, notifications[i].id, true);
+            }
 
             if (markValue)
                 await this.hashList.setHash('infoHash:'+userId, 'unread', 0); //all has been read
@@ -86,16 +89,33 @@ class NotificationsListHelper {
         }
 
         await this.hashList.setHash('read:'+userId, notificationId, markValue);
+        await this.hashList.setHash('shown:'+userId, notificationId, true);
         await this.hashList.incrementBy('infoHash:'+userId, 'unread', (markValue ? -1 : +1) ); // I have read/unread one notification
 
         return true;
     }
 
-    async getReadNotification(userAuthenticated, notificationId){
+    async markNotificationShown(userAuthenticated, notificationId){
+        if (typeof notificationId === 'object') notificationId = notificationId.id;
+
+        let userId =  userAuthenticated;
+        if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
+
+        await this.hashList.setHash('shown:'+userId, notificationId, true);
+    }
+
+    async getReadNotificationStatus(userAuthenticated, notificationId){
         let userId =  userAuthenticated;
         if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
 
         return this.hashList.getHash('read:'+userId,notificationId);
+    }
+
+    async getShownNotificationStatus(userAuthenticated, notificationId){
+        let userId =  userAuthenticated;
+        if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
+
+        return this.hashList.getHash('shown:'+userId, notificationId);
     }
 
     async createNewUserNotification(userId, template, params){
@@ -123,6 +143,7 @@ class NotificationsListHelper {
                 await this.hashList.incrementBy('infoHash:'+userId, 'unread', -1);
 
             this.hashList.deleteHash('read:'+userId,removedNotification.id);
+            this.hashList.deleteHash('shown:'+userId,removedNotification.id);
             //await this.list.listTrim(userId, 0, NOTIFICATIONS_DB_MAXIMUM-1);
         }
 
@@ -152,8 +173,8 @@ class NotificationsListHelper {
             console.log('createNewUserNotificationFromUser', await this.createNewUserNotificationFromUser('user1','template','user'+i,'TITLU2','TEXT2','IMAGE2'));
         }
 
-        this.markNotification('user1','user55', true, true);
-        this.markNotification('user1','user55', false, false);
+        this.markNotificationRead('user1','user55', true, true);
+        this.markNotificationRead('user1','user55', false, false);
 
         //console.log('getUserNotifications', await this.getUserNotifications('user1', 1, 8));
 
