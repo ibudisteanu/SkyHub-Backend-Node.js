@@ -127,21 +127,18 @@ var UserModel = redis.nohm.model('UserModel', {
 
         },
 
-        getPublicInformation : function (){
+        getPublicInformation : function (userAuthenticated){
             var properties = this.allProperties();
+
+            properties.isOwner = this.isOwner(userAuthenticated);
+
+            if (!properties.isOwner){       //properties that are not public
+                delete properties.email;
+            }
 
             properties.connected = this.getConnectedStatus();
             properties.profilePic = this.getAvatar();
-            delete properties.password;
-            delete properties.email;
 
-            return properties;
-        },
-
-        getPrivateInformation : function (){
-            var properties = this.allProperties();
-
-            properties.connected = this.getConnectedStatus();
             delete properties.password;
 
             return properties;
@@ -152,6 +149,32 @@ var UserModel = redis.nohm.model('UserModel', {
             var ScoreCoefficientHelper = require ('../../../DB/common/score-coefficient/ScoreCoefficient.helper.ts');
 
             return ScoreCoefficientHelper.calculateHotnessScoreCoefficient(this);
+        },
+
+        checkOwnership : function(sAuthorId){
+
+            console.log('');
+            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',sAuthorId, this.id);
+            console.log('');
+
+            if (sAuthorId === this.id)
+                return true;
+
+            if ((this.p('role') === UserRolesEnum.SYS_ADMIN)||(this.p('role') === UserRolesEnum.ADMIN)){
+                return true;
+            }
+
+            return false;
+
+        },
+
+        isOwner : function (User){
+
+            if (typeof(User === 'undefined')||(User === null)) return false;
+
+            if (User.checkOwnership(this.p('authorId'))) return true;
+
+            return false;
         },
 
         getConnectedStatus : function () {

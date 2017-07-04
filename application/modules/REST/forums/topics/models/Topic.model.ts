@@ -95,22 +95,19 @@ var TopicModel = redis.nohm.model('TopicModel', {
             return this.p('firstName') + ' ' + this.p('lastName');
         },
 
-        getPublicInformation : function (){
+        getPublicInformation : function (userAuthenticated){
             var properties = this.allProperties();
 
-            return properties;
-        },
-
-        getPrivateInformation : function (){
-            var properties = this.allProperties();
+            properties.isOwner = this.isOwner(userAuthenticated);
 
             return properties;
         },
 
         isOwner : function (User){
 
-            if (User.checkOwnership(this.p('authorId')))
-                return true;
+            if (typeof(User === 'undefined')||(User === null)) return false;
+
+            if (User.checkOwnership(this.p('authorId'))) return true;
 
             return false;
         },

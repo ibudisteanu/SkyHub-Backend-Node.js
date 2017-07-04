@@ -44,7 +44,7 @@ class TopObjectsList {
                 if (object !== null){
                     console.log("TOP CONTENT OBJECT FOUND: ", object.p('title'));
                     listTopContentObjects.push({
-                        object : object.getPublicInformation(),
+                        object : object.getPublicInformation(userAuthenticated),
                         //score: score,
                     })
                 }
@@ -74,7 +74,7 @@ class TopObjectsList {
         if (object !== null){
             return({
                 result: true,
-                content: object.getPublicInformation(),
+                content: object.getPublicInformation(userAuthenticated),
             })
         }
 

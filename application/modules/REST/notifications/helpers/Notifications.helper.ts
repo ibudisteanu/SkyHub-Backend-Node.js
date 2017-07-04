@@ -61,7 +61,7 @@ class NotificationsListHelper {
             }
         }
 
-        console.log('######## ##########', result);
+        //console.log('######## ##########', result);
 
         return result;
     }
@@ -77,7 +77,7 @@ class NotificationsListHelper {
         if (markAll){
             let notifications = await this.list.listRange(userId,0, NOTIFICATIONS_DB_MAXIMUM-1);
 
-            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@ notifications', notifications);
+            //console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@ notifications', notifications);
 
             for (let i=0; i<notifications.length; i++) {
                 notifications[i] = new Notification(JSON.parse(notifications[i]));

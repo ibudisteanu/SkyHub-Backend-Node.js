@@ -81,14 +81,10 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
             return this.p('firstName') + ' ' + this.p('lastName');
         },
 
-        getPublicInformation : function (){
+        getPublicInformation : function (userAuthenticated){
             var properties = this.allProperties();
 
-            return properties;
-        },
-
-        getPrivateInformation : function (){
-            var properties = this.allProperties();
+            properties.isOwner = this.isOwner(userAuthenticated);
 
             return properties;
         },

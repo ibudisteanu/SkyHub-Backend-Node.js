@@ -10,7 +10,7 @@ const UserGenderEnum = {
 }
 
 const UserRolesEnum = {
-    NOT_REGISTERED: 0,
+        NOT_REGISTERED: 0,
         USER: 3,
         MODERATOR: 5,
         ADMIN: 8,

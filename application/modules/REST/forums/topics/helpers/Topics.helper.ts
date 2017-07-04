@@ -131,9 +131,9 @@ module.exports = {
 
                     var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
                     SearchesHelper.addForumToSearch(null,topic); //async, but not awaited
-                    console.log(topic.getPrivateInformation() );
+                    console.log(topic.getPublicInformation(userAuthenticated) );
 
-                    resolve( {result:true, topic: topic.getPrivateInformation() });
+                    resolve( {result:true, topic: topic.getPublicInformation(userAuthenticated) });
                 }
             }.bind(this));
 

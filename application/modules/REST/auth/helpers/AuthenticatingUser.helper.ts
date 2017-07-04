@@ -58,7 +58,7 @@ class AuthenticatedUser {
             // console.log('updating last activity');
             // console.log('');console.log('');console.log('');console.log('');console.log('');console.log('');
             // console.log(userAuthenticated);
-            // console.log(userAuthenticated.getPublicInformation());
+            // console.log(userAuthenticated.getPublicInformation(userAuthenticated));
             // console.log('finished updating last activity');
 
             return userAuthenticated;

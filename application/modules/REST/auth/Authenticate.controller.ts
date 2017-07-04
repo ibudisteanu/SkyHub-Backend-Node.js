@@ -40,14 +40,14 @@ module.exports = {
         if (answer.result === true)
         {
             //console.log(loggedInUser.getFullName());
-            //console.log(loggedInUser.getPublicInformation());
+            //console.log(loggedInUser.getPublicInformation(user));
 
             UsersHelper.updateLastActivity(answer.user);
 
             return ( {
                 result: true,
                 message: 'Welcome back, '+answer.user.getFullName(),
-                user :  answer.user.getPublicInformation(),
+                user :  answer.user.getPublicInformation(answer.user),
                 sessionId: await UserHelper.createAuthSession(answer.user),
             });
 
@@ -73,7 +73,7 @@ module.exports = {
         } else
             return {
                 result: true,
-                user: authenticatedUser.getPublicInformation(),
+                user: authenticatedUser.getPublicInformation(authenticatedUser),
             };
 
     },

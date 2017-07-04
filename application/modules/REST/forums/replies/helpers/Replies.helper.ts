@@ -139,9 +139,9 @@ module.exports = {
 
                     var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
                     SearchesHelper.addReplyToSearch(null, reply); //async, but not awaited
-                    console.log(reply.getPrivateInformation());
+                    console.log(reply.getPublicInformation(userAuthenticated));
 
-                    resolve( {result:true, reply: reply.getPrivateInformation() });
+                    resolve( {result:true, reply: reply.getPublicInformation(userAuthenticated) });
 
                 }
             }.bind(this));

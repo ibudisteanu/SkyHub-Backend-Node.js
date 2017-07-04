@@ -33,7 +33,7 @@ module.exports = {
                 return ({
                     result: true,
                     type: "log in",
-                    user: user.getPrivateInformation(),
+                    user: user.getPublicInformation(user),
                     sessionId: await UserHelper.createAuthSession(user),
                 });
             } else {//registering the new user

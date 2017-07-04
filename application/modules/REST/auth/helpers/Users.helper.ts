@@ -138,9 +138,9 @@ module.exports = {
                     resolve({result:false, errors: user.errors });
                 } else {
                     console.log("Saving User Successfully");
-                    console.log(user.getPrivateInformation());
+                    console.log(user.getPublicInformation(user));
 
-                    resolve( {result:true, user: user.getPrivateInformation() });
+                    resolve( {result:true, user: user.getPublicInformation(user) });
                 }
             });
 
