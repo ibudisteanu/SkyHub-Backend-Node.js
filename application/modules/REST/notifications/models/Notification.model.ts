@@ -27,7 +27,7 @@ class Notification {
 
         return {
             id: this.id,
-            dtCreation: this.dtCreation.getTime(),
+            dtCreation: this.dtCreation,
             authorId: this.authorId,
             template: this.template,
             params: this.params,

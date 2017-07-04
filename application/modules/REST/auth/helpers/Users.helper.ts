@@ -64,8 +64,8 @@ module.exports = {
                 country: sCountry.toLowerCase(),
                 city: sCity.toLowerCase(),
                 language: sLanguage.toLowerCase(),
-                dtCreation: new Date(),
-                dtLastActivity: new Date(),
+                dtCreation: new Date().getTime(),
+                dtLastActivity: new Date().getTime(),
                 age : iAge,
                 gender : enGender,
                 timeZone : iTimeZone,
@@ -260,7 +260,7 @@ module.exports = {
     },
 
     async updateLastActivityUser(user){
-        user.p('dtLastActivity',new Date().toISOString());
+        user.p('dtLastActivity',new Date().getTime());
 
         return new Promise ((resolve)=> {
             user.save(function (err, user) {

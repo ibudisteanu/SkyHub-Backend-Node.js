@@ -115,7 +115,7 @@ class NotificationsListHelper {
     async resetNotificationsUnreadCounter(userAuthenticated){
         let userId =  userAuthenticated;
         if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
-        
+
         await this.hashList.setHash('infoHash:'+userId, 'unread', 0 ); // I have read/unread one notification
     }
 
@@ -146,7 +146,7 @@ class NotificationsListHelper {
 
         let newNotification = new Notification({
             id: nohmIterator.generateCommonIterator(function(){},"notification"),
-            dtCreation:  new Date(),
+            dtCreation:  new Date().getTime(),
             authorId: userId,
             template: template,
             seen: false,

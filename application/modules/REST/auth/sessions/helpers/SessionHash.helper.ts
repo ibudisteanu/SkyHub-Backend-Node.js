@@ -34,7 +34,7 @@ class SessionHash {
 
         let sessionId = hat()+hat()+hat();
 
-        await this.hashList.setHash('',sessionId,userId+'__'+new Date().toISOString());
+        await this.hashList.setHash('',sessionId,userId+'__'+new Date().getTime());
 
         await SessionsHashList.addSession(userAuthenticated, sessionId);
 

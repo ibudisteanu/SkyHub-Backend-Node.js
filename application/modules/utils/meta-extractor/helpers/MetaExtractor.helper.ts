@@ -72,7 +72,7 @@ module.exports = {
                 updatedTime: client.ogUpdatedTime,
                 locale: client.ogLocale,
 
-                date: new Date(),
+                date: new Date().getTime(),
             };
 
             MetaExtractorHashList.setMetaData(sLink, data);
