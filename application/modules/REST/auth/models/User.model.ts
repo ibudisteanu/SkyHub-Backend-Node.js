@@ -1,6 +1,7 @@
 var redis = require ('../../../DB/redis_nohm');
 var nohmIterator = require ('../../../DB/Redis/nohm/nohm.iterator.ts');
 var md5 = require ('md5');
+var UserProperties = require ('./User.properties.ts');
 
 var UserModel = redis.nohm.model('UserModel', {
     properties: {
@@ -153,14 +154,10 @@ var UserModel = redis.nohm.model('UserModel', {
 
         checkOwnership : function(sAuthorId){
 
-            console.log('');
-            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',sAuthorId, this.id);
-            console.log('');
-
             if (sAuthorId === this.id)
                 return true;
 
-            if ((this.p('role') === UserRolesEnum.SYS_ADMIN)||(this.p('role') === UserRolesEnum.ADMIN)){
+            if ((this.p('role') === UserProperties.UserRolesEnum.SYS_ADMIN)||(this.p('role') === UserProperties.UserRolesEnum.ADMIN)){
                 return true;
             }
 

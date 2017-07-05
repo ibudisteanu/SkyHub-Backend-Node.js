@@ -149,12 +149,10 @@ var ForumModel = redis.nohm.model('ForumModel', {
         isOwner : function (User){
 
             console.log('');console.log('');console.log('');console.log('');console.log('');console.log('');
-            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',User, this.p('authorId'));
+            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',User.id||'', this.p('authorId'));
             console.log('');console.log('');console.log('');console.log('');console.log('');console.log('');
 
-            if (typeof(User === 'undefined')||(User === null)) return false;
-
-            if (User.checkOwnership(this.p('authorId'))) return true;
+            if ((typeof(User !== 'undefined')&&(User !== null))&&(User.checkOwnership(this.p('authorId')))) return true;
 
             return false;
         },

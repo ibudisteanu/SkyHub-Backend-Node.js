@@ -91,8 +91,7 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
 
         isOwner : function (User){
 
-            if (User.checkOwnership(this.p('authorId')))
-                return true;
+            if ((typeof(User !== 'undefined')&&(User !== null))&&(User.checkOwnership(this.p('authorId')))) return true;
 
             return false;
         },
