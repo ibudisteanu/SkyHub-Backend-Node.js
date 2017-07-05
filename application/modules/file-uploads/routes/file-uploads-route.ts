@@ -15,7 +15,7 @@ const multer = require('multer');
 let fileUploadURLPrefix = 'http://myskyhub.ddns.net:4000/';
 
 
-const storage = multer.diskStorage({
+const storageFile = multer.diskStorage({
     destination: './public/uploads/',
     filename: function (req, file, cb) {
         // Mimetype stores the file type, set extensions according to filetype
@@ -74,8 +74,8 @@ function isMimeTypeFile(sFileName){
     return false;
 }
 
-const upload = multer({storage: storage});
-router.post('/topic-file',  upload.single('file'), function (req, res, next) {
+const uploadFile = multer({storage: storageFile});
+router.post('/topic-file',  uploadFile.single('file'), function (req, res, next) {
 
     console.log("@@@@@@@@@@@@@@ UPLOAD HANDLER");
 
@@ -107,11 +107,12 @@ router.post('/topic-file',  upload.single('file'), function (req, res, next) {
 
 
 const imageStorage = multer.diskStorage({
-    destination: './public/uploads/',
+    destination: './public/uploads/images/',
     filename: function (req, file, cb) {
         // Mimetype stores the file type, set extensions according to filetype
 
         console.log("@@@@@@@@@@@@@@@@@@@", file.mimetype);
+
         switch (file.mimetype)
         {
             case 'image/jpeg':
@@ -147,7 +148,10 @@ function isMimeTypeImage(sFileName){
     return false;
 }
 
+
+
 const imageUpload = multer({storage: imageStorage});
+
 router.post('/image',  imageUpload.single('file'), function (req, res, next) {
 
     console.log("@@@@@@@@@@@@@@ UPLOAD HANDLER");

@@ -7,9 +7,10 @@
  * Created by ERAZER-ALEX on 6/4/2017.
  */
 
-var TopContentHelper = require('./helpers/TopContent.helper.ts');
+var ContentHelper = require('helpers/Content.helper.ts');
 var AuthenticatingUser = require('../../auth/helpers/AuthenticatingUser.helper.ts');
 var URLHashHelper = require ('../../common/URLs/helpers/URLHash.helper.ts');
+var MaterializedParentsHelper = require ('../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 
 module.exports = {
 
@@ -36,7 +37,36 @@ module.exports = {
             return {result:true, URLSlug: urlSlug, message: "Great URL"};
         else
             return {result:false, message: "Strange data input"};
-    }
+    },
 
+
+    async postSetIcon (req, res){
+
+        let userAuthenticated = await AuthenticatingUser.loginUser(req);
+
+        let icon = ''; let id='';
+        if (req.hasOwnProperty('body')){
+
+            icon = req.body.icon || '';
+            id = req.body.id || '';
+        }
+
+        return await ContentHelper.setIcon(userAuthenticated, id, icon );
+
+    },
+
+    async postSetCover (req, res){
+
+        let userAuthenticated = await AuthenticatingUser.loginUser(req);
+
+        let cover = ''; let id='';
+        if (req.hasOwnProperty('body')){
+            cover = req.body.icon || '';
+            id = req.body.id || '';
+        }
+
+        return await ContentHelper.setCover(userAuthenticated, id, cover);
+
+    }
 
 }

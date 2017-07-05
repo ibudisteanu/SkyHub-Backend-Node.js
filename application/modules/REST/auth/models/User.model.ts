@@ -167,9 +167,7 @@ var UserModel = redis.nohm.model('UserModel', {
 
         isOwner : function (User){
 
-            if (typeof(User === 'undefined')||(User === null)) return false;
-
-            if (User.checkOwnership(this.p('authorId'))) return true;
+            if ((typeof(User !== 'undefined')&&(User !== null))&&(User.checkOwnership(this.id))) return true;
 
             return false;
         },
