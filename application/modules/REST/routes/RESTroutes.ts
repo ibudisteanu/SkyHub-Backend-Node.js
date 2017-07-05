@@ -12,9 +12,9 @@ var RepliesCtrl = require ('../forums/replies/Replies.controller.ts');
 var VotingCtrl = require ('../Voting/Voting.controller.ts');
 var NotificationsCtrl = require ('../Notifications/Notifications.controller.ts');
 
-var TopContentCtrl = require ('../forums/content/TopContent.controller.ts');
-var TopForumsCtrl = require ('../forums/content/TopForums.controller.ts');
-var TopRepliesCtrl = require ('../forums/content/TopReplies.controller.ts');
+var TopContentCtrl = require ('../forums/top-content/TopContent.controller.ts');
+var TopForumsCtrl = require ('../forums/top-content/TopForums.controller.ts');
+var TopRepliesCtrl = require ('../forums/top-content/TopReplies.controller.ts');
 
 var ContentCtrl = require ('../forums/content/Content.controller.ts');
 
@@ -107,6 +107,15 @@ router.get('/content/get-URL-slug', function (req, res, next){
 
 router.get('/meta-extractor/extract-url', function (req, res, next){
     MetaExtractorController.extractDataFromLink(req, res).then ( ( answer ) => { res.json( answer ); });
+});
+
+//          CONTENT
+router.get('/content/set-icon', function (req, res, next){
+    ContentCtrl.postSetIcon(req, res).then ( ( answer ) => { res.json( answer ); });
+});
+
+router.get('/content/set-cover', function (req, res, next){
+    ContentCtrl.postSetCover(req, res).then ( ( answer ) => { res.json( answer ); });
 });
 
 //              VOTING
@@ -358,10 +367,26 @@ router.processSocketRoute = function (socket)
 
     });
 
+    //          CONTENT
+
     socket.on("api/content/get-URL-slug", function (data) {
         data.body = data;
         ContentCtrl.postGetURLSlug(data, socket).then ( ( answer ) => {
             socket.emit("api/content/get-URL-slug", answer);
+        });
+    });
+
+    socket.on("api/content/set-icon", function (data) {
+        data.body = data;
+        ContentCtrl.postSetIcon(data, socket).then ( ( answer ) => {
+            socket.emit("api/content/set-icon", answer);
+        });
+    });
+
+    socket.on("api/content/set-cover", function (data) {
+        data.body = data;
+        ContentCtrl.postSetCover(data, socket).then ( ( answer ) => {
+            socket.emit("api/content/set-cover", answer);
         });
     });
 

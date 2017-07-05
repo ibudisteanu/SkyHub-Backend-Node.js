@@ -7,7 +7,7 @@
  * Created by ERAZER-ALEX on 6/4/2017.
  */
 
-var ContentHelper = require('helpers/Content.helper.ts');
+var ContentHelper = require('./helpers/Content.helper.ts');
 var AuthenticatingUser = require('../../auth/helpers/AuthenticatingUser.helper.ts');
 var URLHashHelper = require ('../../common/URLs/helpers/URLHash.helper.ts');
 var MaterializedParentsHelper = require ('../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
