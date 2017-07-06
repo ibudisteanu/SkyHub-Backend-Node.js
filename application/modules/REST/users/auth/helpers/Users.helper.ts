@@ -1,5 +1,5 @@
-var userModel = require ('./../models/User.model.ts');
-var UserProperties = require ('./../models/User.properties.ts');
+var userModel = require ('../models/User.model.ts');
+var UserProperties = require ('../models/User.properties.ts');
 
 module.exports = {
 

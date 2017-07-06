@@ -3,7 +3,8 @@ var router = express.Router();
 var Promise = require('promise');
 
 
-var AuthenticateCtrl = require ('../auth/Authenticate.controller.ts');
+var AuthenticateCtrl = require ('../users/auth/Authenticate.controller.ts');
+var UsersCtrl = require ('../users/Users.controller.ts');
 var FunctionsCtrl = require ('./../common/functions/functions.controller.ts');
 
 var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
@@ -24,25 +25,24 @@ var MetaExtractorController = require ('../../utils/meta-extractor/MetaExtractor
 router.get('/auth/login', function(req, res, next) {
     AuthenticateCtrl.postAuthenticateLogin(req, res).then ((answer) =>{ res.json(answer); });
 });
-
 router.get('/auth/login-session', function(req, res){
-
     AuthenticateCtrl.postAuthenticateSession(req, res).then ((answer)=>{ res.json(answer); });
 });
-
-router.get('/auth/register', function(req, res, next) {
-    AuthenticateCtrl.postAuthenticateRegister(req, res).then ( (answer ) => { res.json(answer); });
-
-});
-
 router.get('/auth/register', function(req, res, next) {
     AuthenticateCtrl.postAuthenticateRegister(req, res).then ( (answer ) => { res.json(answer); });
 });
-
+router.get('/auth/register', function(req, res, next) {
+    AuthenticateCtrl.postAuthenticateRegister(req, res).then ( (answer ) => { res.json(answer); });
+});
 router.get("auth/logout", function (req, res){
     AuthenticateCtrl.logout();
 
     res.json({result:true});
+});
+
+//              USERS
+router.get('/users/get-user', function(req, res, next) {
+    UsersCtrl.postGetUser(req, res).then ( (answer ) => { res.json(answer); });
 });
 
 //              FORUMS
@@ -186,7 +186,7 @@ router.get('/test/URLHash', function (req, res, next){
 });
 
 router.get('/test/Session', function (req, res, next){
-    var SessionHash = require ('../../REST/auth/sessions/helpers/SessionHash.helper.ts');
+    var SessionHash = require ('../users/auth/sessions/helpers/SessionHash.helper.ts');
     res.json( {message: SessionHash.test() });
 });
 
@@ -281,6 +281,12 @@ router.processSocketRoute = function (socket)
 
     });
 
+    //              USERS
+    socket.on("api/users/get-user", function (data){
+        data.body = data;
+        UsersCtrl.postGetUser(data, socket).then (  (answer)=> { socket.emit("api/users/get-user", answer) });
+    });
+
 
     socket.on("api/version", function (data){
         socket.emit("api/version",FunctionsCtrl.getVersion(data, socket));
@@ -288,6 +294,7 @@ router.processSocketRoute = function (socket)
     });
 
 
+    //              FORUMS
     socket.on("api/forums/add-forum", function (data){
         data.body = data;
 

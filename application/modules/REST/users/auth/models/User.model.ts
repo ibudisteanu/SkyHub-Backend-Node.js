@@ -1,5 +1,5 @@
-var redis = require ('../../../DB/redis_nohm');
-var nohmIterator = require ('../../../DB/Redis/nohm/nohm.iterator.ts');
+var redis = require ('../../../../DB/redis_nohm');
+var nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator.ts');
 var md5 = require ('md5');
 var UserProperties = require ('./User.properties.ts');
 
@@ -147,7 +147,7 @@ var UserModel = redis.nohm.model('UserModel', {
 
         calculateHotnessCoefficient : function (){
 
-            var ScoreCoefficientHelper = require ('../../../DB/common/score-coefficient/ScoreCoefficient.helper.ts');
+            var ScoreCoefficientHelper = require ('../../../../DB/common/score-coefficient/ScoreCoefficient.helper.ts');
 
             return ScoreCoefficientHelper.calculateHotnessScoreCoefficient(this);
         },

@@ -12,10 +12,6 @@ class ContentHelper {
         let object = await MaterializedParentsHelper.findObject(id);
         let type = MaterializedParentsHelper.extractObjectTypeFromId(id);
 
-        console.log('setIcon');console.log('setIcon');console.log('setIcon');console.log('setIcon');console.log('setIcon');console.log('setIcon');
-        console.log(object, type);
-        console.log('setIcon');console.log('setIcon');console.log('setIcon');console.log('setIcon');console.log('setIcon');console.log('setIcon');
-
         if (object.isOwner(userAuthenticated) === false)
             return {result:false, message: 'No rights to change the icon'};
 

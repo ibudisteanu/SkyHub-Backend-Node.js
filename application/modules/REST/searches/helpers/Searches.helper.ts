@@ -6,7 +6,7 @@
 var SearchList = require('../../../DB/Redis/lists/search/SearchList.helper.ts');
 
 var forumModel = require ('./../../forums/forums/models/Forum.model.ts');
-var userModel = require ('./../../auth/models/User.model.ts');
+var userModel = require ('../../users/auth/models/User.model.ts');
 var replyModel = require ('./../../forums/replies/models/Reply.model.ts');
 var topicModel = require ('./../../forums/topics/models/Topic.model.ts');
 
@@ -15,7 +15,7 @@ var topicModel = require ('./../../forums/topics/models/Topic.model.ts');
 var ForumsHelper = require ('./../../forums/forums/helpers/Forums.helper.ts');
 var TopicsHelper = require ('./../../forums/topics/helpers/Topics.helper.ts');
 var RepliesHelper = require ('./../../forums/replies/helpers/Replies.helper.ts');
-var UsersHelper = require ('./../../auth/helpers/Users.helper.ts');
+var UsersHelper = require ('../../users/auth/helpers/Users.helper.ts');
 
 class Searches {
 
@@ -32,7 +32,7 @@ class Searches {
     async addUserToSearch(text, index, score){
 
         if (typeof index === "string") {
-            var UsersHelper = require ('./../../auth/helpers/Users.helper.ts');
+            var UsersHelper = require ('../../users/auth/helpers/Users.helper.ts');
             index = await UsersHelper.findUserById(index);
         }
 

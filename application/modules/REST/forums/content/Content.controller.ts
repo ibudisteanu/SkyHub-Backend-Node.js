@@ -8,7 +8,7 @@
  */
 
 var ContentHelper = require('./helpers/Content.helper.ts');
-var AuthenticatingUser = require('../../auth/helpers/AuthenticatingUser.helper.ts');
+var AuthenticatingUser = require('../../users/auth/helpers/AuthenticatingUser.helper.ts');
 var URLHashHelper = require ('../../common/URLs/helpers/URLHash.helper.ts');
 var MaterializedParentsHelper = require ('../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 
@@ -61,7 +61,7 @@ module.exports = {
 
         let cover = ''; let id='';
         if (req.hasOwnProperty('body')){
-            cover = req.body.icon || '';
+            cover = req.body.cover || '';
             id = req.body.id || '';
         }
 

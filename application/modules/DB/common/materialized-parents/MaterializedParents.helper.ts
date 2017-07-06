@@ -90,7 +90,7 @@ var MaterializedParents = class{
         switch (idData.objectType) {
             case 'user':
                 //var UserModel = redis.nohm.factory('UserModel');
-                let UsersHelper = require('../../../REST/auth/helpers/Users.helper.ts');
+                let UsersHelper = require('../../../REST/users/auth/helpers/Users.helper.ts');
 
                 return await UsersHelper.findUserById(sObjectId);
 

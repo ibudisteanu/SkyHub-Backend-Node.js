@@ -66,7 +66,7 @@ module.exports = {
 
     async createAuthSession (user)
     {
-        var SessionHashHelper = require('./../sessions/helpers/SessionHash.helper.ts');
+        var SessionHashHelper = require('../sessions/helpers/SessionHash.helper.ts');
         return await SessionHashHelper.createSession(user);
     },
 
