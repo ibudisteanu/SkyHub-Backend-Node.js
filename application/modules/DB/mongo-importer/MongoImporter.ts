@@ -7,19 +7,22 @@ var mongoose = require('mongoose');
 
 var UserModel = mongoose.model('users',{}, 'users');
 var SiteCategoryModel = mongoose.model('SiteCategories',{ },'SiteCategories');
+var ForumModel = mongoose.model('Forums',{ },'Forums');
+var TopicsModel = mongoose.model('Topics',{ },'ForumTopics');
 
 var UsersHelper = require ('../../REST/users/auth/helpers/Users.helper.ts');
 var UserProperties = require ('../../REST/users/auth/models/User.properties.ts');
 var SessionsHashList = require ('./../../REST/users/auth/sessions/helpers/SessionsHashList.helper.ts');
 
-var ForumsCtrl = require ('../../REST/forums/forums/helpers/Forums.helper.ts');
-var TopicsCtrl = require ('../../REST/forums/topics/helpers/Topics.helper.ts');
-var RepliesCtrl = require ('../../REST/forums/replies/helpers/Replies.helper.ts');
-var VotingCtrl = require ('../../REST/Voting/helpers/Votings.helper.ts');
+var ForumsHelper = require ('../../REST/forums/forums/helpers/Forums.helper.ts');
+var TopicsHelper = require ('../../REST/forums/topics/helpers/Topics.helper.ts');
+var ReplieHelper = require ('../../REST/forums/replies/helpers/Replies.helper.ts');
+var VotingsHelper = require ('../../REST/Voting/helpers/Votings.helper.ts');
 
 var newUsers = [];
 var newCategories = [];
 var newForums = [];
+var newTopics = [];
 
 class MongoImporter {
 
@@ -43,6 +46,14 @@ class MongoImporter {
         for (let i=0; i<newForums.length; i++)
             if ((typeof newForums[i] !== 'undefined')&&(typeof oldId !== 'undefined')&&(newForums[i].oldId.toString() === oldId.toString()))
                 return newForums[i].forum;
+
+        return null;
+    }
+
+    async findTopic(oldId){
+        for (let i=0; i<newTopics.length; i++)
+            if ((typeof newTopics[i] !== 'undefined')&&(typeof oldId !== 'undefined')&&(newTopics[i].oldId.toString() === oldId.toString()))
+                return newTopics[i].topic;
 
         return null;
     }
@@ -106,7 +117,7 @@ class MongoImporter {
 
 
             let newUser = await UsersHelper.registerUser(user.Email, user.Username, password, user['First Name'], user['Last Name'],
-                                                        user.Country||'none', user.City||'none', '', user.AvatarPicture, '', -666, -666, user.Biography, user.Age||0, user.TimeZone, gender, user.Verified);
+                                                        user.Country||'none', user.City||'none', '', user.AvatarPicture, '', user.latitude, user.longtitude, user.Biography, user.Age||0, user.TimeZone, gender, user.Verified);
 
             //console.log('##############', newUser);
             if (newUser.result === true){
@@ -151,13 +162,13 @@ class MongoImporter {
             if ((typeof user === "undefined")||(user === null))
                 user = await newUsers[0].user;
 
-            console.log(user);
-            console.log(parentCategory);
-            console.log(category.Name);
+            // console.log(user);
+            // console.log(parentCategory);
+            // console.log(category.Name);
 
             if ((typeof parentCategory !== 'undefined')&&(parentCategory !== null)&&(typeof parentCategory.id !== 'undefined')) parentCategory = parentCategory.id.toString();
 
-            let answer = await ForumsCtrl.addForum(user, parentCategory, category.Name, category.ShortDescription, category.Description, category.InputKeywords, user.country, user.city, '', category.Image, category.CoverImage, '', -666, -666 );
+            let answer = await ForumsHelper.addForum(user, parentCategory, category.Name, category.ShortDescription, category.Description, category.InputKeywords, user.country, user.city, '', category.Image, category.CoverImage, '', -666, -666 );
 
             if (answer.result === true){
                 count++;
@@ -169,10 +180,6 @@ class MongoImporter {
 
                 if ((typeof category2 !== 'undefined')&&(typeof category2.Parent !== 'undefined')&&(typeof category._id !== 'undefined')&&(category2.Parent.toString() === category._id.toString())){
 
-                    console.log('############### new queue element');
-                    console.log('############### new queue element');
-                    console.log('############### new queue element');
-                    console.log('############### new queue element');
                     queue.push(category2);
                 }
             }
@@ -187,11 +194,68 @@ class MongoImporter {
 
 
     async importForums(){
+        let forums = await ForumModel.find({});
+        let count = 0;
 
+        for (let i=0; i<forums.length; i++){
+            let forum = forums[i]._doc;
+
+            let user = await this.findUser(forum.AuthorId);
+            let parentCategory = await this.findCategory(forum.ParentCategory);
+
+            if ((typeof user === "undefined")||(user === null))
+                user = await newUsers[0].user;
+
+            if ((typeof parentCategory !== 'undefined')&&(parentCategory !== null)&&(typeof parentCategory.id !== 'undefined')) parentCategory = parentCategory.id.toString();
+            else parentCategory = '';
+
+            let newForum = await ForumsHelper.addForum(user, parentCategory, forum.Name, forum.Description, forum.DetailedDescription, forum.InputKeywords, user.Country||'none', user.City||'none', '', forum.Image, forum.CoverImage, '', user.latitude, user.longtitude);
+
+            //console.log('##############', newUser);
+            if (newForum.result === true){
+                count++;
+                newForums.push({oldId: forum._id, id: newForum.forum.id, forum: newForum.forum});
+            }
+
+        }
+
+        return (count);
     }
 
     async importTopics(){
+        let topics = await TopicsModel.find({});
+        let count = 0;
 
+        for (let i=0; i<topics.length; i++){
+            let topic = topics[i]._doc;
+
+            let user = await this.findUser(topic.AuthorId);
+            let parentCategory = await this.findCategory(topic.ParentSiteCategoryId);
+            let parentForum = await this.findForum(topic.ParentForumId);
+
+            if ((typeof user === "undefined")||(user === null))
+                user = await newUsers[0].user;
+
+            if ((typeof parentCategory !== 'undefined')&&(parentCategory !== null)&&(typeof parentCategory.id !== 'undefined')) parentCategory = parentCategory.id.toString();
+            else parentCategory = '';
+
+            if ((typeof parentForum !== 'undefined')&&(parentForum !== null)&&(typeof parentForum.id !== 'undefined')) parentForum = parentForum.id.toString();
+            else parentForum = '';
+
+            if (parentForum === '') parentForum = parentCategory;
+
+
+            //console.log('parents:', parentForum, parentCategory, typeof parentForum, typeof parentCategory);
+            let newTopic = await TopicsHelper.addTopic(user, parentForum||parentCategory, topic.Title, topic.image, topic.BodyCode, [], topic.InputKeywords, user.Country||'none', user.City||'none', '', user.latitude, user.longtitude);
+
+            if (newTopic.result === true){
+                count++;
+                newTopics.push({oldId: topic._id, id: newTopic.topic.id, topic: newTopic.topic});
+            }
+
+        }
+
+        return (count);
     }
 
     async importReplies(){
@@ -215,6 +279,8 @@ class MongoImporter {
         return({
             users: users,
             siteCategories: siteCategories,
+            forums: forums,
+            topics: topics,
             status: 'MERGE',
         });
 

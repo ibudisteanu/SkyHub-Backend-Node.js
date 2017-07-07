@@ -56,6 +56,7 @@ class Searches {
             index = await ForumsHelper.findForumById(index);
         }
 
+
         if ((index !== null)&&(typeof index === 'object')) {
             text = index.p('name');
             score = await index.calculateHotnessCoefficient();

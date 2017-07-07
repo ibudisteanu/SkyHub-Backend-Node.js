@@ -85,6 +85,10 @@ module.exports = {
         //console.log("addTopic ===============", userAuthenticated);
 
         let parentObject = await MaterializedParentsHelper.findObject(parent);
+        console.log('@@@@@ TOPIC', typeof parentObject);
+        console.log('@@@@@ TOPIC 2', await MaterializedParentsHelper.getObjectId(parentObject));
+
+        //return {result: false};
 
         topic.p(
             {
@@ -130,8 +134,9 @@ module.exports = {
                     await topic.keepSortedList();
 
                     var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
-                    SearchesHelper.addForumToSearch(null,topic); //async, but not awaited
-                    console.log(topic.getPublicInformation(userAuthenticated) );
+                    SearchesHelper.addTopicToSearch(null,topic); //async, but not awaited
+
+                    //console.log(topic.getPublicInformation(userAuthenticated) );
 
                     resolve( {result:true, topic: topic.getPublicInformation(userAuthenticated) });
                 }

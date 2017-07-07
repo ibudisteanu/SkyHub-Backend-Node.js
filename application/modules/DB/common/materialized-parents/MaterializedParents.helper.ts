@@ -171,7 +171,7 @@ var MaterializedParents = class{
 
         if ((objectToSearch === null)||(typeof objectToSearch === "undefined")) return '';
         if (objectToSearch === '') return '';
-        if (objectToSearch.constructor === "object" ) return objectToSearch.id;//in case their is a Model Object, we will return its ID
+        if (typeof objectToSearch === "object" ) return objectToSearch.id;//in case their is a Model Object, we will return its ID
 
         //in case the argument is actually and ID
         if (this.extractDataFromIds(objectToSearch) !== null)
