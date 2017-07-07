@@ -136,7 +136,7 @@ module.exports = {
                 if (err) {
                     console.log("==> Error Saving User");
                     console.log(sUsername, sFirstName, sLastName);
-                    console.log(user.errors); // the errors in validation
+                    //console.log(user.errors); // the errors in validation
 
                     resolve({result:false, errors: user.errors });
                 } else {

@@ -171,6 +171,8 @@ module.exports = {
 
     convertKeywordsArrayToString(keywords){
 
+        if ((typeof keywords === 'undefined')||(keywords === null)) return '';
+
         var sKeywords = '';
 
         if (Array.isArray(keywords))

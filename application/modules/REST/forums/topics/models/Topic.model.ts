@@ -107,7 +107,7 @@ var TopicModel = redis.nohm.model('TopicModel', {
 
 
 
-            if ((typeof(User !== 'undefined')&&(User !== null))&&(User.checkOwnership(this.p('authorId')))) return true;
+            if ((typeof(User !== 'undefined')&&(User !== null))&&(typeof User.checkOwnership !== 'undefined')&&(User.checkOwnership(this.p('authorId')))) return true;
 
             return false;
         },
@@ -120,7 +120,7 @@ var TopicModel = redis.nohm.model('TopicModel', {
 
         keepSortedList : async function (bDelete){
 
-            var TopContentHelper = require ('./../../content/helpers/TopContent.helper.ts');
+            var TopContentHelper = require ('./../../top-content/helpers/TopContent.helper.ts');
             return TopContentHelper.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parents'), bDelete);
 
         },

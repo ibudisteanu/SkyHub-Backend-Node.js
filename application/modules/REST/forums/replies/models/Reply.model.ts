@@ -91,7 +91,7 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
 
         isOwner : function (User){
 
-            if ((typeof(User !== 'undefined')&&(User !== null))&&(User.checkOwnership(this.p('authorId')))) return true;
+            if ((typeof(User !== 'undefined')&&(User !== null))&&(typeof User.checkOwnership !== 'undefined')&&(User.checkOwnership(this.p('authorId')))) return true;
 
             return false;
         },
@@ -104,7 +104,7 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
 
         keepSortedList : async function (bDelete){
 
-            var TopRepliesHelper = require ('./../../content/helpers/TopReplies.helper.ts');
+            var TopRepliesHelper = require ('./../../top-content/helpers/TopReplies.helper.ts');
             return TopRepliesHelper.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parentId'), bDelete);
 
         },

@@ -52,6 +52,7 @@ class URLHash {
 
             iTrialsLeft--;
         }
+        console.log('FINAL NEW URL', sFinalNewURL);
 
         return sFinalNewURL;
 

@@ -148,7 +148,7 @@ var ForumModel = redis.nohm.model('ForumModel', {
 
         isOwner : function (User){
 
-            if ((typeof(User !== 'undefined')&&(User !== null))&&(User.checkOwnership(this.p('authorId')))) return true;
+            if ((typeof(User !== 'undefined')&&(User !== null))&&(typeof User.checkOwnership !== 'undefined')&&(User.checkOwnership(this.p('authorId')))) return true;
 
             return false;
         },
@@ -161,7 +161,7 @@ var ForumModel = redis.nohm.model('ForumModel', {
 
         keepSortedList : async function (bDelete){
 
-            var TopForumsHelper = require ('./../../content/helpers/TopForums.helper.ts');
+            var TopForumsHelper = require ('./../../top-content/helpers/TopForums.helper.ts');
             return TopForumsHelper.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parents'), bDelete);
 
         },
