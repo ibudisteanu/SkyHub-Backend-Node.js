@@ -32,7 +32,7 @@ class SessionHash {
 
         if (userId === '') return false;
 
-        let sessionId = hat()+hat()+hat();
+        let sessionId = hat()+hat();
 
         await this.hashList.setHash('',sessionId,userId+'__'+new Date().getTime());
 

@@ -12,9 +12,9 @@ var UserHelper =  require('./helpers/User.helper.ts');
 module.exports = {
 
 
-    async registerOAuth2(req, sSocialNetwork, sOAuth2Token, sSocialNetworkUserId){
+    async registerOAuth2(req, sSocialNetwork, sOAuth2Token, sSocialNetworkUserId, arrSocialNetworkData){
 
-        let res = await this.validateOAuth2TokenAsync(sSocialNetwork, sOAuth2Token, sSocialNetworkUserId);
+        let res = await this.validateOAuth2TokenAsync(sSocialNetwork, sOAuth2Token, sSocialNetworkUserId, arrSocialNetworkData);
 
         if (res == true) {
 
@@ -42,6 +42,7 @@ module.exports = {
                 var OAuth = {
                     socialNetwork: sSocialNetwork,
                     socialNetworkUserId: sSocialNetworkUserId,
+                    socialNetworkData : arrSocialNetworkData,
                     accessToken: sOAuth2Token
                 };
 
@@ -64,7 +65,7 @@ module.exports = {
         }
     },
 
-    validateOAuth2TokenAsync(sOAuth2SocialNetworkName, sOauth2Token, sSocialNetworkUserId){
+    validateOAuth2TokenAsync(sOAuth2SocialNetworkName, sOauth2Token, sSocialNetworkUserId, arrSocialNetworkData){
 
         try {
 

@@ -66,6 +66,10 @@ var UserModel = redis.nohm.model('UserModel', {
         idGitHub : { type: 'string', unique: true,},
         idReddit : { type: 'string', unique: true,},
 
+        socialNetworks: {
+            type: 'json'
+        },
+
         /*
          COMMON PROPERTIES
          */

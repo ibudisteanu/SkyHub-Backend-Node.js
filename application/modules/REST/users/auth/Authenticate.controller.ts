@@ -135,17 +135,18 @@ module.exports = {
 
     async postAuthenticateRegisterOAuth(req, res){
 
-        var sSocialNetwork='', sOAuth2Token = '', sSocialNetworkUserId = '';
+        var sSocialNetwork='', sOAuth2Token = '', sSocialNetworkUserId = '', arrSocialNetworkData = [];
 
         if (req.hasOwnProperty('body')){
             sSocialNetwork = req.body.socialNetwork || '';
             sSocialNetworkUserId = req.body.socialNetworkId || '';
+            arrSocialNetworkData = req.body.socialNetworkData || [];
             sOAuth2Token = req.body.accessToken || '';
         }
 
-        console.log('Registering with OAuth 2 token ',sSocialNetwork, sOAuth2Token, sSocialNetworkUserId);
+        console.log('Registering with OAuth 2 token ',sSocialNetwork, sOAuth2Token, sSocialNetworkUserId, arrSocialNetworkData);
 
-        return OAuth2.registerOAuth2(req, sSocialNetwork, sOAuth2Token, sSocialNetworkUserId);
+        return OAuth2.registerOAuth2(req, sSocialNetwork, sOAuth2Token, sSocialNetworkUserId, arrSocialNetworkData);
     },
 
 

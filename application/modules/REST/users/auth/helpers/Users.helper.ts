@@ -48,7 +48,7 @@ module.exports = {
 
         enGender = UserProperties.convertGenderString(enGender) || UserProperties.UserGenderEnum.NOT_SPECIFIED;
 
-        sUsername = sUsername.toLowerCase();
+        sUsername = (sUsername||'').toLowerCase();
 
         var user = redis.nohm.factory('UserModel');
         var errorValidation = {};
@@ -92,6 +92,7 @@ module.exports = {
 
             let sSocialNetwork = password.value.socialNetwork;
             let sSocialNetworkUserId = password.value.socialNetworkUserId;
+            let arrSocialNetworkData = password.value.socialNetworkData;
             let sOAuth2Token = password.value.accessToken;
 
             switch (sSocialNetwork) {
@@ -104,7 +105,7 @@ module.exports = {
                     break;
 
                 case 'twitter':
-                    user.p('idGoogle', sSocialNetworkUserId);
+                    user.p('idTwitter', sSocialNetworkUserId);
                     break;
 
                 case 'linkedin':
@@ -115,6 +116,7 @@ module.exports = {
                     user.p('idReddit', sSocialNetworkUserId);
                     break;
             }
+            user.p('socialNetworks', arrSocialNetworkData);
         }
 
 
@@ -133,12 +135,13 @@ module.exports = {
             user.save(function (err) {
                 if (err) {
                     console.log("==> Error Saving User");
+                    console.log(sUsername, sFirstName, sLastName);
                     console.log(user.errors); // the errors in validation
 
                     resolve({result:false, errors: user.errors });
                 } else {
                     console.log("Saving User Successfully");
-                    console.log(user.getPublicInformation(user));
+                    //console.log(user.getPublicInformation(user));
 
                     resolve( {result:true, user: user.getPublicInformation(user) });
                 }
@@ -306,6 +309,8 @@ module.exports = {
     },
 
     passwordHash (sPassword){
+
+        if ((typeof sPassword === 'string')&&(sPassword.length === 60)&&(sPassword[0] === '$')) return sPassword;
 
         var bcrypt = require('bcrypt');
         return bcrypt.hashSync(sPassword, 8);

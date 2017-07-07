@@ -53,7 +53,7 @@ class TopObjectsList {
 
             return({
                 result: true,
-                next: listTopContent.length !== pageCount,
+                hasNext: listTopContentObjects.length === pageCount,
                 newPageIndex: pageIndex+1,
                 content: listTopContentObjects,
             });

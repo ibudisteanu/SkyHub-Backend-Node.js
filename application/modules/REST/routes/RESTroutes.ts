@@ -12,6 +12,7 @@ var TopicsCtrl = require ('../forums/topics/Topics.controller.ts');
 var RepliesCtrl = require ('../forums/replies/Replies.controller.ts');
 var VotingCtrl = require ('../Voting/Voting.controller.ts');
 var NotificationsCtrl = require ('../Notifications/Notifications.controller.ts');
+var MongoImporter = require ('../../DB/mongo-importer/MongoImporter.ts');
 
 var TopContentCtrl = require ('../forums/top-content/TopContent.controller.ts');
 var TopForumsCtrl = require ('../forums/top-content/TopForums.controller.ts');
@@ -217,6 +218,9 @@ router.get('/test/notifications', function (req,res,next){
     res.json( {message: NotificationsHelper.test() });
 });
 
+router.get('/test/mongo-importer', async function (req,res,next){
+    res.json( {message: await MongoImporter.run() });
+});
 
 
 

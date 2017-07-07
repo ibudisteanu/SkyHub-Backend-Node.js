@@ -24,6 +24,8 @@ module.exports = {
 
     convertGenderString (sGender){
 
+        if (typeof sGender !== 'string') return sGender;
+
         sGender = sGender.toLowerCase();
 
         switch (sGender){
