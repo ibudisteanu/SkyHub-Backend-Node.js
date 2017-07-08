@@ -19,6 +19,7 @@ var TopForumsCtrl = require ('../forums/top-content/TopForums.controller.ts');
 var TopRepliesCtrl = require ('../forums/top-content/TopReplies.controller.ts');
 
 var ContentCtrl = require ('../forums/content/Content.controller.ts');
+var StatisticsCtrl = require ('../statistics/Statistics.controller.ts');
 
 var SearchesController = require ('../../REST/searches/Searches.controller.ts');
 var MetaExtractorController = require ('../../utils/meta-extractor/MetaExtractor.controller.ts');
@@ -165,6 +166,11 @@ router.get('/version', function(req, res, next) {
 
 router.get('/profile', function (req, res, next){
     res.json( {message: 'Great! You are logged in' });
+});
+
+//          STATISTICS
+router.get('/statistics/page-view', function (req, res){
+    StatisticsCtrl.pageViewNewVisitor(req, res).then ((answer)=> { res.json(answer); });
 });
 
 /*
@@ -461,6 +467,12 @@ router.processSocketRoute = function (socket)
         NotificationsCtrl.postMarkNotificationShown(data, socket).then ( ( answer ) => { socket.emit('api/notifications/mark-shown',answer ) });
     });
 
+
+    //          STATISTICS
+    socket.on("api/statistics/page-view", function (data) {
+        data.body = data;
+        StatisticsCtrl.pageViewNewVisitor(data, socket).then ( ( answer ) => { socket.emit('api/api/statistics/page-view',answer ) });
+    });
 
 
 };
