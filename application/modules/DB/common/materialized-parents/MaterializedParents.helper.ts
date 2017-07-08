@@ -109,7 +109,7 @@ var MaterializedParents = class{
                 //var ForumModel = redis.nohm.factory('ForumModel');
                 let TopicsHelper = require ('../../../REST/forums/topics/helpers/Topics.helper.ts');
 
-                console.log('    topic found: ',sObjectId, await TopicsHelper.findTopicById(sObjectId));
+                //console.log('    topic found: ',sObjectId, await TopicsHelper.findTopicById(sObjectId));
 
                 return await TopicsHelper.findTopicById(sObjectId);
         }

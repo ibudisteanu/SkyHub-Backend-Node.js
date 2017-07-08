@@ -19,6 +19,7 @@ var ForumsHelper = require ('../../REST/forums/forums/helpers/Forums.helper.ts')
 var TopicsHelper = require ('../../REST/forums/topics/helpers/Topics.helper.ts');
 var RepliesHelper = require ('../../REST/forums/replies/helpers/Replies.helper.ts');
 var VotingsHelper = require ('../../REST/Voting/helpers/Votings.helper.ts');
+var VoteType = require ('./../../REST/Voting/models/VoteType.js');
 
 var newUsers = [];
 var newCategories = [];
@@ -264,11 +265,14 @@ class MongoImporter {
             ];
 
             //console.log('parents:', parentForum, parentCategory, typeof parentForum, typeof parentCategory);
-            let newTopic = await TopicsHelper.addTopic(user, parentForum||parentCategory, topic.Title, topic.BodyCode, attachments, topic.InputKeywords, user.Country||'none', user.City||'none', '', user.latitude, user.longtitude);
+            let newTopic = await TopicsHelper.addTopic(user, parentForum||parentCategory, topic.Title, topic.BodyCode, attachments, topic.CoverImage, topic.InputKeywords, user.Country||'none', user.City||'none', '', user.latitude, user.longtitude);
 
             if (newTopic.result === true){
                 count++;
                 newTopics.push({oldId: topic._id, id: newTopic.topic.id, topic: newTopic.topic});
+
+                if (typeof topic.Vote !== 'undefined')
+                    this.importVote(newTopic.topic.id, topic.Vote);
             }
 
         }
@@ -301,6 +305,9 @@ class MongoImporter {
             if (newReply.result === true) {
                 count++;
                 newReplies.push({oldId: reply._id, id: newReply.reply.id, reply: newReply.reply});
+
+                if (typeof reply.Vote !== 'undefined')
+                    this.importVote(newReply.reply.id, reply.Vote);
             }
 
             if ((typeof reply.Children !== 'undefined') && (reply.Children !== null))
@@ -312,6 +319,8 @@ class MongoImporter {
                         count += await this.importReply(parent, newReply);
 
                 }
+
+
 
             return count;
         }
@@ -341,6 +350,34 @@ class MongoImporter {
         }
 
         return (count);
+    }
+
+    async importVote(parent, voteMongo){
+
+        for (let i=0; i<voteMongo.Votes.length; i++){
+
+            let user = await this.findUser(voteMongo.Votes[i].AuthorId);
+
+            if ((typeof user === "undefined") || (user === null))
+                user = await newUsers[0].user;
+
+            let voteType = VoteType.VOTE_NONE;
+            switch (voteMongo.Votes[i].VoteValue){
+                case 1: //const votedUp=1;
+                case 4: //const votedMarkedUp=4;
+                case 3: //const votedMarked=3;
+                    voteType = VoteType.VOTE_UP;
+                    break;
+                case 2: //const votedDown=2;
+                case 5: //const votedMarkedDown=5;
+                    voteType = VoteType.VOTE_DOWN;
+                    break;
+            }
+
+            VotingsHelper.submitVote(parent, user, voteType);
+
+        }
+
     }
 
     async run(){

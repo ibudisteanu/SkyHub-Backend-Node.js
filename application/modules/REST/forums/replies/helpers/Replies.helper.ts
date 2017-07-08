@@ -97,7 +97,8 @@ module.exports = {
             }
 
             sDescription = striptags(sDescription, ['a','b','i','u','strong', 'h1','h2','h3','h4','h5']);
-            let shortDescription = striptags(sDescription, [], 'h5').substr(0, 512);
+            let shortDescription = striptags(sDescription, [], 'h5');
+            if (shortDescription.length > 512) shortDescription = shortDescription.substr(0, 512) + ' ...';
 
             parentReply = await MaterializedParentsHelper.findObject(parentReply);
 

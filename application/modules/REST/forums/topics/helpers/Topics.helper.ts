@@ -71,7 +71,7 @@ module.exports = {
     /*
      CREATING A NEW Topic
      */
-    async addTopic (userAuthenticated, parent,  sTitle, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude){
+    async addTopic (userAuthenticated, parent,  sTitle, sDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude){
 
         sCountry = sCountry || ''; sCity = sCity || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666;
@@ -88,7 +88,8 @@ module.exports = {
         let parentObject = await MaterializedParentsHelper.findObject(parent);
 
         sDescription = striptags(sDescription, ['a','b','i','u','strong', 'h1','h2','h3','h4','h5']);
-        let shortDescription = striptags(sDescription, [], 'h5').substr(0, 512);
+        let shortDescription = striptags(sDescription, [], 'h5');
+        if (shortDescription.length > 512) shortDescription = shortDescription.substr(0, 512) + ' ...';
 
         topic.p(
             {
@@ -97,6 +98,7 @@ module.exports = {
                 attachments: arrAttachments,
                 description: sDescription,
                 shortDescription: shortDescription,
+                coverPic: sCoverPic,
                 authorId: (userAuthenticated !== null ? userAuthenticated.id : ''),
                 keywords: commonFunctions.convertKeywordsArrayToString(arrKeywords),
                 country: sCountry.toLowerCase(),

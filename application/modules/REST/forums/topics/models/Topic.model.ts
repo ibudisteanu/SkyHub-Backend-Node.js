@@ -39,6 +39,10 @@ var TopicModel = redis.nohm.model('TopicModel', {
                 'validateKeywords'
             ]*/
         },
+        coverPic: {
+            defaultValue: '',
+            type: 'string',
+        },
         authorId: {
             defaultValue: '',
             type: 'string',
