@@ -26,7 +26,7 @@ var TopicModel = redis.nohm.model('TopicModel', {
         description: {
             type: 'string',
         },
-        image: {  //the thumbnail
+        shortDescription:{
             type: 'string',
         },
         attachments: {

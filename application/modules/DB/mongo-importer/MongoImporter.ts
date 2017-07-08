@@ -8,7 +8,8 @@ var mongoose = require('mongoose');
 var UserModel = mongoose.model('users',{}, 'users');
 var SiteCategoryModel = mongoose.model('SiteCategories',{ },'SiteCategories');
 var ForumModel = mongoose.model('Forums',{ },'Forums');
-var TopicsModel = mongoose.model('Topics',{ },'ForumTopics');
+var TopicModel = mongoose.model('Topics',{ },'ForumTopics');
+var ReplyModel = mongoose.model('Replies',{ },'Replies');
 
 var UsersHelper = require ('../../REST/users/auth/helpers/Users.helper.ts');
 var UserProperties = require ('../../REST/users/auth/models/User.properties.ts');
@@ -16,13 +17,14 @@ var SessionsHashList = require ('./../../REST/users/auth/sessions/helpers/Sessio
 
 var ForumsHelper = require ('../../REST/forums/forums/helpers/Forums.helper.ts');
 var TopicsHelper = require ('../../REST/forums/topics/helpers/Topics.helper.ts');
-var ReplieHelper = require ('../../REST/forums/replies/helpers/Replies.helper.ts');
+var RepliesHelper = require ('../../REST/forums/replies/helpers/Replies.helper.ts');
 var VotingsHelper = require ('../../REST/Voting/helpers/Votings.helper.ts');
 
 var newUsers = [];
 var newCategories = [];
 var newForums = [];
 var newTopics = [];
+var newReplies = [];
 
 class MongoImporter {
 
@@ -52,8 +54,16 @@ class MongoImporter {
 
     async findTopic(oldId){
         for (let i=0; i<newTopics.length; i++)
-            if ((typeof newTopics[i] !== 'undefined')&&(typeof oldId !== 'undefined')&&(newTopics[i].oldId.toString() === oldId.toString()))
+            if ((typeof newTopics[i] !== 'undefined')&&(newTopics[i].oldId !== 'undefined')&&(typeof oldId !== 'undefined')&&(newTopics[i].oldId.toString() === oldId.toString()))
                 return newTopics[i].topic;
+
+        return null;
+    }
+
+    async findReply(oldId){
+        for (let i=0; i<newReplies.length; i++)
+            if ((typeof newReplies[i] !== 'undefined')&&(typeof newReplies[i].oldId !== 'undefined')&&(typeof oldId !== 'undefined')&&(newReplies[i].oldId.toString() === oldId.toString()))
+                return newReplies[i].reply;
 
         return null;
     }
@@ -117,7 +127,7 @@ class MongoImporter {
 
 
             let newUser = await UsersHelper.registerUser(user.Email, user.Username, password, user['First Name'], user['Last Name'],
-                                                        user.Country||'none', user.City||'none', '', user.AvatarPicture, '', user.latitude, user.longtitude, user.Biography, user.Age||0, user.TimeZone, gender, user.Verified);
+                                                         user.Country||'none', user.City||'none', '', user.AvatarPicture, '', user.latitude, user.longtitude, user.Biography, user.Age||0, user.TimeZone, gender, user.Verified);
 
             //console.log('##############', newUser);
             if (newUser.result === true){
@@ -223,7 +233,7 @@ class MongoImporter {
     }
 
     async importTopics(){
-        let topics = await TopicsModel.find({});
+        let topics = await TopicModel.find({});
         let count = 0;
 
         for (let i=0; i<topics.length; i++){
@@ -244,9 +254,17 @@ class MongoImporter {
 
             if (parentForum === '') parentForum = parentCategory;
 
+            let attachments = [{
+                    type: 'file',
+                    typeFile: 'image/jpeg',
+                    url: topic.Image,
+                    img: topic.Image,
+                    title: topic.ImageAlt,
+                }
+            ];
 
             //console.log('parents:', parentForum, parentCategory, typeof parentForum, typeof parentCategory);
-            let newTopic = await TopicsHelper.addTopic(user, parentForum||parentCategory, topic.Title, topic.image, topic.BodyCode, [], topic.InputKeywords, user.Country||'none', user.City||'none', '', user.latitude, user.longtitude);
+            let newTopic = await TopicsHelper.addTopic(user, parentForum||parentCategory, topic.Title, topic.BodyCode, attachments, topic.InputKeywords, user.Country||'none', user.City||'none', '', user.latitude, user.longtitude);
 
             if (newTopic.result === true){
                 count++;
@@ -258,8 +276,71 @@ class MongoImporter {
         return (count);
     }
 
+    async importReply(parent, reply){
+
+        try {
+            let count = 1;
+
+            let user = await this.findUser(reply.AuthorId);
+
+            if ((typeof user === "undefined") || (user === null))
+                user = await newUsers[0].user;
+
+            let parentReply = await this.findReply(reply.AttachedParentId);
+            if ((typeof parentReply !== 'undefined') && (parentReply !== null) && (typeof parentReply.id !== 'undefined')) parentReply = parentReply.id.toString();
+            else parentReply = '';
+
+            console.log('@@reply: ', reply._id);
+
+            let attachments = [];
+
+            let newReply = await RepliesHelper.addReply(user, parent, parentReply, reply.Title, reply.MessageCode, attachments, [], user.Country || 'none', user.City || 'none', '', user.latitude, user.longtitude);
+
+            console.log('@@reply_finished: ', newReply.result, (newReply.result ? newReply.reply.id : ' no id') );
+
+            if (newReply.result === true) {
+                count++;
+                newReplies.push({oldId: reply._id, id: newReply.reply.id, reply: newReply.reply});
+            }
+
+            if ((typeof reply.Children !== 'undefined') && (reply.Children !== null))
+                for (let i = 0; i < reply.Children.length; i++) {
+
+                    newReply = reply.Children[i];
+
+                    if (newReply !== null)
+                        count += await this.importReply(parent, newReply);
+
+                }
+
+            return count;
+        }
+        catch (Exception){
+            console.log('########## Error....', MongoImporter, Exception.toString());
+        }
+    }
+
     async importReplies(){
 
+        let replies = await ReplyModel.find({});
+        let count = 0;
+
+        for (let i=0; i<replies.length; i++){
+
+            let reply = replies[i]._doc;
+
+            let parent = await this.findTopic(reply.AttachedParentId);
+            if ((typeof parent !== 'undefined')&&(parent !== null)&&(typeof parent.id !== 'undefined')) parent = parent.id.toString();
+            else parent = '';
+
+            if (parent === ''){
+                console.log('Parent not found: ',i, reply.AttachedParentId);
+            } else
+            count += await this.importReply(parent, reply);
+
+        }
+
+        return (count);
     }
 
     async run(){
@@ -281,6 +362,7 @@ class MongoImporter {
             siteCategories: siteCategories,
             forums: forums,
             topics: topics,
+            replies: replies,
             status: 'MERGE',
         });
 

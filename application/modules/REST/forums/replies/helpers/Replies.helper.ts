@@ -8,6 +8,8 @@ var commonFunctions = require ('../../../common/helpers/common-functions.helper.
 var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
 var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
+var striptags = require('striptags');
+var hat = require ('hat');
 
 module.exports = {
 
@@ -72,81 +74,99 @@ module.exports = {
      */
     async addReply (userAuthenticated, parent, parentReply, sTitle, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude){
 
-        sCountry = sCountry || ''; sCity = sCity || ''; dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666;
+        try{
+            sCountry = sCountry || ''; sCity = sCity || ''; dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; sTitle = sTitle || '';
 
-        sLanguage = sLanguage || sCountry;
-        parent = parent || '';
+            sLanguage = sLanguage || sCountry;
+            parent = parent || '';
 
-        var reply = redis.nohm.factory('ReplyModel');
-        var errorValidation = {};
+            var reply = redis.nohm.factory('ReplyModel');
+            var errorValidation = {};
 
 
-        //get object from parent
-        //console.log("addTopic ===============", userAuthenticated);
+            //get object from parent
+            //console.log("addTopic ===============", userAuthenticated);
 
-        let parentObject = await MaterializedParentsHelper.findObject(parent);
+            let parentObject = await MaterializedParentsHelper.findObject(parent);
 
-        if (parentObject === null){
-            return {
-                result:false,
-                message: 'Parent not found. Probably the topic you had been replying in, has been deleted in the mean while',
+            if (parentObject === null){
+                return {
+                    result:false,
+                    message: 'Parent not found. Probably the topic you had been replying in, has been deleted in the mean while',
+                }
             }
+
+            sDescription = striptags(sDescription, ['a','b','i','u','strong', 'h1','h2','h3','h4','h5']);
+            let shortDescription = striptags(sDescription, [], 'h5').substr(0, 512);
+
+            parentReply = await MaterializedParentsHelper.findObject(parentReply);
+
+            console.log('parentReply',typeof parentReply);
+
+            reply.p(
+                {
+                    title: sTitle,
+                    // URL template: skyhub.com/forum/topic#reply-name
+                    URL: await URLHashHelper.getFinalNewURL( parentObject.p('URL') , (sTitle.length > 0 ? sTitle : hat()) , null , '#' ), //Getting a NEW URL
+                    description: sDescription,
+                    shortDescription: shortDescription,
+                    authorId: (userAuthenticated !== null ? userAuthenticated.id : ''),
+                    keywords: commonFunctions.convertKeywordsArrayToString(arrKeywords),
+                    attachments: arrAttachments,
+                    country: sCountry.toLowerCase(),
+                    city: sCity.toLowerCase(),
+                    language: sLanguage.toLowerCase(),
+                    dtCreation: new Date().getTime(),
+                    dtLastActivity: null,
+                    nestedLevel: (parentReply !== null ? parentReply.p('nestedLevel') + 1 : 1),
+                    parentReplyId: await MaterializedParentsHelper.getObjectId(parentReply),
+                    parentId: await MaterializedParentsHelper.getObjectId(parent),
+                    parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),
+                }
+            );
+
+            console.log('parentReplyDone',typeof reply);
+
+            if (dbLatitude != -666) reply.p('latitude', dbLatitude);
+            if (dbLongitude != -666) reply.p('longitude', dbLongitude);
+
+            return new Promise( (resolve)=> {
+
+                if (Object.keys(errorValidation).length !== 0 ){
+
+                    resolve({result: false, errors: errorValidation});
+                    return false;
+                }
+
+                reply.save(async function (err) {
+                    if (err) {
+                        console.log("==> Error Saving Reply");
+                        console.log(reply.errors); // the errors in validation
+
+                        resolve({result:false, errors: reply.errors });
+                    } else {
+                        console.log("Saving Reply Successfully");
+
+                        await reply.keepURLSlug();
+                        await reply.keepSortedList();
+
+
+                        var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
+                        SearchesHelper.addReplyToSearch(null, reply); //async, but not awaited
+
+                        //console.log(reply.getPublicInformation(userAuthenticated));
+
+                        resolve( {result:true, reply: reply.getPublicInformation(userAuthenticated) });
+
+                    }
+                }.bind(this));
+
+            });
+        } catch (Exception){
+            console.log('############# ERRROR AddReply',Exception.toString());
+            return {result:false, message: ' error '};
         }
 
-        reply.p(
-            {
-                title: sTitle,
-                // URL template: skyhub.com/forum/topic#reply-name
-                URL: await URLHashHelper.getFinalNewURL( parentObject.p('URL') , (sTitle.length > 0 ? sTitle : hat()) , null , '#' ), //Getting a NEW URL
-                description: sDescription,
-                authorId: (userAuthenticated !== null ? userAuthenticated.id : ''),
-                keywords: commonFunctions.convertKeywordsArrayToString(arrKeywords),
-                attachments: arrAttachments,
-                country: sCountry.toLowerCase(),
-                city: sCity.toLowerCase(),
-                language: sLanguage.toLowerCase(),
-                dtCreation: new Date().getTime(),
-                dtLastActivity: null,
-                parentReplyId: await MaterializedParentsHelper.getObjectId(parentReply),
-                parentId: await MaterializedParentsHelper.getObjectId(parent),
-                parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),
-            }
-        );
-
-        if (dbLatitude != -666) reply.p('latitude', dbLatitude);
-        if (dbLongitude != -666) reply.p('longitude', dbLongitude);
-
-        return new Promise( (resolve)=> {
-
-            if (Object.keys(errorValidation).length !== 0 ){
-
-                resolve({result: false, errors: errorValidation});
-                return false;
-            }
-
-            reply.save(async function (err) {
-                if (err) {
-                    console.log("==> Error Saving Reply");
-                    console.log(reply.errors); // the errors in validation
-
-                    resolve({result:false, errors: reply.errors });
-                } else {
-                    console.log("Saving Forum Successfully");
-
-                    await reply.keepURLSlug();
-                    await reply.keepSortedList();
-
-
-                    var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
-                    SearchesHelper.addReplyToSearch(null, reply); //async, but not awaited
-                    console.log(reply.getPublicInformation(userAuthenticated));
-
-                    resolve( {result:true, reply: reply.getPublicInformation(userAuthenticated) });
-
-                }
-            }.bind(this));
-
-        });
 
     },
 

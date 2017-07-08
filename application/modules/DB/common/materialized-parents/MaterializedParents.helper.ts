@@ -121,7 +121,8 @@ var MaterializedParents = class{
     async findObjectFromURL(sObjectURL){
 
         if (( sObjectURL === null)||(typeof sObjectURL === "undefined")) return null;
-        if ( sObjectURL.constructor === "Object") return sObjectURL;
+        if ( typeof sObjectURL === "object") return sObjectURL; //an object already
+        if (sObjectURL === '') return null;
 
         let sIdExtracted = await this.findIdFromURL(sObjectURL);
 
@@ -263,7 +264,7 @@ var MaterializedParents = class{
 
         let sParentId = '';
         if (typeof Object === "string") sParentId = Object;
-        else if (Object !== null) sParentId = Object.p('parentId')+','+Object.p('parents');
+        else if ((typeof Object === 'object')&&(Object !== null)) sParentId = Object.p('parentId')+','+Object.p('parents');
 
         console.log("parents",sParentId);
 

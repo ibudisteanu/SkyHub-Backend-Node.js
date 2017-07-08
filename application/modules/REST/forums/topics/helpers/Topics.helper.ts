@@ -8,6 +8,7 @@ var commonFunctions = require ('../../../common/helpers/common-functions.helper.
 var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
 var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
+var striptags = require('striptags');
 
 module.exports = {
 
@@ -70,7 +71,7 @@ module.exports = {
     /*
      CREATING A NEW Topic
      */
-    async addTopic (userAuthenticated, parent,  sTitle, sImage, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude){
+    async addTopic (userAuthenticated, parent,  sTitle, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude){
 
         sCountry = sCountry || ''; sCity = sCity || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666;
@@ -88,15 +89,16 @@ module.exports = {
         console.log('@@@@@ TOPIC', typeof parentObject);
         console.log('@@@@@ TOPIC 2', await MaterializedParentsHelper.getObjectId(parentObject));
 
-        //return {result: false};
+        sDescription = striptags(sDescription, ['a','b','i','u','strong', 'h1','h2','h3','h4','h5']);
+        let shortDescription = striptags(sDescription, [], 'h5').substr(0, 512);
 
         topic.p(
             {
                 title: sTitle,
                 URL: await(URLHashHelper.getFinalNewURL( (parentObject !== null ? parentObject.p('URL') : 'home') , sTitle,null)), //Getting a NEW URL with this template: skyhub.me/forum-name/topic-name
-                image: sImage,
                 attachments: arrAttachments,
                 description: sDescription,
+                shortDescription: shortDescription,
                 authorId: (userAuthenticated !== null ? userAuthenticated.id : ''),
                 keywords: commonFunctions.convertKeywordsArrayToString(arrKeywords),
                 country: sCountry.toLowerCase(),

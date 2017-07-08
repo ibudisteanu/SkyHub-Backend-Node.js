@@ -23,11 +23,9 @@ module.exports = {
 
         let user = await UsersHelper.findUserById(userId);
 
-        console.log('-----------');console.log('-----------');console.log('-----------');console.log('-----------');
-        console.log('-----------');console.log('-----------');console.log('-----------');console.log('-----------');
-        console.log(userId, user);
-        console.log('-----------');console.log('-----------');console.log('-----------');console.log('-----------');
-        console.log('-----------');console.log('-----------');console.log('-----------');console.log('-----------');
+        // console.log('-----------');console.log('-----------');console.log('-----------');console.log('-----------'); console.log('-----------');console.log('-----------');console.log('-----------');console.log('-----------');
+        // console.log(userId, user);
+        // console.log('-----------');console.log('-----------');console.log('-----------');console.log('-----------'); console.log('-----------');console.log('-----------');console.log('-----------');console.log('-----------');
 
         return {result:true, user:user.getPublicInformation(null)}
 

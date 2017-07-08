@@ -25,6 +25,12 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
                 }]
             ]
         },
+        shortDescription:{
+            type: 'string',
+        },
+        nestedLevel:{
+            type: 'number',
+        },
         attachments: {
             type: 'json',
             //it contains link and  thumbnail
