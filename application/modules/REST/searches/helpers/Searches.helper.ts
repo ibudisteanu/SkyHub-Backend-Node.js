@@ -41,7 +41,7 @@ class Searches {
             score = await index.calculateHotnessCoefficient();
         }
 
-        console.log("@@@@@@@@@@@@@@@@@@@@ addUserToSearch ", text, index);
+        //console.log("@@@@@@@@@@@@@@@@@@@@ addUserToSearch ", text, index);
 
         await this.addContent(text, index, score);
 
@@ -62,7 +62,7 @@ class Searches {
             score = await index.calculateHotnessCoefficient();
         }
 
-        console.log("@@@@@@@@@@@@@@@@@@@@ addForumToSearch ", text, index);
+        //console.log("@@@@@@@@@@@@@@@@@@@@ addForumToSearch ", text, index);
 
         await this.addContent(text, index, score);
 

@@ -19,16 +19,16 @@ class TopObjectsList {
         var sParentId = await MaterializedParents.getObjectId(parent);
 
 
-        console.log('              top objects ',parent,sParentId);
+        console.log('              top objects ','_'+parent+'_','_'+sParentId+'_');
 
         pageCount = Math.min(pageCount|| 8, iNumberOfMaximumResults);
 
         let listTopContent = await this.sortedList.getFastItems(sParentId, pageIndex||1, pageCount );
 
-        console.log("LIST TOP CONTENT :::: ");
+        console.log("              LIST TOP CONTENT :::: ", listTopContent);
         if (listTopContent !== []){
 
-            let listTopContentObjects = [];
+            let resultListTopContentObjects = [];
 
             /* method using zscan...
             for (let i=0; i<listTopContent[1].length/2; i++){
@@ -41,9 +41,11 @@ class TopObjectsList {
 
                 let object = await MaterializedParents.findObject(id);
 
+                //console.log('         findObject ',id,object);
+
                 if (object !== null){
                     console.log("TOP CONTENT OBJECT FOUND: ", object.p('title'));
-                    listTopContentObjects.push({
+                    resultListTopContentObjects.push({
                         object : object.getPublicInformation(userAuthenticated),
                         //score: score,
                     })
@@ -53,9 +55,9 @@ class TopObjectsList {
 
             return({
                 result: true,
-                hasNext: listTopContentObjects.length === pageCount,
+                hasNext: resultListTopContentObjects.length === pageCount,
                 newPageIndex: pageIndex+1,
-                content: listTopContentObjects,
+                content: resultListTopContentObjects,
             });
 
         }
@@ -64,24 +66,6 @@ class TopObjectsList {
             result: false,
             content: [],
         });
-
-    }
-
-    async getObject(userAuthenticated, id){
-
-        let object = await MaterializedParents.findObject(id);
-
-        if (object !== null){
-            return({
-                result: true,
-                content: object.getPublicInformation(userAuthenticated),
-            })
-        }
-
-        return({
-            result: false,
-            content: [],
-        })
 
     }
 

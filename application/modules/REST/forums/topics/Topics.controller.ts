@@ -22,7 +22,7 @@ module.exports = {
 
         let parent = '';
 
-        console.log("@@@@@@@@@@@@@@ postAddTopic request", userAuthenticated);
+        //console.log("@@@@@@@@@@@@@@ postAddTopic request", userAuthenticated);
 
         if (req.hasOwnProperty('body')){
             sTitle = req.body.title || '';

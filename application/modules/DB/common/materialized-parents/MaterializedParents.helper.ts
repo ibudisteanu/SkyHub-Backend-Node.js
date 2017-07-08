@@ -109,6 +109,8 @@ var MaterializedParents = class{
                 //var ForumModel = redis.nohm.factory('ForumModel');
                 let TopicsHelper = require ('../../../REST/forums/topics/helpers/Topics.helper.ts');
 
+                console.log('    topic found: ',sObjectId, await TopicsHelper.findTopicById(sObjectId));
+
                 return await TopicsHelper.findTopicById(sObjectId);
         }
 
@@ -126,6 +128,8 @@ var MaterializedParents = class{
 
         let sIdExtracted = await this.findIdFromURL(sObjectURL);
 
+        console.log('     @@@findObjectFromURL', '#'+sObjectURL+'#', sIdExtracted);
+
         if (sIdExtracted !== null)
             return await this.findObjectFromId(sIdExtracted);
 
@@ -135,7 +139,7 @@ var MaterializedParents = class{
     async findObject(objectToSearch){
 
         if (objectToSearch === null) return null;
-        if ((typeof objectToSearch !== "undefined") && (typeof objectToSearch !== "string") && (objectToSearch.constructor === "object")) return objectToSearch; //already and object
+        if ((typeof objectToSearch !== "undefined") && (typeof objectToSearch !== "string") && (typeof objectToSearch === "object")) return objectToSearch; //already and object
 
         let idData = this.extractDataFromIds(objectToSearch);
 
@@ -145,6 +149,23 @@ var MaterializedParents = class{
         return null;
     }
 
+    async getObject(userAuthenticated, id){
+
+        let object = await this.findObject(id);
+
+        if (object !== null){
+            return({
+                result: true,
+                content: object.getPublicInformation(userAuthenticated),
+            })
+        }
+
+        return({
+            result: false,
+            content: [],
+        })
+
+    }
 
     /*
         Get Unique Materialized Parents from String

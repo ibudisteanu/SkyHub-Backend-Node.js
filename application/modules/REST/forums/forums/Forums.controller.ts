@@ -21,7 +21,7 @@ module.exports = {
 
         let parent = '';
 
-        console.log("@@@@@@@@@@@@@@ psotAddForm request", userAuthenticated);
+        //console.log("@@@@@@@@@@@@@@ psotAddForm request", userAuthenticated);
 
         if (req.hasOwnProperty('body')){
             sTitle = req.body.title || '';

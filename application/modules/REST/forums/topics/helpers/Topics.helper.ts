@@ -86,8 +86,6 @@ module.exports = {
         //console.log("addTopic ===============", userAuthenticated);
 
         let parentObject = await MaterializedParentsHelper.findObject(parent);
-        console.log('@@@@@ TOPIC', typeof parentObject);
-        console.log('@@@@@ TOPIC 2', await MaterializedParentsHelper.getObjectId(parentObject));
 
         sDescription = striptags(sDescription, ['a','b','i','u','strong', 'h1','h2','h3','h4','h5']);
         let shortDescription = striptags(sDescription, [], 'h5').substr(0, 512);
@@ -95,7 +93,7 @@ module.exports = {
         topic.p(
             {
                 title: sTitle,
-                URL: await(URLHashHelper.getFinalNewURL( (parentObject !== null ? parentObject.p('URL') : 'home') , sTitle,null)), //Getting a NEW URL with this template: skyhub.me/forum-name/topic-name
+                URL: await(URLHashHelper.getFinalNewURL( (parentObject !== null ? parentObject.p('URL') : 'home') , sTitle, null)), //Getting a NEW URL with this template: skyhub.me/forum-name/topic-name
                 attachments: arrAttachments,
                 description: sDescription,
                 shortDescription: shortDescription,

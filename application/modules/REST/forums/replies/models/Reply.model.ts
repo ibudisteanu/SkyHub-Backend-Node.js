@@ -115,10 +115,10 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
 
         },
 
-        keepURLSlug : async function (sOldURL,  bDelete){
+        keepURLSlug : function (sOldURL,  bDelete){
 
             var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
-            return URLHashHelper.replaceOldURL(sOldURL, this.p('URL'), this.id, bDelete);
+            return URLHashHelper.replaceOldURL(sOldURL, this.p('URL'), this.id, bDelete, false );
         }
 
     },

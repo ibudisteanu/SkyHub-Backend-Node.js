@@ -166,9 +166,9 @@ var ForumModel = redis.nohm.model('ForumModel', {
 
         },
 
-        keepURLSlug : async function (sOldURL,  bDelete){
+        keepURLSlug : function (sOldURL,  bDelete){
 
-            return URLHashHelper.replaceOldURL(sOldURL, this.p('URL'), this.id, bDelete);
+            return URLHashHelper.replaceOldURL(sOldURL, this.p('URL'), this.id, bDelete, false );
         }
 
     },

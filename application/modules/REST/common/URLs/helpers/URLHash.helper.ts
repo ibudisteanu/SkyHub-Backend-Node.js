@@ -28,10 +28,10 @@ class URLHash {
         if (typeof sInitialURL !== "string") return null;
 
         object = object || null;
-        if ((object!==null)&&(object.constructor === "object")) object = object.id;
+        if ((object!==null)&&(typeof object === "object")) object = object.id;
 
-        if (sParentURL !== '')
-            sParentURL = commonFunctions.url_slug(sParentURL);
+        // if (sParentURL !== '')
+        //     sParentURL = commonFunctions.url_slug(sParentURL);
 
         sInitialURL = (sParentURL !== '' ? sParentURL + '/' : '') + (typeof sSpecialCharSeparator === 'string' ? sSpecialCharSeparator : '') + commonFunctions.url_slug(sInitialURL);
 
@@ -61,18 +61,20 @@ class URLHash {
     async addNewURL(sParentURL, sURL, object){
 
         object = object || '';
-        if ((object!==null)&&(object.constructor === "object")) object = object.id;
+        if ((object!==null)&&(typeof object === "object")) object = object.id;
 
         let sFinalNewURL = await this.getFinalNewURL(sParentURL, sURL, object);
 
-        return await this.hashList.setHash('', sFinalNewURL, object);
+        return await this.hashList.setHash('', sFinalNewURL.toLowerCase(), object);
     }
 
-    async replaceOldURL(sOldURL, sNewURL, object, bDeleteAllHashes){
+    async replaceOldURL(sOldURL, sNewURL, object, bDeleteAllHashes, bURLSlug){
 
         object = object || '';
-        if ((object!==null)&&(object.constructor === "object")) object = object.id;
-        sNewURL = commonFunctions.url_slug(sNewURL);
+        if ((object!==null)&&(typeof object === "object")) object = object.id;
+
+        if ( (bURLSlug||false) === true)
+            sNewURL = commonFunctions.url_slug(sNewURL);
 
         if ( (bDeleteAllHashes || false) === true ){
             await this.hashList.deleteHash('',sOldURL);
@@ -82,7 +84,8 @@ class URLHash {
         if ((sOldURL || '') !== '')
             await this.hashList.deleteHash('',sOldURL);
 
-        return this.addNewURL('', sNewURL, object);
+        return await this.hashList.setHash('', sNewURL.toLowerCase(), object);
+        //return await this.addNewURL('', sNewURL, object);
     }
 
     async checkUniqueURL(sURL){
