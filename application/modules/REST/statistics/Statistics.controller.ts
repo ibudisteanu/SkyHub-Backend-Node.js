@@ -14,9 +14,21 @@ module.exports = {
 
     pageViewNewVisitor(req, res){
 
-        let parentId = '', visitorIP = '';
+        let parentId = '', ip = '';
 
-        let ip = req.headers['x-real-ip'] || req.connection.remoteAddress;
+        if (typeof req.headers !== 'undefined') //it is a http request
+            ip = req.headers['x-real-ip'] || req.connection.remoteAddress;
+        else
+        if (typeof res.handshake  !== 'undefined') { //using old handshake version (outdated)
+            // let address = res.handshake.address;
+            // ip = address.address||'';
+        }
+        else
+        if (typeof res.request !== 'undefined'){ // it is a socket
+
+            ip = res.request.connection.remoteAddress;
+
+        }
 
         if (req.hasOwnProperty('body')){
             parentId = req.body.parent || '';

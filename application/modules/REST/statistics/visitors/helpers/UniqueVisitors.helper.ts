@@ -5,6 +5,9 @@
 
 /*
         USING Hyperloglog   https://stackoverflow.com/questions/41616082/count-unique-visitors-with-redis-or-aerospike
+
+        Full documentation: https://gist.github.com/DavidJFelix/113fad6a0a7affdd880d
+
  */
 
 class UniqueVisitorsHelper {

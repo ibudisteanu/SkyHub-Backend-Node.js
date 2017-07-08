@@ -33,6 +33,10 @@ class StatisticsHelper {
         return await this.hashList.incrementBy(parentId, 'PageViews', +1);
     }
 
+    async setManuallyPageViewsCounter(parentId, value){
+        return await this.hashList.setHash(parentId, 'PageViews', value);
+    }
+
     async getPageViewsCounter(parentId){
         return await this.hashList.getHash(parentId, 'PageViews');
     }

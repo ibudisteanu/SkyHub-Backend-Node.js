@@ -19,6 +19,7 @@ var ForumsHelper = require ('../../REST/forums/forums/helpers/Forums.helper.ts')
 var TopicsHelper = require ('../../REST/forums/topics/helpers/Topics.helper.ts');
 var RepliesHelper = require ('../../REST/forums/replies/helpers/Replies.helper.ts');
 var VotingsHelper = require ('../../REST/Voting/helpers/Votings.helper.ts');
+var StatisticsHelper = require ('../../REST/statistics/helpers/Statistics.helper.ts');
 var VoteType = require ('./../../REST/Voting/models/VoteType.js');
 
 var newUsers = [];
@@ -273,6 +274,9 @@ class MongoImporter {
 
                 if (typeof topic.Vote !== 'undefined')
                     this.importVote(newTopic.topic.id, topic.Vote);
+
+                if (typeof topic.Visitors !== 'undefined')
+                    this.importVisitors(newTopic.topic.id, topic.Visitors);
             }
 
         }
@@ -374,9 +378,21 @@ class MongoImporter {
                     break;
             }
 
-            VotingsHelper.submitVote(parent, user, voteType);
+            await VotingsHelper.submitVote(parent, user, voteType);
 
         }
+
+    }
+
+    async importVisitors(parentId, visitorsMongo){
+
+        await StatisticsHelper.setManuallyPageViewsCounter(parentId, parseInt(visitorsMongo.Views));
+
+        for (let i=0; i<visitorsMongo.IPVisitors.length; i++){
+            await StatisticsHelper.addUniqueVisitorCounter(parentId, visitorsMongo.IPVisitors[i]);
+        }
+
+        return true;
 
     }
 
