@@ -10,10 +10,6 @@ var VoteType = require ('../../voting/models/VoteType.js');
 let VotingHelper = require ('../../voting/helpers/Voting.helper.ts');
 var MaterializedParentsHelper = require ('../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 
-let ForumsSorter = require ('../../forums/forums/models/ForumsSorter.ts');
-let TopicsSorter = require ('../../forums/topics/models/TopicsSorter.ts');
-let RepliesSorter = require ('../../forums/replies/models/RepliesSorter.ts');
-
 var StatisticsHelper = class {
 
     //sortedList
@@ -191,19 +187,28 @@ var StatisticsHelper = class {
     async keepElementSortedList(id, parents){
         let idData = MaterializedParentsHelper.extractDataFromIds(id);
 
+        // console.log('--------------------------');console.log('--------------------------');console.log('--------------------------');console.log('--------------------------');
+        // console.log(id, idData, parents);
+        // console.log('--------------------------');console.log('--------------------------');console.log('--------------------------');console.log('--------------------------');
+
         if (idData === null) return null;
+
+
 
         switch (idData.objectType) {
             case 'user':
                 return ''; //to do for users too
 
             case 'forum':
+                let ForumsSorter = require ('../../forums/forums/models/ForumsSorter.ts');
                 return await ForumsSorter.calculateKeepSortedList(id, parents, false);
 
             case 'reply':
+                let RepliesSorter = require ('../../forums/replies/models/RepliesSorter.ts');
                 return await RepliesSorter.calculateKeepSortedList(id, parents, false);
 
             case 'topic':
+                let TopicsSorter = require ('../../forums/topics/models/TopicsSorter.ts');
                 return await TopicsSorter.calculateKeepSortedList(id, parents, false);
 
         }

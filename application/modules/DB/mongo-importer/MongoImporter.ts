@@ -129,14 +129,14 @@ class MongoImporter {
 
 
             let newUser = await UsersHelper.registerUser(user.Email, user.Username, password, user['First Name'], user['Last Name'],
-                                                         user.Country||'none', user.City||'none', '', user.AvatarPicture, '', user.latitude, user.longtitude, user.Biography, user.Age||0, user.TimeZone, gender, user.Verified);
+                                                         user.Country||'none', user.City||'none', '', user.AvatarPicture, '', user.latitude, user.longtitude, user.Biography, user.Age||0, user.TimeZone, gender, user.Verified, user.CreationDate||'', user.CreationDate||'');
 
             //console.log('##############', newUser);
             if (newUser.result === true){
                 count++;
                 newUsers.push({oldId: user._id, id: newUser.user.id, user: newUser.user});
                 if ((typeof user.Credential !== 'undefined')&&(user.Credential.length > 3)){
-                    SessionsHashList.addSession(newUser, user.Credential );
+                    await SessionsHashList.addSession(newUser, user.Credential );
                 }
             }
 
@@ -180,7 +180,7 @@ class MongoImporter {
 
             if ((typeof parentCategory !== 'undefined')&&(parentCategory !== null)&&(typeof parentCategory.id !== 'undefined')) parentCategory = parentCategory.id.toString();
 
-            let answer = await ForumsHelper.addForum(user, parentCategory, category.Name, category.ShortDescription, category.Description, category.InputKeywords, user.country, user.city, '', category.Image, category.CoverImage, '', -666, -666 );
+            let answer = await ForumsHelper.addForum(user, parentCategory, category.Name, category.ShortDescription, category.Description, category.InputKeywords, user.country, user.city, '', category.Image, category.CoverImage, '', -666, -666, category.CreationDate||'');
 
             if (answer.result === true){
                 count++;
@@ -266,17 +266,17 @@ class MongoImporter {
             ];
 
             //console.log('parents:', parentForum, parentCategory, typeof parentForum, typeof parentCategory);
-            let newTopic = await TopicsHelper.addTopic(user, parentForum||parentCategory, topic.Title, topic.BodyCode, attachments, topic.CoverImage, topic.InputKeywords, user.Country||'none', user.City||'none', '', user.latitude, user.longtitude);
+            let newTopic = await TopicsHelper.addTopic(user, parentForum||parentCategory, topic.Title, topic.BodyCode, attachments, topic.CoverImage, topic.InputKeywords, user.Country||'none', user.City||'none', '', user.latitude, user.longtitude, topic.CreationDate||'');
 
             if (newTopic.result === true){
                 count++;
                 newTopics.push({oldId: topic._id, id: newTopic.topic.id, topic: newTopic.topic});
 
                 if (typeof topic.Vote !== 'undefined')
-                    this.importVote(newTopic.topic.id, topic.Vote);
+                    await this.importVote(newTopic.topic.id, topic.Vote);
 
                 if (typeof topic.Visitors !== 'undefined')
-                    this.importVisitors(newTopic.topic.id, topic.Visitors);
+                    await this.importVisitors(newTopic.topic.id, topic.Visitors);
             }
 
         }
@@ -302,7 +302,7 @@ class MongoImporter {
 
             let attachments = [];
 
-            let newReply = await RepliesHelper.addReply(user, parent, parentReply, reply.Title, reply.MessageCode, attachments, [], user.Country || 'none', user.City || 'none', '', user.latitude, user.longtitude);
+            let newReply = await RepliesHelper.addReply(user, parent, parentReply, reply.Title, reply.MessageCode, attachments, [], user.Country || 'none', user.City || 'none', '', user.latitude, user.longtitude, reply.CreationDate||'');
 
             console.log('@@reply_finished: ', newReply.result, (newReply.result ? newReply.reply.id : ' no id') );
 
@@ -311,7 +311,7 @@ class MongoImporter {
                 newReplies.push({oldId: reply._id, id: newReply.reply.id, reply: newReply.reply});
 
                 if (typeof reply.Vote !== 'undefined')
-                    this.importVote(newReply.reply.id, reply.Vote);
+                    await this.importVote(newReply.reply.id, reply.Vote);
             }
 
             if ((typeof reply.Children !== 'undefined') && (reply.Children !== null))
@@ -358,29 +358,30 @@ class MongoImporter {
 
     async importVote(parent, voteMongo){
 
-        for (let i=0; i<voteMongo.Votes.length; i++){
+        if (typeof voteMongo.Votes !== 'undefined')
+            for (let i=0; i<voteMongo.Votes.length; i++){
 
-            let user = await this.findUser(voteMongo.Votes[i].AuthorId);
+                let user = await this.findUser(voteMongo.Votes[i].AuthorId);
 
-            if ((typeof user === "undefined") || (user === null))
-                user = await newUsers[0].user;
+                if ((typeof user === "undefined") || (user === null))
+                    user = await newUsers[0].user;
 
-            let voteType = VoteType.VOTE_NONE;
-            switch (voteMongo.Votes[i].VoteValue){
-                case 1: //const votedUp=1;
-                case 4: //const votedMarkedUp=4;
-                case 3: //const votedMarked=3;
-                    voteType = VoteType.VOTE_UP;
-                    break;
-                case 2: //const votedDown=2;
-                case 5: //const votedMarkedDown=5;
-                    voteType = VoteType.VOTE_DOWN;
-                    break;
+                let voteType = VoteType.VOTE_NONE;
+                switch (voteMongo.Votes[i].VoteValue){
+                    case 1: //const votedUp=1;
+                    case 4: //const votedMarkedUp=4;
+                    case 3: //const votedMarked=3;
+                        voteType = VoteType.VOTE_UP;
+                        break;
+                    case 2: //const votedDown=2;
+                    case 5: //const votedMarkedDown=5;
+                        voteType = VoteType.VOTE_DOWN;
+                        break;
+                }
+
+                await VotingsHelper.submitVote(parent, user, voteType);
+
             }
-
-            await VotingsHelper.submitVote(parent, user, voteType);
-
-        }
 
     }
 
@@ -388,9 +389,10 @@ class MongoImporter {
 
         await StatisticsHelper.setManuallyPageViewsCounter(parentId, parseInt(visitorsMongo.Views));
 
-        for (let i=0; i<visitorsMongo.IPVisitors.length; i++){
-            await StatisticsHelper.addUniqueVisitorCounter(parentId, visitorsMongo.IPVisitors[i]);
-        }
+        if (typeof visitorsMongo.IPVisitors !== 'undefined')
+            for (let i=0; i<visitorsMongo.IPVisitors.length; i++){
+                await StatisticsHelper.addUniqueVisitorCounter(parentId, visitorsMongo.IPVisitors[i]);
+            }
 
         return true;
 
@@ -409,6 +411,9 @@ class MongoImporter {
         let replies =  await this.importReplies();
 
         console.log('running Mongo Importer...');
+
+        // console.log('StatisticsHelper', await StatisticsHelper.getTotalVoteUpsCounter('1_forum_14996118214302005'));
+        // console.log('StatisticsHelper', await StatisticsHelper.getTotalRepliesCounter('1_forum_14996118408799753'));
 
         return({
             users: users,

@@ -37,7 +37,9 @@ module.exports = {
      using string password => hashed
      using social network
      */
-    async registerUser (sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, sShortBio, iAge, iTimeZone, enGender, bVerified){
+    async registerUser (sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, sShortBio, iAge, iTimeZone, enGender, bVerified, dtCreation){
+
+        if ((typeof dtCreation === 'undefined') || (dtCreation === null)) dtCreation = '';
 
         sCountry = sCountry || ''; sCity = sCity || ''; sProfilePic = sProfilePic || ''; sCoverPic = sCoverPic || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; iAge = iAge || 0; iTimeZone = iTimeZone || 0; var bVerified = bVerified || false, sShortBio = sShortBio||'';
@@ -64,7 +66,7 @@ module.exports = {
                 country: sCountry.toLowerCase(),
                 city: sCity.toLowerCase(),
                 language: sLanguage.toLowerCase(),
-                dtCreation: new Date().getTime(),
+                dtCreation: dtCreation !== '' ? Date.parse(dtCreation) : new Date().getTime(),
                 dtLastActivity: new Date().getTime(),
                 age : iAge,
                 gender : enGender,
@@ -134,8 +136,8 @@ module.exports = {
 
             user.save(function (err) {
                 if (err) {
-                    console.log("==> Error Saving User");
-                    console.log(sUsername, sFirstName, sLastName);
+                    console.log("      ==> Error Saving User");
+                    console.log(sUsername, sFirstName, sLastName, err.toString());
                     //console.log(user.errors); // the errors in validation
 
                     resolve({result:false, errors: user.errors });

@@ -6,7 +6,7 @@
 var ScoreCoefficientHelper = require ('../../../../DB/common/score-coefficient/ScoreCoefficient.helper.ts');
 var HashList = require ('../../../../DB/Redis/lists/HashList.helper.ts');
 var TopForumsHelper = require ('./../../top-content/helpers/TopForums.helper.ts');
-
+let StatisticsHelper = require('./../../../statistics/helpers/Statistics.helper.ts');
 var ForumSorter = class{
 
     constructor(){
@@ -18,8 +18,6 @@ var ForumSorter = class{
     }
 
     async calculateHotnessVotingScore (id){
-
-        let StatisticsHelper = require('./../../../statistics/helpers/Statistics.helper.ts');
 
         let pageViews = await StatisticsHelper.getPageViewsCounter(id);
         let pageVisitorsViews = await StatisticsHelper.getUniqueVisitorsCounter(id);
@@ -37,7 +35,7 @@ var ForumSorter = class{
     async calculateHotnessCoefficient (id, dtCreation){
 
         let votingScore = await this.calculateHotnessVotingScore(id);
-
+        this.hashList.setHash(id,'hotnessCoefficient',votingScore);
         return await ScoreCoefficientHelper.calculateHotnessScoreCoefficient(dtCreation, votingScore);
     }
 
@@ -54,6 +52,14 @@ var ForumSorter = class{
 
         let previousHotnessScore = await this.hashList.getHash(id, 'hotnessScore');
         let hotnessScore = await this.calculateHotnessCoefficient(id, dtCreation);
+
+        let votingScore = await this.calculateHotnessVotingScore(id);
+        console.log('---------------------------------------------- ');console.log('---------------------------------------------- ');
+        console.log("    id#"+id+"#");
+        console.log("    previousHotnessScore",previousHotnessScore);
+        console.log("    hotnessScore",hotnessScore);
+        console.log("         voting score", votingScore);
+        console.log('---------------------------------------------- ');console.log('---------------------------------------------- ');
 
         if ((bDelete)||(previousHotnessScore !== hotnessScore)) {
 

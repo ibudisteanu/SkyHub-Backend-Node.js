@@ -71,7 +71,9 @@ module.exports = {
     /*
      CREATING A NEW FORUM
      */
-    async addForum (userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude){
+    async addForum (userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, dtCreation){
+
+        if ((typeof dtCreation === 'undefined') || (dtCreation === null)) dtCreation = '';
 
         sCountry = sCountry || ''; sCity = sCity || ''; sIconPic = sIconPic || ''; sCoverPic = sCoverPic || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666;
@@ -88,6 +90,13 @@ module.exports = {
 
         //get object from parent
         //console.log("addForum ===============", userAuthenticated);
+        let parentObject = await MaterializedParentsHelper.findObject(parent);
+
+        if ((sIconPic === '')&&(parentObject !== null))
+            sIconPic = parentObject.p('iconPic');
+
+        if ((sCoverPic === '') && (parentObject !== null))
+            sCoverPic = parentObject.p('coverPic');
 
         forum.p(
             {
@@ -103,11 +112,11 @@ module.exports = {
                 country: sCountry.toLowerCase(),
                 city: sCity.toLowerCase(),
                 language: sLanguage.toLowerCase(),
-                dtCreation: new Date().getTime(),
+                dtCreation:  dtCreation !== '' ? Date.parse(dtCreation) : new Date().getTime(),
                 dtLastActivity: null,
-                parentId: await MaterializedParentsHelper.getObjectId(parent),
+                parentId: await MaterializedParentsHelper.getObjectId(parentObject),
                 parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),
-                breadcrumbs: await MaterializedParentsHelper.createBreadcrumbs(parent),
+                breadcrumbs: await MaterializedParentsHelper.createBreadcrumbs(parentObject),
             }
         );
 

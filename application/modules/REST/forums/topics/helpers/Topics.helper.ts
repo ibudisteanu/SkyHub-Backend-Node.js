@@ -73,7 +73,9 @@ module.exports = {
     /*
      CREATING A NEW Topic
      */
-    async addTopic (userAuthenticated, parent,  sTitle, sDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude){
+    async addTopic (userAuthenticated, parent,  sTitle, sDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation){
+
+        if ((typeof dtCreation === 'undefined') || (dtCreation === null)) dtCreation = '';
 
         sCountry = sCountry || ''; sCity = sCity || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666;
@@ -86,6 +88,16 @@ module.exports = {
 
         //get object from parent
         //console.log("addTopic ===============", userAuthenticated);
+
+        if ((arrAttachments === [])&&(parent.p('iconPic') !== null)&&(typeof parent.p('iconPic') !== 'undefined')){
+            arrAttachments = [{
+                type: 'file',
+                    typeFile: 'image/jpeg',
+                url: parent.p('iconPic'),
+                img: parent.p('iconPic'),
+                title: parent.p('Name'),
+            }];
+        }
 
         let parentObject = await MaterializedParentsHelper.findObject(parent);
 
@@ -106,7 +118,7 @@ module.exports = {
                 country: sCountry.toLowerCase(),
                 city: sCity.toLowerCase(),
                 language: sLanguage.toLowerCase(),
-                dtCreation: new Date().getTime(),
+                dtCreation:  dtCreation !== '' ? Date.parse(dtCreation) : new Date().getTime(),
                 dtLastActivity: null,
                 parentId: await MaterializedParentsHelper.getObjectId(parentObject),
                 parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),

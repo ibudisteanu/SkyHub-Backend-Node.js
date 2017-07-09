@@ -74,7 +74,9 @@ module.exports = {
     /*
      CREATING A NEW REPLY
      */
-    async addReply (userAuthenticated, parent, parentReply, sTitle, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude){
+    async addReply (userAuthenticated, parent, parentReply, sTitle, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation){
+
+        if ((typeof dtCreation === 'undefined') || (dtCreation === null)) dtCreation = '';
 
         try{
             sCountry = sCountry || ''; sCity = sCity || ''; dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; sTitle = sTitle || '';
@@ -119,7 +121,7 @@ module.exports = {
                     country: sCountry.toLowerCase(),
                     city: sCity.toLowerCase(),
                     language: sLanguage.toLowerCase(),
-                    dtCreation: new Date().getTime(),
+                    dtCreation: dtCreation !== '' ? Date.parse(dtCreation) : new Date().getTime(),
                     dtLastActivity: null,
                     nestedLevel: (parentReply !== null ? parentReply.p('nestedLevel') + 1 : 1),
                     parentReplyId: await MaterializedParentsHelper.getObjectId(parentReply),
