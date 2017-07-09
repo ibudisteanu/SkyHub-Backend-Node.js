@@ -52,12 +52,12 @@ var TopicsSorter = class{
         let hotnessScore = await this.calculateHotnessCoefficient(id, dtCreation);
 
         let votingScore = await this.calculateHotnessVotingScore(id);
-        console.log('---------------------------------------------- ');console.log('---------------------------------------------- ');
+        console.log('---------------------------------------------- ');
         console.log("    id#"+id+"#");
         console.log("    previousHotnessScore",previousHotnessScore);
         console.log("    hotnessScore",hotnessScore);
         console.log("         voting score", votingScore);
-        console.log('---------------------------------------------- ');console.log('---------------------------------------------- ');
+        console.log('---------------------------------------------- ');
 
         if ((bDelete)||(previousHotnessScore !== hotnessScore)) {
 

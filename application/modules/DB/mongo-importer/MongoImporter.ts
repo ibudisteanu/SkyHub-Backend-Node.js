@@ -180,7 +180,10 @@ class MongoImporter {
 
             if ((typeof parentCategory !== 'undefined')&&(parentCategory !== null)&&(typeof parentCategory.id !== 'undefined')) parentCategory = parentCategory.id.toString();
 
-            let answer = await ForumsHelper.addForum(user, parentCategory, category.Name, category.ShortDescription, category.Description, category.InputKeywords, user.country, user.city, '', category.Image, category.CoverImage, '', -666, -666, category.CreationDate||'');
+            let icon = '';
+            if (((typeof category.Image !== 'undefined'))&&(category.Image.indexOf("http") >= 0)) icon = category.Image;
+
+            let answer = await ForumsHelper.addForum(user, parentCategory, category.Name||'', category.ShortDescription||'', category.Description||'', category.InputKeywords||[], user.country, user.city, '', icon||'', category.CoverImage||'', '', -666, -666, category.CreationDate||'');
 
             if (answer.result === true){
                 count++;
@@ -221,7 +224,10 @@ class MongoImporter {
             if ((typeof parentCategory !== 'undefined')&&(parentCategory !== null)&&(typeof parentCategory.id !== 'undefined')) parentCategory = parentCategory.id.toString();
             else parentCategory = '';
 
-            let newForum = await ForumsHelper.addForum(user, parentCategory, forum.Name, forum.Description, forum.DetailedDescription, forum.InputKeywords, user.Country||'none', user.City||'none', '', forum.Image, forum.CoverImage, '', user.latitude, user.longtitude);
+            let icon = '';
+            if (((typeof forum.Image !== 'undefined'))&&(forum.Image.indexOf("http") >= 0)) icon = forum.Image;
+
+            let newForum = await ForumsHelper.addForum(user, parentCategory, forum.Name||'', forum.Description||'', forum.DetailedDescription||'', forum.InputKeywords, user.Country||'none', user.City||'none', '', icon||'', forum.CoverImage||'', '', user.latitude, user.longtitude);
 
             //console.log('##############', newUser);
             if (newForum.result === true){
@@ -256,17 +262,35 @@ class MongoImporter {
 
             if (parentForum === '') parentForum = parentCategory;
 
-            let attachments = [{
-                    type: 'file',
-                    typeFile: 'image/jpeg',
-                    url: topic.Image,
-                    img: topic.Image,
-                    title: topic.ImageAlt,
-                }
-            ];
+            let attachments = [];
+
+            if ((typeof topic.Image !== 'undefined')&&(topic.Image.indexOf("http") >= 0))
+                attachments = [{
+                        type: 'file',
+                        typeFile: 'image/jpeg',
+                        url: topic.Image,
+                        img: topic.Image,
+                        title: topic.ImageAlt,
+                    }
+                ];
+            if ((typeof topic.ImagesData !== 'undefined')){
+
+                let images = topic.ImagesData.Images;
+                Object.keys(images).map(function(key, index) {
+
+                    if ((images[key].src||'').indexOf('http') >= 0)
+                        attachments = [{
+                            type: 'file',
+                            typeFile: 'image/jpeg',
+                            url: images[key].src,
+                            img: images[key].src,
+                            title: images[key].alt||images[key].title||images[key].description,
+                        }];
+                });
+            }
 
             //console.log('parents:', parentForum, parentCategory, typeof parentForum, typeof parentCategory);
-            let newTopic = await TopicsHelper.addTopic(user, parentForum||parentCategory, topic.Title, topic.BodyCode, attachments, topic.CoverImage, topic.InputKeywords, user.Country||'none', user.City||'none', '', user.latitude, user.longtitude, topic.CreationDate||'');
+            let newTopic = await TopicsHelper.addTopic(user, parentForum||parentCategory, topic.Title, topic.BodyCode, attachments, topic.CoverImage||'', topic.InputKeywords, user.Country||'none', user.City||'none', '', user.latitude, user.longtitude, topic.CreationDate||'', topic.findObject||{});
 
             if (newTopic.result === true){
                 count++;

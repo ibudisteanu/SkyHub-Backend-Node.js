@@ -17,7 +17,6 @@ var ScoreCoefficient = class{
      */
 
     calculateHotnessScoreCoefficient(dtDate, votingScore){
-
         if (typeof dtDate === "undefined")  dtDate = new Date();
 
         dtDate = (((typeof dtDate === "string")&&(dtDate !== ''))) ? Date.parse(dtDate) : new Date(dtDate||new Date());
@@ -25,6 +24,7 @@ var ScoreCoefficient = class{
         let epoch = new Date(1970, 1, 1);
 
         let diffSeconds = Math.ceil(  (dtDate.getTime() - epoch.getTime()) / 1000 );
+        //the difference of the dtCreation's date and epoch... it should be always positive and every second the number should grow...
 
         //let votingScore = 0-0;
 
@@ -37,9 +37,11 @@ var ScoreCoefficient = class{
 
         console.log('     @@@###  ',votingScore, order, sign);
 
-        let seconds = diffSeconds - Math.ceil ( epoch.getTime() / 1000 );
+        let seconds = diffSeconds - 1134028003;
 
-        return Math.round( (sign * order + seconds / 45000) * 10000000)/10000000;
+        let result = Math.round( (sign * order + seconds / 45000) * 10000000)/10000000;
+
+        return - result; //returning because Redis is storing the inverse order
     }
 
     async test(){

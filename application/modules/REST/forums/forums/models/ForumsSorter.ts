@@ -28,7 +28,7 @@ var ForumSorter = class{
 
         let voteDiff = await StatisticsHelper.getTotalVoteUpsCounter(id) - await StatisticsHelper.getTotalVoteDownsCounter(id);
 
-        return forums + pageVisitorsViews *0.7 + pageViews *0.2 + topics*0.3 + replies * 0.1 + voteDiff*0.1;
+        return forums + pageVisitorsViews *0.2 + pageViews *0.05 + topics*0.3 + replies * 0.1 + voteDiff*0.1;
 
     }
 
@@ -54,12 +54,12 @@ var ForumSorter = class{
         let hotnessScore = await this.calculateHotnessCoefficient(id, dtCreation);
 
         let votingScore = await this.calculateHotnessVotingScore(id);
-        console.log('---------------------------------------------- ');console.log('---------------------------------------------- ');
+        console.log('---------------------------------------------- ');
         console.log("    id#"+id+"#");
         console.log("    previousHotnessScore",previousHotnessScore);
         console.log("    hotnessScore",hotnessScore);
         console.log("         voting score", votingScore);
-        console.log('---------------------------------------------- ');console.log('---------------------------------------------- ');
+        console.log('---------------------------------------------- ');
 
         if ((bDelete)||(previousHotnessScore !== hotnessScore)) {
 

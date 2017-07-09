@@ -73,9 +73,10 @@ module.exports = {
     /*
      CREATING A NEW Topic
      */
-    async addTopic (userAuthenticated, parent,  sTitle, sDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation){
+    async addTopic (userAuthenticated, parent,  sTitle, sDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation, arrAdditionalInfo){
 
         if ((typeof dtCreation === 'undefined') || (dtCreation === null)) dtCreation = '';
+        if ((typeof arrAdditionalInfo === 'undefined')) arrAdditionalInfo = {};
 
         sCountry = sCountry || ''; sCity = sCity || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666;
@@ -89,20 +90,24 @@ module.exports = {
         //get object from parent
         //console.log("addTopic ===============", userAuthenticated);
 
-        if ((arrAttachments === [])&&(parent.p('iconPic') !== null)&&(typeof parent.p('iconPic') !== 'undefined')){
+        let parentObject = await MaterializedParentsHelper.findObject(parent);
+
+        if ((arrAttachments === [])&&(parentObject !== null)){
             arrAttachments = [{
                 type: 'file',
-                    typeFile: 'image/jpeg',
-                url: parent.p('iconPic'),
-                img: parent.p('iconPic'),
-                title: parent.p('Name'),
+                typeFile: 'image/jpeg',
+                url: parentObject.p('iconPic'),
+                img: parentObject.p('iconPic'),
+                title: parentObject.p('Name')||parentObject.p('Title'),
             }];
         }
 
-        let parentObject = await MaterializedParentsHelper.findObject(parent);
+        if ((sCoverPic === '')&&(parentObject !== null)){
+            sCoverPic = parentObject.p('coverPic');
+        }
 
-        sDescription = striptags(sDescription, ['a','b','i','u','strong', 'h1','h2','h3','h4','h5']);
-        let shortDescription = striptags(sDescription, [], 'h5');
+        sDescription = striptags(sDescription, ['a','b','i','u','strong', 'h1','h2','h3','h4','h5','div','font','ul','li','img', 'br', 'span','p','div','em']);
+        let shortDescription = striptags(sDescription, [] );
         if (shortDescription.length > 512) shortDescription = shortDescription.substr(0, 512) + ' ...';
 
         topic.p(
@@ -120,6 +125,7 @@ module.exports = {
                 language: sLanguage.toLowerCase(),
                 dtCreation:  dtCreation !== '' ? Date.parse(dtCreation) : new Date().getTime(),
                 dtLastActivity: null,
+                addInfo: arrAdditionalInfo, //Additional information
                 parentId: await MaterializedParentsHelper.getObjectId(parentObject),
                 parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),
                 breadcrumbs: await MaterializedParentsHelper.createBreadcrumbs(parentObject),
@@ -149,10 +155,15 @@ module.exports = {
                     await topic.keepURLSlug();
                     await VotingsHelper.initializeVoteInDB(topic.id, topic.p('parents'));
                     await TopicsSorter.initializeSorterInDB(topic.id, topic.p('dtCreation'));
-                    await topic.keepParentsStatistics(+1);
 
-                    var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
-                    SearchesHelper.addTopicToSearch(null,topic); //async, but not awaited
+                    if (arrAdditionalInfo.scrapped === true){ //it has been scrapped...
+
+                    } else {
+                        await topic.keepParentsStatistics(+1);
+
+                        var SearchesHelper = require('../../../searches/helpers/Searches.helper.ts');
+                        SearchesHelper.addTopicToSearch(null, topic); //async, but not awaited
+                    }
 
                     //console.log(topic.getPublicInformation(userAuthenticated) );
 

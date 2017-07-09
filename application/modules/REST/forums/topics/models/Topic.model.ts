@@ -65,6 +65,17 @@ var TopicModel = redis.nohm.model('TopicModel', {
             type: 'json',
         },
 
+        addInfo:{
+            type: 'json',
+        },
+        //additional information like:
+        // {
+        //     "scraped" : true,
+        //     "originalURL" : "http://www.antena3.ro/politica/traian-basescu-statul-trebuie-sa-i-garanteze-lui-sebastian-ghita-imunitate-ca-sa-poata-vorbi-408633.html",
+        //     "website" : "http://antena3.ro/",
+        //     "websiteName" : "Antena3"
+        // }
+
         /*
          COMMON PROPERTIES
          */

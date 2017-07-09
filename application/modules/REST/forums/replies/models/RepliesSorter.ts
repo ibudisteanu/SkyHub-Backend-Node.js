@@ -49,10 +49,10 @@ var RepliesSorter = class{
         let previousHotnessScore = await this.hashList.getHash(id, 'hotnessScore');
         let hotnessScore = await this.calculateHotnessCoefficient(id, dtCreation);
 
-        console.log('---------------------------------------------- ');console.log('---------------------------------------------- ');
+        console.log('---------------------------------------------- ');
         console.log("id#"+id+"#");
         console.log("hotnessScore",hotnessScore, "voting score", await this.calculateHotnessVotingScore(id));
-        console.log('---------------------------------------------- ');console.log('---------------------------------------------- ');
+        console.log('---------------------------------------------- ');
 
         if ((bDelete)||(previousHotnessScore !== hotnessScore)) {
 
