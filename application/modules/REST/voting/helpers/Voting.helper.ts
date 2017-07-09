@@ -15,8 +15,14 @@ class VotingHelper {
         this.hashList = new HashList("Voting");
     }
 
-    getVoteValue(parentId){
-        return this.hashList.getHash(parentId, 'value');
+    async getVoteUpsValue(parentId){
+        let res = await this.hashList.getHash(parentId, 'ups');
+        return res !== null ? res : 0;
+    }
+
+    async getVoteDownsValue(parentId){
+        let res = await this.hashList.getHash(parentId, 'downs');
+        return res !== null ? res : 0;
     }
 
     async getVoteType(parentId, userAuthenticated){
@@ -48,24 +54,29 @@ class VotingHelper {
 
 
 
-    async changeVoteValue (parentId, voteType){
+    async changeVoteValue (parentId, previousVoteType, voteType){
 
         let value = voteType;
 
-        switch (voteType){
+        if ((previousVoteType !== null)&&(previousVoteType !== voteType)){
 
-            case VoteType.VOTE_UP:
-                value = 1;
-                break;
-            case VoteType.VOTE_DOWN:
-                value = -1;
-                break;
-            default:
-                value = 0;
-                break;
+
+            switch (previousVoteType){
+                case VoteType.VOTE_DOWN:
+                    await this.hashList.incrementBy(parentId, 'downs', -1);
+                    break;
+                case VoteType.VOTE_UP:
+                    await this.hashList.incrementBy(parentId, 'ups', -1);
+                    break;
+            }
         }
 
-        return await this.hashList.incrementBy(parentId,'value', value );
+        switch (voteType){
+            case VoteType.VOTE_DOWN:
+                return await this.hashList.incrementBy(parentId, 'downs', +1);
+            case VoteType.VOTE_UP:
+                return await this.hashList.incrementBy(parentId, 'ups', +1);
+        }
 
     }
 

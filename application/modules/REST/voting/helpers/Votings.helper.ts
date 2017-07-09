@@ -17,6 +17,10 @@ class VotingHash {
         this.hashList = new HashList("Voting");
     }
 
+    async initializeVoteInDB(parentId, parents){
+
+    }
+
     async submitVote (parentId, userAuthenticated, voteType ){
 
         if ((typeof userAuthenticated === "undefined")||(userAuthenticated === null)) return {result: false, notAuthenticated:true, message: 'Authenticated User is not defined'};
@@ -25,22 +29,22 @@ class VotingHash {
         if (typeof userAuthenticated === 'object') userId = userAuthenticated.id||'';
         if (userId === '') return {result: false, notAuthenticated:true, message: 'Authenticated User is not defined'};
 
+        if ((voteType !== VoteType.VOTE_UP) && (voteType !== VoteType.VOTE_DOWN)&&(voteType !== VoteType.VOTE_NONE))
+            return{
+                result: false,
+                message: 'invalid vote value: '+VoteType.VOTE_NONE,
+            };
+
         let foundVoteType = await this.hashList.getHash(parentId, userId) ;
 
-        if ( foundVoteType !== null){
-
-            if (foundVoteType !== VoteType.VOTE_NONE )
-                await VotingHelper.changeVoteValue(parentId, - foundVoteType)
-
-        }
-
         await this.hashList.setHash(parentId, userId, voteType);
-        await VotingHelper.changeVoteValue(parentId, voteType);
+        await VotingHelper.changeVoteValue(parentId, foundVoteType, voteType);
 
         return {
             result: true,
             vote:{
-                value: await VotingHelper.getVoteValue(parentId),
+                ups: await VotingHelper.getVoteUpsValue(parentId),
+                downs: await VotingHelper.getVoteDownsValue(parentId),
                 parentId: parentId,
                 votes: await VotingHelper.getVotesWithOnlyUserVote(parentId, userAuthenticated),
             }
@@ -84,13 +88,11 @@ class VotingHash {
         if (typeof userAuthenticated === "undefined") userAuthenticated = null;
         if (typeof onlyUserVote === "undefined") onlyUserVote = true;
 
-        let value =  await VotingHelper.getVoteValue(parentId);
-        if (value === null) value = 0;
-
         return {
             result:true,
             vote: {
-                value: value,
+                ups: await VotingHelper.getVoteUpsValue(parentId),
+                downs: await VotingHelper.getVoteDownsValue(parentId),
                 parentId: parentId,
                 votes: ( onlyUserVote ? await VotingHelper.getVotesWithOnlyUserVote(parentId, userAuthenticated) : await this.getAllVotes(parentId, userAuthenticated) ),
             }

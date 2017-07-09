@@ -47,42 +47,79 @@ class StatisticsHelper {
     }
 
 
-    //          REPLIES
+    //          TOTAL REPLIES
 
-    async updateReplyCounter(parentId, value){
+    async updateTotalRepliesCounter(parentId, value){
 
         if (typeof value === 'undefined') value = +1;
 
-        return await this.hashList.incrementBy(parentId, 'Replies', vaue);
+        return await this.hashList.incrementBy(parentId, 'TotalReplies', value);
+    }
+
+    async getTotalRepliesCounter(parentId){
+        let rez = await this.hashList.getHash(parentId, 'TotalReplies');
+        return (rez !== null ? rez : 0);
+    }
+
+    //          REPLIES
+
+    async updateRepliesCounter(parentId, value){
+
+        if (typeof value === 'undefined') value = +1;
+
+        return await this.hashList.incrementBy(parentId, 'Replies', value);
     }
 
     async getRepliesCounter(parentId){
-        let rez = await this.hashList.getHash(parentId, 'PageViews');
+        let rez = await this.hashList.getHash(parentId, 'Replies');
         return (rez !== null ? rez : 0);
     }
 
     //          VOTES
 
-    async getVoteCounter(parentId){
+    async getVoteUpsCounter(parentId){
         // it is using the VotesHelper
-        let rez = await VotingsHelper.getVote(parentId, null, true).vote;
+        let rez = await VotingsHelper.getVoteUpsValue(parentId);
+        return (rez !== null ? rez : 0);
+    }
+
+    async getVoteDownsCounter(parentId){
+        // it is using the VotesHelper
+        let rez = await VotingsHelper.getVoteDownsValue(parentId);
         return (rez !== null ? rez : 0);
     }
 
     //          TOTAL VOTES
 
-    async updateTotalVoteCounter (parentId, value){
+    //                  UPS
+    async updateTotalVoteUpsCounter (parentId, value){
 
         if (typeof value === 'undefined') value = 0;
 
         if (value !== 0)
-            return await this.hashList.incrementBy(parentId, 'Votes', value);
+            return await this.hashList.incrementBy(parentId, 'VoteUps', value);
 
         return false;
     }
 
-    async getTotalVotesCounter(parentId){
-        let rez = await this.hashList.getHash(parentId, 'Votes');
+    async getTotalVoteDownsCounter(parentId){
+        let rez = await this.hashList.getHash(parentId, 'VoteDowns');
+        return (rez !== null ? rez : 0);
+    }
+
+    //                  DOWNS
+    async updateTotalVoteDownsCounter (parentId, value){
+
+        if (typeof value === 'undefined') value = 0;
+
+        if (value !== 0)
+            return await this.hashList.incrementBy(parentId, 'VoteDowns', value);
+
+        return false;
+    }
+
+    async getTotalVoteDownsCounter(parentId){
+        let rez = await this.hashList.getHash(parentId, 'VoteDowns');
         return (rez !== null ? rez : 0);
     }
 

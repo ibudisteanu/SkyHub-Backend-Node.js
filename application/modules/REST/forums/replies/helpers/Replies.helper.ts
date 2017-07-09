@@ -149,6 +149,7 @@ module.exports = {
                         console.log("Saving Reply Successfully");
 
                         await reply.keepURLSlug();
+                        await reply.keepParentsStatistics();
                         await reply.keepSortedList();
 
 
