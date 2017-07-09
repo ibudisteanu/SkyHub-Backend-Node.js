@@ -13,7 +13,7 @@ nohm.setExtraValidations(__dirname+'/Redis/nohm/nohm.iterator.ts');
 
 console.log("===> Connecting REDIS CLIENT");
 try{
-    var redisClient = redis.createClient(constants.DB_RedisPort, constants.DB_RedisHost); //creates a new client
+    var redisClient = redis.createClient(constants.DB_RedisPort, constants.DB_RedisHost, {password: constants.DB_REDIS_PASSWORD}); //creates a new client
 }catch (exception) {
     console.error("============== ERROR REDIS CLIENT");
 }

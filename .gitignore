@@ -12,6 +12,7 @@ public/uploads/
 tmp/
 build/
 .idea/workspace.xml
+bin/constants.js
 
 # Folder config file
 Desktop.ini
@@ -62,4 +63,5 @@ Temporary Items
 .idea/
 
 
+bin/constants.js
 bin/constants.js
