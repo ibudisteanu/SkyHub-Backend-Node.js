@@ -11,7 +11,7 @@ var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
 var TopicsCtrl = require ('../forums/topics/Topics.controller.ts');
 var RepliesCtrl = require ('../forums/replies/Replies.controller.ts');
 var VotingCtrl = require ('../voting/Voting.controller.ts');
-var NotificationsCtrl = require ('../Notifications/Notifications.controller.ts');
+var NotificationsCtrl = require ('../notifications/Notifications.controller.ts');
 var MongoImporter = require ('../../DB/mongo-importer/MongoImporter.ts');
 
 var TopContentCtrl = require ('../forums/top-content/TopContent.controller.ts');
