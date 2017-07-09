@@ -10,7 +10,7 @@ var MaterializedParentsHelper = require ('../../../../DB/common/materialized-par
 var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
 var striptags = require('striptags');
 var hat = require ('hat');
-var VotingsHelper = require ('../../../Voting/helpers/Votings.helper.ts');
+var VotingsHelper = require ('./../../../Voting/helpers/Votings.helper.ts');
 var RepliesSorter = require('./../models/RepliesSorter.ts');
 
 module.exports = {

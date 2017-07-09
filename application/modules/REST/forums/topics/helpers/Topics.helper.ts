@@ -9,7 +9,7 @@ var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
 var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
 var striptags = require('striptags');
-var VotingsHelper = require ('../../../Voting/helpers/Votings.helper.ts');
+var VotingsHelper = require ('./../../../Voting/helpers/Votings.helper.ts');
 var TopicsSorter = require('./../models/TopicsSorter.ts');
 
 module.exports = {
