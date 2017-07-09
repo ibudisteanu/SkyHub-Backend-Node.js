@@ -10,7 +10,11 @@ var VotingsHelper = require ('../../voting/helpers/Votings.helper.ts');
 
 var MaterializedParentsHelper = require ('../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 
-class StatisticsHelper {
+var ForumsSorter = require ('../../forums/forums/models/ForumsSorter.ts');
+var TopicsSorter = require ('../../forums/topics/models/TopicsSorter.ts');
+var RepliesSorter = require ('../../forums/replies/models/RepliesSorter.ts');
+
+var StatisticsHelper = class {
 
     //sortedList
     constructor(){
@@ -102,8 +106,8 @@ class StatisticsHelper {
         return false;
     }
 
-    async getTotalVoteDownsCounter(parentId){
-        let rez = await this.hashList.getHash(parentId, 'VoteDowns');
+    async getTotalVoteUpsCounter(parentId){
+        let rez = await this.hashList.getHash(parentId, 'VoteUps');
         return (rez !== null ? rez : 0);
     }
 
@@ -154,9 +158,15 @@ class StatisticsHelper {
     }
 
 
+
     async keepParentsStatisticsUpdated(id, parents, enableNullParent, callback, value){
 
         if (typeof parents === "string") parents = [parents];
+        if (value === 0) return false; // nothing to change...
+
+        if (id !== ''){
+            await this.keepElementSortedList(id, parents);
+        }
 
         let arrParentsUnique = MaterializedParentsHelper.getMaterializedParentsFromStringList(parents, [''] );
 
@@ -167,9 +177,36 @@ class StatisticsHelper {
 
                 await callback(parent, value);
 
+                let grandParents = [];
+                for (let j = 0, len = arrParentsUnique.length; j < len; j++) {
+                    grandParents.push(arrParentsUnique[j]);
+                }
+                await this.keepElementSortedList(id, grandParents);
+
             }
         }
 
+    }
+
+    async keepElementSortedList(id, parents){
+        let idData = MaterializedParentsHelper.extractDataFromIds(id);
+
+        if (idData === null) return null;
+
+        switch (idData.objectType) {
+            case 'user':
+                return ''; //to do for users too
+
+            case 'forum':
+                return await ForumsSorter.calculateKeepSortedList(id, parents, false);
+
+            case 'reply':
+                return await RepliesSorter.calculateKeepSortedList(id, parents, false);
+
+            case 'topic':
+                return await TopicsSorter.calculateKeepSortedList(id, parents, false);
+
+        }
     }
 
 

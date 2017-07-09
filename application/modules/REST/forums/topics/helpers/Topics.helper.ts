@@ -9,6 +9,8 @@ var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
 var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
 var striptags = require('striptags');
+var VotingsHelper = require ('../../../Voting/helpers/Votings.helper.ts');
+var TopicsSorter = require('./../models/TopicsSorter.ts');
 
 module.exports = {
 
@@ -133,8 +135,9 @@ module.exports = {
                     console.log("Saving Topic Successfully");
 
                     await topic.keepURLSlug();
+                    await VotingsHelper.initializeVoteInDB(topic.id, topic.p('parents'));
+                    await TopicsSorter.initializeSorterInDB(topic.id, topic.p('dtCreation'));
                     await topic.keepParentsStatistics(+1);
-                    await topic.keepSortedList();
 
                     var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
                     SearchesHelper.addTopicToSearch(null,topic); //async, but not awaited

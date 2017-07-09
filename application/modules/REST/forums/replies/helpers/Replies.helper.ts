@@ -10,6 +10,8 @@ var MaterializedParentsHelper = require ('../../../../DB/common/materialized-par
 var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
 var striptags = require('striptags');
 var hat = require ('hat');
+var VotingsHelper = require ('../../../Voting/helpers/Votings.helper.ts');
+var RepliesSorter = require('./../models/RepliesSorter.ts');
 
 module.exports = {
 
@@ -149,8 +151,9 @@ module.exports = {
                         console.log("Saving Reply Successfully");
 
                         await reply.keepURLSlug();
+                        await VotingsHelper.initializeVoteInDB(reply.id, reply.p('parents'));
+                        await RepliesSorter.initializeSorterInDB(reply.id, reply.p('dtCreation'));
                         await reply.keepParentsStatistics();
-                        await reply.keepSortedList();
 
 
                         var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');

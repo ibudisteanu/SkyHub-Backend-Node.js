@@ -18,7 +18,7 @@ class VotingHash {
     }
 
     async initializeVoteInDB(parentId, parents){
-
+        await this.hashList.setHash(parentId, 'parents', parents);
     }
 
     async submitVote (parentId, userAuthenticated, voteType ){

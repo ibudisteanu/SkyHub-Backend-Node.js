@@ -8,6 +8,8 @@ var HashList = require ('../../../DB/Redis/lists/HashList.helper.ts');
 
 var VoteType = require ('../models/VoteType.js');
 
+var StatisticsHelper = require ('../../statistics/helpers/Statistics.helper.ts');
+
 class VotingHelper {
 
     //sortedList
@@ -56,26 +58,40 @@ class VotingHelper {
 
     async changeVoteValue (parentId, previousVoteType, voteType){
 
-        let value = voteType;
+        let downValue = 0;
+        let upValue = 0;
 
         if ((previousVoteType !== null)&&(previousVoteType !== voteType)){
 
 
             switch (previousVoteType){
                 case VoteType.VOTE_DOWN:
-                    await this.hashList.incrementBy(parentId, 'downs', -1);
+                    downValue += -1;
                     break;
                 case VoteType.VOTE_UP:
-                    await this.hashList.incrementBy(parentId, 'ups', -1);
+                    upValue += -1;
                     break;
             }
         }
 
         switch (voteType){
             case VoteType.VOTE_DOWN:
-                return await this.hashList.incrementBy(parentId, 'downs', +1);
+                downValue += 1;
+                break;
             case VoteType.VOTE_UP:
-                return await this.hashList.incrementBy(parentId, 'ups', +1);
+                upValue += 1;
+                break;
+        }
+
+        if (downValue !== 0) {
+            await this.hashList.incrementBy(parentId, 'downs', downValue);
+
+            await StatisticsHelper.keepParentsStatisticsUpdated('', await this.hashList.getHash(parentId,'parents'), true, StatisticsHelper.updateTotalVoteDownsCounter.bind(StatisticsHelper), downValue);
+        }
+        if (upValue !== 0) {
+            await this.hashList.incrementBy(parentId, 'ups', upValue);
+
+            await StatisticsHelper.keepParentsStatisticsUpdated('', await this.hashList.getHash(parentId,'parents'), true, StatisticsHelper.updateTotalVoteUpsCounter.bind(StatisticsHelper), upValue);
         }
 
     }

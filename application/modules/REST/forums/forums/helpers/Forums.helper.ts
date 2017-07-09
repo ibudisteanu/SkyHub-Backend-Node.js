@@ -8,6 +8,7 @@ var commonFunctions = require ('../../../common/helpers/common-functions.helper.
 var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
 var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
+var ForumsSorter = require('./../models/ForumsSorter.ts');
 
 module.exports = {
 
@@ -131,8 +132,8 @@ module.exports = {
                     console.log("Saving Forum Successfully");
 
                     await forum.keepURLSlug();
+                    await ForumsSorter.initializeSorterInDB(forum.id, forum.p('dtCreation'));
                     await forum.keepParentsStatistics(+1);
-                    await forum.keepSortedList();
 
                     var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
                     SearchesHelper.addForumToSearch(null, forum); //async, but not awaited
