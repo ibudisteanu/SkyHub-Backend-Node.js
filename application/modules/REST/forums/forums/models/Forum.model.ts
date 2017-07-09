@@ -7,6 +7,9 @@ var redis = require ('../../../../DB/redis_nohm');
 var nohmIterator = require   ('../../../../DB/Redis/nohm/nohm.iterator.ts');
 var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
 
+var TopForumsHelper = require ('./../../top-content/helpers/TopForums.helper.ts');
+var StatisticsHelper = require('./../../../statistics/helpers/Statistics.helper.ts');
+
 var ForumModel = redis.nohm.model('ForumModel', {
 
     idGenerator: function (callback){
@@ -159,11 +162,15 @@ var ForumModel = redis.nohm.model('ForumModel', {
             return ScoreCoefficientHelper.calculateHotnessScoreCoefficient(this);
         },
 
-        keepSortedList : async function (bDelete){
+        keepParentsStatistics : async function(value){
 
-            var TopForumsHelper = require ('./../../top-content/helpers/TopForums.helper.ts');
+            await StatisticsHelper.keepParentsStatisticsUpdated(this.id, this.p('parents'), true, StatisticsHelper.updateTotalForumsCounter.bind(StatisticsHelper), value);
+
+        },
+
+        keepSortedList :function (bDelete){
+
             return TopForumsHelper.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parents'), bDelete);
-
         },
 
         keepURLSlug : function (sOldURL,  bDelete){

@@ -133,6 +133,7 @@ module.exports = {
                     console.log("Saving Topic Successfully");
 
                     await topic.keepURLSlug();
+                    await topic.keepParentsStatistics(+1);
                     await topic.keepSortedList();
 
                     var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');

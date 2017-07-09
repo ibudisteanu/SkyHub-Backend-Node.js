@@ -131,10 +131,11 @@ module.exports = {
                     console.log("Saving Forum Successfully");
 
                     await forum.keepURLSlug();
+                    await forum.keepParentsStatistics(+1);
                     await forum.keepSortedList();
 
                     var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
-                    SearchesHelper.addForumToSearch(null,forum); //async, but not awaited
+                    SearchesHelper.addForumToSearch(null, forum); //async, but not awaited
 
                     //console.log(forum.getPublicInformation(userAuthenticated));
 

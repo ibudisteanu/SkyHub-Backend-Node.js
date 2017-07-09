@@ -6,6 +6,9 @@
 var redis = require ('../../../../DB/redis_nohm');
 var nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator.ts');
 
+var TopContentHelper = require ('./../../top-content/helpers/TopContent.helper.ts');
+var StatisticsHelper = require('./../../../statistics/helpers/Statistics.helper.ts');
+
 var TopicModel = redis.nohm.model('TopicModel', {
 
     idGenerator: function (callback){
@@ -122,9 +125,14 @@ var TopicModel = redis.nohm.model('TopicModel', {
             return ScoreCoefficientHelper.calculateHotnessScoreCoefficient(this);
         },
 
+        keepParentsStatistics : async function(value){
+
+            await StatisticsHelper.keepParentsStatisticsUpdated(this.id, this.p('parents'), true, StatisticsHelper.updateTotalTopicsCounter.bind(StatisticsHelper), value);
+
+        },
+
         keepSortedList : async function (bDelete){
 
-            var TopContentHelper = require ('./../../top-content/helpers/TopContent.helper.ts');
             return TopContentHelper.keepSortedObject(this.id, this.calculateHotnessCoefficient(), this.p('parents'), bDelete);
 
         },
