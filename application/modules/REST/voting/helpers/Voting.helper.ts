@@ -8,8 +8,6 @@ var HashList = require ('../../../DB/Redis/lists/HashList.helper.ts');
 
 var VoteType = require ('../models/VoteType.js');
 
-var StatisticsHelper = require ('../../statistics/helpers/Statistics.helper.ts');
-
 class VotingHelper {
 
     //sortedList
@@ -82,6 +80,8 @@ class VotingHelper {
                 upValue += 1;
                 break;
         }
+
+        let StatisticsHelper = require ('../../statistics/helpers/Statistics.helper.ts');
 
         if (downValue !== 0) {
             await this.hashList.incrementBy(parentId, 'downs', downValue);

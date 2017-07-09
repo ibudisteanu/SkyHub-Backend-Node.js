@@ -10,12 +10,14 @@ var userModel = require ('../../users/auth/models/User.model.ts');
 var replyModel = require ('./../../forums/replies/models/Reply.model.ts');
 var topicModel = require ('./../../forums/topics/models/Topic.model.ts');
 
-
-
 var ForumsHelper = require ('./../../forums/forums/helpers/Forums.helper.ts');
 var TopicsHelper = require ('./../../forums/topics/helpers/Topics.helper.ts');
 var RepliesHelper = require ('./../../forums/replies/helpers/Replies.helper.ts');
 var UsersHelper = require ('../../users/auth/helpers/Users.helper.ts');
+
+var ForumsSorter = require('./../../forums/forums/models/ForumsSorter.ts');
+var TopicsSorter = require('./../../forums/topics/models/TopicsSorter.ts');
+var RepliesSorter = require('./../../forums/replies/models/RepliesSorter.ts');
 
 class Searches {
 
@@ -59,7 +61,7 @@ class Searches {
 
         if ((index !== null)&&(typeof index === 'object')) {
             text = index.p('name');
-            score = await index.calculateHotnessCoefficient();
+            score = await ForumsSorter.getExistingHotnessCoefficient(index.id, index.p('dtCreation'), index.p('parents'));
         }
 
         //console.log("@@@@@@@@@@@@@@@@@@@@ addForumToSearch ", text, index);
@@ -79,7 +81,7 @@ class Searches {
 
         if ((index !== null)&&(typeof index === 'object')) {
             text = index.p('title');
-            score = await index.calculateHotnessCoefficient();
+            score = await TopicsSorter.getExistingHotnessCoefficient(index.id, index.p('dtCreation'), index.p('parents'));
         }
 
         await this.addContent(text, index, score);
@@ -99,7 +101,7 @@ class Searches {
 
         if ((index !== null)&&(typeof index === 'object')) {
             text = index.p('title');
-            score = await index.calculateHotnessCoefficient();
+            score = await RepliesSorter.getExistingHotnessCoefficient(index.id, index.p('dtCreation'), index.p('parents'));
         }
 
         //console.log('add reply to search - finally' , text, score);

@@ -5,8 +5,7 @@
 
 var ScoreCoefficientHelper = require ('../../../../DB/common/score-coefficient/ScoreCoefficient.helper.ts');
 var HashList = require ('../../../../DB/Redis/lists/HashList.helper.ts');
-var TopRepliesHelper = require ('./../../top-content/helpers/TopReplies.helper.ts');
-var StatisticsHelper = require('../../../statistics/helpers/Statistics.helper.ts');
+var TopContentHelper = require ('./../../top-content/helpers/TopContent.helper.ts');
 
 var TopicsSorter = class{
 
@@ -20,29 +19,44 @@ var TopicsSorter = class{
 
     async calculateHotnessVotingScore (id){
 
-        let replies = await StatisticsHelper.getTotalRepliesCounter();
+        let StatisticsHelper = require('./../../../statistics/helpers/Statistics.helper.ts');
+
+        let pageViews = await StatisticsHelper.getPageViewsCounter(id);
+        let pageVisitorsViews = await StatisticsHelper.getUniqueVisitorsCounter(id);
+        let replies = await StatisticsHelper.getTotalRepliesCounter(id);
         let voteDiff = await StatisticsHelper.getVoteUpsCounter(id) - await StatisticsHelper.getVoteDownsCounter(id);
 
-        return voteDiff + replies * 0.4;
+        return voteDiff +  pageVisitorsViews *0.7 + pageViews *0.2  + replies * 0.4;
 
     }
 
     async calculateHotnessCoefficient (id, dtCreation){
 
         let votingScore = await this.calculateHotnessVotingScore(id);
+        this.hashList.setHash(id,'hotnessCoefficient',votingScore);
         return await ScoreCoefficientHelper.calculateHotnessScoreCoefficient(dtCreation, votingScore);
     }
 
+    async getExistingHotnessCoefficient(id, dtCreation, parents){
+        let hotnessScore = await this.hashList.getHash(id, 'hotnessScore');
+        if (hotnessScore !== null) return hotnessScore;
 
-    async keepSortedList (id, parents, bDelete){
+        return 0;
+    }
 
-        let dtCreation = await this.hashList.getHash(id, "dtCreation");
+    async calculateKeepSortedList (id, parents, bDelete){
+
+        let dtCreation = parseInt( await this.hashList.getHash(id, "dtCreation") );
 
         let previousHotnessScore = await this.hashList.getHash(id, 'hotnessScore');
         let hotnessScore = await this.calculateHotnessCoefficient(id, dtCreation);
 
-        if ((bDelete)||(previousHotnessScore !== hotnessScore))
-            TopRepliesHelper.keepSortedObject(id, hotnessScore , parents, bDelete);
+        if ((bDelete)||(previousHotnessScore !== hotnessScore)) {
+
+            this.hashList.setHash(id, "hotnessScore", hotnessScore);
+
+            TopContentHelper.keepSortedObject(id, hotnessScore, parents, bDelete);
+        }
     }
 
 };

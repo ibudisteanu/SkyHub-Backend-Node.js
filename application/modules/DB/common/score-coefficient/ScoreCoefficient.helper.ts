@@ -18,9 +18,9 @@ var ScoreCoefficient = class{
 
     calculateHotnessScoreCoefficient(dtDate, votingScore){
 
-        if (typeof dtDate === "undefined")
-            dtDate = new Date();
-        dtDate = ((typeof dtDate === "string")&&(dtDate !== '')) ? Date.parse(dtDate) : new Date(dtDate||new Date());
+        if (typeof dtDate === "undefined")  dtDate = new Date();
+
+        dtDate = (((typeof dtDate === "string")&&(dtDate !== ''))) ? Date.parse(dtDate) : new Date(dtDate||new Date());
 
         let epoch = new Date(1993, 12, 1);
 

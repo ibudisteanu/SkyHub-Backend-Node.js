@@ -6,13 +6,13 @@
 var UniqueVisitorsHelper = require ('../visitors/helpers/UniqueVisitors.helper.ts');
 var HashList = require ('../../../DB/Redis/lists/HashList.helper.ts');
 var VoteType = require ('../../voting/models/VoteType.js');
-var VotingsHelper = require ('../../voting/helpers/Votings.helper.ts');
 
+let VotingHelper = require ('../../voting/helpers/Voting.helper.ts');
 var MaterializedParentsHelper = require ('../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 
-var ForumsSorter = require ('../../forums/forums/models/ForumsSorter.ts');
-var TopicsSorter = require ('../../forums/topics/models/TopicsSorter.ts');
-var RepliesSorter = require ('../../forums/replies/models/RepliesSorter.ts');
+let ForumsSorter = require ('../../forums/forums/models/ForumsSorter.ts');
+let TopicsSorter = require ('../../forums/topics/models/TopicsSorter.ts');
+let RepliesSorter = require ('../../forums/replies/models/RepliesSorter.ts');
 
 var StatisticsHelper = class {
 
@@ -83,13 +83,13 @@ var StatisticsHelper = class {
 
     async getVoteUpsCounter(parentId){
         // it is using the VotesHelper
-        let rez = await VotingsHelper.getVoteUpsValue(parentId);
+        let rez = await VotingHelper.getVoteUpsValue(parentId);
         return (rez !== null ? rez : 0);
     }
 
     async getVoteDownsCounter(parentId){
         // it is using the VotesHelper
-        let rez = await VotingsHelper.getVoteDownsValue(parentId);
+        let rez = await VotingHelper.getVoteDownsValue(parentId);
         return (rez !== null ? rez : 0);
     }
 
@@ -209,7 +209,6 @@ var StatisticsHelper = class {
         }
     }
 
-
-}
+};
 
 module.exports = new StatisticsHelper();
