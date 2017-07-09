@@ -62,6 +62,19 @@
 ## restart Redis
    `sudo service redis-server restart`
    
+## allow redis port firewall
+
+   ### redis.conf
+    TUTORIAL https://stackoverflow.com/a/13928537/6516672
+    
+   1. `nano /etc/redis/redis.conf`
+   2. replace `bind 127.0.0.1` with `bind 0.0.0.0`
+   3. `service redis-server restart`
+   
+   ###firewall (probably not required)
+   1. `sudo iptables -A INPUT -p tcp --dport 6379 --jump ACCEPT`
+   2. `iptables-save`
+   
 # No-IP DUC
 
     TUTORIAL: http://www.noip.com/support/knowledgebase/installing-the-linux-dynamic-update-client/

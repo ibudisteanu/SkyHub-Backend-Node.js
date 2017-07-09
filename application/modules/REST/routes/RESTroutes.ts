@@ -10,7 +10,7 @@ var FunctionsCtrl = require ('./../common/functions/functions.controller.ts');
 var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
 var TopicsCtrl = require ('../forums/topics/Topics.controller.ts');
 var RepliesCtrl = require ('../forums/replies/Replies.controller.ts');
-var VotingCtrl = require ('../Voting/Voting.controller.ts');
+var VotingCtrl = require ('../voting/Voting.controller.ts');
 var NotificationsCtrl = require ('../Notifications/Notifications.controller.ts');
 var MongoImporter = require ('../../DB/mongo-importer/MongoImporter.ts');
 
