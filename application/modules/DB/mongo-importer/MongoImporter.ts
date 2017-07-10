@@ -40,7 +40,7 @@ class MongoImporter {
         s = s.replace("http://skyhub.me/uploads-images-forums-icons/","http://myskyhub.ddns.net:4000/uploads/images/forums/icons/");
         s = s.replace("http://skyhub.me/uploads-images-","http://myskyhub.ddns.net:4000/uploads/images/avatars/");
         s = s.replace("http://skyhub.me/uploads-images/","http://myskyhub.ddns.net:4000/uploads/images/avatars/");
-        s = s.replace("http://skyhub.me/uploads/images/","http://myskyhub.ddns.net:4000/uploads/images/avatars");
+        s = s.replace("http://skyhub.me/uploads/images/","http://myskyhub.ddns.net:4000/uploads/images/avatars/");
         s = s.replace("http://skyhub.me/uploads","http://myskyhub.ddns.net:4000/uploads/images/avatars");
 
         return s;
