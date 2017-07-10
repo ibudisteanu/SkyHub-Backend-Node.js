@@ -31,11 +31,14 @@ var newReplies = [];
 class MongoImporter {
 
      fixMongoImageURL(s){
-        s = s.replace("http://skyhub.me/uploads-images-avatars-","http://skyhub.me:4000/uploads/images/avatars/");
-        s = s.replace("http://skyhub.me/uploads-images-forums-covers-","http://skyhub.me:4000/uploads/images/forums/covers/");
-        s = s.replace("http://skyhub.me/uploads-images-forums-icons-","http://skyhub.me:4000/uploads/images/forums/icons/");
-        s = s.replace("http://skyhub.me/uploads-images-","http://skyhub.me:4000/uploads/images/avatars/");
-        s = s.replace("http://skyhub.me/uploads","http://skyhub.me:4000/uploads/avatars");
+
+        s = s.replace("http://skyhub.me/uploads-images-avatars-forums-icons-","http://myskyhub.ddns.net:4000/uploads/images/forums/icons/");
+        s = s.replace("http://skyhub.me/uploads-images-avatars-forums-covers-","http://myskyhub.ddns.net:4000/uploads/images/forums/covers/");
+        s = s.replace("http://skyhub.me/uploads-images-avatars-","http://myskyhub.ddns.net:4000/uploads/images/avatars/");
+        s = s.replace("http://skyhub.me/uploads-images-forums-covers-","http://myskyhub.ddns.net:4000/uploads/images/forums/covers/");
+        s = s.replace("http://skyhub.me/uploads-images-forums-icons-","http://myskyhub.ddns.net:4000/uploads/images/forums/icons/");
+        s = s.replace("http://skyhub.me/uploads-images-","http://myskyhub.ddns.net:4000/uploads/images/avatars/");
+        s = s.replace("http://skyhub.me/uploads","http://myskyhub.ddns.net:4000/uploads/avatars");
 
         return s;
     }
