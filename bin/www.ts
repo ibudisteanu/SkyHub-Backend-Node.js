@@ -26,7 +26,7 @@ server = http.createServer(app);
  */
 
 //var port = normalizePort(process.env.PORT || '4000');
-var port = normalizePort('4000');
+var port = normalizePort(constants.APP_PORT);
 app.set('port', port);
 
 /**
