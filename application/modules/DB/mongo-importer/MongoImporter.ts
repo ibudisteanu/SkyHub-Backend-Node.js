@@ -30,6 +30,16 @@ var newReplies = [];
 
 class MongoImporter {
 
+     fixMongoImageURL(s){
+        s = s.replace("http://skyhub.me/uploads-images-avatars-","http://skyhub.me:4000/uploads/images/avatars/");
+        s = s.replace("http://skyhub.me/uploads-images-forums-covers-","http://skyhub.me:4000/uploads/images/forums/covers");
+        s = s.replace("http://skyhub.me/uploads-images-forums-icons-","http://skyhub.me:4000/uploads/images/forums/icons");
+         s = s.replace("http://skyhub.me/uploads-images-","http://skyhub.me:4000/uploads/images/avatars");
+         s = s.replace("http://skyhub.me/uploads","http://skyhub.me:4000/uploads");
+
+        return s;
+    }
+
     async findUser(oldId){
         for (let i=0; i<newUsers.length; i++)
             if ((typeof newUsers[i] !== 'undefined')&&(typeof oldId !== 'undefined')&&(newUsers[i].oldId.toString() === oldId.toString()))
@@ -127,9 +137,12 @@ class MongoImporter {
 
             }
 
+            let avatar = this.fixMongoImageURL(user.AvatarPicture||'');
+            let cover = this.fixMongoImageURL(user.CoverImage||'');
+
 
             let newUser = await UsersHelper.registerUser(user.Email, user.Username, password, user['First Name'], user['Last Name'],
-                                                         user.Country||'none', user.City||'none', '', user.AvatarPicture, '', user.latitude, user.longtitude, user.Biography, user.Age||0, user.TimeZone, gender, user.Verified, user.CreationDate||'', user.CreationDate||'');
+                                                         user.Country||'none', user.City||'none', '', avatar, cover, user.latitude, user.longtitude, user.Biography, user.Age||0, user.TimeZone, gender, user.Verified, user.CreationDate||'', user.CreationDate||'');
 
             //console.log('##############', newUser);
             if (newUser.result === true){
@@ -183,7 +196,11 @@ class MongoImporter {
             let icon = '';
             if (((typeof category.Image !== 'undefined'))&&(category.Image.indexOf("http") >= 0)) icon = category.Image;
 
-            let answer = await ForumsHelper.addForum(user, parentCategory, category.Name||'', category.ShortDescription||'', category.Description||'', category.InputKeywords||[], user.country, user.city, '', icon||'', category.CoverImage||'', '', -666, -666, category.CreationDate||'');
+            icon = this.fixMongoImageURL(icon);
+            let cover = this.fixMongoImageURL(category.CoverImage||'');
+
+
+            let answer = await ForumsHelper.addForum(user, parentCategory, category.Name||'', category.ShortDescription||'', category.Description||'', category.InputKeywords||[], user.country, user.city, '', icon||'', cover||'', '', -666, -666, category.CreationDate||'');
 
             if (answer.result === true){
                 count++;
@@ -227,7 +244,10 @@ class MongoImporter {
             let icon = '';
             if (((typeof forum.Image !== 'undefined'))&&(forum.Image.indexOf("http") >= 0)) icon = forum.Image;
 
-            let newForum = await ForumsHelper.addForum(user, parentCategory, forum.Name||'', forum.Description||'', forum.DetailedDescription||'', forum.InputKeywords, user.Country||'none', user.City||'none', '', icon||'', forum.CoverImage||'', '', user.latitude, user.longtitude);
+            icon = this.fixMongoImageURL(icon);
+            let cover = this.fixMongoImageURL(forum.CoverImage||'');
+
+            let newForum = await ForumsHelper.addForum(user, parentCategory, forum.Name||'', forum.Description||'', forum.DetailedDescription||'', forum.InputKeywords, user.Country||'none', user.City||'none', '', icon||'', cover||'', '', user.latitude, user.longtitude);
 
             //console.log('##############', newUser);
             if (newForum.result === true){
@@ -264,12 +284,15 @@ class MongoImporter {
 
             let attachments = [];
 
+            let image = topic.Image||'';
+            image = this.fixMongoImageURL(image);
+
             if ((typeof topic.Image !== 'undefined')&&(topic.Image.indexOf("http") >= 0))
                 attachments = [{
                         type: 'file',
                         typeFile: 'image/jpeg',
-                        url: topic.Image,
-                        img: topic.Image,
+                        url: image,
+                        img: image,
                         title: topic.ImageAlt,
                     }
                 ];
@@ -278,19 +301,24 @@ class MongoImporter {
                 let images = topic.ImagesData.Images;
                 Object.keys(images).map(function(key, index) {
 
+                    image = images[key].src||'';
+                    image = this.fixMongoImageURL(image);
+
                     if ((images[key].src||'').indexOf('http') >= 0)
                         attachments = [{
                             type: 'file',
                             typeFile: 'image/jpeg',
-                            url: images[key].src,
-                            img: images[key].src,
+                            url: image,
+                            img: image,
                             title: images[key].alt||images[key].title||images[key].description,
                         }];
-                });
+                }.bind(this));
             }
 
+            let cover = this.fixMongoImageURL(topic.CoverImage||'');
+
             //console.log('parents:', parentForum, parentCategory, typeof parentForum, typeof parentCategory);
-            let newTopic = await TopicsHelper.addTopic(user, parentForum||parentCategory, topic.Title, topic.BodyCode, attachments, topic.CoverImage||'', topic.InputKeywords, user.Country||'none', user.City||'none', '', user.latitude, user.longtitude, topic.CreationDate||'', topic.findObject||{});
+            let newTopic = await TopicsHelper.addTopic(user, parentForum||parentCategory, topic.Title, topic.BodyCode, attachments, cover||'', topic.InputKeywords, user.Country||'none', user.City||'none', '', user.latitude, user.longtitude, topic.CreationDate||'', topic.findObject||{});
 
             if (newTopic.result === true){
                 count++;
