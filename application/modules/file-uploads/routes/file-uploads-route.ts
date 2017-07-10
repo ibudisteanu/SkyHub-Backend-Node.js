@@ -12,7 +12,7 @@ var router = express.Router();
  */
 
 const multer = require('multer');
-let fileUploadURLPrefix = 'http://myskyhub.ddns.net:4000/';
+let fileUploadURLPrefix = constants.WEBSITE_URL;
 
 
 const storageFile = multer.diskStorage({
