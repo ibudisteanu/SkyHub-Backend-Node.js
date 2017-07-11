@@ -300,7 +300,7 @@ router.processSocketRoute = function (socket)
     //              USERS
     socket.on("api/users/get-user", function (data){
         data.body = data;
-        UsersCtrl.postGetUser(data, socket).then (  (answer)=> { socket.emit("api/users/get-user", answer) });
+        UsersCtrl.postGetUser(data, socket).then (  (answer)=> { socket.emit("api/users/get-user"+'/'+answer.userId, answer) });
     });
 
 
