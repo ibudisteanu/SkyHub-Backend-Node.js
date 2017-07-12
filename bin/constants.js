@@ -11,7 +11,7 @@ module.exports =
         DB_RedisCurrentDB : 15,
         DB_REDIS_PASSWORD : '',
 
-
+        APP_PORT : 4000,
 
         SESSION_Secret_key : "",
 

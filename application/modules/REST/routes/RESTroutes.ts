@@ -103,14 +103,6 @@ router.get('/search/parents', function (req, res, next){
     SearchesController.searchParents(req, res).then ( ( answer ) => { res.json( answer ); });
 });
 
-router.get('/content/get-URL-slug', function (req, res, next){
-    ContentCtrl.postGetURLSlug(req, res).then ( ( answer ) => { res.json( answer ); });
-});
-
-router.get('/meta-extractor/extract-url', function (req, res, next){
-    MetaExtractorController.extractDataFromLink(req, res).then ( ( answer ) => { res.json( answer ); });
-});
-
 //          CONTENT
 router.get('/content/set-icon', function (req, res, next){
     ContentCtrl.postSetIcon(req, res).then ( ( answer ) => { res.json( answer ); });
@@ -118,6 +110,18 @@ router.get('/content/set-icon', function (req, res, next){
 
 router.get('/content/set-cover', function (req, res, next){
     ContentCtrl.postSetCover(req, res).then ( ( answer ) => { res.json( answer ); });
+});
+
+router.get('/content/delete-object', function (req, res, next){
+    ContentCtrl.postDeleteObject(req, res).then ( ( answer ) => { res.json( answer ); });
+});
+
+router.get('/content/get-URL-slug', function (req, res, next){
+    ContentCtrl.postGetURLSlug(req, res).then ( ( answer ) => { res.json( answer ); });
+});
+
+router.get('/meta-extractor/extract-url', function (req, res, next){
+    MetaExtractorController.extractDataFromLink(req, res).then ( ( answer ) => { res.json( answer ); });
 });
 
 //              VOTING
@@ -392,13 +396,6 @@ router.processSocketRoute = function (socket)
 
     //          CONTENT
 
-    socket.on("api/content/get-URL-slug", function (data) {
-        data.body = data;
-        ContentCtrl.postGetURLSlug(data, socket).then ( ( answer ) => {
-            socket.emit("api/content/get-URL-slug", answer);
-        });
-    });
-
     socket.on("api/content/set-icon", function (data) {
         data.body = data;
         ContentCtrl.postSetIcon(data, socket).then ( ( answer ) => {
@@ -410,6 +407,20 @@ router.processSocketRoute = function (socket)
         data.body = data;
         ContentCtrl.postSetCover(data, socket).then ( ( answer ) => {
             socket.emit("api/content/set-cover", answer);
+        });
+    });
+
+    socket.on("api/content/delete-object", function (data) {
+        data.body = data;
+        ContentCtrl.postDeleteObject(data, socket).then ( ( answer ) => {
+            socket.emit("api/content/delete-object"+'/'+data.id, answer);
+        });
+    });
+
+    socket.on("api/content/get-URL-slug", function (data) {
+        data.body = data;
+        ContentCtrl.postGetURLSlug(data, socket).then ( ( answer ) => {
+            socket.emit("api/content/get-URL-slug", answer);
         });
     });
 

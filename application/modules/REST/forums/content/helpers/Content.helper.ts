@@ -12,6 +12,8 @@ class ContentHelper {
         let object = await MaterializedParentsHelper.findObject(id);
         let type = MaterializedParentsHelper.extractObjectTypeFromId(id);
 
+        if (object === null) return {result:false, message: 'Object not found'};
+
         if (object.isOwner(userAuthenticated) === false)
             return {result:false, message: 'No rights to change the icon'};
 
@@ -41,6 +43,8 @@ class ContentHelper {
         let object = await MaterializedParentsHelper.findObject(id);
         let type = MaterializedParentsHelper.extractObjectTypeFromId(id);
 
+        if (object === null) return {result:false, message: 'Object not found'};
+
         if (object.isOwner(userAuthenticated) === false)
             return {result:false, message: 'No rights to change the cover'};
 
@@ -58,6 +62,40 @@ class ContentHelper {
                     resolve({result: false, message: 'error'})
                 } else{
                     resolve ({result: true,  object: object.getPublicInformation(userAuthenticated) })
+                }
+            });
+        });
+    }
+
+    async deleteObject(userAuthenticated, id){
+
+        let object = await MaterializedParentsHelper.findObject(id);
+        let type = MaterializedParentsHelper.extractObjectTypeFromId(id);
+
+        if (object === null) return {result:false, message: 'Object not found'};
+
+        if (object.isOwner(userAuthenticated) === false)
+            return {result:false, message: 'No rights to delete the object'};
+
+        switch (type){
+            case 'forum':
+            case 'topic':
+            case 'reply':
+                await object.keepURLSlug('', true);
+                await object.keepParentsStatistics(-1);
+                break;
+        }
+
+        var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
+        //should delete the search data///
+
+        return new Promise( (resolve)=> {
+            object.remove(function (err){
+                if (err) {
+                    console.log("==> Error Deleting object ",id);
+                    resolve({result: false, message: 'error'})
+                } else{
+                    resolve ({result: true })
                 }
             });
         });

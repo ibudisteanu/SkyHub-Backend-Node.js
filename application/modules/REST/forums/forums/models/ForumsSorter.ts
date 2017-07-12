@@ -7,7 +7,7 @@ var ScoreCoefficientHelper = require ('../../../../DB/common/score-coefficient/S
 var HashList = require ('../../../../DB/Redis/lists/HashList.helper.ts');
 var TopForumsHelper = require ('./../../top-content/helpers/TopForums.helper.ts');
 let StatisticsHelper = require('./../../../statistics/helpers/Statistics.helper.ts');
-var ForumSorter = class{
+var ForumsSorter = class{
 
     constructor(){
         this.hashList = new HashList("TopObjects:Sorter:Forums");
@@ -15,6 +15,10 @@ var ForumSorter = class{
 
     async initializeSorterInDB(id, dtCreation){
         await this.hashList.setHash(id,"dtCreation", dtCreation);
+    }
+
+    async destroySorterInDB(id){
+        await this.hashList.deleteHash('', id);
     }
 
     async calculateHotnessVotingScore (id){
@@ -71,4 +75,4 @@ var ForumSorter = class{
 
 };
 
-module.exports = new ForumSorter();
+module.exports = new ForumsSorter();

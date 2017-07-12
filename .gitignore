@@ -65,3 +65,5 @@ Temporary Items
 
 bin/constants.js
 bin/constants.js
+
+npm-debug\.log

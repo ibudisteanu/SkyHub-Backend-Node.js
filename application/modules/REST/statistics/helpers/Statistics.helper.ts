@@ -155,13 +155,13 @@ var StatisticsHelper = class {
 
 
 
-    async keepParentsStatisticsUpdated(id, parents, enableNullParent, callback, value){
+    async keepParentsStatisticsUpdated(id, parents, enableNullParent, callback, value, bDelete){
 
         if (typeof parents === "string") parents = [parents];
         if (value === 0) return false; // nothing to change...
 
         if (id !== ''){
-            await this.keepElementSortedList(id, parents);
+            await this.keepElementSortedList(id, parents, bDelete);
         }
 
         let arrParentsUnique = MaterializedParentsHelper.getMaterializedParentsFromStringList(parents, [''] );
@@ -184,7 +184,7 @@ var StatisticsHelper = class {
 
     }
 
-    async keepElementSortedList(id, parents){
+    async keepElementSortedList(id, parents, bDelete){
         let idData = MaterializedParentsHelper.extractDataFromIds(id);
 
         // console.log('--------------------------');console.log('--------------------------');console.log('--------------------------');console.log('--------------------------');
@@ -201,15 +201,26 @@ var StatisticsHelper = class {
 
             case 'forum':
                 let ForumsSorter = require ('../../forums/forums/models/ForumsSorter.ts');
-                return await ForumsSorter.calculateKeepSortedList(id, parents, false);
+                await ForumsSorter.calculateKeepSortedList(id, parents, bDelete);
 
+                if (bDelete) await ForumsSorter.destroySorterInDB(id);
+
+                return true;
             case 'reply':
                 let RepliesSorter = require ('../../forums/replies/models/RepliesSorter.ts');
-                return await RepliesSorter.calculateKeepSortedList(id, parents, false);
+                await RepliesSorter.calculateKeepSortedList(id, parents, bDelete);
+
+                if (bDelete) await ForumsSorter.destroySorterInDB(id);
+
+                return true;
 
             case 'topic':
                 let TopicsSorter = require ('../../forums/topics/models/TopicsSorter.ts');
-                return await TopicsSorter.calculateKeepSortedList(id, parents, false);
+                await TopicsSorter.calculateKeepSortedList(id, parents, bDelete);
+
+                if (bDelete) await ForumsSorter.destroySorterInDB(id);
+
+                return true;
 
         }
     }

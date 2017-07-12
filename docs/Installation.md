@@ -1,6 +1,6 @@
 # Required to run:
 
-    1. Node.js (8.x)
+    1. Node.js (required 8.x)
     2. NPM
 
     warning: for unix based servers, we recommend you to install Node.js & NPM using `nvm`

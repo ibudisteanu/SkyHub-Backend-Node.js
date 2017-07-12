@@ -105,9 +105,9 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
         },
 
 
-        keepParentsStatistics : async function(value){
+        keepParentsStatistics : async function(value,  bDelete){
 
-            await StatisticsHelper.keepParentsStatisticsUpdated(this.id, this.p('parents'), true, StatisticsHelper.updateTotalRepliesCounter.bind(StatisticsHelper), value);
+            await StatisticsHelper.keepParentsStatisticsUpdated(this.id, this.p('parents'), true, StatisticsHelper.updateTotalRepliesCounter.bind(StatisticsHelper), value, bDelete);
             await StatisticsHelper.updateRepliesCounter(this.p('parentId'), value);
 
         },

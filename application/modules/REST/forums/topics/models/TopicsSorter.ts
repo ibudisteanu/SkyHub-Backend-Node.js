@@ -17,6 +17,10 @@ var TopicsSorter = class{
         await this.hashList.setHash(id,"dtCreation", dtCreation);
     }
 
+    async destroySorterInDB(id){
+        await this.hashList.deleteHash('', id);
+    }
+
     async calculateHotnessVotingScore (id){
 
         let StatisticsHelper = require('./../../../statistics/helpers/Statistics.helper.ts');

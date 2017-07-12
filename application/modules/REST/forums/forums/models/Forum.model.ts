@@ -156,9 +156,9 @@ var ForumModel = redis.nohm.model('ForumModel', {
         },
 
 
-        keepParentsStatistics : async function(value){
+        keepParentsStatistics : async function(value,  bDelete){
 
-            await StatisticsHelper.keepParentsStatisticsUpdated(this.id, this.p('parents'), true, StatisticsHelper.updateTotalForumsCounter.bind(StatisticsHelper), value);
+            await StatisticsHelper.keepParentsStatisticsUpdated(this.id, this.p('parents'), true, StatisticsHelper.updateTotalForumsCounter.bind(StatisticsHelper), value, bDelete);
 
         },
 

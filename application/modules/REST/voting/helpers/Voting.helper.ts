@@ -54,7 +54,7 @@ class VotingHelper {
 
 
 
-    async changeVoteValue (parentId, previousVoteType, voteType){
+    async changeVoteValue (parentId, previousVoteType, voteType, bDelete){
 
         let downValue = 0;
         let upValue = 0;
@@ -86,12 +86,12 @@ class VotingHelper {
         if (downValue !== 0) {
             await this.hashList.incrementBy(parentId, 'downs', downValue);
 
-            await StatisticsHelper.keepParentsStatisticsUpdated('', await this.hashList.getHash(parentId,'parents'), true, StatisticsHelper.updateTotalVoteDownsCounter.bind(StatisticsHelper), downValue);
+            await StatisticsHelper.keepParentsStatisticsUpdated('', await this.hashList.getHash(parentId,'parents'), true, StatisticsHelper.updateTotalVoteDownsCounter.bind(StatisticsHelper), downValue, bDelete);
         }
         if (upValue !== 0) {
             await this.hashList.incrementBy(parentId, 'ups', upValue);
 
-            await StatisticsHelper.keepParentsStatisticsUpdated('', await this.hashList.getHash(parentId,'parents'), true, StatisticsHelper.updateTotalVoteUpsCounter.bind(StatisticsHelper), upValue);
+            await StatisticsHelper.keepParentsStatisticsUpdated('', await this.hashList.getHash(parentId,'parents'), true, StatisticsHelper.updateTotalVoteUpsCounter.bind(StatisticsHelper), upValue, bDelete);
         }
 
     }

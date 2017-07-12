@@ -67,6 +67,19 @@ module.exports = {
 
         return await ContentHelper.setCover(userAuthenticated, id, cover);
 
+    },
+
+    async postDeleteObject (req, res){
+
+        let userAuthenticated = await AuthenticatingUser.loginUser(req);
+
+        let let id='';
+        if (req.hasOwnProperty('body')){
+            id = req.body.id || '';
+        }
+
+        return await ContentHelper.deleteObject(userAuthenticated, id);
+
     }
 
 }

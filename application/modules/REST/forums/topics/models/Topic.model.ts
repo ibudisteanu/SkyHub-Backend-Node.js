@@ -129,9 +129,9 @@ var TopicModel = redis.nohm.model('TopicModel', {
             return false;
         },
 
-        keepParentsStatistics : async function(value){
+        keepParentsStatistics : async function(value,  bDelete){
 
-            await StatisticsHelper.keepParentsStatisticsUpdated(this.id, this.p('parents'), true, StatisticsHelper.updateTotalTopicsCounter.bind(StatisticsHelper), value);
+            await StatisticsHelper.keepParentsStatisticsUpdated(this.id, this.p('parents'), true, StatisticsHelper.updateTotalTopicsCounter.bind(StatisticsHelper), value, bDelete);
 
         },
 
