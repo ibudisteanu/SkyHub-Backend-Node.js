@@ -4,6 +4,7 @@
  */
 
 var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
+var VotingsHelper = require ('../../../voting/helpers/Votings.helper.ts');
 
 class ContentHelper {
 
@@ -88,6 +89,8 @@ class ContentHelper {
 
         var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
         //should delete the search data///
+
+        await VotingsHelper.deleteVoting(id);
 
         return new Promise( (resolve)=> {
             object.remove(function (err){

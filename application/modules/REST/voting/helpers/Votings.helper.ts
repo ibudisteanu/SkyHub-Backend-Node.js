@@ -97,7 +97,11 @@ class VotingHash {
                 votes: ( onlyUserVote ? await VotingHelper.getVotesWithOnlyUserVote(parentId, userAuthenticated) : await this.getAllVotes(parentId, userAuthenticated) ),
             }
         }
+    }
 
+    async deleteVoting(parentId){
+        let undefined;
+        return await this.hashList.deleteHash(undefined,parentId);
     }
 
     async test(){

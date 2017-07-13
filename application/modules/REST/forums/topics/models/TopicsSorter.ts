@@ -30,7 +30,7 @@ var TopicsSorter = class{
         let replies = await StatisticsHelper.getTotalRepliesCounter(id);
         let voteDiff = await StatisticsHelper.getVoteUpsCounter(id) - await StatisticsHelper.getVoteDownsCounter(id);
 
-        return voteDiff +  pageVisitorsViews *0.7 + pageViews *0.2  + replies * 0.4;
+        return voteDiff +  0.7*pageVisitorsViews + 0.2*pageViews  + 0.4*replies;
 
     }
 

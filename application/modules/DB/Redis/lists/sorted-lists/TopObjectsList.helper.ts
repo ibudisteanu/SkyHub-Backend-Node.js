@@ -9,7 +9,7 @@ class TopObjectsList {
 
     //sortedList
     constructor(sPrefix){
-        this.sortedList = new SortedList("TopObjectsList:"+sPrefix);
+        this.sortedList = new SortedList("TopObjectsList:"+sPrefix, 1000);
     }
 
     async getTopObjects(userAuthenticated, parent, pageIndex, pageCount, iNumberOfMaximumResults){

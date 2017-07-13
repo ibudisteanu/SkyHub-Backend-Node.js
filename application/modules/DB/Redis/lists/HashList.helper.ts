@@ -67,7 +67,7 @@ var HashList = class{
 
     async deleteHash(tableName, key){
         return new Promise( (resolve)=> {
-            redis.redisClient.hdel(this.tablePrefix + ":" + tableName, key, function (err, answer){
+            redis.redisClient.hdel(this.tablePrefix + (typeof tableName !== 'undefined' ? ":" + tableName : ''), key, function (err, answer){
 
                 console.log("deleteHash ",err, answer);
                 resolve (err === null ? answer : null);

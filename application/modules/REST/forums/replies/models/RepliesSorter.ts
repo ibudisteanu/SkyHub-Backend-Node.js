@@ -28,7 +28,7 @@ var RepliesSorter = class{
         let replies = await StatisticsHelper.getTotalRepliesCounter(id);
         let voteDiff = await StatisticsHelper.getVoteUpsCounter(id) - await StatisticsHelper.getVoteDownsCounter(id);
 
-        return voteDiff + replies * 0.4;
+        return voteDiff +  0.4*replies;
 
     }
 

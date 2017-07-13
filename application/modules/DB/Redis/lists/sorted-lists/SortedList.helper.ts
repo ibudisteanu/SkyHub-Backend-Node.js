@@ -1,6 +1,8 @@
 /**
  * Created by BIT TECHNOLOGIES on 6/1/2017.
  *
+ * SortedList aka ZLIST
+ *
  * TUTORIAL based on https://stackoverflow.com/questions/30725358/node-js-redis-zadd-objects-to-a-set
  *
  */
@@ -11,13 +13,19 @@ var MaterializedParentsHelper = require ('../../../../DB/common/materialized-par
 
 var SortedList = class{
 
-    constructor (tablePrefix){
+    constructor (tablePrefix, trimMaxCount){
         this.tablePrefix = tablePrefix || "ZLIST";
+
+        this.trimMaxCount = trimMaxCount || 0;
     }
 
     setNewTablePrefix(sNewPrefix){
         this.tablePrefix = sNewPrefix;
     }
+
+    /*
+        O(log(N)) for each item added, where N is the number of elements in the sorted set.
+     */
 
     async addElement(tableName, score, key){
 
@@ -27,15 +35,22 @@ var SortedList = class{
         return new Promise( (resolve)=> {
 
             redis.redisClient.zadd(this.tablePrefix+":"+tableName, score, key, function (err, answer){
+
+                if ((err === null)&&(this.trimMaxCount !== 0)) this.trim(tableName);
+
                 resolve (err === null ? answer : null);
-            });
+            }.bind(this));
 
         });
     }
 
+    /*
+        O( 2 * log(N)) for each updated
+     */
+
     async updateElement(tableName, value, key){
 
-        var iCurrentScore = await this.getItemsMatching(tableName,key,0,1);
+        let iCurrentScore = await this.getItemsMatching(tableName,key,0,1);
 
         try {
             iCurrentScore = iCurrentScore[1][1];
@@ -48,14 +63,28 @@ var SortedList = class{
         if (typeof iCurrentScore === "undefined")  //creating a new value, in case it didn't exist
             return this.addElement(tableName, value, key);
         else //updating the value
-            return new Promise( (resolve)=> {
-
-                redis.redisClient.zincrby(this.tablePrefix + ":" + tableName, value-iCurrentScore, key, function (err, answer){
-                    resolve (err === null ? answer : null);
-                });
-            });
+            return this.incrementBy(tableName, value-iCurrentScore, key );
     }
 
+    /*
+        O(log(N))
+     */
+
+    async incrementBy(tableName, value, key, ){
+        return new Promise( (resolve)=> {
+            redis.redisClient.zincrby(this.tablePrefix + ":" + tableName, value, key, function (err, answer){
+
+                if ((err === null)&&(this.trimMaxCount !== 0)) this.trim(tableName);
+
+                resolve (err === null ? answer : null);
+            }.bind(this));
+        });
+    }
+
+    /*
+        Time complexity: O(M*log(N)) with N being the number of elements in the sorted set and M the number of elements to be removed.
+        https://redis.io/commands/zrem
+     */
     async deleteElement(tableName, key){
         return new Promise( (resolve)=> {
             redis.redisClient.zrem(this.tablePrefix + ":" + tableName, key, function (err, answer){
@@ -81,13 +110,16 @@ var SortedList = class{
 
     /*
         Time complexity: O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements returned.
+
+
+        todo: to return iArticlesPerPage +1 to know if there are more articles
      */
     async getListRangeBySortedIndex(tableName, iPageIndex, iArticlesPerPage){
         iPageIndex = iPageIndex || 0;
         iArticlesPerPage = iArticlesPerPage || 8;
 
-        var start = (iPageIndex-1) * iArticlesPerPage;
-        var end = start + iArticlesPerPage - 1;
+        let start = (iPageIndex-1) * iArticlesPerPage;
+        let end = start + iArticlesPerPage - 1;
 
         return new Promise( (resolve) => {
 
@@ -161,6 +193,10 @@ var SortedList = class{
         });
     }
 
+    /*
+        O(log(N)) with N being the number of elements in the sorted set.
+        https://redis.io/commands/zcount
+     */
     async countListBetweenMinMax(tableName, min, max){
         return new Promise( (resolve)=> {
             redis.redisClient.zcount(this.tablePrefix+":"+tableName||"", min, max, function(err, answer){
@@ -192,6 +228,38 @@ var SortedList = class{
         });
     }
 
+    /*
+        O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements removed by the operation.
+        https://redis.io/commands/zremrangebyrank
+     */
+    async removeRangeByRank( tableName, start, end ){
+
+        if (typeof end === 'undefined') end = 100000;
+
+        return new Promise( (resolve)=>{
+
+            redis.redisClient.ZREMRANGEBYRANK(this.tablePrefix+":"+tableName||"", start, end, function (err, answer){
+
+                if (err === null) resolve(answer);
+                else resolve (null);
+
+            })
+
+        });
+
+        return true;
+    }
+
+    async trim(tableName){
+        return await this.removeRangeByRank(tableName, this.trimMaxCount);
+    }
+
+
+    /*
+        O(parents+1) * O(log(N)),
+        where N is the MAX_LENGTH of the top objects
+     */
+
     async keepSortedObject( key, score, parents, bDelete , enableNullParent ){
 
         if (typeof enableNullParent === "undefined" ) enableNullParent = true;
@@ -213,6 +281,7 @@ var SortedList = class{
 
         return true;
     }
+
 
 };
 

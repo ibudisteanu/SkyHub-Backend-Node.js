@@ -17,7 +17,7 @@ class SearchList {
 
     //sortedList
     constructor(sPrefix){
-        this.sortedList = new SortedList("Search:"+(sPrefix||"name"));
+        this.sortedList = new SortedList("Search:"+(sPrefix||"name"), 300);
         this.minimumWordLength = 3;
     }
 

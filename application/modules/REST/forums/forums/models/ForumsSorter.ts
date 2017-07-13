@@ -32,7 +32,7 @@ var ForumsSorter = class{
 
         let voteDiff = await StatisticsHelper.getTotalVoteUpsCounter(id) - await StatisticsHelper.getTotalVoteDownsCounter(id);
 
-        return forums + pageVisitorsViews *0.2 + pageViews *0.05 + topics*0.3 + replies * 0.1 + voteDiff*0.1;
+        return forums + 0.4*pageVisitorsViews + 0.05*pageViews + 0.1*topics + 0.5*replies + 0.2*voteDiff;
 
     }
 
