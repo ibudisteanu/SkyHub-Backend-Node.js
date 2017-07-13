@@ -122,8 +122,6 @@ var TopicModel = redis.nohm.model('TopicModel', {
 
         isOwner : function (User){
 
-
-
             if ((typeof(User !== 'undefined')&&(User !== null))&&(typeof User.checkOwnership !== 'undefined')&&(User.checkOwnership(this.p('authorId')))) return true;
 
             return false;

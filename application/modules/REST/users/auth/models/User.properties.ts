@@ -22,6 +22,16 @@ module.exports = {
     UserGenderEnum: UserGenderEnum,
     UserRolesEnum : UserRolesEnum,
 
+    isAdmin(role){
+        if ((typeof role === 'undefined') || (role === null)) return false;
+        role = parseInt(role);
+
+        if ((role === UserRolesEnum.SYS_ADMIN) || (role === UserRolesEnum.ADMIN)) {
+            return true;
+
+        }
+    },
+
     convertGenderString (sGender){
 
         if (typeof sGender !== 'string') return sGender;

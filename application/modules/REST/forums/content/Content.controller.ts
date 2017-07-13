@@ -73,7 +73,7 @@ module.exports = {
 
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
-        let let id='';
+        let id='';
         if (req.hasOwnProperty('body')){
             id = req.body.id || '';
         }

@@ -161,12 +161,7 @@ var UserModel = redis.nohm.model('UserModel', {
             if (sAuthorId === this.id)
                 return true;
 
-            if ((this.p('role') === UserProperties.UserRolesEnum.SYS_ADMIN)||(this.p('role') === UserProperties.UserRolesEnum.ADMIN)){
-                return true;
-            }
-
-            return false;
-
+            return UserProperties.isAdmin(this.p('role'));
         },
 
         isOwner : function (User){
@@ -175,6 +170,7 @@ var UserModel = redis.nohm.model('UserModel', {
 
             return false;
         },
+
 
         getConnectedStatus : function () {
 
