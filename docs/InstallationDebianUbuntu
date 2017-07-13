@@ -69,10 +69,10 @@
 
         The interval options is in minutes ( I think )
 
-   8. /usr/local/bin/noip2    to run the applicaiton
+   8. /usr/local/bin/noip2    to run the application
 
 
-## RUN APP IN BACKGROUND
+## RUN APP IN BACKGROUND as a Background Application ...
    ```
    nohup npm run start &
    disown -h %1
