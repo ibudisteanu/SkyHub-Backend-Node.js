@@ -177,11 +177,6 @@ router.get('/statistics/page-view', function (req, res){
     StatisticsCtrl.pageViewNewVisitor(req, res).then ((answer)=> { res.json(answer); });
 });
 
-//          ADMIN
-router.get('/admin/sort', function (req, res){
-    let AdminCtrl = require ('./../../Admin/Admin.controller.ts');
-    res.json( {message: AdminCtrl.sort() });
-});
 
 /*
         TESTING

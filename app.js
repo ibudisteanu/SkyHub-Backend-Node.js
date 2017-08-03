@@ -49,13 +49,15 @@ app.use(function(req, res, next) {
 
 
 /* ROUTING */
-var RESTRouter = require('./application/modules/REST/routes/RESTroutes.ts');
+var RESTRouter = require('./application/modules/REST/routes/REST.router.ts');
+var AdminRouter = require('./application/modules/Admin/routes/Admin.router.ts');
 var indexRouter = require('./routes/index.ts');
 var usersRouter = require('./routes/users.ts');
-var uploadRouter = require('./application/modules/file-uploads/routes/file-uploads-route.ts');
+var uploadRouter = require('./application/modules/file-uploads/routes/file-uploads.router.ts');
 
 app.use('/', indexRouter);
 app.use('/api', RESTRouter);
+app.use('/api/admin', AdminRouter);
 app.use('/users', usersRouter);
 app.use('/upload', uploadRouter);
 

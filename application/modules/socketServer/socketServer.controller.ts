@@ -13,7 +13,7 @@ var socketIo = require('socket.io');
 var serverSocket = socketIo.listen(server);
 
 
-var RESTRouter = require('./../../../application/modules/REST/routes/RESTroutes.ts');
+var RESTRouter = require('../REST/routes/REST.router.ts');
 var indexRouter = require('./../../../routes/index.ts');
 var usersRouter = require('./../../../routes/users.ts');
 
