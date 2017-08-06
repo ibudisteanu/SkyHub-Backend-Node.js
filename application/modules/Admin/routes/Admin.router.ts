@@ -20,7 +20,8 @@ router.get('/sort', function (req, res){
 
 router.get('/replace-uploaded-files-substring', function (req, res){
     let AdminCtrl = require ('./../Admin.controller.ts');
-    res.json( {message: AdminCtrl.replaceUploadedFilesSubstring("myskyhub.ddns.net:4000","skyhub.me:4000") });
+    //res.json( {message: AdminCtrl.replaceUploadedFilesSubstring("myskyhub.ddns.net:4000","skyhub.me:4000") });
+    res.json( {message: AdminCtrl.replaceUploadedFilesSubstring("http://skyhub.me:4000/uploads","http://skyhub.me:4000/public/uploads") });
 });
 
 

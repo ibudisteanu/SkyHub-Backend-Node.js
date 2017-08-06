@@ -82,7 +82,7 @@ router.post('/topic-file',  uploadFile.single('file'), function (req, res, next)
     if (req.file && req.file.originalname) {
         console.log(`Received file ${req.file.originalname}`);
 
-        let sFileURL = fileUploadURLPrefix+req.file.path.replace("public\\uploads\\","uploads/");
+        let sFileURL = fileUploadURLPrefix+req.file.path.replace("public/uploads/","uploads/");
         let sThumbnail = '';
         if (isMimeTypeFile(req.file.mimetype) ) sThumbnail = sFileURL;
 
@@ -159,7 +159,9 @@ router.post('/image',  imageUpload.single('file'), function (req, res, next) {
     if (req.file && req.file.originalname) {
         console.log(`Received file ${req.file.originalname}`);
 
-        let sFileURL = fileUploadURLPrefix+req.file.path.replace("public\\uploads\\images\\","uploads/images/");
+        console.log("paaaath", req.file.path);
+
+        let sFileURL = fileUploadURLPrefix+req.file.path.replace("public/uploads/images/","uploads/images/");
         let sThumbnail = '';
         if (isMimeTypeImage(req.file.mimetype) ) sThumbnail = sFileURL;
 
