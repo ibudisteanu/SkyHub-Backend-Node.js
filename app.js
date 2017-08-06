@@ -29,8 +29,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 
-app.use(express.static(path.join(__dirname, 'public')));
-//app.use("/public", express.static(__dirname + '/public'));
+app.use("/public", express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
+// in case it doesn't work
+// app.use("/public", express.static(__dirname + '/public'));
 
 
 
