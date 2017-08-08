@@ -185,9 +185,13 @@ class AdminController {
                         let attachments = topic.p('attachments');
 
                         if (attachments !== null) {
-                            for (let i = 0; i < attachments.left; i++) {
-                                attachments[i]['url'].replace(substrToReplace, substrReplace);
-                                attachments[i]['img'].replace(substrToReplace, substrReplace);
+
+
+                            console.log("attachments", attachments);
+
+                            for (let i = 0; i < attachments.length; i++) {
+                                attachments[i]['url'] = attachments[i]['url'].replace(substrToReplace, substrReplace);
+                                attachments[i]['img'] = attachments[i]['img'].replace(substrToReplace, substrReplace);
                             }
 
                             topic.p('attachments', attachments);
@@ -230,9 +234,9 @@ class AdminController {
                         let attachments = reply.p('attachments');
 
                         if (attachments !== null) {
-                            for (let i = 0; i < attachments.left; i++) {
-                                attachments[i]['url'].replace(substrToReplace, substrReplace);
-                                attachments[i]['img'].replace(substrToReplace, substrReplace);
+                            for (let i = 0; i < attachments.length; i++) {
+                                attachments[i]['url'] = attachments[i]['url'].replace(substrToReplace, substrReplace);
+                                attachments[i]['img'] = attachments[i]['img'].replace(substrToReplace, substrReplace);
                             }
 
                             reply.p('attachments', attachments);

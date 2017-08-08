@@ -26,6 +26,7 @@ class TopObjectsList {
         let listTopContent = await this.sortedList.getFastItems(sParentId, pageIndex||1, pageCount );
 
         console.log("              LIST TOP CONTENT :::: ", listTopContent);
+
         if (listTopContent !== []){
 
             let resultListTopContentObjects = [];
@@ -53,9 +54,14 @@ class TopObjectsList {
 
             }
 
+            console.log("listTopContent LENGTH",listTopContent.length);
+            console.log("listTopContent ",listTopContent);
+            console.log("resultListTopContentObjects LENGTH",resultListTopContentObjects.length);
+            console.log("resultListTopContentObjects",resultListTopContentObjects.length);
+
             return({
                 result: true,
-                hasNext: resultListTopContentObjects.length === pageCount,
+                hasNext: listTopContent.length === pageCount,
                 newPageIndex: pageIndex+1,
                 content: resultListTopContentObjects,
             });

@@ -17,6 +17,9 @@ module.exports = {
 
         let sParent = ''; let iPageIndex=1; let iPageCount = 8;
 
+        console.log("----"); console.log("----"); console.log("----"); console.log("----");
+        console.log("body",req.body);
+
         if (req.hasOwnProperty('body')){
             sParent = req.body.parent || '';
             iPageIndex = req.body.pageIndex || 1;
