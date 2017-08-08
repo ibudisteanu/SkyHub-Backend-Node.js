@@ -46,7 +46,7 @@ module.exports = {
 
         console.log('Creating a Topic : ', sTitle);
 
-        return await TopicsHelper.addTopic(userAuthenticated, parent, sTitle, sDescription, sCoverPic, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude);
+        return await TopicsHelper.addTopic(userAuthenticated, parent, sTitle, sDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude);
     },
 
     async getTopic (req, res){

@@ -88,7 +88,8 @@ module.exports = {
         var errorValidation = {};
 
         //get object from parent
-        //console.log("addTopic ===============", userAuthenticated);
+        console.log("addTopic ===============", userAuthenticated);
+        console.log("addTopic ===============", arrAttachments);
 
         let parentObject = await MaterializedParentsHelper.findObject(parent);
 

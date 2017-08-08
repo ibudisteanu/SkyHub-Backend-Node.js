@@ -89,7 +89,7 @@ module.exports = {
 
 
             //get object from parent
-            //console.log("addTopic ===============", userAuthenticated);
+            //console.log("addReplies ===============", userAuthenticated);
 
             let parentObject = await MaterializedParentsHelper.findObject(parent);
 
