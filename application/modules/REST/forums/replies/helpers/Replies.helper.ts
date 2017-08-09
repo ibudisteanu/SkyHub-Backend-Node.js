@@ -12,6 +12,7 @@ var striptags = require('striptags');
 var hat = require ('hat');
 var VotingsHelper = require ('./../../../voting/helpers/Votings.helper.ts');
 var RepliesSorter = require('./../models/RepliesSorter.ts');
+var sanitizeHtml = require('sanitize-html');
 
 module.exports = {
 
@@ -101,8 +102,11 @@ module.exports = {
             }
 
             sDescription = striptags(sDescription, ['a','b','i','u','strong', 'h1','h2','h3','h4','h5','div','font','ul','li','img', 'br', 'span','p','div','em']);
-            let shortDescription = striptags(sDescription, []);
+            let shortDescription = striptags(sDescription, ['a','b','i','u','strong','div','font','ul','li', 'br', 'span','p','div','em']);
             if (shortDescription.length > 512) shortDescription = shortDescription.substr(0, 512) + ' ...';
+
+            this.description = sanitizeHtml(this.description);
+            this.shortDescription = sanitizeHtml(this.shortDescription);
 
             parentReply = await MaterializedParentsHelper.findObject(parentReply);
 

@@ -28,6 +28,7 @@
     "redis": "^2.7.1",
     "request-promise": "^4.2.1",
     "run-middleware": "^0.6.6",
+    "sanitize-html": "^1.14.1",
     "serve-favicon": "~2.4.2",
     "socket.io": "1.x",
     "striptags": "^3.0.1",
