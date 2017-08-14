@@ -35,7 +35,7 @@ class VotingHash {
                 message: 'invalid vote value: '+VoteType.VOTE_NONE,
             };
 
-        let foundVoteType = await this.hashList.getHash(parentId, userId) ;
+        let foundVoteType = parseInt(await this.hashList.getHash(parentId, userId));
 
         await this.hashList.setHash(parentId, userId, voteType);
         await VotingHelper.changeVoteValue(parentId, foundVoteType, voteType);
@@ -106,6 +106,8 @@ class VotingHash {
 
     async test(){
 
+        console.log("submitVote", await this.submitVote('parent1', {id: 22}, VoteType.VOTE_UP ));
+        console.log("submitVote", await this.submitVote('parent1', {id: 22}, VoteType.VOTE_UP ));
         console.log("submitVote", await this.submitVote('parent1', {id: 22}, VoteType.VOTE_UP ));
         console.log("submitVote", await this.submitVote('parent1', {id: 24}, VoteType.VOTE_UP ));
         console.log("submitVote", await this.submitVote('parent1', {id: 26}, VoteType.VOTE_DOWN ));

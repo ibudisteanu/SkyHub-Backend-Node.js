@@ -59,9 +59,7 @@ class VotingHelper {
         let downValue = 0;
         let upValue = 0;
 
-        if ((previousVoteType !== null)&&(previousVoteType !== voteType)){
-
-
+        if ((previousVoteType !== null)&&(previousVoteType !== voteType))
             switch (previousVoteType){
                 case VoteType.VOTE_DOWN:
                     downValue += -1;
@@ -70,16 +68,16 @@ class VotingHelper {
                     upValue += -1;
                     break;
             }
-        }
 
-        switch (voteType){
-            case VoteType.VOTE_DOWN:
-                downValue += 1;
-                break;
-            case VoteType.VOTE_UP:
-                upValue += 1;
-                break;
-        }
+        if (previousVoteType !== voteType)
+            switch (voteType){
+                case VoteType.VOTE_DOWN:
+                    downValue += 1;
+                    break;
+                case VoteType.VOTE_UP:
+                    upValue += 1;
+                    break;
+            }
 
         let StatisticsHelper = require ('../../statistics/helpers/Statistics.helper.ts');
 
