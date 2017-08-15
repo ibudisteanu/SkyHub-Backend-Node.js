@@ -17,7 +17,7 @@
 
 var List = require ('../../../DB/Redis/lists/List.helper.ts');
 var HashList = require ('../../../DB/Redis/lists/HashList.helper.ts');
-var commonFunctions = require ('../../common/helpers/common-functions.helper.ts');
+var commonFunctions = require ('../../common/helpers/CommonFunctions.helper.ts');
 var nohmIterator = require ('../../../DB/Redis/nohm/nohm.iterator.ts');
 var Notification = require ('./../models/Notification.model.ts');
 

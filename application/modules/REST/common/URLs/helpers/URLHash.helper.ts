@@ -4,7 +4,7 @@
  */
 
 var HashList = require ('../../../../DB/Redis/lists/HashList.helper.ts');
-var commonFunctions = require ('../../helpers/common-functions.helper.ts');
+var commonFunctions = require ('../../helpers/CommonFunctions.helper.ts');
 
 class URLHash {
 

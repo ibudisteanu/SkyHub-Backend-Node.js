@@ -5,7 +5,7 @@
 
 
 var HashList = require ('../../../DB/Redis/lists/HashList.helper.ts');
-var commonFunctions = require ('../../common/helpers/common-functions.helper.ts');
+var commonFunctions = require ('../../common/helpers/CommonFunctions.helper.ts');
 
 var VoteType = require ('../models/VoteType.js');
 var VotingHelper = require ('./Voting.helper.ts');

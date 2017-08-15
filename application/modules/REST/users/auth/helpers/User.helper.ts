@@ -5,7 +5,7 @@
 
 var Users =  require ('./Users.helper.ts');
 var nohmValidation = require ('../../../../DB/Redis/nohm/nohm.validation.ts');
-var commonFunctions = require ('../../../../REST/common/helpers/common-functions.helper.ts');
+var commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.ts');
 
 module.exports = {
     /*

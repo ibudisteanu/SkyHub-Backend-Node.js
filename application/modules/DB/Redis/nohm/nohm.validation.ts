@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var commonFunctions = require ('../../../REST/common/helpers/common-functions.helper.ts');
+var commonFunctions = require ('../../../REST/common/helpers/CommonFunctions.helper.ts');
 
 exports.validateKeywords = function(value, options, callback) {
 

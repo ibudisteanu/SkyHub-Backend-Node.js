@@ -4,7 +4,7 @@
  */
 
 var replyModel = require ('./../models/Reply.model.ts');
-var commonFunctions = require ('../../../common/helpers/common-functions.helper.ts');
+var commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.ts');
 var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
 var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
@@ -101,12 +101,12 @@ module.exports = {
                 }
             }
 
-            sDescription = striptags(sDescription, ['a','b','i','u','strong', 'h1','h2','h3','h4','h5','div','font','ul','li','img', 'br', 'span','p','div','em']);
-            let shortDescription = striptags(sDescription, ['a','b','i','u','strong','div','font','ul','li', 'br', 'span','p','div','em']);
-            if (shortDescription.length > 512) shortDescription = shortDescription.substr(0, 512);
+            // sDescription = striptags(sDescription, ['a','b','i','u','strong', 'h1','h2','h3','h4','h5','div','font','ul','li','img', 'br', 'span','p','div','em','iframe']);
+            // let shortDescription = striptags(sDescription, ['a','b','i','u','strong','div','font','ul','li', 'br', 'span','p','div','em','iframe']);
+            // if (shortDescription.length > 512) shortDescription = shortDescription.substr(0, 512);
 
-            this.description = sanitizeHtml(this.description);
-            this.shortDescription = sanitizeHtml(this.shortDescription);
+            this.description = SanitizeAdvanced.sanitizeAdvanced(this.description);
+            this.shortDescription = SanitizeAdvanced.sanitizeAdvancedShortDescription(this.description, 512);
 
             parentReply = await MaterializedParentsHelper.findObject(parentReply);
 
