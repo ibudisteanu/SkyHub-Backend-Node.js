@@ -40,9 +40,9 @@ module.exports = {
 
         if (typeof limit === 'undefined') limit = 512;
 
-        text = sanitizeAdvancedSimple(text);
+        text = this.sanitizeAdvancedSimple(text);
         if (text.length > 512) text = text.substr(0, limit);
-        text = sanitizeAdvancedSimple(text);
+        text = this.sanitizeAdvancedSimple(text);
 
         return text;
 
