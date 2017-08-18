@@ -47,6 +47,10 @@ router.get('/users/get-user', function(req, res, next) {
     UsersCtrl.postGetUser(req, res).then ( (answer ) => { res.json(answer); });
 });
 
+router.get('/users/set-profile-pic', function(req, res, next) {
+    UsersCtrl.postSetProfilePic(req, res).then ( (answer ) => { res.json(answer); });
+});
+
 //              FORUMS
 
 router.get('/forums/add-forum', function (req, res, next){
@@ -300,6 +304,13 @@ router.processSocketRoute = function (socket)
     socket.on("api/users/get-user", function (data){
         data.body = data;
         UsersCtrl.postGetUser(data, socket).then (  (answer)=> { socket.emit("api/users/get-user"+'/'+answer.userId, answer) });
+    });
+
+    socket.on("api/users/set-profile-pic", function (data) {
+        data.body = data;
+        UsersCtrl.postSetProfilePic(data, socket).then ( ( answer ) => {
+            socket.emit("api/users/set-profile-pic"+'/'+answer.userId, answer);
+        });
     });
 
 

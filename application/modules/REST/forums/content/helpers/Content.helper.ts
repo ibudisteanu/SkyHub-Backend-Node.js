@@ -16,10 +16,11 @@ class ContentHelper {
         if (object === null) return {result:false, message: 'Object not found'};
 
         if (object.isOwner(userAuthenticated) === false)
-            return {result:false, message: 'No rights to change the icon'};
+            return {result:false, message: 'No rights to change the icon / profile Pic'};
 
         switch (type){
             case 'forum':
+            case 'topic':
                 object.p('iconPic',icon);
                 break;
             case 'user':
@@ -33,6 +34,7 @@ class ContentHelper {
                     console.log("==> Error Saving the Icon");
                     resolve({result: false, message: 'error'})
                 } else{
+                    console.log("ICON SET SUCCESSFULLY");
                     resolve ({result: true,  object: object.getPublicInformation(userAuthenticated) })
                 }
             });

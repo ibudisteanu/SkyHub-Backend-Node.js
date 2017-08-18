@@ -12,6 +12,7 @@ module.exports = {
      HELPER FUNCTIONS
      */
 
+
     //generate a unique username from firstName, lastName, emailAddress and a unique random number [10 trials]
      generateUserName (sFirstName, sLastName, sEmail){
 

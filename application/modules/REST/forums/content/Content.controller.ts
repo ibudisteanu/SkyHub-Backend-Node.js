@@ -48,6 +48,7 @@ module.exports = {
         if (req.hasOwnProperty('body')){
 
             icon = req.body.icon || '';
+            icon = req.body.profilePic || '';
             id = req.body.id || '';
         }
 
