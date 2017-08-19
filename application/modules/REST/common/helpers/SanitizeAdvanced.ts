@@ -21,14 +21,13 @@ module.exports = {
 
         text = sanitizeHtml(text,
             {
-                allowedTags: ['a','b','i','u','strong', 'h1','h2','h3','h4','h5','div','font','ul','li', 'br', 'span','p','div','em','iframe','img'],
+                allowedTags: ['a','b','i','u','strong', 'h1','h2','h3','h4','h5','div','font','ul','li', 'br', 'span','div','em','iframe','img'],
                 allowedAttributes: {
                     'a': [ 'href' ],
                     'img': ['class','src','width','height', 'style','width','height'],
                     'iframe': ['class','frameborder','allowfullscreen','src', 'style','alt','width','height'],
                     'font': ['class','style'],
                     'div': ['class','style'],
-                    'p': ['class','style'],
                     'em': ['class','style'],
                     'span': ['class','style'],
                 }
@@ -40,14 +39,13 @@ module.exports = {
     sanitizeAdvancedSimple(text) {
         text = sanitizeHtml(text,
             {
-                allowedTags: ['a','b','i','u','strong','div','font','ul','li', 'br', 'span','p','div','em','iframe','img'],
+                allowedTags: ['a','b','i','u','strong','div','font','ul','li', 'br', 'span','div','em','iframe','img'],
                 allowedAttributes: {
                     'a': [ 'href' ],
                     'img': ['class','src','width','height', 'style','width','height'],
                     'iframe': ['class','frameborder','allowfullscreen','src', 'style','alt','width','height'],
                     'font': ['class'],
                     'div': ['class'],
-                    'p': ['class'],
                     'em': ['class'],
                     'span': ['class'],
                 }
