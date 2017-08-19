@@ -66,10 +66,10 @@ module.exports = {
         if (typeof limit === 'undefined') limit = 512;
         if (typeof enableAnchors === 'undefined') enableAnchors = true;
 
-        text = sanitizeAdvancedSimple(text, enableAnchors);
+        text = this.sanitizeAdvancedSimple(text, enableAnchors);
         if (text.length > 512) {
             text = text.substr(0, limit);
-            text = sanitizeAdvancedSimple(text, enableAnchors);
+            text = this.sanitizeAdvancedSimple(text, enableAnchors);
         }
 
         return text;
