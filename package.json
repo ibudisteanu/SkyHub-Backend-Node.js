@@ -18,6 +18,7 @@
     "express": "~4.15.2",
     "file-type": "^6.1.0",
     "hat": "0.0.3",
+    "htmltidy2": "^0.2.1",
     "image-type": "^3.0.0",
     "jade": "~1.11.0",
     "jsonwebtoken": "^7.4.1",
