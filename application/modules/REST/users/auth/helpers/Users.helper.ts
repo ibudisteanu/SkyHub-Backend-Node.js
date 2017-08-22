@@ -1,5 +1,6 @@
 var userModel = require ('../models/User.model.ts');
 var UserProperties = require ('../models/User.properties.ts');
+var nohmValidation = require ('../../../../DB/Redis/nohm/nohm.validation.ts');
 
 module.exports = {
 
@@ -76,6 +77,11 @@ module.exports = {
                 role : UserProperties.UserRolesEnum.USER,
             }
         );
+
+
+        if (!nohmValidation.validateUsername(sUsername, {}, null)){
+            errorValidation.username = ["Invalid Characters in the Username"];
+        }
 
         if (password.type === 'string'){ //it is a simple password
             user.p('password', this.passwordHash(password.value));

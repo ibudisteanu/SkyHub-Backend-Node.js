@@ -4,11 +4,14 @@
  */
 
 var Users =  require ('./Users.helper.ts');
+var nohmValidation = require ('../../../../DB/Redis/nohm/nohm.validation.ts');
+var commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.ts');
 
 module.exports = {
     /*
      HELPER FUNCTIONS
      */
+
 
     //generate a unique username from firstName, lastName, emailAddress and a unique random number [10 trials]
      generateUserName (sFirstName, sLastName, sEmail){
@@ -26,6 +29,9 @@ module.exports = {
             sUserNamePrefix = "user";
             randomGeneratorNumber = 100000;
         }
+
+        sUserNamePrefix = commonFunctions.url_slug(sUserNamePrefix, {'delimiter':'_', 'transliterate':true});
+         sUserNamePrefix = nohmValidation.sanitizeUsername(sUserNamePrefix, '_');
 
         //generating Random User
         function nextRandomUser(sUserNamePrefix, iCount){

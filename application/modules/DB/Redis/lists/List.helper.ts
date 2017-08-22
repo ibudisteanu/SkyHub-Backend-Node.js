@@ -172,7 +172,7 @@ var List = class{
         return new Promise( (resolve)=> {
             redis.redisClient.lrange(this.tablePrefix + ":" + tableName, index1, index2, function (err, answer) {
 
-                console.log("lrange##",index1, index2,"###",err,answer);
+                //console.log("lrange##",index1, index2,"###",err,answer);
                 resolve (err === null ? answer : null);
             });
         });

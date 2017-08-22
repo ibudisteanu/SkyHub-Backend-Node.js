@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var commonFunctions = require ('../../../REST/common/helpers/common-functions.helper.ts');
+var commonFunctions = require ('../../../REST/common/helpers/CommonFunctions.helper.ts');
 
 exports.validateKeywords = function(value, options, callback) {
 
@@ -19,12 +19,22 @@ exports.validateKeywords = function(value, options, callback) {
     }
 };
 
+exports.sanitizeUsername = function (value, character){
+    if (typeof character === 'undefined') character = '_';
+
+    return value.replace(/([^a-zA-Z0-9._$-]+)/gi, character);
+};
+
 exports.validateUsername = function (value, options, callback){
     //if (! /^[^`<>[\]'"\s~!@#%^&*()|\\?,.:{}=+\xA6-\xDF\x00-\x20\x7F\xF0-\xFF]+$/g.test(sUsername)){
     if (! /^(?=.{4,30}$)(?![_.-])(?!.*[_.$-]{2})[a-zA-Z0-9._$-]+$/g.test(value)){
-        callback(false)
-    } else
-        callback(true);
+
+        if (callback !== null)  callback(false);
+        else return false;
+    } else {
+        if (callback !== null)  callback(true);
+        else return true;
+    }
 };
 
 exports.validateUniqueURL = function (value, options, callback){

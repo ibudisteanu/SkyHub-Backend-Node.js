@@ -27,7 +27,15 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+
+//the first parameter is used for a prefix...
+app.use("/",express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
+// in case it doesn't work
+ //app.use("/public", express.static(__dirname + '/public'));
+
+
 
 /*//CORS ACCEPTANCE BUG https://enable-cors.org/server_expressjs.html
 app.use(function(req, res, next) {
@@ -49,13 +57,15 @@ app.use(function(req, res, next) {
 
 
 /* ROUTING */
-var RESTRouter = require('./application/modules/REST/routes/RESTroutes.ts');
+var RESTRouter = require('./application/modules/REST/routes/REST.router.ts');
+var AdminRouter = require('./application/modules/Admin/routes/Admin.router.ts');
 var indexRouter = require('./routes/index.ts');
 var usersRouter = require('./routes/users.ts');
-var uploadRouter = require('./application/modules/file-uploads/routes/file-uploads-route.ts');
+var uploadRouter = require('./application/modules/file-uploads/routes/file-uploads.router.ts');
 
 app.use('/', indexRouter);
 app.use('/api', RESTRouter);
+app.use('/api/admin', AdminRouter);
 app.use('/users', usersRouter);
 app.use('/upload', uploadRouter);
 

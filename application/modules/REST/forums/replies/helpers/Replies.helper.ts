@@ -4,7 +4,7 @@
  */
 
 var replyModel = require ('./../models/Reply.model.ts');
-var commonFunctions = require ('../../../common/helpers/common-functions.helper.ts');
+var commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.ts');
 var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
 var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
@@ -12,6 +12,7 @@ var striptags = require('striptags');
 var hat = require ('hat');
 var VotingsHelper = require ('./../../../voting/helpers/Votings.helper.ts');
 var RepliesSorter = require('./../models/RepliesSorter.ts');
+var SanitizeAdvanced = require('./../../../common/helpers/SanitizeAdvanced.ts');
 
 module.exports = {
 
@@ -89,7 +90,7 @@ module.exports = {
 
 
             //get object from parent
-            //console.log("addTopic ===============", userAuthenticated);
+            //console.log("addReplies ===============", userAuthenticated);
 
             let parentObject = await MaterializedParentsHelper.findObject(parent);
 
@@ -100,9 +101,12 @@ module.exports = {
                 }
             }
 
-            sDescription = striptags(sDescription, ['a','b','i','u','strong', 'h1','h2','h3','h4','h5','div','font','ul','li','img', 'br', 'span','p','div','em']);
-            let shortDescription = striptags(sDescription, []);
-            if (shortDescription.length > 512) shortDescription = shortDescription.substr(0, 512) + ' ...';
+            // sDescription = striptags(sDescription, ['a','b','i','u','strong', 'h1','h2','h3','h4','h5','div','font','ul','li','img', 'br', 'span','p','div','em','iframe']);
+            // let shortDescription = striptags(sDescription, ['a','b','i','u','strong','div','font','ul','li', 'br', 'span','p','div','em','iframe']);
+            // if (shortDescription.length > 512) shortDescription = shortDescription.substr(0, 512);
+
+            sDescription = SanitizeAdvanced.sanitizeAdvanced(sDescription);
+            let shortDescription = SanitizeAdvanced.sanitizeAdvancedShortDescription(sDescription, 512);
 
             parentReply = await MaterializedParentsHelper.findObject(parentReply);
 

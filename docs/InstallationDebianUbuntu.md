@@ -73,7 +73,11 @@
    2. `iptables-save`
 
 
+### upload database
 
+   1. `cd /var/lib/redis`
+   2. copy and replace `appendonly.aof`
+   3. copy and replace `dump.rdb`
 
 
 # SCRIPTS

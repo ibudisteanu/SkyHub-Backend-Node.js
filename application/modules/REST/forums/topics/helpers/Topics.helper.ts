@@ -4,13 +4,15 @@
  */
 
 var topicModel = require ('./../models/Topic.model.ts');
-var commonFunctions = require ('../../../common/helpers/common-functions.helper.ts');
+var commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.ts');
 var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.helper.ts');
 var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
 var striptags = require('striptags');
 var VotingsHelper = require ('./../../../voting/helpers/Votings.helper.ts');
 var TopicsSorter = require('./../models/TopicsSorter.ts');
+var sanitizeHtml = require('sanitize-html');
+var SanitizeAdvanced = require('./../../../common/helpers/SanitizeAdvanced.ts');
 
 module.exports = {
 
@@ -88,7 +90,8 @@ module.exports = {
         var errorValidation = {};
 
         //get object from parent
-        //console.log("addTopic ===============", userAuthenticated);
+        console.log("addTopic ===============", userAuthenticated);
+        console.log("addTopic ===============", arrAttachments);
 
         let parentObject = await MaterializedParentsHelper.findObject(parent);
 
@@ -106,9 +109,12 @@ module.exports = {
             sCoverPic = parentObject.p('coverPic');
         }
 
-        sDescription = striptags(sDescription, ['a','b','i','u','strong', 'h1','h2','h3','h4','h5','div','font','ul','li','img', 'br', 'span','p','div','em']);
-        let shortDescription = striptags(sDescription, [] );
-        if (shortDescription.length > 512) shortDescription = shortDescription.substr(0, 512) + ' ...';
+        // sDescription = striptags(sDescription, ['a','b','i','u','strong', 'h1','h2','h3','h4','h5','div','font','ul','li','img', 'br', 'span','p','div','em','iframe']);
+        // let shortDescription = striptags(sDescription, ['a','b','i','u','strong','div','font','ul','li', 'br', 'span','p','div','em','iframe']);
+        // if (shortDescription.length > 512) shortDescription = shortDescription.substr(0, 512);
+
+        sDescription = SanitizeAdvanced.sanitizeAdvanced(sDescription);
+        let shortDescription = SanitizeAdvanced.sanitizeAdvancedShortDescription(sDescription, 512);
 
         topic.p(
             {

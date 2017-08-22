@@ -7,6 +7,7 @@ var redis = require ('../../../../DB/redis_nohm');
 var nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator.ts');
 
 var StatisticsHelper = require('./../../../statistics/helpers/Statistics.helper.ts');
+var SanitizeAdvanced = require('./../../../common/helpers/SanitizeAdvanced.ts');
 
 var TopicModel = redis.nohm.model('TopicModel', {
 
@@ -114,6 +115,9 @@ var TopicModel = redis.nohm.model('TopicModel', {
 
         getPublicInformation : function (userAuthenticated){
             var properties = this.allProperties();
+
+            properties.description = SanitizeAdvanced.sanitizeAdvanced(properties.description);
+            properties.shortDescription = SanitizeAdvanced.sanitizeAdvancedShortDescription(properties.shortDescription||properties.description, 512);
 
             properties.isOwner = this.isOwner(userAuthenticated);
 
