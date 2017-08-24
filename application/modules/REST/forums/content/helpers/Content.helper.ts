@@ -34,7 +34,7 @@ class ContentHelper {
                     console.log("==> Error Saving the Icon");
                     resolve({result: false, message: 'error'})
                 } else{
-                    console.log("ICON SET SUCCESSFULLY");
+                    console.log("ICON SET SUCCESSFULLY", object.getPublicInformation(userAuthenticated));
                     resolve ({result: true,  object: object.getPublicInformation(userAuthenticated) })
                 }
             });
@@ -53,6 +53,7 @@ class ContentHelper {
 
         switch (type){
             case 'forum':
+            case 'topic':
             case 'user':
                 object.p('coverPic',cover);
                 break;
