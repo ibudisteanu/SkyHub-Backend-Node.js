@@ -47,8 +47,12 @@ module.exports = {
         let icon = ''; let id='';
         if (req.hasOwnProperty('body')){
 
-            icon = req.body.icon || '';
-            icon = req.body.profilePic || '';
+            if (typeof req.body.icon !== 'undefined')
+                icon = req.body.icon || '';
+
+            if (typeof req.body.profilePic !== 'undefined')
+                icon = req.body.profilePic || '';
+            
             id = req.body.id || '';
         }
 

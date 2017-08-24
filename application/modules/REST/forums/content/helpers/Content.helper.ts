@@ -34,7 +34,7 @@ class ContentHelper {
                     console.log("==> Error Saving the Icon");
                     resolve({result: false, message: 'error'})
                 } else{
-                    console.log("ICON SET SUCCESSFULLY", object.getPublicInformation(userAuthenticated));
+                    console.log("ICON SET SUCCESSFULLY");
                     resolve ({result: true,  object: object.getPublicInformation(userAuthenticated) })
                 }
             });
