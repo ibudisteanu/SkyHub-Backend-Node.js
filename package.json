@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "babel": "babel --presets es2015 ./bin/www.ts -o build/main.bundle.js",
-    "start": "node ./bin/www.ts",
+    "babel": "babel --presets es2015 ./bin/www.js -o build/main.bundle.js",
+    "start": "node ./bin/www.js",
     "webpack": "webpack"
   },
   "dependencies": {

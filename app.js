@@ -57,11 +57,11 @@ app.use(function(req, res, next) {
 
 
 /* ROUTING */
-var RESTRouter = require('./application/modules/REST/routes/REST.router.ts');
-var AdminRouter = require('./application/modules/Admin/routes/Admin.router.ts');
-var indexRouter = require('./routes/index.ts');
-var usersRouter = require('./routes/users.ts');
-var uploadRouter = require('./application/modules/file-uploads/routes/file-uploads.router.ts');
+var RESTRouter = require('./application/modules/REST/routes/REST.router.js');
+var AdminRouter = require('./application/modules/Admin/routes/Admin.router.js');
+var indexRouter = require('./routes/index.js');
+var usersRouter = require('./routes/users.js');
+var uploadRouter = require('./application/modules/file-uploads/routes/file-uploads.router.js');
 
 app.use('/', indexRouter);
 app.use('/api', RESTRouter);

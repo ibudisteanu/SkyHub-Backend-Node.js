@@ -17,9 +17,9 @@
 
 var List = require ('../../../../DB/Redis/lists/List.helper.js');
 var HashList = require ('../../../../DB/Redis/lists/HashList.helper.js');
-var commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.ts');
-var nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator.ts');
-var Notification = require ('../models/Notification.model.ts');
+var commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
+var nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator');
+var Notification = require ('../models/Notification.model.js');
 
 const NOTIFICATIONS_DB_MAXIMUM = 100;
 

@@ -3,17 +3,17 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var StatisticsHelper = require ('../REST/statistics/helpers/Statistics.helper.ts');
+var StatisticsHelper = require ('../REST/statistics/helpers/Statistics.helper.js');
 
-var ForumsHelper = require ('./../REST/forums/forums/helpers/Forums.helper.ts');
-var TopicsHelper = require ('./../REST/forums/topics/helpers/Topics.helper.ts');
-var RepliesHelper = require ('./../REST/forums/replies/helpers/Replies.helper.ts');
-var UsersHelper = require ('../REST/users/auth/helpers/Users.helper.ts');
+var ForumsHelper = require ('../REST/forums/forums/helpers/Forums.helper.js');
+var TopicsHelper = require ('../REST/forums/topics/helpers/Topics.helper.js');
+var RepliesHelper = require ('../REST/forums/replies/helpers/Replies.helper.js');
+var UsersHelper = require ('../REST/users/auth/helpers/Users.helper.js');
 
-var forumModel = require ('./../REST/forums/forums/models/Forum.model.ts');
-var userModel = require ('../REST/users/auth/models/User.model.ts');
-var replyModel = require ('./../REST/forums/replies/models/Reply.model.ts');
-var topicModel = require ('./../REST/forums/topics/models/Topic.model.ts');
+var forumModel = require ('../REST/forums/forums/models/Forum.model.js');
+var userModel = require ('../REST/users/auth/models/User.model.js');
+var replyModel = require ('../REST/forums/replies/models/Reply.model.js');
+var topicModel = require ('../REST/forums/topics/models/Topic.model.js');
 
 let NotificationsCreator = require ('./../REST/notifications/NotificationsCreator.js');
 let NotificationsSubscribersHashList = require ('./../REST/notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
@@ -31,7 +31,7 @@ class AdminController {
             forumModelORM.find(async function (err, ids){
 
                 for (let i=0; i<ids.length; i++){
-                    let ForumsHelper = require ('./../REST/forums/forums/helpers/Forums.helper.ts');
+                    let ForumsHelper = require ('../REST/forums/forums/helpers/Forums.helper.js');
                     let index = await ForumsHelper.findForumById(ids[i]);
 
                     await StatisticsHelper.keepElementSortedList(index.id, index.p('parents'));
@@ -45,7 +45,7 @@ class AdminController {
             userModelORM.find(async function (err, ids) {
 
                 for (let i = 0; i < ids.length; i++) {
-                    let UsersHelper = require ('./../REST/users/auth/helpers/Users.helper.ts');
+                    let UsersHelper = require ('../REST/users/auth/helpers/Users.helper.js');
                     let index = await UsersHelper.findUserById(ids[i]);
                 }
 
@@ -57,7 +57,7 @@ class AdminController {
             topicModelORM.find(async function (err, ids) {
 
                 for (let i=0; i<ids.length; i++){
-                    let TopicsHelper = require ('./../REST/forums/topics/helpers/Topics.helper.ts');
+                    let TopicsHelper = require ('../REST/forums/topics/helpers/Topics.helper.js');
                     let index = await TopicsHelper.findTopicById(ids[i]);
 
                     await StatisticsHelper.keepElementSortedList(index.id, index.p('parents'));
@@ -73,7 +73,7 @@ class AdminController {
 
                 for (let i=0; i<ids.length; i++){
 
-                    let RepliesHelper = require ('./../REST/forums/replies/helpers/Replies.helper.ts');
+                    let RepliesHelper = require ('../REST/forums/replies/helpers/Replies.helper.js');
                     let index = await RepliesHelper.findReplyById(ids[i]);
 
                     await StatisticsHelper.keepElementSortedList(index.id, index.p('parents'));
@@ -96,7 +96,7 @@ class AdminController {
             forumModelORM.find(async function (err, ids){
 
                 for (let i=0; i<ids.length; i++){
-                    let ForumsHelper = require ('./../REST/forums/forums/helpers/Forums.helper.ts');
+                    let ForumsHelper = require ('../REST/forums/forums/helpers/Forums.helper.js');
                     let forum = await ForumsHelper.findForumById(ids[i]);
 
                     if (forum !== null){
@@ -125,7 +125,7 @@ class AdminController {
             userModelORM.find(async function (err, ids) {
 
                 for (let i = 0; i < ids.length; i++) {
-                    let UsersHelper = require ('./../REST/users/auth/helpers/Users.helper.ts');
+                    let UsersHelper = require ('../REST/users/auth/helpers/Users.helper.js');
                     let user = await UsersHelper.findUserById(ids[i]);
 
                     if (user !== null){
@@ -156,7 +156,7 @@ class AdminController {
             topicModelORM.find(async function (err, ids) {
 
                 for (let i=0; i<ids.length; i++){
-                    let TopicsHelper = require ('./../REST/forums/topics/helpers/Topics.helper.ts');
+                    let TopicsHelper = require ('../REST/forums/topics/helpers/Topics.helper.js');
                     let topic = await TopicsHelper.findTopicById(ids[i]);
 
                     if (topic !== null){
@@ -204,7 +204,7 @@ class AdminController {
 
                 for (let i=0; i<ids.length; i++){
 
-                    let RepliesHelper = require ('./../REST/forums/replies/helpers/Replies.helper.ts');
+                    let RepliesHelper = require ('../REST/forums/replies/helpers/Replies.helper.js');
                     let reply = await RepliesHelper.findReplyById(ids[i]);
 
                     if (reply !== null){
@@ -255,7 +255,7 @@ class AdminController {
             forumModelORM.find(async function (err, ids){
 
                 for (let i=0; i<ids.length; i++){
-                    let ForumsHelper = require ('./../REST/forums/forums/helpers/Forums.helper.ts');
+                    let ForumsHelper = require ('../REST/forums/forums/helpers/Forums.helper.js');
                     let forum = await ForumsHelper.findForumById(ids[i]);
 
                     if (forum !== null)
@@ -270,7 +270,7 @@ class AdminController {
             topicModelORM.find(async function (err, ids) {
 
                 for (let i=0; i<ids.length; i++){
-                    let TopicsHelper = require ('./../REST/forums/topics/helpers/Topics.helper.ts');
+                    let TopicsHelper = require ('../REST/forums/topics/helpers/Topics.helper.js');
                     let topic = await TopicsHelper.findTopicById(ids[i]);
 
                     if (topic !== null)
@@ -289,7 +289,7 @@ class AdminController {
 
                 for (let i=0; i<ids.length; i++){
 
-                    let RepliesHelper = require ('./../REST/forums/replies/helpers/Replies.helper.ts');
+                    let RepliesHelper = require ('../REST/forums/replies/helpers/Replies.helper.js');
                     let reply = await RepliesHelper.findReplyById(ids[i]);
 
                     if (reply !== null)

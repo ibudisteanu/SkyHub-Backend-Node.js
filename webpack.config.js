@@ -3,7 +3,7 @@ var webpack = require('webpack');
 var nodeExternals = require('webpack-node-externals');
 
 module.exports = {
-    entry: './bin/www.ts',
+    entry: './bin/www.js',
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: 'main.bundle.js'
