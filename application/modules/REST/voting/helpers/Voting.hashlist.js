@@ -4,13 +4,13 @@
  */
 
 
-var HashList = require ('../../../DB/Redis/lists/HashList.helper.ts');
+var HashList = require ('../../../DB/Redis/lists/HashList.helper.js');
 
 var VoteType = require ('../models/VoteType.js');
 
 class VotingHelper {
 
-    //sortedList
+    //HashList
     constructor(){
         this.hashList = new HashList("Voting");
     }

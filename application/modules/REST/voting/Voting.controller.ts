@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var VotingHelper = require('./helpers/Votings.helper.ts');
+var VotingHelper = require('./helpers/Votings.helper.js');
 var VoteType = require ('./models/VoteType.js');
 
 var AuthenticatingUser = require('../users/auth/helpers/AuthenticatingUser.helper.ts');

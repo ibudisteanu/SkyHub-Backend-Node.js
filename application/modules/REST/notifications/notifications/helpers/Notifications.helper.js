@@ -15,11 +15,11 @@
  */
 
 
-var List = require ('../../../DB/Redis/lists/List.helper.ts');
-var HashList = require ('../../../DB/Redis/lists/HashList.helper.ts');
-var commonFunctions = require ('../../common/helpers/CommonFunctions.helper.ts');
-var nohmIterator = require ('../../../DB/Redis/nohm/nohm.iterator.ts');
-var Notification = require ('./../models/Notification.model.ts');
+var List = require ('../../../../DB/Redis/lists/List.helper.js');
+var HashList = require ('../../../../DB/Redis/lists/HashList.helper.js');
+var commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.ts');
+var nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator.ts');
+var Notification = require ('../models/Notification.model.ts');
 
 const NOTIFICATIONS_DB_MAXIMUM = 100;
 
@@ -176,6 +176,11 @@ class NotificationsListHelper {
     }
 
     createNewUserNotificationFromUser(userId, template, userSourceId, title, body, image){
+
+        if (typeof userSourceId === 'object') userSourceId =  userSourceId.id;
+
+        title = body.substr(0,100);
+        body = body.substr(0,500);
 
         return this.createNewUserNotification(userId, template, {
             userSourceId: userSourceId,

@@ -13,6 +13,9 @@ var HashList = class{
     }
 
 
+    /*
+        O(1)
+     */
     async setHash(tableName, key, value){
 
         if (typeof value !== "string")
@@ -29,6 +32,9 @@ var HashList = class{
 
     }
 
+    /*
+        O(1)
+    */
     async getHash(tableName, key){
 
         return new Promise( (resolve)=> {
@@ -41,6 +47,9 @@ var HashList = class{
 
     }
 
+    /*
+         O(N)
+    */
     async getAllHash(tableName){
 
         return new Promise( (resolve)=> {

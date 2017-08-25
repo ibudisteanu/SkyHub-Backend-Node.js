@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var HashList = require ('../../../../DB/Redis/lists/HashList.helper.ts');
+var HashList = require ('../../../../DB/Redis/lists/HashList.helper.js');
 var commonFunctions = require ('../../helpers/CommonFunctions.helper.ts');
 
 class URLHash {

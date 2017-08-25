@@ -8,7 +8,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var HashList = require ('../HashList.helper.ts');
+var HashList = require ('../HashList.helper.js');
 var MaterializedParents = require ('./../../../common/materialized-parents/MaterializedParents.helper.ts');
 
 var hat = require('hat');

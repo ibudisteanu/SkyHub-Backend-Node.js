@@ -16,7 +16,7 @@ var redis = require ('../../redis_nohm.js');
 var List = class{
 
     constructor (tablePrefix){
-        this.tablePrefix = tablePrefix || "Hash";
+        this.tablePrefix = tablePrefix || "List";
     }
 
     /*

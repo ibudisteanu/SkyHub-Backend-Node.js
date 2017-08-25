@@ -11,7 +11,7 @@ var ForumsCtrl = require ('../forums/forums/Forums.controller.ts');
 var TopicsCtrl = require ('../forums/topics/Topics.controller.ts');
 var RepliesCtrl = require ('../forums/replies/Replies.controller.ts');
 var VotingCtrl = require ('../voting/Voting.controller.ts');
-var NotificationsCtrl = require ('../notifications/Notifications.controller.ts');
+var NotificationsCtrl = require ('../notifications/notifications/Notifications.controller.js');
 var MongoImporter = require ('../../DB/mongo-importer/MongoImporter.ts');
 
 var TopContentCtrl = require ('../forums/top-content/TopContent.controller.ts');
@@ -224,12 +224,12 @@ router.get('/test/meta-extractor', function (req,res,next){
 });
 
 router.get('/test/voting', function (req,res,next){
-    let VotingHelper = require ('../voting/helpers/Votings.helper.ts');
+    let VotingHelper = require ('../voting/helpers/Votings.helper.js');
     res.json( {message: VotingHelper.test() });
 });
 
 router.get('/test/notifications', function (req,res,next){
-    let NotificationsHelper = require ('../notifications/helpers/Notifications.helper.ts');
+    let NotificationsHelper = require ('../notifications/notifications/helpers/Notifications.helper.js');
     res.json( {message: NotificationsHelper.test() });
 });
 

@@ -14,15 +14,21 @@ var router = express.Router();
 // api/admin/XXXXX
 
 router.get('/sort', function (req, res){
-    let AdminCtrl = require ('./../Admin.controller.ts');
+    let AdminCtrl = require ('../Admin.controller.js');
     res.json( {message: AdminCtrl.sort() });
 });
 
 router.get('/replace-uploaded-files-substring', function (req, res){
-    let AdminCtrl = require ('./../Admin.controller.ts');
+    let AdminCtrl = require ('../Admin.controller.js');
     //res.json( {message: AdminCtrl.replaceUploadedFilesSubstring("myskyhub.ddns.net:4000","skyhub.me:4000") });
     //res.json( {message: AdminCtrl.replaceUploadedFilesSubstring("http://skyhub.me:4000/uploads","http://skyhub.me:4000/public/uploads") });
     res.json( {message: AdminCtrl.replaceUploadedFilesSubstring("myskyhub.ddns.net:4000","skyhub.me:4000") });
+});
+
+
+router.get('/build-notifications-subscribers-lists', function (req, res){
+    let AdminCtrl = require ('../Admin.controller.js');
+    res.json( {message: AdminCtrl.buildNotificationsSubscribersLists() });
 });
 
 

@@ -10,9 +10,11 @@ var MaterializedParentsHelper = require ('../../../../DB/common/materialized-par
 var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
 var striptags = require('striptags');
 var hat = require ('hat');
-var VotingsHelper = require ('./../../../voting/helpers/Votings.helper.ts');
+var VotingsHelper = require ('../../../voting/helpers/Votings.helper.js');
 var RepliesSorter = require('./../models/RepliesSorter.ts');
 var SanitizeAdvanced = require('./../../../common/helpers/SanitizeAdvanced.ts');
+
+var NotificationsCreator = require ('../../../notifications/NotificationsCreator.js');
 
 module.exports = {
 
@@ -161,6 +163,7 @@ module.exports = {
                         await RepliesSorter.initializeSorterInDB(reply.id, reply.p('dtCreation'));
                         await reply.keepParentsStatistics();
 
+                        NotificationsCreator.newReply(reply, reply.p('title'), '', reply.p('description'), userAuthenticated );
 
                         var SearchesHelper = require ('../../../searches/helpers/Searches.helper.ts');
                         SearchesHelper.addReplyToSearch(null, reply); //async, but not awaited

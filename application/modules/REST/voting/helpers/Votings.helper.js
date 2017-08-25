@@ -4,11 +4,11 @@
  */
 
 
-var HashList = require ('../../../DB/Redis/lists/HashList.helper.ts');
+var HashList = require ('../../../DB/Redis/lists/HashList.helper.js');
 var commonFunctions = require ('../../common/helpers/CommonFunctions.helper.ts');
 
 var VoteType = require ('../models/VoteType.js');
-var VotingHelper = require ('./Voting.helper.ts');
+var VotingHelper = require ('./Voting.hashlist.js');
 
 class VotingHash {
 

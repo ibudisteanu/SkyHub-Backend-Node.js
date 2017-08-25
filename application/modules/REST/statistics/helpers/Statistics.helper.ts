@@ -4,10 +4,10 @@
  */
 
 var UniqueVisitorsHelper = require ('../visitors/helpers/UniqueVisitors.helper.ts');
-var HashList = require ('../../../DB/Redis/lists/HashList.helper.ts');
+var HashList = require ('../../../DB/Redis/lists/HashList.helper.js');
 var VoteType = require ('../../voting/models/VoteType.js');
 
-let VotingHelper = require ('../../voting/helpers/Voting.helper.ts');
+let VotingHelper = require ('../../voting/helpers/Voting.hashlist.js');
 var MaterializedParentsHelper = require ('../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
 
 var StatisticsHelper = class {

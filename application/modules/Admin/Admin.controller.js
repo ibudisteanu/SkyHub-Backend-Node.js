@@ -15,43 +15,37 @@ var userModel = require ('../REST/users/auth/models/User.model.ts');
 var replyModel = require ('./../REST/forums/replies/models/Reply.model.ts');
 var topicModel = require ('./../REST/forums/topics/models/Topic.model.ts');
 
+let NotificationsCreator = require ('./../REST/notifications/NotificationsCreator.js');
+let NotificationsSubscribersHashList = require ('./../REST/notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
 
 class AdminController {
 
     async sort(){
-
 
         let forumModelORM = redis.nohm.factory('ForumModel');
         let userModelORM = redis.nohm.factory('UserModel');
         let topicModelORM = redis.nohm.factory('TopicModel');
         let replyModelORM = redis.nohm.factory('ReplyModel');
 
-        let parent = this;
-
-
-        let promise = new Promise( (resolve) => {
+        await new Promise( (resolve) => {
             forumModelORM.find(async function (err, ids){
 
                 for (let i=0; i<ids.length; i++){
-                    var ForumsHelper = require ('./../REST/forums/forums/helpers/Forums.helper.ts');
+                    let ForumsHelper = require ('./../REST/forums/forums/helpers/Forums.helper.ts');
                     let index = await ForumsHelper.findForumById(ids[i]);
-
 
                     await StatisticsHelper.keepElementSortedList(index.id, index.p('parents'));
                 }
-
 
                 resolve(true);
             }.bind(this) );
         });
 
-        await promise;
-
-        promise = new Promise( (resolve) => {
+        await new Promise( (resolve) => {
             userModelORM.find(async function (err, ids) {
 
                 for (let i = 0; i < ids.length; i++) {
-                    var UsersHelper = require ('./../REST/users/auth/helpers/Users.helper.ts');
+                    let UsersHelper = require ('./../REST/users/auth/helpers/Users.helper.ts');
                     let index = await UsersHelper.findUserById(ids[i]);
                 }
 
@@ -59,15 +53,12 @@ class AdminController {
             }.bind(this));
         });
 
-        await promise;
-
-        promise = new Promise( (resolve) => {
+        await new Promise( (resolve) => {
             topicModelORM.find(async function (err, ids) {
 
                 for (let i=0; i<ids.length; i++){
-                    var TopicsHelper = require ('./../REST/forums/topics/helpers/Topics.helper.ts');
+                    let TopicsHelper = require ('./../REST/forums/topics/helpers/Topics.helper.ts');
                     let index = await TopicsHelper.findTopicById(ids[i]);
-
 
                     await StatisticsHelper.keepElementSortedList(index.id, index.p('parents'));
                 }
@@ -77,16 +68,13 @@ class AdminController {
             }.bind(this));
         });
 
-        await promise;
-
-        promise = new Promise( (resolve) => {
+        await Promise( (resolve) => {
             replyModelORM.find(async function (err, ids){
 
                 for (let i=0; i<ids.length; i++){
 
-                    var RepliesHelper = require ('./../REST/forums/replies/helpers/Replies.helper.ts');
+                    let RepliesHelper = require ('./../REST/forums/replies/helpers/Replies.helper.ts');
                     let index = await RepliesHelper.findReplyById(ids[i]);
-
 
                     await StatisticsHelper.keepElementSortedList(index.id, index.p('parents'));
                 }
@@ -95,25 +83,20 @@ class AdminController {
             }.bind(this) );
         });
 
-        await promise;
     }
 
     async replaceUploadedFilesSubstring(substrToReplace, substrReplace){
-
 
         let forumModelORM = redis.nohm.factory('ForumModel');
         let userModelORM = redis.nohm.factory('UserModel');
         let topicModelORM = redis.nohm.factory('TopicModel');
         let replyModelORM = redis.nohm.factory('ReplyModel');
 
-        let parent = this;
-
-
-        let promise = new Promise( (resolve) => {
+        await new Promise( (resolve) => {
             forumModelORM.find(async function (err, ids){
 
                 for (let i=0; i<ids.length; i++){
-                    var ForumsHelper = require ('./../REST/forums/forums/helpers/Forums.helper.ts');
+                    let ForumsHelper = require ('./../REST/forums/forums/helpers/Forums.helper.ts');
                     let forum = await ForumsHelper.findForumById(ids[i]);
 
                     if (forum !== null){
@@ -138,13 +121,11 @@ class AdminController {
             }.bind(this) );
         });
 
-        await promise;
-
-        promise = new Promise( (resolve) => {
+        await new Promise( (resolve) => {
             userModelORM.find(async function (err, ids) {
 
                 for (let i = 0; i < ids.length; i++) {
-                    var UsersHelper = require ('./../REST/users/auth/helpers/Users.helper.ts');
+                    let UsersHelper = require ('./../REST/users/auth/helpers/Users.helper.ts');
                     let user = await UsersHelper.findUserById(ids[i]);
 
                     if (user !== null){
@@ -170,14 +151,12 @@ class AdminController {
             }.bind(this));
         });
 
-        await promise;
-
-        promise = new Promise( (resolve) => {
+        await new Promise( (resolve) => {
 
             topicModelORM.find(async function (err, ids) {
 
                 for (let i=0; i<ids.length; i++){
-                    var TopicsHelper = require ('./../REST/forums/topics/helpers/Topics.helper.ts');
+                    let TopicsHelper = require ('./../REST/forums/topics/helpers/Topics.helper.ts');
                     let topic = await TopicsHelper.findTopicById(ids[i]);
 
                     if (topic !== null){
@@ -219,14 +198,13 @@ class AdminController {
             }.bind(this));
         });
 
-        await promise;
 
-        promise = new Promise( (resolve) => {
+        await new Promise( (resolve) => {
             replyModelORM.find(async function (err, ids){
 
                 for (let i=0; i<ids.length; i++){
 
-                    var RepliesHelper = require ('./../REST/forums/replies/helpers/Replies.helper.ts');
+                    let RepliesHelper = require ('./../REST/forums/replies/helpers/Replies.helper.ts');
                     let reply = await RepliesHelper.findReplyById(ids[i]);
 
                     if (reply !== null){
@@ -263,7 +241,66 @@ class AdminController {
             }.bind(this) );
         });
 
-        await promise;
+    }
+
+
+    async buildNotificationsSubscribersLists(){
+
+
+        let forumModelORM = redis.nohm.factory('ForumModel');
+        let topicModelORM = redis.nohm.factory('TopicModel');
+        let replyModelORM = redis.nohm.factory('ReplyModel');
+
+        await new Promise( (resolve) => {
+            forumModelORM.find(async function (err, ids){
+
+                for (let i=0; i<ids.length; i++){
+                    let ForumsHelper = require ('./../REST/forums/forums/helpers/Forums.helper.ts');
+                    let forum = await ForumsHelper.findForumById(ids[i]);
+
+                    if (forum !== null)
+                        NotificationsSubscribersHashList.subscribeUserToNotifications(forum.p('authorId'), forum, true);
+                }
+
+                resolve(true);
+            }.bind(this) );
+        });
+
+        await new Promise( (resolve) => {
+            topicModelORM.find(async function (err, ids) {
+
+                for (let i=0; i<ids.length; i++){
+                    let TopicsHelper = require ('./../REST/forums/topics/helpers/Topics.helper.ts');
+                    let topic = await TopicsHelper.findTopicById(ids[i]);
+
+                    if (topic !== null)
+                        NotificationsSubscribersHashList.subscribeUserToNotifications(topic.p('authorId'), topic, true);
+
+                }
+
+
+                resolve(true);
+
+            }.bind(this));
+        });
+
+        await new Promise( (resolve) => {
+            replyModelORM.find(async function (err, ids){
+
+                for (let i=0; i<ids.length; i++){
+
+                    let RepliesHelper = require ('./../REST/forums/replies/helpers/Replies.helper.ts');
+                    let reply = await RepliesHelper.findReplyById(ids[i]);
+
+                    if (reply !== null)
+                        NotificationsSubscribersHashList.subscribeUserToNotifications(reply.p('authorId'), reply.p('parentId'), true);
+
+                }
+
+                resolve(true);
+            }.bind(this) );
+        });
+
     }
 }
 

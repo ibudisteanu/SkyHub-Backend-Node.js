@@ -4,7 +4,7 @@
  */
 
 var ScoreCoefficientHelper = require ('../../../../DB/common/score-coefficient/ScoreCoefficient.helper.ts');
-var HashList = require ('../../../../DB/Redis/lists/HashList.helper.ts');
+var HashList = require ('../../../../DB/Redis/lists/HashList.helper.js');
 var TopRepliesHelper = require ('./../../top-content/helpers/TopReplies.helper.ts');
 
 var RepliesSorter = class{

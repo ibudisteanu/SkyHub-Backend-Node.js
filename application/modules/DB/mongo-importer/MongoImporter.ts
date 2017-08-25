@@ -18,7 +18,7 @@ var SessionsHashList = require ('./../../REST/users/auth/sessions/helpers/Sessio
 var ForumsHelper = require ('../../REST/forums/forums/helpers/Forums.helper.ts');
 var TopicsHelper = require ('../../REST/forums/topics/helpers/Topics.helper.ts');
 var RepliesHelper = require ('../../REST/forums/replies/helpers/Replies.helper.ts');
-var VotingsHelper = require ('../../REST/voting/helpers/Votings.helper.ts');
+var VotingsHelper = require ('../../REST/voting/helpers/Votings.helper.js');
 var StatisticsHelper = require ('../../REST/statistics/helpers/Statistics.helper.ts');
 var VoteType = require ('./../../REST/voting/models/VoteType.js');
 

@@ -4,7 +4,7 @@
  */
 
 var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.ts');
-var VotingsHelper = require ('../../../voting/helpers/Votings.helper.ts');
+var VotingsHelper = require ('../../../voting/helpers/Votings.helper.js');
 
 class ContentHelper {
 

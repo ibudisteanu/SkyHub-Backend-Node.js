@@ -4,9 +4,9 @@
  */
 
 
-var NotificationsHelper = require('./helpers/Notifications.helper.ts');
+var NotificationsHelper = require('./helpers/Notifications.helper.js');
 
-var AuthenticatingUser = require('../users/auth/helpers/AuthenticatingUser.helper.ts');
+var AuthenticatingUser = require('../../users/auth/helpers/AuthenticatingUser.helper.ts');
 
 module.exports = {
 

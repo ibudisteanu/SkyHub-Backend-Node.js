@@ -4,7 +4,7 @@
  */
 
 var redis = require ('../../redis_nohm.js');
-var VotingHelper = require('./../../../REST/voting/helpers/Votings.helper.ts');
+var VotingHelper = require('../../../REST/voting/helpers/Votings.helper.js');
 
 var ScoreCoefficient = class{
 
