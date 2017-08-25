@@ -15,11 +15,12 @@
  */
 
 
-var List = require ('../../../../DB/Redis/lists/List.helper.js');
-var HashList = require ('../../../../DB/Redis/lists/HashList.helper.js');
-var commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
-var nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator');
-var Notification = require ('../models/Notification.model.js');
+let List = require ('../../../../DB/Redis/lists/List.helper.js');
+let HashList = require ('../../../../DB/Redis/lists/HashList.helper.js');
+let commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
+let nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator');
+let Notification = require ('../models/Notification.model.js');
+let SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
 
 const NOTIFICATIONS_DB_MAXIMUM = 100;
 
@@ -175,15 +176,19 @@ class NotificationsListHelper {
         return newNotification;
     }
 
-    createNewUserNotificationFromUser(userId, template, userSourceId, title, body, anchor, image){
+    createNewUserNotificationFromUser(userId,  template, objectId, userSourceId, title, body, anchor, image){
 
         if (typeof userSourceId === 'object') userSourceId =  userSourceId.id;
 
-        title = body.substr(0,100);
-        body = body.substr(0,500);
+        title = SanitizeAdvanced.sanitizeStripAllTags(title);
+        body = SanitizeAdvanced.sanitizeStripAllTags(body);
+
+        if (title.length > 50) title = title.substr(0,50)+'...';
+        if (body.length > 40) body = body.substr(0,40)+'...';
 
         return this.createNewUserNotification(userId, template, {
             userSourceId: userSourceId,
+            objectId: objectId,
             title: title,
             body: body,
             anchor: anchor,
@@ -194,21 +199,21 @@ class NotificationsListHelper {
 
     async test(){
 
-        console.log('createNewUserNotificationFromUser', await this.createNewUserNotificationFromUser('user1','template','userX','TITLU','TEXT','IMAGE'));
-        console.log('createNewUserNotificationFromUser', await this.createNewUserNotificationFromUser('user1','template','userY','TITLU2','TEXT2','IMAGE2'));
+        console.log('createNewUserNotificationFromUser', await this.createNewUserNotificationFromUser('user1','template','111','userX','TITLU','TEXT','IMAGE'));
+        console.log('createNewUserNotificationFromUser', await this.createNewUserNotificationFromUser('user1','template','111','userY','TITLU2','TEXT2','IMAGE2'));
 
         for (let i=0; i< 120; i++){
-            console.log('createNewUserNotificationFromUser', await this.createNewUserNotificationFromUser('user1','template','user'+i,'TITLU2','TEXT2','IMAGE2'));
+            console.log('createNewUserNotificationFromUser', await this.createNewUserNotificationFromUser('user1','template','111','user'+i,'TITLU2','TEXT2','IMAGE2'));
         }
 
         await this.markNotificationRead('user1','user55', true, true);
         await this.markNotificationRead('user1','user55', false, false);
 
-        console.log('createNewUserNotificationFromUser', await this.createNewUserNotificationFromUser('1_user_14987719886059997','template','userY','TITLU2','TEXT2','IMAGE2'));
+        console.log('createNewUserNotificationFromUser', await this.createNewUserNotificationFromUser('1_user_14987719886059997','template','111','userY','TITLU2','TEXT2','IMAGE2'));
 
         let userId = '1_user_14979557751049105';
 
-        console.log('createNewUserNotificationFromUser', await this.createNewUserNotificationFromUser(userId,'template','1_user_14987719886059997','TITLU'+await this.list.listLength(userId),'TEXT2','IMAGE2'));
+        console.log('createNewUserNotificationFromUser', await this.createNewUserNotificationFromUser(userId,'template','111','1_user_14987719886059997','TITLU'+await this.list.listLength(userId),'TEXT2','IMAGE2'));
 
         //console.log('getUserNotifications', await this.getUserNotifications('user1', 1, 8));
 

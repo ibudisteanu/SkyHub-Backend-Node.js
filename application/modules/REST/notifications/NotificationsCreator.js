@@ -4,30 +4,32 @@ let NotificationsSubscribersHashList = require ('./subscribers/helpers/Notificat
 
 class NotificationsCreator {
 
-    async newReply(topic, title,  body, anchor, image, author, ){
+    async newReply(topicId, title,  body, anchor, image, author, ){
 
-        NotificationsSubscribersHashList.subscribeUserToNotifications(author, topic);
+        if (topicId === 'object') topicId = topicId.id;
 
-        let users = await NotificationsSubscribersHashList.getSubscribedUsersList(topic, author);
+        NotificationsSubscribersHashList.subscribeUserToNotifications(author, topicId);
 
-        console.log("subscribers",users);
+        let users = await NotificationsSubscribersHashList.getSubscribedUsersList(topicId, author);
 
         if (users !== null)
         for (let i=0; i<users.length; i++){
             let user = users[i];
-            await NotificationsHelper.createNewUserNotificationFromUser(user, 'new-reply', author, title, body, anchor, image);
+            await NotificationsHelper.createNewUserNotificationFromUser(user, 'new-reply', topicId, author, title, body, anchor, image);
         }
     }
 
-    async newTopic(forum, title, body, anchor, image, author, ){
+    async newTopic(forumId, title, body, anchor, image, author, ){
 
-        NotificationsSubscribersHashList.subscribeUserToNotifications(author, forum);
+        if (forumId === 'object') forumId = forumId.id;
+
+        NotificationsSubscribersHashList.subscribeUserToNotifications(author, forumId);
 
         let users = NotificationsSubscribersHashList.getSubscribedUsersList(author, author);
 
         for (let i=0; i<users.length; i++){
             let user = users[i];
-            await NotificationsHelper.createNewUserNotificationFromUser(user, 'new-reply', author, title, body, anchor, image);
+            await NotificationsHelper.createNewUserNotificationFromUser(user, 'new-reply', forumId, author, title, body, anchor, image);
         }
     }
 

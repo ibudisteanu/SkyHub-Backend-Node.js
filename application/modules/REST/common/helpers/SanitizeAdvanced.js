@@ -5,16 +5,28 @@ var tidy = require('htmltidy2').tidy;
 
 module.exports = {
 
-    cleanHTML_old(text){
-        text = tidy(text, {"indent-spaces": 4});
-        return text;
-    },
+    // cleanHTML_old(text){
+    //     text = tidy(text, {"indent-spaces": 4});
+    //     return text;
+    // },
+    //
+    // cleanHTML(text){
+    //     tidy('<table><tr><td>badly formatted html</tr>', function(err, html) {
+    //         text = html;
+    //     });
+    //     return text;
+    // },
 
-    cleanHTML(text){
-        tidy('<table><tr><td>badly formatted html</tr>', function(err, html) {
-            text = html;
-        });
-        return text;
+    sanitizeStripAllTags(text, allowedTags, allowedAttributes){
+
+        if (typeof allowedTags === 'undefined') allowedTags = [];
+        if (typeof allowedAttributes === 'undefined') allowedAttributes = {};
+
+        return sanitizeHtml(text,
+            {
+                allowedTags: allowedTags,
+                allowedAttributes: allowedAttributes,
+            });
     },
 
     sanitizeAdvanced(text,enableAnchors) {
