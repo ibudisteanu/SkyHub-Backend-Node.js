@@ -3,18 +3,18 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var replyModel = require ('../models/Reply.model.js');
-var commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
-var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
-var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.js');
-var SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
-var striptags = require('striptags');
-var hat = require ('hat');
-var VotingsHelper = require ('../../../voting/helpers/Votings.helper.js');
-var RepliesSorter = require('../models/RepliesSorter.js');
-var SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
+let replyModel = require ('../models/Reply.model.js');
+let commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
+let URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
+let MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.js');
+let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
+let striptags = require('striptags');
+let hat = require ('hat');
+let VotingsHelper = require ('../../../voting/helpers/Votings.helper.js');
+let RepliesSorter = require('../models/RepliesSorter.js');
+let SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
 
-var NotificationsCreator = require ('../../../notifications/NotificationsCreator.js');
+let NotificationsCreator = require ('../../../notifications/NotificationsCreator.js');
 
 module.exports = {
 
@@ -34,7 +34,7 @@ module.exports = {
 
         console.log("Finding reply :::  " + sRequest);
 
-        var replyFound = await this.findForumById(sRequest);
+        let replyFound = await this.findForumById(sRequest);
 
         if (replyFound !== null) return replyFound;
         else return await this.findForumByURL(sRequest);
@@ -44,7 +44,7 @@ module.exports = {
 
         return new Promise( (resolve)=> {
 
-            if ((typeof sId === 'undefined') || (sId == []) || (sId === null))
+            if ((typeof sId === 'undefined') || (sId === null) || (sId == []) )
                 resolve(null);
             else
                 var ReplyModel  = redis.nohm.factory('ReplyModel', sId, function (err, reply) {
@@ -59,12 +59,12 @@ module.exports = {
 
         sURL = sURL || "";
         return new Promise( (resolve)=> {
-            if ((typeof sURL === 'undefined') || (sURL == []) || (sURL === null))
+            if ((typeof sURL === 'undefined') || (sURL === null) || (sURL == []) )
                 resolve(null);
             else
                 return null;
 
-            var ReplyModel = redis.nohm.factory('ReplyModel');
+            let ReplyModel = redis.nohm.factory('ReplyModel');
             ReplyModel.findAndLoad(  {URL: sURL }, function (err, replies) {
                 if (replies.length) resolve(replies[0]);
                 else resolve (null);
@@ -87,8 +87,8 @@ module.exports = {
             sLanguage = sLanguage || sCountry;
             parent = parent || '';
 
-            var reply = redis.nohm.factory('ReplyModel');
-            var errorValidation = {};
+            let reply = redis.nohm.factory('ReplyModel');
+            let errorValidation = {};
 
 
             //get object from parent
@@ -163,9 +163,10 @@ module.exports = {
                         await RepliesSorter.initializeSorterInDB(reply.id, reply.p('dtCreation'));
                         await reply.keepParentsStatistics();
 
-                        NotificationsCreator.newReply(reply, reply.p('title'), '', reply.p('description'), userAuthenticated );
+                        console.log('##################### NotificationsCreator');
+                        NotificationsCreator.newReply(reply.p('parentId'), reply.p('title'), reply.p('description'), reply.p('URL'), '', userAuthenticated );
 
-                        var SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
+                        let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
                         SearchesHelper.addReplyToSearch(null, reply); //async, but not awaited
 
                         //console.log(reply.getPublicInformation(userAuthenticated));

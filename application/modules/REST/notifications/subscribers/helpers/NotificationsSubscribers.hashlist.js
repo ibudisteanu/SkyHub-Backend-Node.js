@@ -11,7 +11,7 @@ class NotificationsSubscribersList {
 
     //List
     constructor(){
-        this.hashList = new HashList("NotificationsSubscribers");
+        this.hashList = new HashList("Notifications:Subscribers");
     }
 
     subscribeUserToNotifications(user, object, forceSubscribe){
@@ -49,20 +49,27 @@ class NotificationsSubscribersList {
         }
     }
 
-    getSubscribedUsersList(object, exceptUser){
+    async getSubscribedUsersList(object, exceptUser){
         if ((typeof object === 'undefined')||((object === null))) return [];
         if (typeof object === 'object')  object = object.id;
 
         if (typeof exceptUser === 'object') exceptUser = exceptUser.id;
         if (typeof exceptUser === 'undefined') exceptUser = null;
 
-        let result = this.hashList.getAllHash(object);
+        let arrSubscribers = await this.hashList.getAllHash(object);
 
-        if (result === null) result = [];
-        else {
-            for (let i=result.length-1; i>=0; i--)
-                if (result[i] === exceptUser)
-                    result.splice(i,1);
+        let result = []
+        if (arrSubscribers !== null) {
+
+            for(let subscriber in arrSubscribers){
+
+                let subscriberValue = parseInt(arrSubscribers[subscriber]);
+
+
+                if ((subscriberValue === NotificationSubscriberType.NOTIFICATIONS_SUBSCRIBED )&&(subscriber !== exceptUser)){
+                    result.push(subscriber);
+                }
+            }
         }
 
         return result;

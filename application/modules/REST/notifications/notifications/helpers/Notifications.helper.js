@@ -175,7 +175,7 @@ class NotificationsListHelper {
         return newNotification;
     }
 
-    createNewUserNotificationFromUser(userId, template, userSourceId, title, body, image){
+    createNewUserNotificationFromUser(userId, template, userSourceId, title, body, anchor, image){
 
         if (typeof userSourceId === 'object') userSourceId =  userSourceId.id;
 
@@ -186,6 +186,7 @@ class NotificationsListHelper {
             userSourceId: userSourceId,
             title: title,
             body: body,
+            anchor: anchor,
             image: image,
         });
 

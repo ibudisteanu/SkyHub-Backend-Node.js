@@ -49,13 +49,18 @@ var HashList = class{
 
     /*
          O(N)
+         It returns an object
+         {
+             'key1':'value',
+             'key2':'value2',...
+         }
     */
     async getAllHash(tableName){
 
         return new Promise( (resolve)=> {
             redis.redisClient.hgetall (this.tablePrefix + ":" + tableName, function (err, answer) {
 
-                console.log("getAllHash ##",key,"###",err,answer);
+                console.log("getAllHash ##",tableName,"###",err,answer);
                 resolve (err === null ? answer : null);
             });
         });

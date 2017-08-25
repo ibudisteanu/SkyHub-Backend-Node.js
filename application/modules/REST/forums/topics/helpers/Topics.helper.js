@@ -3,16 +3,18 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var topicModel = require ('../models/Topic.model.js');
-var commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
-var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
-var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.js');
-var SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
-var striptags = require('striptags');
-var VotingsHelper = require ('../../../voting/helpers/Votings.helper.js');
-var TopicsSorter = require('../models/TopicsSorter.js');
-var sanitizeHtml = require('sanitize-html');
-var SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
+let topicModel = require ('../models/Topic.model.js');
+let commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
+let URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
+let MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.js');
+let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
+let striptags = require('striptags');
+let VotingsHelper = require ('../../../voting/helpers/Votings.helper.js');
+let TopicsSorter = require('../models/TopicsSorter.js');
+let sanitizeHtml = require('sanitize-html');
+let SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
+
+let NotificationsCreator = require ('../../../notifications/NotificationsCreator.js');
 
 module.exports = {
 
@@ -32,7 +34,7 @@ module.exports = {
 
         console.log("Finding topic :::  " + sRequest);
 
-        var topicFound = await this.findTopicById(sRequest);
+        let topicFound = await this.findTopicById(sRequest);
 
         if (topicFound !== null) return topicFound;
         else return await this.findTopicByURL(sRequest);
@@ -42,10 +44,10 @@ module.exports = {
 
         return new Promise( (resolve)=> {
 
-            if ((typeof sId === 'undefined') || (sId == []) || (sId === null))
+            if ((typeof sId === 'undefined') || (sId === null) || (sId == []) )
                 resolve(null);
             else
-                var TopicModel  = redis.nohm.factory('TopicModel', sId, function (err, forum) {
+                var TopicModel  = redis.nohm.factory('TopicModel', sId, function (err, topic) {
                     if (err) resolve (null);
                     else resolve (TopicModel);
                 });
@@ -57,12 +59,12 @@ module.exports = {
 
         sURL = sURL || "";
         return new Promise( (resolve)=> {
-            if ((typeof sURL === 'undefined') || (sURL == []) || (sURL === null))
+            if ((typeof sURL === 'undefined') || (sURL === null) || (sURL == []) )
                 resolve(null);
             else
                 return null;
 
-            var TopicModel = redis.nohm.factory('ForumModel');
+            let TopicModel = redis.nohm.factory('ForumModel');
             TopicModel.findAndLoad(  {URL: sURL }, function (err, topics) {
                 if (topics.length) resolve(topics[0]);
                 else resolve (null);
@@ -86,8 +88,8 @@ module.exports = {
         sLanguage = sLanguage || sCountry;
         parent = parent || '';
 
-        var topic = redis.nohm.factory('TopicModel');
-        var errorValidation = {};
+        let topic = redis.nohm.factory('TopicModel');
+        let errorValidation = {};
 
         //get object from parent
         console.log("addTopic ===============", userAuthenticated);
@@ -162,12 +164,14 @@ module.exports = {
                     await VotingsHelper.initializeVoteInDB(topic.id, topic.p('parents'));
                     await TopicsSorter.initializeSorterInDB(topic.id, topic.p('dtCreation'));
 
+                    NotificationsCreator.newTopic(topic.p('parentId'), topic.p('title'), topic.p('description'), topic.p('URL'), '', userAuthenticated );
+
                     if (arrAdditionalInfo.scrapped === true){ //it has been scrapped...
 
                     } else {
                         await topic.keepParentsStatistics(+1);
 
-                        var SearchesHelper = require('../../../searches/helpers/Searches.helper.js');
+                        let SearchesHelper = require('../../../searches/helpers/Searches.helper.js');
                         SearchesHelper.addTopicToSearch(null, topic); //async, but not awaited
                     }
 

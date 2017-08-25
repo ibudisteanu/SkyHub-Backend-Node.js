@@ -4,19 +4,22 @@ let NotificationsSubscribersHashList = require ('./subscribers/helpers/Notificat
 
 class NotificationsCreator {
 
-    newReply(topic, title,  body, image, author, ){
+    async newReply(topic, title,  body, anchor, image, author, ){
 
         NotificationsSubscribersHashList.subscribeUserToNotifications(author, topic);
 
-        let users = NotificationsSubscribersHashList.getSubscribedUsersList(author, author);
+        let users = await NotificationsSubscribersHashList.getSubscribedUsersList(topic, author);
 
+        console.log("subscribers",users);
+
+        if (users !== null)
         for (let i=0; i<users.length; i++){
             let user = users[i];
-            NotificationsHelper.createNewUserNotificationFromUser(user, 'new-reply', author, title, body, image);
+            await NotificationsHelper.createNewUserNotificationFromUser(user, 'new-reply', author, title, body, anchor, image);
         }
     }
 
-    newTopic(forum, title, body, image, author, ){
+    async newTopic(forum, title, body, anchor, image, author, ){
 
         NotificationsSubscribersHashList.subscribeUserToNotifications(author, forum);
 
@@ -24,7 +27,7 @@ class NotificationsCreator {
 
         for (let i=0; i<users.length; i++){
             let user = users[i];
-            NotificationsHelper.createNewUserNotificationFromUser(user, 'new-reply', author, title, body, image);
+            await NotificationsHelper.createNewUserNotificationFromUser(user, 'new-reply', author, title, body, anchor, image);
         }
     }
 

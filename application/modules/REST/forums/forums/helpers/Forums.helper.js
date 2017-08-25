@@ -38,7 +38,7 @@ module.exports = {
 
         return new Promise( (resolve)=> {
 
-            if ((typeof sId === 'undefined') || (sId == []) || (sId === null))
+            if ((typeof sId === 'undefined') || (sId === null) || (sId == []) )
                 resolve(null);
             else
             var ForumModel  = redis.nohm.factory('ForumModel', sId, function (err, forum) {
