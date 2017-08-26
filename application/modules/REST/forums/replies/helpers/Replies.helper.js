@@ -15,6 +15,7 @@ let RepliesSorter = require('../models/RepliesSorter.js');
 let SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
 
 let NotificationsCreator = require ('../../../notifications/NotificationsCreator.js');
+let NotificationsSubscribersHashList = require ('./../../../notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
 
 module.exports = {
 
@@ -163,8 +164,8 @@ module.exports = {
                         await RepliesSorter.initializeSorterInDB(reply.id, reply.p('dtCreation'));
                         await reply.keepParentsStatistics();
 
-                        console.log('##################### NotificationsCreator');
                         NotificationsCreator.newReply(reply.p('parentId'), reply.p('title'), reply.p('description'), reply.p('URL'), '', userAuthenticated );
+                        NotificationsSubscribersHashList.subscribeUserToNotifications(reply.p('authorId'), reply.p('parentId'), true);
 
                         let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
                         SearchesHelper.addReplyToSearch(null, reply); //async, but not awaited

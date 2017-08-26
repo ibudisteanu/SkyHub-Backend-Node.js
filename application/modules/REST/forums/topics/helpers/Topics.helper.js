@@ -15,6 +15,7 @@ let sanitizeHtml = require('sanitize-html');
 let SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
 
 let NotificationsCreator = require ('../../../notifications/NotificationsCreator.js');
+let NotificationsSubscribersHashList = require ('./../../../notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
 
 module.exports = {
 
@@ -165,6 +166,7 @@ module.exports = {
                     await TopicsSorter.initializeSorterInDB(topic.id, topic.p('dtCreation'));
 
                     NotificationsCreator.newTopic(topic.p('parentId'), topic.p('title'), topic.p('description'), topic.p('URL'), '', userAuthenticated );
+                    NotificationsSubscribersHashList.subscribeUserToNotifications(topic.p('authorId'), topic, true);
 
                     if (arrAdditionalInfo.scrapped === true){ //it has been scrapped...
 

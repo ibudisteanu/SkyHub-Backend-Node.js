@@ -3,12 +3,15 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var forumModel = require ('../models/Forum.model.js');
-var commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
-var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
-var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.js');
-var SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
-var ForumsSorter = require('../models/ForumsSorter.js');
+let forumModel = require ('../models/Forum.model.js');
+let commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
+let URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
+let MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.js');
+let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
+let ForumsSorter = require('../models/ForumsSorter.js');
+
+let NotificationsCreator = require ('../../../notifications/NotificationsCreator.js');
+let NotificationsSubscribersHashList = require ('./../../../notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
 
 module.exports = {
 
@@ -28,7 +31,7 @@ module.exports = {
 
         console.log("Finding forum :::  " + sRequest);
 
-        var forumFound = await this.findForumById(sRequest);
+        let forumFound = await this.findForumById(sRequest);
 
         if (forumFound !== null) return forumFound;
         else return await this.findForumByURL(sRequest);
@@ -58,7 +61,7 @@ module.exports = {
             else
                 return null;
 
-            var TopicModel = redis.nohm.factory('ForumModel');
+            let TopicModel = redis.nohm.factory('ForumModel');
             TopicModel.findAndLoad(  {URL: sURL }, function (err, topics) {
                 if (topics.length) resolve(topics[0]);
                 else resolve (null);
@@ -84,8 +87,8 @@ module.exports = {
 
         while (sCoverColor.length < 6) sCoverColor = sCoverColor + '0';
 
-        var forum = redis.nohm.factory('ForumModel');
-        var errorValidation = {};
+        let forum = redis.nohm.factory('ForumModel');
+        let errorValidation = {};
 
 
         //get object from parent
@@ -144,7 +147,10 @@ module.exports = {
                     await ForumsSorter.initializeSorterInDB(forum.id, forum.p('dtCreation'));
                     await forum.keepParentsStatistics(+1);
 
-                    var SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
+                    NotificationsCreator.newForum(forum.p('parentId'), forum.p('title'), reply.p('description'), reply.p('URL'), '', userAuthenticated );
+                    NotificationsSubscribersHashList.subscribeUserToNotifications(forum.p('authorId'), forum, true);
+
+                    let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
                     SearchesHelper.addForumToSearch(null, forum); //async, but not awaited
 
                     //console.log(forum.getPublicInformation(userAuthenticated));
