@@ -7,7 +7,7 @@ var UniqueVisitorsHelper = require ('../visitors/helpers/UniqueVisitors.helper.j
 var HashList = require ('../../../DB/Redis/lists/HashList.helper.js');
 var VoteType = require ('../../voting/models/VoteType.js');
 
-let VotingHelper = require ('../../voting/helpers/Voting.hashlist.js');
+let VotingInfoHashList = require ('../../voting/helpers/VotingInfo.hashlist.js');
 var MaterializedParentsHelper = require ('../../../DB/common/materialized-parents/MaterializedParents.helper.js');
 
 var StatisticsHelper = class {
@@ -79,13 +79,13 @@ var StatisticsHelper = class {
 
     async getVoteUpsCounter(parentId){
         // it is using the VotesHelper
-        let rez = await VotingHelper.getVoteUpsValue(parentId);
+        let rez = await VotingInfoHashList.getVoteUpsValue(parentId);
         return (rez !== null ? rez : 0);
     }
 
     async getVoteDownsCounter(parentId){
         // it is using the VotesHelper
-        let rez = await VotingHelper.getVoteDownsValue(parentId);
+        let rez = await VotingInfoHashList.getVoteDownsValue(parentId);
         return (rez !== null ? rez : 0);
     }
 

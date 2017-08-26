@@ -224,8 +224,8 @@ router.get('/test/meta-extractor', function (req,res,next){
 });
 
 router.get('/test/voting', function (req,res,next){
-    let VotingHelper = require ('../voting/helpers/Votings.helper.js');
-    res.json( {message: VotingHelper.test() });
+    let VotingsHashList = require ('../voting/helpers/Votings.hashlist.js');
+    res.json( {message: VotingsHashList.test() });
 });
 
 router.get('/test/notifications', function (req,res,next){

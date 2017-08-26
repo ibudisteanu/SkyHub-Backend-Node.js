@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var VotingHelper = require('./helpers/Votings.helper.js');
+var VotingsHashList = require('./helpers/Votings.hashlist.js');
 var VoteType = require ('./models/VoteType.js');
 
 var AuthenticatingUser = require('../users/auth/helpers/AuthenticatingUser.helper.js');
@@ -26,7 +26,7 @@ module.exports = {
             voteType = req.body.voteType || VoteType.VOTE_NONE;
         }
 
-        return await VotingHelper.submitVote(parentId, userAuthenticated, voteType);
+        return await VotingsHashList.submitVote(parentId, userAuthenticated, voteType);
 
     },
 
@@ -38,7 +38,7 @@ module.exports = {
         if (req.hasOwnProperty('body'))
             parentId = req.body.parentId || '';
 
-        return await VotingHelper.getVote(parentId, userAuthenticated);
+        return await VotingsHashList.getVote(parentId, userAuthenticated);
 
     },
 
@@ -50,7 +50,7 @@ module.exports = {
         if (req.hasOwnProperty('body'))
             parentId = req.body.parentId || '';
 
-        return await VotingHelper.getVote(parentId, userAuthenticated, true);
+        return await VotingsHashList.getVote(parentId, userAuthenticated, true);
 
     },
 

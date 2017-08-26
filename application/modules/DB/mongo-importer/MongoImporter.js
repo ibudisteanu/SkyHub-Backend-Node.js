@@ -18,7 +18,7 @@ var SessionsHashList = require ('../../REST/users/auth/sessions/helpers/Sessions
 var ForumsHelper = require ('../../REST/forums/forums/helpers/Forums.helper.js');
 var TopicsHelper = require ('../../REST/forums/topics/helpers/Topics.helper.js');
 var RepliesHelper = require ('../../REST/forums/replies/helpers/Replies.helper.js');
-var VotingsHelper = require ('../../REST/voting/helpers/Votings.helper.js');
+var VotingsHashList = require ('../../REST/voting/helpers/Votings.hashlist.js');
 var StatisticsHelper = require ('../../REST/statistics/helpers/Statistics.helper.js');
 var VoteType = require ('./../../REST/voting/models/VoteType.js');
 
@@ -437,7 +437,7 @@ class MongoImporter {
                         break;
                 }
 
-                await VotingsHelper.submitVote(parent, user, voteType);
+                await VotingsHashList.submitVote(parent, user, voteType);
 
             }
 

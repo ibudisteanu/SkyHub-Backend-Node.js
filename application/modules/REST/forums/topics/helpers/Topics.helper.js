@@ -9,7 +9,7 @@ let URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js')
 let MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.js');
 let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
 let striptags = require('striptags');
-let VotingsHelper = require ('../../../voting/helpers/Votings.helper.js');
+let VotingsHashList = require ('../../../voting/helpers/Votings.hashlist.js');
 let TopicsSorter = require('../models/TopicsSorter.js');
 let sanitizeHtml = require('sanitize-html');
 let SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
@@ -161,7 +161,7 @@ module.exports = {
                     console.log("Saving Topic Successfully");
 
                     await topic.keepURLSlug();
-                    await VotingsHelper.initializeVoteInDB(topic.id, topic.p('parents'));
+                    await VotingsHashList.initializeVoteInDB(topic.id, topic.p('parents'));
                     await TopicsSorter.initializeSorterInDB(topic.id, topic.p('dtCreation'));
 
                     NotificationsCreator.newTopic(topic.p('parentId'), topic.p('title'), topic.p('description'), topic.p('URL'), '', userAuthenticated );

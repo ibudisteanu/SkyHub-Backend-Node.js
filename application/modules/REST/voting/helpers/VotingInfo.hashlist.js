@@ -4,11 +4,11 @@
  */
 
 
-var HashList = require ('../../../DB/Redis/lists/HashList.helper.js');
+let HashList = require ('../../../DB/Redis/lists/HashList.helper.js');
 
-var VoteType = require ('../models/VoteType.js');
+let VoteType = require ('../models/VoteType.js');
 
-class VotingHelper {
+class VotingInfoHashList {
 
     //HashList
     constructor(){
@@ -98,4 +98,4 @@ class VotingHelper {
 };
 
 
-module.exports = new VotingHelper();
+module.exports = new VotingInfoHashList();

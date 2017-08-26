@@ -4,13 +4,14 @@
  */
 
 
-var HashList = require ('../../../DB/Redis/lists/HashList.helper.js');
-var commonFunctions = require ('../../common/helpers/CommonFunctions.helper.js');
+let HashList = require ('../../../DB/Redis/lists/HashList.helper.js');
+let commonFunctions = require ('../../common/helpers/CommonFunctions.helper.js');
 
-var VoteType = require ('../models/VoteType.js');
-var VotingHelper = require ('./Voting.hashlist.js');
+let VoteType = require ('../models/VoteType.js');
+let VotingInfoHashList = require ('./VotingInfo.hashlist.js');
+let NotificationsCreator = require ('../../notifications/NotificationsCreator.js');
 
-class VotingHash {
+class VotingsHashList {
 
     //sortedList
     constructor(){
@@ -35,18 +36,23 @@ class VotingHash {
                 message: 'invalid vote value: '+VoteType.VOTE_NONE,
             };
 
-        let foundVoteType = parseInt(await this.hashList.getHash(parentId, userId));
+        let foundVoteType = await this.hashList.getHash(parentId, userId);
+        if (foundVoteType !== null) foundVoteType = parseInt(foundVoteType)
+
+        if ((voteType === VoteType.VOTE_UP)&&(foundVoteType === null)){
+            NotificationsCreator.newVote(parentId, userAuthenticated, voteType);
+        }
 
         await this.hashList.setHash(parentId, userId, voteType);
-        await VotingHelper.changeVoteValue(parentId, foundVoteType, voteType);
+        await VotingInfoHashList.changeVoteValue(parentId, foundVoteType, voteType);
 
         return {
             result: true,
             vote:{
-                ups: await VotingHelper.getVoteUpsValue(parentId),
-                downs: await VotingHelper.getVoteDownsValue(parentId),
+                ups: await VotingInfoHashList.getVoteUpsValue(parentId),
+                downs: await VotingInfoHashList.getVoteDownsValue(parentId),
                 parentId: parentId,
-                votes: await VotingHelper.getVotesWithOnlyUserVote(parentId, userAuthenticated),
+                votes: await VotingInfoHashList.getVotesWithOnlyUserVote(parentId, userAuthenticated),
             }
         };
 
@@ -91,10 +97,10 @@ class VotingHash {
         return {
             result:true,
             vote: {
-                ups: await VotingHelper.getVoteUpsValue(parentId),
-                downs: await VotingHelper.getVoteDownsValue(parentId),
+                ups: await VotingInfoHashList.getVoteUpsValue(parentId),
+                downs: await VotingInfoHashList.getVoteDownsValue(parentId),
                 parentId: parentId,
-                votes: ( onlyUserVote ? await VotingHelper.getVotesWithOnlyUserVote(parentId, userAuthenticated) : await this.getAllVotes(parentId, userAuthenticated) ),
+                votes: ( onlyUserVote ? await VotingInfoHashList.getVotesWithOnlyUserVote(parentId, userAuthenticated) : await this.getAllVotes(parentId, userAuthenticated) ),
             }
         }
     }
@@ -120,4 +126,4 @@ class VotingHash {
 };
 
 
-module.exports = new VotingHash();
+module.exports = new VotingsHashList();

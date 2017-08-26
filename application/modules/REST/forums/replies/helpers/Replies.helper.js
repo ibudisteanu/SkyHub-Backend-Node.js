@@ -10,7 +10,7 @@ let MaterializedParentsHelper = require ('../../../../DB/common/materialized-par
 let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
 let striptags = require('striptags');
 let hat = require ('hat');
-let VotingsHelper = require ('../../../voting/helpers/Votings.helper.js');
+let VotingsHashList = require ('../../../voting/helpers/Votings.hashlist.js');
 let RepliesSorter = require('../models/RepliesSorter.js');
 let SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
 
@@ -159,7 +159,7 @@ module.exports = {
                         console.log("Saving Reply Successfully");
 
                         await reply.keepURLSlug();
-                        await VotingsHelper.initializeVoteInDB(reply.id, reply.p('parents'));
+                        await VotingsHashList.initializeVoteInDB(reply.id, reply.p('parents'));
                         await RepliesSorter.initializeSorterInDB(reply.id, reply.p('dtCreation'));
                         await reply.keepParentsStatistics();
 
