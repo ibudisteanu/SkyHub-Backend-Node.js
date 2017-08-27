@@ -18,7 +18,7 @@ module.exports = {
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let parent='', parentReply = '', sTitle = '', sDescription = '', arrKeywords = [], arrAttachments = [], sCountry='', sCity='',sLanguage='';
-        let dbLatitude = 0, dbLongitude = 0;
+        let dbLatitude = 0, dbLongitude = 0, arrAdditionalInfo=[];
 
         //console.log("@@@@@@@@@@@@@@ postAddReply request", userAuthenticated);
 
@@ -36,13 +36,17 @@ module.exports = {
             dbLatitude = req.body.latitude || -666;
             dbLongitude = req.body.longitude || -666;
 
+            arrAdditionalInfo = req.body.additionalInfo || {};
+            if (typeof req.body["additionalInfo.scraped"] !== 'undefined') arrAdditionalInfo.scraped = !!+(req.body["additionalInfo.scraped"]);
+            if (typeof req.body["additionalInfo.dtOriginal"] !== 'undefined') arrAdditionalInfo.dtOriginal = req.body["additionalInfo.dtOriginal"]||false;
+
             parentReply = req.body.parentReply || '';
             parent = req.body.parent || '';
         }
 
         console.log('Creating a Reply : ', sTitle);
 
-        return await RepliesHelper.addReply(userAuthenticated, parent, parentReply, sTitle, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude);
+        return await RepliesHelper.addReply(userAuthenticated, parent, parentReply, sTitle, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, null, arrAdditionalInfo);
     },
 
     async getReply (req, res){

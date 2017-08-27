@@ -73,6 +73,10 @@ var ForumModel = redis.nohm.model('ForumModel', {
             type: 'json',
         },
 
+        addInfo:{
+            type: 'json',
+        },
+
         iconPic: {
             defaultValue: '',
             type: 'string',

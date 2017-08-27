@@ -74,9 +74,10 @@ module.exports = {
     /*
      CREATING A NEW FORUM
      */
-    async addForum (userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, dtCreation){
+    async addForum (userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, dtCreation, arrAdditionalInfo){
 
         if ((typeof dtCreation === 'undefined') || (dtCreation === null)) dtCreation = '';
+        if ((typeof arrAdditionalInfo === 'undefined')) arrAdditionalInfo = {};
 
         sCountry = sCountry || ''; sCity = sCity || ''; sIconPic = sIconPic || ''; sCoverPic = sCoverPic || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666;
@@ -101,6 +102,11 @@ module.exports = {
         if ((sCoverPic === '') && (parentObject !== null))
             sCoverPic = parentObject.p('coverPic');
 
+        if (((arrAdditionalInfo.scraped||false) === true)&&((arrAdditionalInfo.dtOriginal||'') !== '')) {//it has been scrapped...
+            dtCreation = arrAdditionalInfo.dtOriginal;
+            delete arrAdditionalInfo.dtOriginal
+        }
+
         forum.p(
             {
                 name: sName,
@@ -117,6 +123,7 @@ module.exports = {
                 language: sLanguage.toLowerCase(),
                 dtCreation:  dtCreation !== '' ? Date.parse(dtCreation) : new Date().getTime(),
                 dtLastActivity: null,
+                addInfo: arrAdditionalInfo, //Additional information
                 parentId: await MaterializedParentsHelper.getObjectId(parentObject),
                 parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),
                 breadcrumbs: await MaterializedParentsHelper.createBreadcrumbs(parentObject),
@@ -145,13 +152,20 @@ module.exports = {
 
                     await forum.keepURLSlug();
                     await ForumsSorter.initializeSorterInDB(forum.id, forum.p('dtCreation'));
-                    await forum.keepParentsStatistics(+1);
 
                     NotificationsCreator.newForum(forum.p('parentId'), forum.p('title'), forum.p('description'), forum.p('URL'), '', userAuthenticated );
                     NotificationsSubscribersHashList.subscribeUserToNotifications(forum.p('authorId'), forum, true);
 
-                    let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
-                    SearchesHelper.addForumToSearch(null, forum); //async, but not awaited
+                    if ((arrAdditionalInfo.scraped||false) === true){ //it has been scrapped...
+
+                    } else {
+                        await forum.keepParentsStatistics(+1);
+
+                        let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
+                        SearchesHelper.addForumToSearch(null, forum); //async, but not awaited
+                    }
+
+
 
                     //console.log(forum.getPublicInformation(userAuthenticated));
 

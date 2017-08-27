@@ -61,6 +61,10 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
             type: 'string',
         },
 
+        addInfo:{
+            type: 'json',
+        },
+
         /*
          COMMON PROPERTIES
          */

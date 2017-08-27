@@ -33,8 +33,7 @@ class AuthenticatedUser {
         let sSessionId = this.getSessionId(req);
 
         if ((sSessionId === "")||(sSessionId === null)||(sSessionId.length < 5)) {
-            console.log("Error. Invalid Session - session is empty");
-            console.log(req)
+            //console.log("Error. Invalid Session - session is empty");
             return null;
         }
 

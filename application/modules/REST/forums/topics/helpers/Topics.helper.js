@@ -93,7 +93,6 @@ module.exports = {
         let errorValidation = {};
 
         //get object from parent
-        console.log("addTopic ===============", userAuthenticated);
         console.log("addTopic ===============", arrAttachments);
 
         let parentObject = await MaterializedParentsHelper.findObject(parent);
@@ -121,6 +120,11 @@ module.exports = {
         let shortDescription = '';
         if (sShortDescription.length > 3)  shortDescription = sShortDescription;
         else shortDescription = SanitizeAdvanced.sanitizeAdvancedShortDescription(sDescription, 512);
+
+        if (((arrAdditionalInfo.scraped||false) === true)&&((arrAdditionalInfo.dtOriginal||'') !== '')) {//it has been scrapped...
+            dtCreation = arrAdditionalInfo.dtOriginal;
+            delete arrAdditionalInfo.dtOriginal
+        }
 
         topic.p(
             {
@@ -171,7 +175,7 @@ module.exports = {
                     NotificationsCreator.newTopic(topic.p('parentId'), topic.p('title'), topic.p('description'), topic.p('URL'), '', userAuthenticated );
                     NotificationsSubscribersHashList.subscribeUserToNotifications(topic.p('authorId'), topic, true);
 
-                    if (arrAdditionalInfo.scrapped === true){ //it has been scrapped...
+                    if ((arrAdditionalInfo.scraped||false) === true){ //it has been scrapped...
 
                     } else {
                         await topic.keepParentsStatistics(+1);

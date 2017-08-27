@@ -78,9 +78,10 @@ module.exports = {
     /*
      CREATING A NEW REPLY
      */
-    async addReply (userAuthenticated, parent, parentReply, sTitle, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation){
+    async addReply (userAuthenticated, parent, parentReply, sTitle, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation, arrAdditionalInfo){
 
         if ((typeof dtCreation === 'undefined') || (dtCreation === null)) dtCreation = '';
+        if ((typeof arrAdditionalInfo === 'undefined')) arrAdditionalInfo = {};
 
         try{
             sCountry = sCountry || ''; sCity = sCity || ''; dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; sTitle = sTitle || '';
@@ -115,6 +116,11 @@ module.exports = {
 
             console.log('parentReply',typeof parentReply);
 
+            if (((arrAdditionalInfo.scraped||false) === true)&&((arrAdditionalInfo.dtOriginal||'') !== '')) {//it has been scrapped...
+                dtCreation = arrAdditionalInfo.dtOriginal;
+                delete arrAdditionalInfo.dtOriginal
+            }
+
             reply.p(
                 {
                     title: sTitle,
@@ -131,6 +137,7 @@ module.exports = {
                     dtCreation: dtCreation !== '' ? Date.parse(dtCreation) : new Date().getTime(),
                     dtLastActivity: null,
                     nestedLevel: (parentReply !== null ? parentReply.p('nestedLevel') + 1 : 1),
+                    addInfo: arrAdditionalInfo, //Additional information
                     parentReplyId: await MaterializedParentsHelper.getObjectId(parentReply),
                     parentId: await MaterializedParentsHelper.getObjectId(parent),
                     parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),
@@ -162,13 +169,18 @@ module.exports = {
                         await reply.keepURLSlug();
                         await VotingsHashList.initializeVoteInDB(reply.id, reply.p('parents'));
                         await RepliesSorter.initializeSorterInDB(reply.id, reply.p('dtCreation'));
-                        await reply.keepParentsStatistics();
 
                         NotificationsCreator.newReply(reply.p('parentId'), reply.p('title'), reply.p('description'), reply.p('URL'), '', userAuthenticated );
                         NotificationsSubscribersHashList.subscribeUserToNotifications(reply.p('authorId'), reply.p('parentId'), true);
 
-                        let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
-                        SearchesHelper.addReplyToSearch(null, reply); //async, but not awaited
+                        if ((arrAdditionalInfo.scraped||false) === true){ //it has been scrapped...
+
+                        } else {
+                            await reply.keepParentsStatistics();
+
+                            let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
+                            SearchesHelper.addReplyToSearch(null, reply); //async, but not awaited
+                        }
 
                         //console.log(reply.getPublicInformation(userAuthenticated));
 
