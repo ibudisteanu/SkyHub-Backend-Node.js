@@ -15,7 +15,7 @@ module.exports = {
 
         return new Promise( (resolve)=> {
 
-            if ((typeof sId === 'undefined') || (sId == []) || (sId === null))
+            if ((typeof sId === 'undefined') ||  (sId === null) || (sId == []) )
                 resolve(null);
             else
 
@@ -161,53 +161,43 @@ module.exports = {
     async findUserFromEmailUsernamePassword (sEmailUsername, sPassword){
         console.log("Checking user password ::: " + sEmailUsername + " ::: " + sPassword);
 
-        var foundUser = await this.findUserFromEmailUsername(sEmailUsername);
+        let foundUser = await this.findUserFromEmailUsername(sEmailUsername);
 
-        return new Promise ((resolve) => {
+        //checking the stored Hash is the same with the input password
+        if (foundUser === null) return({result:false, message: "No User Found"});
+        else {
 
-            //checking the stored Hash is the same with the input password
-            if (foundUser === null) resolve ({result:false, message: "No User Found"});
-            else {
+            /*
+             console.log(foundUser);
+             console.log(foundUser.p('password'));
+             */
 
-                /*
-                 console.log(foundUser);
-                 console.log(foundUser.p('password'));
-                 */
+            if (this.passwordHashVerify(sPassword, foundUser.p('password')))
+                return {result:true, user: foundUser};
+            else
+                return {result:false, message: "Password Incorrect"};
 
-                if (this.passwordHashVerify(sPassword, foundUser.p('password')))
-                    resolve({result:true, user: foundUser});
-                else
-                    resolve({result:false, message: "Password Incorrect"});
-
-            }
-
-        });
-
+        }
     },
 
     async findUserFromEmailUsername (sEmailUsername){
         console.log("Finding user :::  " + sEmailUsername);
 
-        var userFound = await this.findUserFromEmail(sEmailUsername);
+        let userFound = await this.findUserFromEmail(sEmailUsername);
+        if (userFound !== null) return userFound;
 
-        return new Promise((resolve) =>{
+        userFound = await this.findUserFromUsername(sEmailUsername);
+        if (userFound !== null) return userFound;
 
-            //console.log('USER FOUND'); console.log(userFound);
-            //console.log('answer from email....'); console.log(res);
+        userFound = await this.findUserById(sEmailUsername);
+        if (userFound !== null) return userFound;
 
-            if (userFound != null) resolve (userFound);
-            else {
-                this.findUserFromUsername(sEmailUsername).then ( (answer) => {
-                    resolve( answer ) ;
-                });
-            }
-
-        });
+        return null;
     },
 
 
     async findUserFromUsername(sUsername){
-        var UserModel = redis.nohm.factory('UserModel');
+        let UserModel = redis.nohm.factory('UserModel');
 
         //console.log('Checking user by username ' + sUsername);
 
@@ -216,8 +206,6 @@ module.exports = {
             UserModel.findAndLoad({
                 username: sUsername,
             }, function (err, users) {
-                //console.log("response from username   ",users);
-
                 if (users.length) resolve(users[0]);
                 else resolve(null);
             });
@@ -225,18 +213,16 @@ module.exports = {
     },
 
     async findUserFromEmail (sEmail){
-        var UserModel = redis.nohm.factory('UserModel');
+        let UserModel = redis.nohm.factory('UserModel');
 
-        console.log('Checking UserModel by email ::: ' + sEmail);
+        //console.log('Checking UserModel by email ::: ' + sEmail);
 
         return new Promise ((resolve)=>{
-            //find by username
+            //find by email
 
             UserModel.findAndLoad({
                 email: sEmail,
             }, function (err, users) {
-                //console.log("response from useremail "); console.log(users);
-
                 if (users.length) resolve(users[0]);
                 else resolve (null);
             });
@@ -244,11 +230,11 @@ module.exports = {
     },
 
     async findUserFromSocialNetwork(sSocialNetwork, sId){
-        var user = redis.nohm.factory('UserModel');
+        let user = redis.nohm.factory('UserModel');
 
         console.log('Checking user by social network ',sSocialNetwork,'  id ' + sId);
 
-        var searchObject = {};
+        let searchObject = {};
 
         if (sSocialNetwork === 'facebook') searchObject = {idFacebook : sId};
         if (sSocialNetwork === 'google') searchObject = {idGoogle : sId};
@@ -293,8 +279,8 @@ module.exports = {
 
         console.log('updating last activity');
 
-        for (var i=0; i<Users.length; i++){
-            var user = Users[i];
+        for (let i=0; i<Users.length; i++){
+            let user = Users[i];
 
             if (typeof user === 'string')
                 user = await this.findUserById(user);
@@ -310,7 +296,7 @@ module.exports = {
         if (typeof sPasswordHash === "undefined") sPasswordHash = '$2y$08$9TTThrthZhTOcoHELRjuN.3mJd2iKYIeNlV/CYJUWWRnDfRRw6fD2';
         if (typeof sPassword === "undefined") sPassword = "secret";
 
-        var bcrypt = require('bcrypt');
+        let bcrypt = require('bcrypt');
         sPasswordHash = sPasswordHash.replace(/^\$2y(.+)$/i, '\$2a$1');
 
         return bcrypt.compareSync(sPassword, sPasswordHash);
@@ -320,7 +306,7 @@ module.exports = {
 
         if ((typeof sPassword === 'string')&&(sPassword.length === 60)&&(sPassword[0] === '$')) return sPassword;
 
-        var bcrypt = require('bcrypt');
+        let bcrypt = require('bcrypt');
         return bcrypt.hashSync(sPassword, 8);
     },
 

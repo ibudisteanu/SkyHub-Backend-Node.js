@@ -17,7 +17,7 @@ module.exports = {
 
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
-        let sTitle = '',  sDescription = '', arrAttachments=[], arrKeywords = [], sCountry='', sCity='',sLanguage='';
+        let sTitle = '',  sShortDescription = '', sDescription = '', arrAttachments=[], arrKeywords = [], sCountry='', sCity='',sLanguage='';
         let dbLatitude = 0, dbLongitude = 0, sCoverPic='';
 
         let parent = '';
@@ -28,6 +28,7 @@ module.exports = {
             sTitle = req.body.title || '';
 
             sDescription = req.body.description ||  '';
+            sShortDescription = req.body.shortDescription ||  '';
             sCoverPic = req.body.coverPic || '';
 
             arrKeywords = req.body.keywords || [];
@@ -46,7 +47,7 @@ module.exports = {
 
         console.log('Creating a Topic : ', sTitle);
 
-        return await TopicsHelper.addTopic(userAuthenticated, parent, sTitle, sDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude);
+        return await TopicsHelper.addTopic(userAuthenticated, parent, sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude);
     },
 
     async getTopic (req, res){

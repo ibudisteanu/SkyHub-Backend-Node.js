@@ -78,7 +78,7 @@ module.exports = {
     /*
      CREATING A NEW Topic
      */
-    async addTopic (userAuthenticated, parent,  sTitle, sDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation, arrAdditionalInfo){
+    async addTopic (userAuthenticated, parent,  sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation, arrAdditionalInfo){
 
         if ((typeof dtCreation === 'undefined') || (dtCreation === null)) dtCreation = '';
         if ((typeof arrAdditionalInfo === 'undefined')) arrAdditionalInfo = {};
@@ -117,7 +117,10 @@ module.exports = {
         // if (shortDescription.length > 512) shortDescription = shortDescription.substr(0, 512);
 
         sDescription = SanitizeAdvanced.sanitizeAdvanced(sDescription);
-        let shortDescription = SanitizeAdvanced.sanitizeAdvancedShortDescription(sDescription, 512);
+
+        let shortDescription = '';
+        if (sShortDescription.length > 3)  shortDescription = sShortDescription;
+        else shortDescription = SanitizeAdvanced.sanitizeAdvancedShortDescription(sDescription, 512);
 
         topic.p(
             {

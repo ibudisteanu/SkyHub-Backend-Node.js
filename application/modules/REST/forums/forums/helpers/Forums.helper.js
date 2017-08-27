@@ -147,7 +147,7 @@ module.exports = {
                     await ForumsSorter.initializeSorterInDB(forum.id, forum.p('dtCreation'));
                     await forum.keepParentsStatistics(+1);
 
-                    NotificationsCreator.newForum(forum.p('parentId'), forum.p('title'), reply.p('description'), reply.p('URL'), '', userAuthenticated );
+                    NotificationsCreator.newForum(forum.p('parentId'), forum.p('title'), forum.p('description'), forum.p('URL'), '', userAuthenticated );
                     NotificationsSubscribersHashList.subscribeUserToNotifications(forum.p('authorId'), forum, true);
 
                     let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
