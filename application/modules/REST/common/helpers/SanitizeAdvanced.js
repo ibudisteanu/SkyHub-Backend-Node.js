@@ -1,6 +1,6 @@
 var sanitizeHtml = require('sanitize-html');
 //var tidy = require("tidy-html5").tidy_html5;
-var tidy = require('htmltidy2').tidy;
+//var tidy = require('htmltidy2').tidy;
 
 
 module.exports = {
@@ -18,6 +18,8 @@ module.exports = {
     // },
 
     sanitizeStripAllTags(text, allowedTags, allowedAttributes){
+
+        if (text === null) return null;
 
         if (typeof allowedTags === 'undefined') allowedTags = [];
         if (typeof allowedAttributes === 'undefined') allowedAttributes = {};
