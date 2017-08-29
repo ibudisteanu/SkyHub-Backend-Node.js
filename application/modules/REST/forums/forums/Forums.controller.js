@@ -42,8 +42,8 @@ module.exports = {
             sCoverColor = req.body.coverColor || '';
 
             arrAdditionalInfo = req.body.additionalInfo || {};
-            if (typeof req.body["additionalInfo.scraped"] !== 'undefined') arrAdditionalInfo.scraped = !!+(req.body["additionalInfo.scraped"]);
-            if (typeof req.body["additionalInfo.dtOriginal"] !== 'undefined') arrAdditionalInfo.dtOriginal = req.body["additionalInfo.dtOriginal"]||false;
+            if (typeof (arrAdditionalInfo) === 'string') arrAdditionalInfo = JSON.parse(arrAdditionalInfo);
+            if (typeof arrAdditionalInfo.scraped !== 'undefined') arrAdditionalInfo.scraped = !!+(arrAdditionalInfo.scraped);
 
             parent = req.body.parent || '';
         }

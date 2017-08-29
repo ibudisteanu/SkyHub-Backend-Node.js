@@ -175,13 +175,15 @@ module.exports = {
                     NotificationsCreator.newTopic(topic.p('parentId'), topic.p('title'), topic.p('description'), topic.p('URL'), '', userAuthenticated );
                     NotificationsSubscribersHashList.subscribeUserToNotifications(topic.p('authorId'), topic, true);
 
+                    await topic.keepParentsStatistics(+1);
+
+                    let SearchesHelper = require('../../../searches/helpers/Searches.helper.js');
+                    SearchesHelper.addTopicToSearch(null, topic); //async, but not awaited
+
                     if ((arrAdditionalInfo.scraped||false) === true){ //it has been scrapped...
 
                     } else {
-                        await topic.keepParentsStatistics(+1);
 
-                        let SearchesHelper = require('../../../searches/helpers/Searches.helper.js');
-                        SearchesHelper.addTopicToSearch(null, topic); //async, but not awaited
                     }
 
                     //console.log(topic.getPublicInformation(userAuthenticated) );

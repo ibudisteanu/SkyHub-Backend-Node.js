@@ -173,10 +173,11 @@ module.exports = {
                         NotificationsCreator.newReply(reply.p('parentId'), reply.p('title'), reply.p('description'), reply.p('URL'), '', userAuthenticated );
                         NotificationsSubscribersHashList.subscribeUserToNotifications(reply.p('authorId'), reply.p('parentId'), true);
 
+                        await reply.keepParentsStatistics();
+
                         if ((arrAdditionalInfo.scraped||false) === true){ //it has been scrapped...
 
                         } else {
-                            await reply.keepParentsStatistics();
 
                             let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
                             SearchesHelper.addReplyToSearch(null, reply); //async, but not awaited

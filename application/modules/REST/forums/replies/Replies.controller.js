@@ -37,8 +37,8 @@ module.exports = {
             dbLongitude = req.body.longitude || -666;
 
             arrAdditionalInfo = req.body.additionalInfo || {};
-            if (typeof req.body["additionalInfo.scraped"] !== 'undefined') arrAdditionalInfo.scraped = !!+(req.body["additionalInfo.scraped"]);
-            if (typeof req.body["additionalInfo.dtOriginal"] !== 'undefined') arrAdditionalInfo.dtOriginal = req.body["additionalInfo.dtOriginal"]||false;
+            if (typeof (arrAdditionalInfo) === 'string') arrAdditionalInfo = JSON.parse(arrAdditionalInfo);
+            if (typeof arrAdditionalInfo.scraped !== 'undefined') arrAdditionalInfo.scraped = !!+(arrAdditionalInfo.scraped);
 
             parentReply = req.body.parentReply || '';
             parent = req.body.parent || '';
