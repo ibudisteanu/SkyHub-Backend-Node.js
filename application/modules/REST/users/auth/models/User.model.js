@@ -118,14 +118,11 @@ var UserModel = redis.nohm.model('UserModel', {
 
         getAvatar : function (){
 
-
             if ( this.p('profilePic').length > 0 )
                 return this.p('profilePic');
 
-            /*
-                wavatar Gravatar sample https://www.gravatar.com/avatar/00000000000000000000000000000000?d=wavatar&f=y
-                documentation: https://en.gravatar.com/site/implement/images/
-             */
+            //  wavatar Gravatar sample https://www.gravatar.com/avatar/00000000000000000000000000000000?d=wavatar&f=y
+            //  documentation: https://en.gravatar.com/site/implement/images/
 
             let gravatarId = md5(this.id);
             return 'https://www.gravatar.com/avatar/'+gravatarId+'?d=wavatar&f=y';

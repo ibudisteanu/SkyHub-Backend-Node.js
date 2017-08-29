@@ -3,11 +3,13 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var redis = require ('../../../../DB/redis_nohm');
-var nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator.js');
+let redis = require ('../../../../DB/redis_nohm');
+let nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator.js');
 
-var StatisticsHelper = require('../../../statistics/helpers/Statistics.helper.js');
-var SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
+let StatisticsHelper = require('../../../statistics/helpers/Statistics.helper.js');
+let SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
+
+let md5 = require ('md5');
 
 var ReplyModel = redis.nohm.model('ReplyModel', {
 
@@ -95,12 +97,22 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
         },
 
         getPublicInformation : function (userAuthenticated){
-            var properties = this.allProperties();
+            let properties = this.allProperties();
 
             properties.description = SanitizeAdvanced.sanitizeAdvanced(properties.description);
             properties.shortDescription = SanitizeAdvanced.sanitizeAdvancedShortDescription(properties.shortDescription||properties.description, 512);
 
             properties.isOwner = this.isOwner(userAuthenticated);
+
+            //Scraping Gravatars
+            if (((properties.addInfo.orgName||'')!=='') && ((properties.addInfo.orgAvatar|| '') === '')){
+
+                //  wavatar Gravatar sample https://www.gravatar.com/avatar/00000000000000000000000000000000?d=wavatar&f=y
+                //  documentation: https://en.gravatar.com/site/implement/images/
+
+                let gravatarId = md5(properties.addInfo.orgName);
+                properties.addInfo.orgAvatar = 'https://www.gravatar.com/avatar/'+gravatarId+'?d=wavatar&f=y';
+            }
 
             return properties;
         },
