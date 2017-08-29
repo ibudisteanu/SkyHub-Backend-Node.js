@@ -17,6 +17,8 @@ let SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
 let NotificationsCreator = require ('../../../notifications/NotificationsCreator.js');
 let NotificationsSubscribersHashList = require ('./../../../notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
 
+let AllPagesList = require ('./../../content/all-pages/helpers/AllPages.list.js');
+
 module.exports = {
 
     createDummyForum (iIndex){
@@ -175,9 +177,10 @@ module.exports = {
                     NotificationsCreator.newTopic(topic.p('parentId'), topic.p('title'), topic.p('description'), topic.p('URL'), '', userAuthenticated );
                     NotificationsSubscribersHashList.subscribeUserToNotifications(topic.p('authorId'), topic, true);
 
+                    AllPagesList.keepAllPagesList(forum.p('parentId'), forum, false);
+
                     await topic.keepParentsStatistics(+1);
 
-                    let SearchesHelper = require('../../../searches/helpers/Searches.helper.js');
                     SearchesHelper.addTopicToSearch(null, topic); //async, but not awaited
 
                     if ((arrAdditionalInfo.scraped||false) === true){ //it has been scrapped...

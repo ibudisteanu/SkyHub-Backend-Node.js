@@ -19,6 +19,20 @@ var List = class{
         this.tablePrefix = tablePrefix || "List";
     }
 
+
+    async deleteList(tableName){
+
+        return new Promise( (resolve)=> {
+            redis.redisClient.del(this.tablePrefix + ":" + tableName, function (err, answer) {
+
+                console.log("delete ",err,answer);
+
+                resolve (err === null ? answer : null);
+            });
+        });
+
+    }
+
     /*
         https://redis.io/commands/lpush    TOP push (push at the front)
         O(1)

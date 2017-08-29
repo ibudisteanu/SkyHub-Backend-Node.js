@@ -3,12 +3,12 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var UniqueVisitorsHelper = require ('../visitors/helpers/UniqueVisitors.helper.js');
-var HashList = require ('../../../DB/Redis/lists/HashList.helper.js');
-var VoteType = require ('../../voting/models/VoteType.js');
+let UniqueVisitorsHelper = require ('../visitors/helpers/UniqueVisitors.helper.js');
+let HashList = require ('../../../DB/Redis/lists/HashList.helper.js');
+let VoteType = require ('../../voting/models/VoteType.js');
 
 let VotingInfoHashList = require ('../../voting/helpers/VotingInfo.hashlist.js');
-var MaterializedParentsHelper = require ('../../../DB/common/materialized-parents/MaterializedParents.helper.js');
+let MaterializedParentsHelper = require ('../../../DB/common/materialized-parents/MaterializedParents.helper.js');
 
 var StatisticsHelper = class {
 

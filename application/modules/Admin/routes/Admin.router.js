@@ -3,8 +3,8 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 
 
 /*
@@ -13,12 +13,12 @@ var router = express.Router();
 
 // api/admin/XXXXX
 
-router.get('/sort', function (req, res){
+router.get('/sort', async function (req, res){
     let AdminCtrl = require ('../Admin.controller.js');
     res.json( {message: AdminCtrl.sort() });
 });
 
-router.get('/replace-uploaded-files-substring', function (req, res){
+router.get('/replace-uploaded-files-substring', async function (req, res){
     let AdminCtrl = require ('../Admin.controller.js');
     //res.json( {message: AdminCtrl.replaceUploadedFilesSubstring("myskyhub.ddns.net:4000","skyhub.me:4000") });
     //res.json( {message: AdminCtrl.replaceUploadedFilesSubstring("http://skyhub.me:4000/uploads","http://skyhub.me:4000/public/uploads") });
@@ -26,9 +26,14 @@ router.get('/replace-uploaded-files-substring', function (req, res){
 });
 
 
-router.get('/build-notifications-subscribers-lists', function (req, res){
+router.get('/build-notifications-subscribers-lists', async function (req, res){
     let AdminCtrl = require ('../Admin.controller.js');
     res.json( {message: AdminCtrl.buildNotificationsSubscribersLists() });
+});
+
+router.get('/build-all-pages-lists', async function (req, res){
+    let AdminCtrl = require ('../Admin.controller.js');
+    res.json( {message: AdminCtrl.buildAllPagesLists() });
 });
 
 

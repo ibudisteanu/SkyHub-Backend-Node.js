@@ -13,6 +13,8 @@ let ForumsSorter = require('../models/ForumsSorter.js');
 let NotificationsCreator = require ('../../../notifications/NotificationsCreator.js');
 let NotificationsSubscribersHashList = require ('./../../../notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
 
+let AllPagesList = require ('./../../content/all-pages/helpers/AllPages.list.js');
+
 module.exports = {
 
     createDummyForum (iIndex){
@@ -158,8 +160,9 @@ module.exports = {
 
                     await forum.keepParentsStatistics(+1);
 
-                    let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
                     SearchesHelper.addForumToSearch(null, forum); //async, but not awaited
+
+                    AllPagesList.keepAllPagesList(forum.p('parentId'), forum, false);
 
                     if ((arrAdditionalInfo.scraped||false) === true){ //it has been scrapped...
 

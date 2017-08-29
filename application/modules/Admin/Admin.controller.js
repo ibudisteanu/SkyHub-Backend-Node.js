@@ -17,6 +17,7 @@ var topicModel = require ('../REST/forums/topics/models/Topic.model.js');
 
 let NotificationsCreator = require ('./../REST/notifications/NotificationsCreator.js');
 let NotificationsSubscribersHashList = require ('./../REST/notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
+let AllPagesList = require ('../REST/forums/content/all-pages/helpers/AllPages.list.js');
 
 class AdminController {
 
@@ -68,7 +69,7 @@ class AdminController {
             }.bind(this));
         });
 
-        await Promise( (resolve) => {
+        await new Promise( (resolve) => {
             replyModelORM.find(async function (err, ids){
 
                 for (let i=0; i<ids.length; i++){
@@ -244,6 +245,52 @@ class AdminController {
     }
 
 
+    async buildAllPagesLists(){
+        let forumModelORM = redis.nohm.factory('ForumModel');
+        let topicModelORM = redis.nohm.factory('TopicModel');
+
+
+        await new Promise( (resolve) => {
+            forumModelORM.find(async function (err, ids){
+
+                let ForumsHelper = require ('../REST/forums/forums/helpers/Forums.helper.js');
+
+                //Deleting previous data
+                for (let i=0; i<ids.length; i++){
+                    let forum = await ForumsHelper.findForumById(ids[i]);
+                    if (forum !== null) await AllPagesList.deleteAllPagesList(forum.id);
+                }
+                await AllPagesList.deleteAllPagesList(''); //delete the home page as well
+
+                for (let i=0; i<ids.length; i++){
+                    let forum = await ForumsHelper.findForumById(ids[i]);
+
+                    if (forum !== null)
+                        await AllPagesList.keepAllPagesList(forum.p('parentId'), forum.p('URL'), false);
+                }
+
+                resolve(true);
+            }.bind(this) );
+        });
+
+        await new Promise( (resolve) => {
+            topicModelORM.find(async function (err, ids) {
+
+                let TopicsHelper = require ('../REST/forums/topics/helpers/Topics.helper.js');
+                for (let i=0; i<ids.length; i++){
+                    let topic = await TopicsHelper.findTopicById(ids[i]);
+
+                    if (topic !== null)
+                        await AllPagesList.keepAllPagesList(topic.p('parentId'), topic.p('URL'), false);
+
+                }
+
+                resolve(true);
+            }.bind(this));
+        });
+    }
+
+
     async buildNotificationsSubscribersLists(){
 
 
@@ -254,8 +301,8 @@ class AdminController {
         await new Promise( (resolve) => {
             forumModelORM.find(async function (err, ids){
 
+                let ForumsHelper = require ('../REST/forums/forums/helpers/Forums.helper.js');
                 for (let i=0; i<ids.length; i++){
-                    let ForumsHelper = require ('../REST/forums/forums/helpers/Forums.helper.js');
                     let forum = await ForumsHelper.findForumById(ids[i]);
 
                     if (forum !== null)
@@ -269,8 +316,8 @@ class AdminController {
         await new Promise( (resolve) => {
             topicModelORM.find(async function (err, ids) {
 
+                let TopicsHelper = require ('../REST/forums/topics/helpers/Topics.helper.js');
                 for (let i=0; i<ids.length; i++){
-                    let TopicsHelper = require ('../REST/forums/topics/helpers/Topics.helper.js');
                     let topic = await TopicsHelper.findTopicById(ids[i]);
 
                     if (topic !== null)
@@ -287,9 +334,8 @@ class AdminController {
         await new Promise( (resolve) => {
             replyModelORM.find(async function (err, ids){
 
+                let RepliesHelper = require ('../REST/forums/replies/helpers/Replies.helper.js');
                 for (let i=0; i<ids.length; i++){
-
-                    let RepliesHelper = require ('../REST/forums/replies/helpers/Replies.helper.js');
                     let reply = await RepliesHelper.findReplyById(ids[i]);
 
                     if (reply !== null)

@@ -160,7 +160,7 @@ var SortedList = class{
         iPageIndex = iPageIndex || 0;
         iArticlesPerPage = iArticlesPerPage || 8;
 
-        var iOffset = 0;
+        let iOffset = 0;
 
         if (iPageIndex > 0)
             iOffset = iPageIndex * iArticlesPerPage;
