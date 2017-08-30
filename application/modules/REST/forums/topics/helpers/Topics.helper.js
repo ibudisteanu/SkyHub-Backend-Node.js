@@ -177,7 +177,7 @@ module.exports = {
                     NotificationsCreator.newTopic(topic.p('parentId'), topic.p('title'), topic.p('description'), topic.p('URL'), '', userAuthenticated );
                     NotificationsSubscribersHashList.subscribeUserToNotifications(topic.p('authorId'), topic, true);
 
-                    AllPagesList.keepAllPagesList(forum.p('parentId'), forum, false);
+                    AllPagesList.keepAllPagesList(topic.p('parentId'), topic, false);
 
                     await topic.keepParentsStatistics(+1);
 
