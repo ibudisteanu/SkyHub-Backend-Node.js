@@ -308,9 +308,9 @@ router.processSocketRoute = function (socket)
 
     //              ALL PAGES
 
-    socket.on("/pages/get-all-pages", async function (data){
+    socket.on("api/pages/get-all-pages", async function (data){
         data.body = data;
-        socket.emit("api//pages/get-all-pages", await AllPagesCtrl.postGetAllPages(data) );
+        socket.emit("api/pages/get-all-pages", await AllPagesCtrl.postGetAllPages(data) );
     });
 
     socket.on("api/version", async function (data){

@@ -6,17 +6,22 @@ var AllPagesList = class {
         this.list = new List("AllPages")
     }
 
-    async getAllPages(parentId, index, pageCount=25){
+    async getAllPages(parentId, pageIndex, pageCount=25){
         if (typeof parentId === 'object') parentId = parentId.id||'';
 
+        pageIndex = Math.max(pageIndex, 1);
         pageCount = Math.min(pageCount|| 25, 25);
 
-        list = await list.listRange(parentId, (index-1) * 25, (index * 25)+1 );
+        let list = await this.list.listRange(parentId, (pageIndex-1) * pageCount, (pageIndex * pageCount)+1 );
+        let listAdvanced = [];
 
-        hasNext = true;
-        if (list <= pageCount) hasNext=false;
+        for (let i=0; i<Math.min(list.length, pageCount); i++)
+            listAdvanced.push({'id': (pageIndex-1)* pageCount + i, 'page': list[i]});
 
-        return {'list': list, hasNext: hasNext}
+        let hasNext = true;
+        if (list.length <= pageCount) hasNext=false;
+
+        return {result:true, list: listAdvanced, hasNext: hasNext, newPageIndex: pageIndex+1, pageCount : pageCount}
     }
 
     keepAllPagesList(parentId, url, remove=false){
