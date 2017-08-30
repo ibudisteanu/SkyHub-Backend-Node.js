@@ -7,7 +7,7 @@ let topicModel = require ('../models/Topic.model.js');
 let commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
 let URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
 let MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.js');
-let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
+
 let striptags = require('striptags');
 let VotingsHashList = require ('../../../voting/helpers/Votings.hashlist.js');
 let TopicsSorter = require('../models/TopicsSorter.js');
@@ -181,6 +181,7 @@ module.exports = {
 
                     await topic.keepParentsStatistics(+1);
 
+                    let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
                     SearchesHelper.addTopicToSearch(null, topic); //async, but not awaited
 
                     if ((arrAdditionalInfo.scraped||false) === true){ //it has been scrapped...

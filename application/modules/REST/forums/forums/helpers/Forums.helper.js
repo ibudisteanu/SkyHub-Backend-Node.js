@@ -158,11 +158,11 @@ module.exports = {
                     NotificationsCreator.newForum(forum.p('parentId'), forum.p('title'), forum.p('description'), forum.p('URL'), '', userAuthenticated );
                     NotificationsSubscribersHashList.subscribeUserToNotifications(forum.p('authorId'), forum, true);
 
+                    AllPagesList.keepAllPagesList(forum.p('parentId'), forum, false);
+
                     await forum.keepParentsStatistics(+1);
 
                     SearchesHelper.addForumToSearch(null, forum); //async, but not awaited
-
-                    AllPagesList.keepAllPagesList(forum.p('parentId'), forum, false);
 
                     if ((arrAdditionalInfo.scraped||false) === true){ //it has been scrapped...
 

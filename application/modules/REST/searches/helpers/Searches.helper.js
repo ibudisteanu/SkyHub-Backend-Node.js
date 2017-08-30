@@ -3,21 +3,21 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var SearchList = require('../../../DB/Redis/lists/search/SearchList.helper.js');
+let SearchList = require('../../../DB/Redis/lists/search/SearchList.helper.js');
 
-var forumModel = require ('../../forums/forums/models/Forum.model.js');
-var userModel = require ('../../users/auth/models/User.model.js');
-var replyModel = require ('../../forums/replies/models/Reply.model.js');
-var topicModel = require ('../../forums/topics/models/Topic.model.js');
+let forumModel = require ('../../forums/forums/models/Forum.model.js');
+let userModel = require ('../../users/auth/models/User.model.js');
+let replyModel = require ('../../forums/replies/models/Reply.model.js');
+let topicModel = require ('../../forums/topics/models/Topic.model.js');
 
-var ForumsHelper = require ('../../forums/forums/helpers/Forums.helper.js');
-var TopicsHelper = require ('../../forums/topics/helpers/Topics.helper.js');
-var RepliesHelper = require ('../../forums/replies/helpers/Replies.helper.js');
-var UsersHelper = require ('../../users/auth/helpers/Users.helper.js');
+let ForumsHelper = require ('../../forums/forums/helpers/Forums.helper.js');
+let TopicsHelper = require ('../../forums/topics/helpers/Topics.helper.js');
+let RepliesHelper = require ('../../forums/replies/helpers/Replies.helper.js');
+let UsersHelper = require ('../../users/auth/helpers/Users.helper.js');
 
-var ForumsSorter = require('../../forums/forums/models/ForumsSorter.js');
-var TopicsSorter = require('../../forums/topics/models/TopicsSorter.js');
-var RepliesSorter = require('../../forums/replies/models/RepliesSorter.js');
+let ForumsSorter = require('../../forums/forums/models/ForumsSorter.js');
+let TopicsSorter = require('../../forums/topics/models/TopicsSorter.js');
+let RepliesSorter = require('../../forums/replies/models/RepliesSorter.js');
 
 class Searches {
 
@@ -34,7 +34,7 @@ class Searches {
     async addUserToSearch(text, index, score){
 
         if (typeof index === "string") {
-            var UsersHelper = require ('../../users/auth/helpers/Users.helper.js');
+            let UsersHelper = require ('../../users/auth/helpers/Users.helper.js');
             index = await UsersHelper.findUserById(index);
         }
 
@@ -54,7 +54,7 @@ class Searches {
     async addForumToSearch(text, index, score){
 
         if (typeof index === "string") {
-            var ForumsHelper = require ('../../forums/forums/helpers/Forums.helper.js');
+            let ForumsHelper = require ('../../forums/forums/helpers/Forums.helper.js');
             index = await ForumsHelper.findForumById(index);
         }
 
@@ -75,7 +75,7 @@ class Searches {
     async addTopicToSearch(text, index, score){
 
         if (typeof index === "string") {
-            var TopicsHelper = require ('../../forums/topics/helpers/Topics.helper.js');
+            let TopicsHelper = require ('../../forums/topics/helpers/Topics.helper.js');
             index = await TopicsHelper.findTopicById(index);
         }
 
@@ -93,7 +93,7 @@ class Searches {
     async addReplyToSearch(text, index, score){
 
         if (typeof index === "string") {
-            var RepliesHelper = require('../../forums/replies/helpers/Replies.helper.js');
+            let RepliesHelper = require('../../forums/replies/helpers/Replies.helper.js');
             index = await RepliesHelper.findReplyById(index);
         }
 
