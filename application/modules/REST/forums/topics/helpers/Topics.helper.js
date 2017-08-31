@@ -125,7 +125,8 @@ module.exports = {
 
         if (((arrAdditionalInfo.scraped||false) === true)&&((arrAdditionalInfo.dtOriginal||'') !== '')) {//it has been scrapped...
             dtCreation = arrAdditionalInfo.dtOriginal;
-            delete arrAdditionalInfo.dtOriginal
+            arrAdditionalInfo.dtRealCreation = new Date().getTime();
+            delete arrAdditionalInfo.dtOriginal;
         }
 
         topic.p(
