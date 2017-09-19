@@ -8,7 +8,6 @@ let commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.j
 let URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
 let MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.js');
 let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
-let striptags = require('striptags');
 let hat = require ('hat');
 let VotingsHashList = require ('../../../voting/helpers/Votings.hashlist.js');
 let RepliesSorter = require('../models/RepliesSorter.js');
