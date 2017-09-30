@@ -71,7 +71,6 @@ var TopicModel = redis.nohm.model('TopicModel', {
         addInfo:{
             type: 'json',
         },
-
         //additional information like:
         // {
         //     "scraped" : true,
@@ -79,26 +78,6 @@ var TopicModel = redis.nohm.model('TopicModel', {
         //     "website" : "http://antena3.ro/",
         //     "websiteName" : "Antena3"
         // }
-
-        price:{
-            type: 'json',
-        },
-
-        shipping:{
-            type: 'json',
-        },
-
-        ratingScoresList:{
-            type: 'json',
-        },
-
-        reviewsList:{
-            type: 'json',
-        },
-
-
-
-
 
         /*
          COMMON PROPERTIES

@@ -79,8 +79,7 @@ module.exports = {
     /*
      CREATING A NEW Topic
      */
-    async addTopic (userAuthenticated, parent,  sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation, arrAdditionalInfo,
-                    arrPrice, arrShipping, arrRatingScoresList, arrReviewsList){
+    async addTopic (userAuthenticated, parent,  sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation, arrAdditionalInfo){
 
         if ((typeof dtCreation === 'undefined') || (dtCreation === null)) dtCreation = '';
         if ((typeof arrAdditionalInfo === 'undefined')) arrAdditionalInfo = {};
@@ -145,10 +144,6 @@ module.exports = {
                 dtCreation:  dtCreation !== '' ? Date.parse(dtCreation) : new Date().getTime(),
                 dtLastActivity: null,
                 addInfo: arrAdditionalInfo, //Additional information
-                price: arrPrice,
-                shipping: arrShipping,
-                ratingScoresList: arrRatingScoresList,
-                reviewsList: arrReviewsList,
                 parentId: await MaterializedParentsHelper.getObjectId(parentObject),
                 parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),
                 breadcrumbs: await MaterializedParentsHelper.createBreadcrumbs(parentObject),
