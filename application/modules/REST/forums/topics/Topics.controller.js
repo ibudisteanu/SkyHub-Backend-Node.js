@@ -48,6 +48,9 @@ module.exports = {
             if (typeof (arrAdditionalInfo) === 'string') arrAdditionalInfo = JSON.parse(arrAdditionalInfo);
             if (typeof arrAdditionalInfo.scraped !== 'undefined') arrAdditionalInfo.scraped = !!+(arrAdditionalInfo.scraped);
 
+            arrPrice = req.body.price || {};
+            if (typeof (arrPrice) === 'string') arrPrice = JSON.parse(arrPrice);
+
             parent = req.body.parent || '';
         }
 

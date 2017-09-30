@@ -1,0 +1,19 @@
+
+# Copy DB in Redis
+
+0. Download redis-copy.py 
+
+	https://github.com/salimane/redis-tools/blob/master/redis-copy.py
+
+1. source activate crawler 3
+
+2. pip install redis
+
+python redis-copy.py \
+  --source=127.0.0.1:6379 \
+  --target=localhost:6379 \
+  --databases=15:5,5:1
+
+
+copy all keys in db 2 and 5 from server 192.168.0.99:6379 to db 2 and db 1                                     
+                                
