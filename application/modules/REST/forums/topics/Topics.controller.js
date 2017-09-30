@@ -34,6 +34,8 @@ module.exports = {
             arrKeywords = req.body.keywords || [];
             arrAttachments = req.body.attachments || [];
 
+            if (typeof arrAttachments === 'string') arrAttachments = JSON.parse(arrAttachments);
+
             sCountry = req.body.country || '';
             sCity = req.body.city || '';
 
