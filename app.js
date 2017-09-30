@@ -56,7 +56,9 @@ app.use(function(req, res, next) {
 });*/
 
 
-/* ROUTING */
+/* 
+	ROUTING 
+*/
 var RESTRouter = require('./application/modules/REST/routes/REST.router.js');
 var AdminRouter = require('./application/modules/Admin/routes/Admin.router.js');
 var indexRouter = require('./routes/index.js');
@@ -130,6 +132,9 @@ app.use(function(err, req, res, next) {
  // app.use(passport.initialize());
  // app.use(passport.session());
 
+/*
+	GLOBAL LIBRARIES
+*/
 
 jwt = require('jsonwebtoken');
 requestPromise = require('request-promise');
