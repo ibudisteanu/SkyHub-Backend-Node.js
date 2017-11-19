@@ -2,38 +2,95 @@
 	ROUTING
 */
 
-const generalRouter = require('./others/general.router.js');
-import RESTRouter from './../application/modules/REST/routes/REST.router.js';
-import AdminRouter from './../application/modules/Admin/routes/Admin.router.js';
-import uploadRouter from './../application/modules/file-uploads/routes/file-uploads.router.js';
+const express = require('express');
+
+import * as routerGeneral from './others/general.router.js';
+import * as routerREST from './../application/modules/REST/routes/REST.router.js';
+import * as routerAdmin from './../application/modules/Admin/routes/Admin.router.js';
+import routerUpload from './../application/modules/file-uploads/routes/file-uploads.router.js';
 
 /**
  * initialize HTTP server express
  * @param app
  */
-function initializeRouterExpress (app) {
+function initializeRoutersExpress (app) {
 
-    
+    initializeRouterExpress(app, routerGeneral, '/');
+    initializeRouterExpress(app, routerREST, '/api');
+    initializeRouterExpress(app, routerAdmin, '/api/admin');
 
-    const express = require('express');
+    //file uploads
+    app.use('/upload', routerUpload);
+}
+
+/**
+ *
+ * @param router
+ * @param routerList
+ */
+function initializeRouterExpressWithList(router, routerList){
+
+    for (let routerItem in routerList){
+
+        let routeName = routerItem;
+        let routeFunction = routerList[routerItem];
+
+        if (typeof routeName === "string" && routeName !=='' && typeof routeFunction === "function"){
+
+            if (routeName[0] !== '/') routeName = '/'+routeName;
+
+            console.log(routeName, typeof routeFunction);
+
+            router.get(routeName, (req, res, next) => {
+
+                routeFunction(req, res, (answer, prefix, template)=>{
+
+                    if (typeof prefix === 'undefined') prefix = '';
+
+                    if (typeof template === 'undefined')
+                        res.json( answer);
+                    else
+                        res.render('index', answer);
+
+                })
+            });
+        }
+
+    }
+
+}
+
+/**
+ *
+ * @param app
+ * @param routerData
+ * @param prefix
+ */
+function initializeRouterExpress (app, routerData, prefix) {
+
     const router = express.Router();
 
-    app.use('/', router);
+    if (typeof routerData.routesHTTP !== 'undefined')
+        initializeRouterExpressWithList(router, routerData.routesHTTP);
 
-    app.use('/api', RESTRouter);
-    app.use('/api/admin', AdminRouter);
-    app.use('/upload', uploadRouter);
+    if (typeof routerData.routesCommon !== 'undefined')
+        initializeRouterExpressWithList(router, routerData.routesCommon);
 
-}
-
-function initializeRouterSocket(socket){
-
-    data.body = data;
+    app.use(prefix, router);
 
 }
 
 
-//not used
+
+
+function initializeRoutersSocket(socket){
+
+//    data.body = data;
+
+}
+
+
+//OBSOLETE not used
 function getExpressRoutes (router, routePrefix) {
 
     if (typeof routePrefix === 'undefined')  routePrefix = 'api';
@@ -49,9 +106,6 @@ function getExpressRoutes (router, routePrefix) {
 
             arrResult.push(sRoute);
             console.log(sRoute)
-            console.log("methods", r.route.methods)
-            console.log("methods", r.handle)
-            r.handle();
 
         }
     });
@@ -60,5 +114,5 @@ function getExpressRoutes (router, routePrefix) {
 };
 
 
-exports.initializeRouterExpress = initializeRouterExpress;
-exports.initializeRouterSocket = initializeRouterSocket;
+exports.initializeRoutersExpress = initializeRoutersExpress;
+exports.initializeRoutersSocket = initializeRoutersSocket;

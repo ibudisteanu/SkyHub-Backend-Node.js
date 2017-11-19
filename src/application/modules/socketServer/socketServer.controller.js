@@ -7,7 +7,9 @@
  */
 
 import constants from './../../../bin/constants'
-var socketIo = require('socket.io');
+import {initializeRoutersSocket} from './../../../routes/index.router'
+
+const socketIo = require('socket.io');
 
 var serverSocket = null;
 
@@ -16,9 +18,6 @@ function createSocketServer(server){
 
 // Initialize socket.io
     serverSocket = socketIo.listen(server);
-
-    var indexRouter = require('../../../routes/index.router.js');
-    //indexRouter.initializeRouter(serverSocket);
 
     console.log("===> STARTING SOCKET SERVER");
 
@@ -80,48 +79,8 @@ function createSocketServer(server){
 
         console.log('hello! ', socket.bAuthenticated , "   ", socket.userAuthenticated) ;
 
-
-        RESTRouter.processSocketRoute(socket);
-
-        //Automatically processing the routes
-        /*
-            RESTRouter.getAPIRoutes().forEach(function(sRoute){
-
-                socket.on(sRoute, function (data){
-
-                    console.log("SOCKET IO - API INSTRUCTION "+data);
-                    console.log('ROUTE::'+sRoute)
-
-                    //  var request = {
-                    //     url: '/zzz',
-                    //     method: "POST",
-                    //  };
-                    //
-                    // // stub a Response object with a (relevant) subset of the needed
-                    // // methods, such as .json(), .status(), .send(), .end(), ...
-                    // var response = {
-                    //     json : function(results) {
-                    //         console.log('Answer from SERVER:::::');
-                    //         console.log(results);
-                    //     }
-                    // };
-                    //
-                    // RESTRouter.handle(request, response, function(err) {
-                    //     console.log('These errors happened during processing: ', err);
-                    //     console.log(response);
-                    // });
-
-                    app.runMiddleware('http://127.0.0.1:4000/zzz', {method: 'post', body: data}, function (responseCode, body, headers){
-                        console.log('Answer from SERVER:::::');
-                        console.log(responseCode);
-                        console.log(body);
-                    });
-
-                });
-
-            });
-        */
-
+        // initialize routes for socket
+        initializeRoutersSocket(socket);
 
         socket.emit('api/connectionReady', 'HELLO WORLD');
 
@@ -134,7 +93,6 @@ function createSocketServer(server){
 }
 
 module.exports = {
-
     serverSocket : serverSocket,
-
+    createSocketServer: createSocketServer,
 };

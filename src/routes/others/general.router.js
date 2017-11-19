@@ -1,16 +1,43 @@
-var express = require('express');
-var router = express.Router();
 
 import FunctionsCtrl from './../../application/modules/REST/common/functions/functions.controller.js';
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'SkyHub 2 REST - Backend' });
-});
+/*
+            SOCKET ROUTES
+ */
 
-router.get('/zzz', function(req, res, next) {
 
-    res.json(FunctionsCtrl.getZZZ());
-});
+let routesHTTP = {
 
-module.exports = router;
+};
+
+let routesSocket = {
+
+};
+
+
+/*
+            COMMON ROUTES
+ */
+
+let routesCommon = {
+
+    /* GET home page. */
+
+    '/': async (req, res, callback) => {
+
+        callback({title: 'SkyHub 2 REST - Backend'}, '', 'index')
+    },
+
+    '/zzz': async (req, res, callback) => {
+
+        callback(FunctionsCtrl.getZZZ());
+    },
+
+};
+
+
+
+
+module.exports.routesCommon = routesCommon;
+module.exports.routesHTTP = routesHTTP;
+module.exports.routesSocket = routesSocket;

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "babel --presets es2017 src -d build/dist ",
-    "start": "npm run build && node ./build/dist/bin/www.js",
+    "start": "npm run build && node ./build/dist/main.js",
     "test": "npm run start",
     "webpack": "npm run build && webpack && node ./build/webpack.bundle.js"
   },

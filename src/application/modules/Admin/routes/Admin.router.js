@@ -3,38 +3,55 @@
  * (C) BIT TECHNOLOGIES
  */
 
-let express = require('express');
-let router = express.Router();
-
-
 /*
  ADMIN
  */
 
 // api/admin/XXXXX
 
-router.get('/sort', async function (req, res){
-    let AdminCtrl = require ('../Admin.controller.js');
-    res.json( {message: AdminCtrl.sort() });
-});
+let routesHTTP = {
 
-router.get('/replace-uploaded-files-substring', async function (req, res){
-    let AdminCtrl = require ('../Admin.controller.js');
-    //res.json( {message: AdminCtrl.replaceUploadedFilesSubstring("myskyhub.ddns.net:4000","skyhub.me:4000") });
-    //res.json( {message: AdminCtrl.replaceUploadedFilesSubstring("http://skyhub.me:4000/uploads","http://skyhub.me:4000/public/uploads") });
-    res.json( {message: AdminCtrl.replaceUploadedFilesSubstring("myskyhub.ddns.net:4000","skyhub.me:4000") });
-});
+    '/sort': async (req, res, callback) => {
+        let AdminCtrl = require ('../Admin.controller.js');
+        callback (  {message: AdminCtrl.sort() });
+    },
+
+    '/replace-uploaded-files-substring': async (req, res, callback)=> {
+        let AdminCtrl = require ('../Admin.controller.js');
+
+        //callback (  {message: AdminCtrl.replaceUploadedFilesSubstring("myskyhub.ddns.net:4000","skyhub.me:4000") });
+        //callback (  {message: AdminCtrl.replaceUploadedFilesSubstring("http://skyhub.me:4000/uploads","http://skyhub.me:4000/public/uploads") });
+        callback ( {message: AdminCtrl.replaceUploadedFilesSubstring("myskyhub.ddns.net:4000","skyhub.me:4000") });
+    },
+
+    '/build-notifications-subscribers-lists': async (req, res, callback) => {
+        let AdminCtrl = require ('../Admin.controller.js');
+        callback ( {message: AdminCtrl.buildNotificationsSubscribersLists() });
+    },
+
+    '/build-all-pages-lists': async (req, res, callback) => {
+        let AdminCtrl = require ('../Admin.controller.js');
+        callback ( {message: AdminCtrl.buildAllPagesLists() });
+    },
+}
+
+/*
+            SOCKET ROUTES
+ */
+
+let routesSocket = {
+
+};
 
 
-router.get('/build-notifications-subscribers-lists', async function (req, res){
-    let AdminCtrl = require ('../Admin.controller.js');
-    res.json( {message: AdminCtrl.buildNotificationsSubscribersLists() });
-});
+/*
+            COMMON ROUTES
+ */
 
-router.get('/build-all-pages-lists', async function (req, res){
-    let AdminCtrl = require ('../Admin.controller.js');
-    res.json( {message: AdminCtrl.buildAllPagesLists() });
-});
+let routesCommon = {
 
+}
 
-module.exports = router;
+module.exports.routesCommon = routesCommon;
+module.exports.routesHTTP = routesHTTP;
+module.exports.routesSocket = routesSocket;

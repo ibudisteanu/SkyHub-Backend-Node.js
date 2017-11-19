@@ -5,12 +5,9 @@
  * Module dependencies.
  */
 
-import constants from './constants';
 
-if((typeof window !== 'undefined' && !window._babelPolyfill) ||
-    (typeof global !== 'undefined' && !global._babelPolyfill)) {
-    require('babel-polyfill')
-}
+import constants from './constants';
+import {serverSocket, createSocketServer} from '../application/modules/socketServer/socketServer.controller.js';
 
 var app = require('../app');
 var debug = require('debug')('express:server');
@@ -115,5 +112,4 @@ server.listen(port, function(){
  */
 
 console.log("IMPORTING serverSocket");
-serverSocket = require('../application/modules/socketServer/socketServer.controller.js');
-serverSocket = serverSocket.serverSocket;
+createSocketServer(server);

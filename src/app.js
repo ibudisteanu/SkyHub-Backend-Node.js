@@ -5,7 +5,9 @@ const logger = require('morgan');
 let cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-var constants = require ('./bin/constants.js');
+import {initializeRoutersExpress} from './routes/index.router';
+import constants from  './bin/constants.js';
+
 var redis = require ('./application/modules/DB/redis_nohm');    //REDIS NOHM
 
 
@@ -35,31 +37,8 @@ app.use("/",express.static(path.join(__dirname, 'public')));
  //app.use("/public", express.static(__dirname + '/public'));
 
 
-
-/*//CORS ACCEPTANCE BUG https://enable-cors.org/server_expressjs.html
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "POST, GET");
-    res.header("Access-Control-Max-Age", "3600");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-    // res.header("Access-Control-Allow-Origin", "*");
-    // res.header("Access-Control-Allow-Credentials", "true");
-    // res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-    // res.header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-
-    res.header("Cache-Control", "no-cache, no-store, must-revalidate");
-    res.header("Pragma", "no-cache");
-    res.header("Expires", "0");
-    next();
-});*/
-
-
-const indexRouter = require('./routes/index.router');
-indexRouter.initializeRouter(app);
-
-
-
+//initialzie Routes
+initializeRoutersExpress(app);
 
 
 // catch 404 and forward to error handler
