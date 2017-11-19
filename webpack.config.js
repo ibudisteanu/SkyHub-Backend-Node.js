@@ -1,20 +1,20 @@
-var path = require('path');
-var webpack = require('webpack');
-var nodeExternals = require('webpack-node-externals');
+const path = require('path');
+const webpack = require('webpack');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
-    entry: './bin/www.js',
+    entry: './src/bin/www.js',
     output: {
         path: path.resolve(__dirname, 'build'),
-        filename: 'main.bundle.js'
+        filename: 'webpack.bundle.js'
     },
     resolve:{
         alias:{
-            '~application': path.resolve( __dirname + '/application'),
-            '~modules': path.resolve( __dirname + '/application/modules'),
-            '~DB': path.resolve( __dirname , 'application/modules/DB'),
-            '~REST': path.resolve( __dirname + '/application/modules/REST'),
-            '~utils': path.resolve( __dirname + '/application/modules/utils'),
+            'application': path.resolve( __dirname + '/application'),
+            'modules': path.resolve( __dirname + '/application/modules'),
+            'DB': path.resolve( __dirname , 'application/modules/DB'),
+            'REST': path.resolve( __dirname + '/application/modules/REST'),
+            'utils': path.resolve( __dirname + '/application/modules/utils'),
         },
     },
     target: 'node', // in order to ignore built-in modules like path, fs, etc.
@@ -25,7 +25,7 @@ module.exports = {
                 test: /\.(ts|js|jsx)$/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['es2015']
+                    presets: ['es2017']
                 },
                 include: [
                     path.resolve(__dirname, "application"),

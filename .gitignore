@@ -67,3 +67,5 @@ bin/constants.js
 bin/constants.js
 
 npm-debug\.log
+
+package-lock\.json
