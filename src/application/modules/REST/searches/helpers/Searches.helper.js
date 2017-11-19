@@ -3,7 +3,10 @@
  * (C) BIT TECHNOLOGIES
  */
 
-let SearchList = require('../../../DB/Redis/lists/search/SearchList.helper.js');
+import * as redis from 'DB/redis_nohm'
+
+let SearchList = require('DB/Redis/lists/search/SearchList.helper.js');
+
 
 let forumModel = require ('../../forums/forums/models/Forum.model.js');
 let userModel = require ('../../users/auth/models/User.model.js');

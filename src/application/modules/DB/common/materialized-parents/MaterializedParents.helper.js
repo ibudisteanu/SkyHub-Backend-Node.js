@@ -4,8 +4,8 @@
  */
 
 
-//var redis = require ('./../m../modules/DB/redis_nohm.js');
-var redis = require ('../../redis_nohm.js');
+import * as redis from 'DB/redis_nohm'
+
 var URLHashHelper = require ('../../../REST/common/URLs/helpers/URLHash.hashlist.js');
 
 var MaterializedParents = class{

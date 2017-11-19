@@ -3,6 +3,8 @@
  * (C) BIT TECHNOLOGIES
  */
 
+import * as redis from 'DB/redis_nohm'
+
 var StatisticsHelper = require ('../REST/statistics/helpers/Statistics.helper.js');
 
 var ForumsHelper = require ('../REST/forums/forums/helpers/Forums.helper.js');

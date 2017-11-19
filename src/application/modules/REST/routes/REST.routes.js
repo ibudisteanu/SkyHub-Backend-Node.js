@@ -7,7 +7,7 @@ let TopicsCtrl = require ('../forums/topics/Topics.controller.js');
 let RepliesCtrl = require ('../forums/replies/Replies.controller.js');
 let VotingCtrl = require ('../voting/Voting.controller.js');
 let NotificationsCtrl = require ('../notifications/notifications/Notifications.controller.js');
-let MongoImporter = require ('../../DB/mongo-importer/MongoImporter.js');
+let MongoImporter = require ('DB/mongo-importer/MongoImporter.js');
 
 let TopContentCtrl = require ('../forums/top-content/TopContent.controller.js');
 let TopForumsCtrl = require ('../forums/top-content/TopForums.controller.js');
@@ -30,12 +30,12 @@ let AllPagesCtrl = require ('../forums/content/all-pages/AllPages.controller.js'
 let routesHTTP = {
 
     "test/TopContent": async (req, res, callback)  => {
-        let TopContentHelper = require ('../../DB/Redis/lists/sorted-lists/TopObjectsList.helper.js');
+        let TopContentHelper = require ('DB/Redis/lists/sorted-lists/TopObjectsList.helper.js');
         callback( {message: TopContentHelper.test() });
     },
 
     "test/MaterializedParents": async  (req, res, callback) =>{
-        let MaterializedParentsHelper = require ('../../DB/common/materialized-parents/MaterializedParents.helper.js');
+        let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
         callback( {message: MaterializedParentsHelper.test() });
     },
 
@@ -50,7 +50,7 @@ let routesHTTP = {
     },
 
     "test/SearchList": async (req, res, callback) => {
-        let SearchList = require ('../../DB/Redis/lists/search/SearchList.helper.js');
+        let SearchList = require ('DB/Redis/lists/search/SearchList.helper.js');
 
         SearchList = new SearchList();
         callback( {message: SearchList.test() });
@@ -227,7 +227,7 @@ let routesCommon = {
     "content/delete-object": async (req, res, callback) => {
 
         let answer = await ContentCtrl.postDeleteObject(req, res);
-        callback(answer, data.id);
+        callback(answer, req.id||req.body.id);
     },
 
     "content/get-URL-slug": async (req, res, callback) => {
@@ -242,7 +242,7 @@ let routesCommon = {
         callback(await SearchesCtrl.searchParents(req, res));
     },
 
-    "meta-extractor/extract-url": async (data) => {
+    "meta-extractor/extract-url": async (req, res, callback) => {
 
         callback(await MetaExtractorCtrl.extractDataFromLink(req, res));
     },

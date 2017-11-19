@@ -3,8 +3,8 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var TopObjectsList = require('../../../../DB/Redis/lists/sorted-lists/TopObjectsList.helper.js');
-var MaterializedParents = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.js');
+var TopObjectsList = require('DB/Redis/lists/sorted-lists/TopObjectsList.helper.js');
+var MaterializedParents = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 
 class TopReplies {
 

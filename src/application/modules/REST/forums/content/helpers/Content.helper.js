@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.js');
+var MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 var VotingsHashList = require ('../../../voting/helpers/Votings.hashlist.js');
 
 class ContentHelper {

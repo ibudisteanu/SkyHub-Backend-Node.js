@@ -14,10 +14,10 @@ var debug = require('debug')('express:server');
 var http = require('http');
 
 //FOR TESTING ONLY
-//var redis = require('./../application/modules/DB/redis_test.js');
+//var redis = require('DB/redis_test.js');
 
 //JugglingDB it's NOT working
-//var redis = require ('./../application/modules/DB/redisJugglingDB');
+//var redis = require ('DB/redisJugglingDB');
 
 /**
  * Create HTTP server.

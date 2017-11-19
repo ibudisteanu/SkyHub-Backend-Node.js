@@ -2,9 +2,9 @@
  * Created by Alexandru Ionut Budisteanu - SkyHub on 5/16/2017.
  * (C) BIT TECHNOLOGIES
  */
+import * as redis from 'DB/redis_nohm'
+var nohmIterator = require   ('DB/Redis/nohm/nohm.iterator.js');
 
-var redis = require ('../../../../DB/redis_nohm');
-var nohmIterator = require   ('../../../../DB/Redis/nohm/nohm.iterator.js');
 var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
 
 var StatisticsHelper = require('../../../statistics/helpers/Statistics.helper.js');

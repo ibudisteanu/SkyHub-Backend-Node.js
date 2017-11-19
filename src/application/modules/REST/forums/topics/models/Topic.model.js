@@ -3,8 +3,8 @@
  * (C) BIT TECHNOLOGIES
  */
 
-let redis = require ('../../../../DB/redis_nohm');
-let nohmIterator = require ('../../../../DB/Redis/nohm/nohm.iterator.js');
+let redis = require ('DB/redis_nohm');
+let nohmIterator = require ('DB/Redis/nohm/nohm.iterator.js');
 
 let StatisticsHelper = require('../../../statistics/helpers/Statistics.helper.js');
 let SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');

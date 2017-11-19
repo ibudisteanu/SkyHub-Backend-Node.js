@@ -7,8 +7,8 @@
  *
  */
 
+import * as redis from 'DB/redis_nohm'
 
-var redis = require ('../../../redis_nohm.js');
 var MaterializedParentsHelper = require ('../../../common/materialized-parents/MaterializedParents.helper.js');
 
 var SortedList = class{

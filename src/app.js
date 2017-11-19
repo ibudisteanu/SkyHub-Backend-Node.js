@@ -5,10 +5,10 @@ const logger = require('morgan');
 let cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-import {initializeRoutersExpress} from './routes/index.router';
+import {initializeRoutesExpressServer} from './routes/index.routes';
 import constants from  './bin/constants.js';
 
-var redis = require ('./application/modules/DB/redis_nohm');    //REDIS NOHM
+var redis = require ('DB/redis_nohm');    //REDIS NOHM
 
 
 const cors = require('cors');
@@ -31,14 +31,14 @@ app.use(cookieParser());
 
 
 //the first parameter is used for a prefix...
-app.use("/",express.static(path.join(__dirname, 'public')));
+app.use("/",express.static(path.join(__dirname, (__dirname.indexOf("/build/dist")>0 ? '../../' : '')+'public')));
 // app.use(express.static(path.join(__dirname, 'public')));
 // in case it doesn't work
  //app.use("/public", express.static(__dirname + '/public'));
 
 
-//initialzie Routes
-initializeRoutersExpress(app);
+// initialize Routes for Express App
+initializeRoutesExpressServer(app);
 
 
 // catch 404 and forward to error handler

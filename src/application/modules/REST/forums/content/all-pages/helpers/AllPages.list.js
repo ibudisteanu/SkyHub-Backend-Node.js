@@ -1,4 +1,4 @@
-let List = require ('../../../../../DB/Redis/lists/List.helper.js');
+let List = require ('DB/Redis/lists/List.helper.js');
 
 var AllPagesList = class {
 

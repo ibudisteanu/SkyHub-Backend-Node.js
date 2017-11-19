@@ -3,8 +3,8 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var ScoreCoefficientHelper = require ('../../../../DB/common/score-coefficient/ScoreCoefficient.helper.js');
-var HashList = require ('../../../../DB/Redis/lists/HashList.helper.js');
+var ScoreCoefficientHelper = require ('DB/common/score-coefficient/ScoreCoefficient.helper.js');
+var HashList = require ('DB/Redis/lists/HashList.helper.js');
 var TopRepliesHelper = require ('../../top-content/helpers/TopReplies.helper.js');
 
 var RepliesSorter = class{

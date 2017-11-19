@@ -10,6 +10,8 @@
 
  */
 
+import * as redis from 'DB/redis_nohm'
+
 class UniqueVisitorsHelper {
 
     constructor(){

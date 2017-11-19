@@ -4,7 +4,7 @@
  */
 
 
-let HashList = require ('../../../DB/Redis/lists/HashList.helper.js');
+let HashList = require ('DB/Redis/lists/HashList.helper.js');
 
 let VoteType = require ('../models/VoteType.js');
 

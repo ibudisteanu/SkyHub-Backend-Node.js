@@ -3,10 +3,12 @@
  * (C) BIT TECHNOLOGIES
  */
 
+import * as redis from 'DB/redis_nohm'
+
 let replyModel = require ('../models/Reply.model.js');
 let commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
 let URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
-let MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.js');
+let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
 let hat = require ('hat');
 let VotingsHashList = require ('../../../voting/helpers/Votings.hashlist.js');

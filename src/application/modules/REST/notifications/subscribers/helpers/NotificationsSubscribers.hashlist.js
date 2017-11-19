@@ -4,7 +4,7 @@
  */
 
 
-var HashList = require ('../../../../DB/Redis/lists/HashList.helper.js');
+var HashList = require ('DB/Redis/lists/HashList.helper.js');
 var NotificationSubscriberType = require ('../models/NotificationSubscriberType.js');
 
 class NotificationsSubscribersList {

@@ -7,7 +7,7 @@
  */
 
 import constants from './../../../bin/constants'
-import {initializeRoutersSocket} from './../../../routes/index.router'
+import {initializeRoutesServerSocket} from '../../../routes/index.routes'
 
 const socketIo = require('socket.io');
 
@@ -80,7 +80,7 @@ function createSocketServer(server){
         console.log('hello! ', socket.bAuthenticated , "   ", socket.userAuthenticated) ;
 
         // initialize routes for socket
-        initializeRoutersSocket(socket);
+        initializeRoutesServerSocket(socket);
 
         socket.emit('api/connectionReady', 'HELLO WORLD');
 

@@ -10,7 +10,7 @@
 var ContentHelper = require('./helpers/Content.helper.js');
 var AuthenticatingUser = require('../../users/auth/helpers/AuthenticatingUser.helper.js');
 var URLHashHelper = require ('../../common/URLs/helpers/URLHash.hashlist.js');
-var MaterializedParentsHelper = require ('../../../DB/common/materialized-parents/MaterializedParents.helper.js');
+var MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 
 module.exports = {
 

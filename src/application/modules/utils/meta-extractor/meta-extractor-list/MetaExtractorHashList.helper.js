@@ -8,7 +8,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var HashList = require ('../../../DB/Redis/lists/HashList.helper.js');
+var HashList = require ('DB/Redis/lists/HashList.helper.js');
 
 class MetaExtractorHashList {
 

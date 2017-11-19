@@ -2,11 +2,12 @@
  * Created by Alexandru Ionut Budisteanu - SkyHub on 5/26/2017.
  * (C) BIT TECHNOLOGIES
  */
+import * as redis from 'DB/redis_nohm'
 
 let forumModel = require ('../models/Forum.model.js');
 let commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
 let URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
-let MaterializedParentsHelper = require ('../../../../DB/common/materialized-parents/MaterializedParents.helper.js');
+let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
 let ForumsSorter = require('../models/ForumsSorter.js');
 

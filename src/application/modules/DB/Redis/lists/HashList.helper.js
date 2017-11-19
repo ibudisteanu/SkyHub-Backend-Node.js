@@ -4,7 +4,7 @@
  */
 
 
-var redis = require ('../../redis_nohm.js');
+import * as redis from 'DB/redis_nohm'
 
 var HashList = class{
 

@@ -23,6 +23,7 @@ const storageFile = multer.diskStorage({
         // Mimetype stores the file type, set extensions according to filetype
 
         console.log("@@@@@@@@@@@@@@@@@@@", file.mimetype);
+        let ext = '';
         switch (file.mimetype)
         {
             case 'image/jpeg':
@@ -115,6 +116,7 @@ const imageStorage = multer.diskStorage({
 
         console.log("@@@@@@@@@@@@@@@@@@@", file.mimetype);
 
+        let ext = '';
         switch (file.mimetype)
         {
             case 'image/jpeg':

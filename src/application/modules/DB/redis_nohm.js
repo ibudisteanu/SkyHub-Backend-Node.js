@@ -5,8 +5,9 @@
 
 console.log("%%%% LOADING REDIS_NOHM.js");
 
-var redis = require('redis');
-var nohm = require('nohm').Nohm;
+const redis = require('redis');
+const nohm = require('nohm').Nohm;
+
 const constants = require('./../../../bin/constants');
 
 
@@ -48,5 +49,6 @@ module.exports =
     {
         nohm : nohm,
         redisClient : redisClient,
+        redis: redis,
     };
 

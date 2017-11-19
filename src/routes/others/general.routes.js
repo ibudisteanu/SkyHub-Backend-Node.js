@@ -28,9 +28,9 @@ let routesCommon = {
         callback({title: 'SkyHub 2 REST - Backend'}, '', 'index')
     },
 
-    '/zzz': async (req, res, callback) => {
+    '/version': async (req, res, callback) => {
 
-        callback(FunctionsCtrl.getZZZ());
+        callback(FunctionsCtrl.getVersion(req, res));
     },
 
 };

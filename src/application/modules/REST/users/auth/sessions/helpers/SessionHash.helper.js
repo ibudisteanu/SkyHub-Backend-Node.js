@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var HashList = require ('../../../../../DB/Redis/lists/HashList.helper.js');
+var HashList = require ('DB/Redis/lists/HashList.helper.js');
 var SessionsHashList = require ('./SessionsHashList.helper.js');
 
 var hat = require('hat');
