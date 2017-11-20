@@ -76,7 +76,7 @@ class ContentHelper {
         let object = await MaterializedParentsHelper.findObject(id);
         let type = MaterializedParentsHelper.extractObjectTypeFromId(id);
 
-        if (object === null) return {result:false, message: 'Object not found'};
+        if (object === null) return {result:false, message: 'Object "'+id+'" not found'};
 
         if (object.isOwner(userAuthenticated) === false)
             return {result:false, message: 'No rights to delete the object'};

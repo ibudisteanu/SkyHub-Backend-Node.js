@@ -120,7 +120,7 @@ function initializeRoutesSocketWithList(socket, routesList, prefix) {
                     if (typeof suffix === 'undefined')
                         socket.emit(finalRoute, answer );
                     else {
-                        console.log('############################ finalRoute',finalRoute+ '/'+lTrimSlash(suffix), answer)
+                        //console.log('############################ finalRoute',finalRoute+ '/'+lTrimSlash(suffix), answer)
                         socket.emit(finalRoute+ '/'+lTrimSlash(suffix), answer)
                     }
 
