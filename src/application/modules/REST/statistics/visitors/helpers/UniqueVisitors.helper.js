@@ -28,7 +28,7 @@ class UniqueVisitorsHelper {
         if (typeof visitorIP === 'string') visitorIP = this.convertIPtoNumber(visitorIP);
 
         return new Promise( (resolve)=> {
-            redis.redisClient.pfadd (this.tablePrefix + ":" + parentId, visitorIP, function (err, answer) {
+            redis.redisClient.pfadd (this.tablePrefix + ":" + parentId, visitorIP, (err, answer) => {
 
                 resolve (err === null ? answer : null);
 
@@ -41,7 +41,7 @@ class UniqueVisitorsHelper {
      */
     async countUniqueVisitors(parentId){
         return new Promise( (resolve)=> {
-            redis.redisClient.pfcount (this.tablePrefix + ":" + parentId, function (err, answer) {
+            redis.redisClient.pfcount (this.tablePrefix + ":" + parentId, (err, answer) => {
 
                 resolve (err === null ? answer : null);
 

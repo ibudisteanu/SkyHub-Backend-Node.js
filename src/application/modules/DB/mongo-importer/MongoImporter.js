@@ -307,7 +307,7 @@ class MongoImporter {
             if ((typeof topic.ImagesData !== 'undefined')){
 
                 let images = topic.ImagesData.Images;
-                Object.keys(images).map(function(key, index) {
+                Object.keys(images).map( async (key, index) => {
 
                     image = images[key].src||'';
                     image = this.fixMongoImageURL(image);
@@ -320,7 +320,7 @@ class MongoImporter {
                             img: image,
                             title: images[key].alt||images[key].title||images[key].description,
                         }];
-                }.bind(this));
+                });
             }
 
             let cover = this.fixMongoImageURL(topic.CoverImage||'');

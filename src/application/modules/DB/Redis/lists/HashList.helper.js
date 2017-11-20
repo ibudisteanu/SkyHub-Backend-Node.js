@@ -22,7 +22,7 @@ var HashList = class{
             value = JSON.stringify(value);
 
         return new Promise( (resolve)=> {
-            redis.redisClient.hset(this.tablePrefix + ":" + tableName, key, value, function (err, answer) {
+            redis.redisClient.hset(this.tablePrefix + ":" + tableName, key, value, (err, answer) => {
 
                 console.log("setHash ",err,answer);
 
@@ -38,7 +38,7 @@ var HashList = class{
     async getHash(tableName, key){
 
         return new Promise( (resolve)=> {
-            redis.redisClient.hget (this.tablePrefix + ":" + tableName, key, function (err, answer) {
+            redis.redisClient.hget (this.tablePrefix + ":" + tableName, key,  (err, answer) => {
 
                 //console.log("getHash ",tableName+":"+key,"###",err,answer);
                 resolve (err === null ? answer : null);
@@ -58,7 +58,7 @@ var HashList = class{
     async getAllHash(tableName){
 
         return new Promise( (resolve)=> {
-            redis.redisClient.hgetall (this.tablePrefix + ":" + tableName, function (err, answer) {
+            redis.redisClient.hgetall (this.tablePrefix + ":" + tableName, (err, answer) => {
 
                 console.log("getAllHash ##",tableName,"###",err,answer);
                 resolve (err === null ? answer : null);
@@ -70,7 +70,7 @@ var HashList = class{
     async incrementBy(tableName, key, value){
 
         return new Promise( (resolve)=> {
-            redis.redisClient.hincrby (this.tablePrefix + ":" + tableName, key, value, function (err, answer) {
+            redis.redisClient.hincrby (this.tablePrefix + ":" + tableName, key, value, (err, answer) => {
 
                 //console.log("hashIncrementBy ##",key,' value ',value,"###",err,answer);
                 resolve (err === null ? answer : null);
@@ -81,7 +81,7 @@ var HashList = class{
 
     async deleteHash(tableName, key){
         return new Promise( (resolve)=> {
-            redis.redisClient.hdel(this.tablePrefix + (typeof tableName !== 'undefined' ? ":" + tableName : ''), key, function (err, answer){
+            redis.redisClient.hdel(this.tablePrefix + (typeof tableName !== 'undefined' ? ":" + tableName : ''), key, (err, answer)=> {
 
                 console.log("deleteHash ",err, answer);
                 resolve (err === null ? answer : null);

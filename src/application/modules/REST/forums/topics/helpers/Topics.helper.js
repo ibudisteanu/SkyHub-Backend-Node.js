@@ -162,7 +162,7 @@ module.exports = {
                 return false;
             }
 
-            topic.save(async function (err) {
+            topic.save(async (err) => {
                 if (err) {
                     console.log("==> Error Saving Topic");
                     console.log(topic.errors); // the errors in validation
@@ -195,7 +195,7 @@ module.exports = {
 
                     resolve( {result:true, topic: topic.getPublicInformation(userAuthenticated) });
                 }
-            }.bind(this));
+            });
 
         });
 

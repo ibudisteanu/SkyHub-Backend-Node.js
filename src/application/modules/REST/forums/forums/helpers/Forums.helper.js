@@ -145,7 +145,7 @@ module.exports = {
                 return false;
             }
 
-            forum.save(async function (err) {
+            forum.save(async (err) => {
                 if (err) {
                     console.log("==> Error Saving Forum");
                     console.log(forum.errors); // the errors in validation
@@ -179,7 +179,7 @@ module.exports = {
                     resolve( {result:true, forum: forum.getPublicInformation(userAuthenticated) });
 
                 }
-            }.bind(this));
+            });
 
         });
 

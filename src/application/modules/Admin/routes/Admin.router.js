@@ -14,29 +14,30 @@ let AdminCtrl = require ('Admin/Admin.controller.js');
 let routesHTTP = {
 
     '/sort': async (req, res, callback) => {
-        callback (  {message: AdminCtrl.sort() });
+        callback (  {message: await AdminCtrl.sort() });
     },
 
     '/replace-uploaded-files-substring': async (req, res, callback)=> {
 
         //callback (  {message: AdminCtrl.replaceUploadedFilesSubstring("myskyhub.ddns.net:4000","skyhub.me:4000") });
         //callback (  {message: AdminCtrl.replaceUploadedFilesSubstring("http://skyhub.me:4000/uploads","http://skyhub.me:4000/public/uploads") });
-        callback ( {message: AdminCtrl.replaceUploadedFilesSubstring("myskyhub.ddns.net:4000","skyhub.me:4000") });
+        callback ( {message: await AdminCtrl.replaceUploadedFilesSubstring("myskyhub.ddns.net:4000","skyhub.me:4000") });
     },
 
     '/build-notifications-subscribers-lists': async (req, res, callback) => {
 
-        callback ( {message: AdminCtrl.buildNotificationsSubscribersLists() });
+        callback ( {message: await AdminCtrl.buildNotificationsSubscribersLists() });
     },
 
     '/build-all-pages-lists': async (req, res, callback) => {
 
-        callback ( {message: AdminCtrl.buildAllPagesLists() });
+        callback ( {message: await AdminCtrl.buildAllPagesLists() });
     },
 
     '/copy-DB/:dbSource/:dbDestination': async (req, res, callback) => {
 
-        callback ( {message: AdminCtrl.copyDB( req.params.dbSource, req.params.dbDestination) });
+        console.log('copy-DB HIT');
+        callback ( {message: await AdminCtrl.copyDB( req.params.dbSource, req.params.dbDestination) });
     },
 
 };

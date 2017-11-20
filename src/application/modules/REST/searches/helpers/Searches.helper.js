@@ -134,47 +134,47 @@ class Searches {
 
 
         let promise = new Promise( (resolve) => {
-            forumModelORM.find(async function (err, ids){
+            forumModelORM.find(async (err, ids)=>{
 
                 for (let i=0; i<ids.length; i++)
                     await this.addForumToSearch(null,ids[i], 0);
 
                 resolve(true);
-            }.bind(this) );
+            } );
         });
 
         await promise;
 
         promise = new Promise( (resolve) => {
-            userModelORM.find(async function (err, ids) {
+            userModelORM.find(async (err, ids) =>{
 
                 for (let i = 0; i < ids.length; i++)
                     await this.addUserToSearch(null, ids[i], 0);
 
                 resolve(true);
-            }.bind(this));
+            });
         });
 
         await promise;
 
         promise = new Promise( (resolve) => {
-            topicModelORM.find(async function (err, ids) {
+            topicModelORM.find(async (err, ids) => {
                 for (let i = 0; i < ids.length; i++)
                     await this.addTopicToSearch(null, ids[i], 0);
 
                 resolve(true);
-            }.bind(this));
+            });
         });
 
         await promise;
 
         promise = new Promise( (resolve) => {
-            replyModelORM.find(async function (err, ids){
+            replyModelORM.find(async (err, ids) => {
                 for (let i=0; i<ids.length; i++)
                     await this.addReplyToSearch(null,ids[i], 0);
 
                 resolve(true);
-            }.bind(this) );
+            });
         });
 
         await promise;

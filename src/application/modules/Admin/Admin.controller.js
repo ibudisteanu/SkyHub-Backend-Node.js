@@ -35,14 +35,14 @@ class AdminController {
             forumModelORM.find(async (err, ids) =>{
 
                 for (let i=0; i<ids.length; i++){
-                    let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
+                    //let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
                     let index = await ForumsHelper.findForumById(ids[i]);
 
                     await StatisticsHelper.keepElementSortedList(index.id, index.p('parents'));
                 }
 
                 resolve(true);
-            }.bind(this) );
+            } );
         });
 
         await new Promise( (resolve) => {
@@ -54,14 +54,14 @@ class AdminController {
                 }
 
                 resolve(true);
-            }.bind(this));
+            });
         });
 
         await new Promise( (resolve) => {
             topicModelORM.find(async (err, ids) => {
 
                 for (let i=0; i<ids.length; i++){
-                    let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
+                    //let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
                     let index = await TopicsHelper.findTopicById(ids[i]);
 
                     await StatisticsHelper.keepElementSortedList(index.id, index.p('parents'));
@@ -69,22 +69,22 @@ class AdminController {
 
 
                 resolve(true);
-            }.bind(this));
+            });
         });
 
         await new Promise( (resolve) => {
-            replyModelORM.find(async function (err, ids){
+            replyModelORM.find(async (err, ids) => {
 
                 for (let i=0; i<ids.length; i++){
 
-                    let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
+                    //let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
                     let index = await RepliesHelper.findReplyById(ids[i]);
 
                     await StatisticsHelper.keepElementSortedList(index.id, index.p('parents'));
                 }
 
                 resolve(true);
-            }.bind(this) );
+            });
         });
 
     }
@@ -97,10 +97,10 @@ class AdminController {
         let replyModelORM = redis.nohm.factory('ReplyModel');
 
         await new Promise( (resolve) => {
-            forumModelORM.find(async function (err, ids){
+            forumModelORM.find(async  (err, ids) => {
 
                 for (let i=0; i<ids.length; i++){
-                    let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
+                    //let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
                     let forum = await ForumsHelper.findForumById(ids[i]);
 
                     if (forum !== null){
@@ -108,28 +108,28 @@ class AdminController {
                         forum.p('iconPic', forum.p('iconPic').replace(substrToReplace, substrReplace));
                         forum.p('coverPic', forum.p('coverPic').replace(substrToReplace, substrReplace));
 
-                        forum.save(async function (err) {
+                        forum.save(async (err) => {
                             if (err) {
                                 console.log("==> Error Saving Forum");
                                 console.log(forum.errors); // the errors in validation
                             } else {
                                 console.log("Saving Forum Successfully");
                             }
-                        }.bind(this));
+                        });
                     }
 
                 }
 
 
                 resolve(true);
-            }.bind(this) );
+            } );
         });
 
         await new Promise( (resolve) => {
-            userModelORM.find(async function (err, ids) {
+            userModelORM.find(async (err, ids) => {
 
                 for (let i = 0; i < ids.length; i++) {
-                    let UsersHelper = require ('REST/users/auth/helpers/Users.helper.js');
+                    //let UsersHelper = require ('REST/users/auth/helpers/Users.helper.js');
                     let user = await UsersHelper.findUserById(ids[i]);
 
                     if (user !== null){
@@ -137,7 +137,7 @@ class AdminController {
                         user.p('profilePic', user.p('profilePic').replace(substrToReplace, substrReplace));
                         user.p('coverPic', user.p('coverPic').replace(substrToReplace, substrReplace));
 
-                        user.save(async function (err) {
+                        user.save(async (err) =>{
 
                             if (err) {
                                 console.log("==> Error Saving User");
@@ -146,21 +146,21 @@ class AdminController {
                                 console.log("Saving User Successfully");
                             }
 
-                        }.bind(this));
+                        });
                     }
 
                 }
 
                 resolve(true);
-            }.bind(this));
+            });
         });
 
         await new Promise( (resolve) => {
 
-            topicModelORM.find(async function (err, ids) {
+            topicModelORM.find(async (err, ids) => {
 
                 for (let i=0; i<ids.length; i++){
-                    let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
+                    //let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
                     let topic = await TopicsHelper.findTopicById(ids[i]);
 
                     if (topic !== null){
@@ -179,7 +179,7 @@ class AdminController {
 
                             topic.p('attachments', attachments);
 
-                            topic.save(async function (err) {
+                            topic.save(async (err) => {
 
                                 if (err) {
                                     console.log("==> Error Saving Topic");
@@ -188,7 +188,7 @@ class AdminController {
                                     console.log("Saving Topic Successfully");
                                 }
 
-                            }.bind(this));
+                            });
 
                         }
 
@@ -199,16 +199,16 @@ class AdminController {
 
                 resolve(true);
 
-            }.bind(this));
+            });
         });
 
 
         await new Promise( (resolve) => {
-            replyModelORM.find(async function (err, ids){
+            replyModelORM.find(async (err, ids) =>{
 
                 for (let i=0; i<ids.length; i++){
 
-                    let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
+                    //let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
                     let reply = await RepliesHelper.findReplyById(ids[i]);
 
                     if (reply !== null){
@@ -223,7 +223,7 @@ class AdminController {
 
                             reply.p('attachments', attachments);
 
-                            reply.save(async function (err) {
+                            reply.save(async (err) => {
 
                                 if (err) {
                                     console.log("==> Error Saving Reply");
@@ -232,7 +232,7 @@ class AdminController {
                                     console.log("Saving Reply Successfully");
                                 }
 
-                            }.bind(this));
+                            });
 
                         }
 
@@ -242,7 +242,7 @@ class AdminController {
                 }
 
                 resolve(true);
-            }.bind(this) );
+            });
         });
 
     }
@@ -254,9 +254,9 @@ class AdminController {
 
 
         await new Promise( (resolve) => {
-            forumModelORM.find(async function (err, ids){
+            forumModelORM.find(async (err, ids) => {
 
-                let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
+                //let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
 
                 //Deleting previous data
                 for (let i=0; i<ids.length; i++){
@@ -273,13 +273,13 @@ class AdminController {
                 }
 
                 resolve(true);
-            }.bind(this) );
+            });
         });
 
         await new Promise( (resolve) => {
-            topicModelORM.find(async function (err, ids) {
+            topicModelORM.find(async (err, ids) => {
 
-                let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
+                //let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
                 for (let i=0; i<ids.length; i++){
                     let topic = await TopicsHelper.findTopicById(ids[i]);
 
@@ -289,7 +289,7 @@ class AdminController {
                 }
 
                 resolve(true);
-            }.bind(this));
+            });
         });
     }
 
@@ -302,9 +302,9 @@ class AdminController {
         let replyModelORM = redis.nohm.factory('ReplyModel');
 
         await new Promise( (resolve) => {
-            forumModelORM.find(async function (err, ids){
+            forumModelORM.find(async (err, ids) => {
 
-                let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
+                //let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
                 for (let i=0; i<ids.length; i++){
                     let forum = await ForumsHelper.findForumById(ids[i]);
 
@@ -313,13 +313,13 @@ class AdminController {
                 }
 
                 resolve(true);
-            }.bind(this) );
+            });
         });
 
         await new Promise( (resolve) => {
-            topicModelORM.find(async function (err, ids) {
+            topicModelORM.find(async (err, ids) => {
 
-                let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
+                //let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
                 for (let i=0; i<ids.length; i++){
                     let topic = await TopicsHelper.findTopicById(ids[i]);
 
@@ -331,13 +331,13 @@ class AdminController {
 
                 resolve(true);
 
-            }.bind(this));
+            });
         });
 
         await new Promise( (resolve) => {
-            replyModelORM.find(async function (err, ids){
+            replyModelORM.find(async (err, ids) => {
 
-                let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
+                //let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
                 for (let i=0; i<ids.length; i++){
                     let reply = await RepliesHelper.findReplyById(ids[i]);
 
@@ -347,7 +347,7 @@ class AdminController {
                 }
 
                 resolve(true);
-            }.bind(this) );
+            });
         });
 
     }

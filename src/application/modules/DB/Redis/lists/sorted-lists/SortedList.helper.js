@@ -34,12 +34,12 @@ var SortedList = class{
 
         return new Promise( (resolve)=> {
 
-            redis.redisClient.zadd(this.tablePrefix+":"+tableName, score, key, function (err, answer){
+            redis.redisClient.zadd(this.tablePrefix+":"+tableName, score, key, async (err, answer) => {
 
                 if ((err === null)&&(this.trimMaxCount !== 0)) this.trim(tableName);
 
                 resolve (err === null ? answer : null);
-            }.bind(this));
+            });
 
         });
     }
@@ -72,12 +72,12 @@ var SortedList = class{
 
     async incrementBy(tableName, value, key, ){
         return new Promise( (resolve)=> {
-            redis.redisClient.zincrby(this.tablePrefix + ":" + tableName, value, key, function (err, answer){
+            redis.redisClient.zincrby(this.tablePrefix + ":" + tableName, value, key, async (err, answer) => {
 
                 if ((err === null)&&(this.trimMaxCount !== 0)) this.trim(tableName);
 
                 resolve (err === null ? answer : null);
-            }.bind(this));
+            });
         });
     }
 
@@ -87,7 +87,7 @@ var SortedList = class{
      */
     async deleteElement(tableName, key){
         return new Promise( (resolve)=> {
-            redis.redisClient.zrem(this.tablePrefix + ":" + tableName, key, function (err, answer){
+            redis.redisClient.zrem(this.tablePrefix + ":" + tableName, key, (err, answer) => {
                 resolve (err === null ? answer : null);
             });
         });
@@ -101,7 +101,7 @@ var SortedList = class{
 
         return new Promise( (resolve) => {
 
-            redis.redisClient.zrangebyscore(this.tablePrefix + ":" + tableName, iScoreMin, iScoreMax, function (err, answer){
+            redis.redisClient.zrangebyscore(this.tablePrefix + ":" + tableName, iScoreMin, iScoreMax, (err, answer) => {
                 if (err === null) resolve(answer);
                 else resolve ([]);
             });
@@ -123,7 +123,7 @@ var SortedList = class{
 
         return new Promise( (resolve) => {
 
-            redis.redisClient.zrange(this.tablePrefix+":"+tableName, start, end, function (err, answer){
+            redis.redisClient.zrange(this.tablePrefix+":"+tableName, start, end, (err, answer) => {
 
                 //console.log("ITEMS MATCHING ",answer);
 
@@ -144,7 +144,7 @@ var SortedList = class{
         sMatch = sMatch || '';
 
         return new Promise( (resolve)=> {
-            redis.redisClient.zscan(this.tablePrefix + ":" + tableName || "", iOffset||0, 'MATCH', '*'+(sMatch !== '' ? sMatch+ '*' : ''),function (err, answer) {
+            redis.redisClient.zscan(this.tablePrefix + ":" + tableName || "", iOffset||0, 'MATCH', '*'+(sMatch !== '' ? sMatch+ '*' : ''),  (err, answer) => {
 
                 //console.log("ITEMS MATCHING ",answer);
 
@@ -173,7 +173,7 @@ var SortedList = class{
     async getRankItem(tableName, item){
 
         return new Promise( (resolve)=> {
-            redis.redisClient.zrank(this.tablePrefix+":"+tableName||"", item, function (err, answer){
+            redis.redisClient.zrank(this.tablePrefix+":"+tableName||"", item, (err, answer) => {
 
                 if (err === null)  resolve(answer);
                 else resolve (-1);
@@ -184,7 +184,7 @@ var SortedList = class{
     async countList(tableName){
 
         return new Promise( (resolve)=> {
-                redis.redisClient.zcard(this.tablePrefix + ":" + tableName||"", function (err, answer) {
+                redis.redisClient.zcard(this.tablePrefix + ":" + tableName||"", (err, answer) => {
 
                     if (err === null)  resolve(answer);
                     else resolve (-1);
@@ -199,7 +199,7 @@ var SortedList = class{
      */
     async countListBetweenMinMax(tableName, min, max){
         return new Promise( (resolve)=> {
-            redis.redisClient.zcount(this.tablePrefix+":"+tableName||"", min, max, function(err, answer){
+            redis.redisClient.zcount(this.tablePrefix+":"+tableName||"", min, max, (err, answer) => {
 
                 if (err === null) resolve (answer);
                 else resolve ([]);
@@ -218,7 +218,7 @@ var SortedList = class{
                 argumentsIntersection[i] = this.tablePrefix+":"+argumentsIntersection[i];
 
             let cmd = [this.tablePrefix+":"+tableOutputName, argumentsIntersection.length];
-            redis.redisClient.zinterstore(cmd.concat(argumentsIntersection), function (err, answer){
+            redis.redisClient.zinterstore(cmd.concat(argumentsIntersection),  (err, answer)=>{
 
                 if (err === null) resolve(answer);
                 else resolve (null);
@@ -238,7 +238,7 @@ var SortedList = class{
 
         return new Promise( (resolve)=>{
 
-            redis.redisClient.ZREMRANGEBYRANK(this.tablePrefix+":"+tableName||"", start, end, function (err, answer){
+            redis.redisClient.ZREMRANGEBYRANK(this.tablePrefix+":"+tableName||"", start, end, (err, answer) => {
 
                 if (err === null) resolve(answer);
                 else resolve (null);

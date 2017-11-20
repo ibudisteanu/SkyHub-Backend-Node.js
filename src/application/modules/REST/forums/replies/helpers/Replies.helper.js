@@ -159,7 +159,7 @@ module.exports = {
                     return false;
                 }
 
-                reply.save(async function (err) {
+                reply.save(async (err) => {
                     if (err) {
                         console.log("==> Error Saving Reply");
                         console.log(reply.errors); // the errors in validation
@@ -190,7 +190,7 @@ module.exports = {
                         resolve( {result:true, reply: reply.getPublicInformation(userAuthenticated) });
 
                     }
-                }.bind(this));
+                });
 
             });
         } catch (Exception){

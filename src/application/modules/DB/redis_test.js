@@ -9,11 +9,11 @@ let redis = require('redis');
 
 let redisClient = redis.createClient(constants.DB_REDIS_HOST, constants.DB_REDIS_PORT); //creates a new client
 
-redisClient.on('connect', function() {
+redisClient.on('connect', () => {
     console.log('REDIS connected\n');
 });
 
-redisClient.on('disconnect', function() {
+redisClient.on('disconnect', () => {
     console.log('REDIS disconnected!!!\n');
 });
 

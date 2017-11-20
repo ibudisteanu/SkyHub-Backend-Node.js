@@ -87,7 +87,7 @@ module.exports = {
                         //console.log('Validating Facebook TOken....');
 
                         options.uri = 'https://graph.facebook.com/me?access_token='+sOauth2Token;
-                        requestPromise(options).promise().bind(this).then(function (res) {
+                        requestPromise(options).promise().bind(this).then( async (res) => {
 
                             if (res.hasOwnProperty('id')){
 

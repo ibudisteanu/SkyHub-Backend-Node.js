@@ -24,10 +24,10 @@ try{
     console.error("============== ERROR REDIS CLIENT");
 }
 
-redisClient.on('connect', function() {
+redisClient.on('connect', () => {
     console.log('===> REDIS connected\n');
 
-    redisClient.select(constants.DB_REDIS_CURRENT_DB, function(err,res){
+    redisClient.select(constants.DB_REDIS_CURRENT_DB, (err,res) => {
         if (err){
             console.log("====> REDIS couldn't select redis DB "+constants.DB_REDIS_CURRENT_DB);
         } else {
@@ -40,7 +40,7 @@ redisClient.on('connect', function() {
 
 });
 
-redisClient.on('disconnect', function() {
+redisClient.on('disconnect', () => {
     console.log('===> REDIS disconnected!!!\n');
 });
 

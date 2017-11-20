@@ -23,7 +23,7 @@ var List = class{
     async deleteList(tableName){
 
         return new Promise( (resolve)=> {
-            redis.redisClient.del(this.tablePrefix + ":" + tableName, function (err, answer) {
+            redis.redisClient.del(this.tablePrefix + ":" + tableName, (err, answer) => {
 
                 console.log("delete ",err,answer);
 
@@ -44,7 +44,7 @@ var List = class{
             value = JSON.stringify(value);
 
         return new Promise( (resolve)=> {
-            redis.redisClient.lpush(this.tablePrefix + ":" + tableName, value, function (err, answer) {
+            redis.redisClient.lpush(this.tablePrefix + ":" + tableName, value, (err, answer) => {
 
                 console.log("list push ",err,answer);
 
@@ -65,7 +65,7 @@ var List = class{
             value = JSON.stringify(value);
 
         return new Promise( (resolve)=> {
-            redis.redisClient.lpush(this.tablePrefix + ":" + tableName, value, function (err, answer) {
+            redis.redisClient.lpush(this.tablePrefix + ":" + tableName, value, (err, answer) => {
 
                 console.log("list push ",err,answer);
 
@@ -86,7 +86,7 @@ var List = class{
         if (typeof count === 'undefined') count = 0; //remove all the occurrences of the key
 
         return new Promise( (resolve)=> {
-            redis.redisClient.lrem (this.tablePrefix + ":" + tableName, count, key, function (err, answer) {
+            redis.redisClient.lrem (this.tablePrefix + ":" + tableName, count, key, (err, answer) => {
 
                 console.log("lrem ##",key,"###",err,answer);
                 resolve (err === null ? answer : null);
@@ -106,7 +106,7 @@ var List = class{
             value = JSON.stringify(value);
 
         return new Promise( (resolve)=> {
-            redis.redisClient.lset (this.tablePrefix + ":" + tableName, key, value, function (err, answer) {
+            redis.redisClient.lset (this.tablePrefix + ":" + tableName, key, value, (err, answer) => {
 
                 console.log("lset ##",key,"###",err,answer);
                 resolve (err === null ? answer : null);
@@ -127,7 +127,7 @@ var List = class{
         if (typeof maxim === 'undefined') maxim = 99;
 
         return new Promise( (resolve)=> {
-            redis.redisClient.ltrim (this.tablePrefix + ":" + tableName, minim, maxim, function (err, answer) {
+            redis.redisClient.ltrim (this.tablePrefix + ":" + tableName, minim, maxim, (err, answer) => {
 
                 console.log("ltrim ##",minim, maxim,"###",err,answer);
                 resolve (err === null ? answer : null);
@@ -146,7 +146,7 @@ var List = class{
         if (typeof tableName === 'undefined') tableName = '';
 
         return new Promise( (resolve)=> {
-            redis.redisClient.llen (this.tablePrefix + ":" + tableName, function (err, answer) {
+            redis.redisClient.llen (this.tablePrefix + ":" + tableName, (err, answer) => {
 
                 console.log("llen ##",err, answer,"###",err,answer);
                 resolve (err === null ? answer : null);
@@ -163,7 +163,7 @@ var List = class{
 
     async listRightPop(tableName){
         return new Promise( (resolve)=> {
-            redis.redisClient.rpop (this.tablePrefix + ":" + tableName, function (err, answer) {
+            redis.redisClient.rpop (this.tablePrefix + ":" + tableName, (err, answer) => {
 
                 console.log("rpop ##","###",err,answer);
                 resolve (err === null ? answer : null);
@@ -184,7 +184,7 @@ var List = class{
         if (typeof index2 === 'undefined') index2 = 10;
 
         return new Promise( (resolve)=> {
-            redis.redisClient.lrange(this.tablePrefix + ":" + tableName, index1, index2, function (err, answer) {
+            redis.redisClient.lrange(this.tablePrefix + ":" + tableName, index1, index2, (err, answer) => {
 
                 //console.log("lrange##",index1, index2,"###",err,answer);
                 resolve (err === null ? answer : null);
@@ -204,7 +204,7 @@ var List = class{
     //     if (typeof regex === 'undefined') regex = '';
     //
     //     return new Promise( (resolve)=> {
-    //         redis.redisClient.keys(this.tablePrefix + ":" + tableName, regex , function (err, answer) {
+    //         redis.redisClient.keys(this.tablePrefix + ":" + tableName, regex , (err, answer) => {
     //
     //             console.log("keys##","###",err,answer);
     //             resolve (err === null ? answer : null);
