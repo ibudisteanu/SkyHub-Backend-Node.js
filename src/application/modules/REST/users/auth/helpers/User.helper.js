@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-import constants from './../../../../../../bin/constants';
+import constants from 'bin/constants';
 var Users =  require ('./Users.helper.js');
 var nohmValidation = require ('DB/Redis/nohm/nohm.validation.js');
 var commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');

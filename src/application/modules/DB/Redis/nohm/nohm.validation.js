@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var commonFunctions = require ('../../../REST/common/helpers/CommonFunctions.helper.js');
+var commonFunctions = require ('REST/common/helpers/CommonFunctions.helper.js');
 
 exports.validateKeywords = function(value, options, callback) {
 
@@ -39,7 +39,7 @@ exports.validateUsername = function (value, options, callback){
 
 exports.validateUniqueURL = function (value, options, callback){
 
-    var URLHash = require ('../../../REST/common/URLs/helpers/URLHash.hashlist.js');
+    var URLHash = require ('REST/common/URLs/helpers/URLHash.hashlist.js');
 
     //console.log("VALIDATE UNIQUE URL", options, this.p(''));
 
@@ -63,7 +63,7 @@ exports.validateUniqueURL = function (value, options, callback){
  */
 exports.validateExistingAuthorId = function (value, options, callback){
 
-    var UsersHelper = require ('../../../REST/users/auth/helpers/Users.helper.js');
+    var UsersHelper = require ('REST/users/auth/helpers/Users.helper.js');
 
     console.log("VALIDATE Existing AuthorId", value);
 

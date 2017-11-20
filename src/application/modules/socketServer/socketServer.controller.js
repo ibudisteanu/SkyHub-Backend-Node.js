@@ -6,8 +6,8 @@
  * Create SOCKET IO.
  */
 
-import constants from './../../../bin/constants'
-import {initializeRoutesServerSocket} from '../../../routes/index.routes'
+import constants from 'bin/constants'
+import {initializeRoutesServerSocket} from 'src/routes/index.routes'
 
 const socketIo = require('socket.io');
 

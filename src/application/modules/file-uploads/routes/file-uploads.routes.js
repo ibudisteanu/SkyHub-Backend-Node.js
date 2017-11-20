@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-import constants from './../../../../bin/constants'
+import constants from 'bin/constants'
 
 const express = require('express');
 const router = express.Router();

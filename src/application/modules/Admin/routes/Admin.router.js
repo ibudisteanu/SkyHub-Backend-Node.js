@@ -9,15 +9,15 @@
 
 // api/admin/XXXXX
 
+let AdminCtrl = require ('Admin/Admin.controller.js');
+
 let routesHTTP = {
 
     '/sort': async (req, res, callback) => {
-        let AdminCtrl = require ('../Admin.controller.js');
         callback (  {message: AdminCtrl.sort() });
     },
 
     '/replace-uploaded-files-substring': async (req, res, callback)=> {
-        let AdminCtrl = require ('../Admin.controller.js');
 
         //callback (  {message: AdminCtrl.replaceUploadedFilesSubstring("myskyhub.ddns.net:4000","skyhub.me:4000") });
         //callback (  {message: AdminCtrl.replaceUploadedFilesSubstring("http://skyhub.me:4000/uploads","http://skyhub.me:4000/public/uploads") });
@@ -25,15 +25,21 @@ let routesHTTP = {
     },
 
     '/build-notifications-subscribers-lists': async (req, res, callback) => {
-        let AdminCtrl = require ('../Admin.controller.js');
+
         callback ( {message: AdminCtrl.buildNotificationsSubscribersLists() });
     },
 
     '/build-all-pages-lists': async (req, res, callback) => {
-        let AdminCtrl = require ('../Admin.controller.js');
+
         callback ( {message: AdminCtrl.buildAllPagesLists() });
     },
-}
+
+    '/copy-DB/:dbSource/:dbDestination': async (req, res, callback) => {
+
+        callback ( {message: AdminCtrl.copyDB( req.params.dbSource, req.params.dbDestination) });
+    },
+
+};
 
 /*
             SOCKET ROUTES
@@ -50,7 +56,7 @@ let routesSocket = {
 
 let routesCommon = {
 
-}
+};
 
 module.exports.routesCommon = routesCommon;
 module.exports.routesHTTP = routesHTTP;

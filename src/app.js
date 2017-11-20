@@ -6,7 +6,7 @@ let cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 import {initializeRoutesExpressServer} from './routes/index.routes';
-import constants from  './bin/constants.js';
+import constants from 'bin/constants';
 
 var redis = require ('DB/redis_nohm');    //REDIS NOHM
 

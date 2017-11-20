@@ -5,9 +5,9 @@
 const express = require('express');
 
 import * as routesGeneral from './others/general.routes.js';
-import * as routesREST from '../application/modules/REST/routes/REST.routes.js';
-import * as routesAdmin from './../application/modules/Admin/routes/Admin.router.js';
-import routesUpload from '../application/modules/file-uploads/routes/file-uploads.routes.js';
+import * as routesREST from 'REST/routes/REST.routes.js';
+import * as routesAdmin from 'Admin/routes/Admin.router.js';
+import routesUpload from 'file-uploads/routes/file-uploads.routes.js';
 
 /**
  * initialize the routes for HTTP server express

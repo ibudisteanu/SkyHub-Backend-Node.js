@@ -6,7 +6,7 @@
  */
 
 
-import constants from './constants';
+import constants from 'bin/constants';
 import {serverSocket, createSocketServer} from '../application/modules/socketServer/socketServer.controller.js';
 
 var app = require('../app');

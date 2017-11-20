@@ -1,5 +1,5 @@
 
-import FunctionsCtrl from './../../application/modules/REST/common/functions/functions.controller.js';
+import FunctionsCtrl from 'REST/common/functions/functions.controller.js';
 
 /*
             SOCKET ROUTES

@@ -3,7 +3,7 @@
  */
 
 
-import constants from './../../../bin/constants'
+import constants from 'bin/constants'
 
 let redis = require('redis');
 

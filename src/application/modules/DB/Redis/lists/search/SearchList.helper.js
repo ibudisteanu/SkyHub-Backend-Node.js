@@ -11,7 +11,7 @@
 var SortedList = require ('../sorted-lists/SortedList.helper.js');
 var AutoCompleteStringsHashList = require ('./AutoCompleteStringsHashList.helper.js');
 
-var commonFunctions = require ('../../../../REST/common/helpers/CommonFunctions.helper.js');
+var commonFunctions = require ('REST/common/helpers/CommonFunctions.helper.js');
 
 class SearchList {
 

@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-import constants from './../../../../../bin/constants'
+import constants from 'bin/constants'
 
 let UsersHelper =  require('./helpers/Users.helper.js');
 let UserHelper =  require('./helpers/User.helper.js');

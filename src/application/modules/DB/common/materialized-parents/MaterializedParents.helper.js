@@ -6,7 +6,7 @@
 
 import * as redis from 'DB/redis_nohm'
 
-var URLHashHelper = require ('../../../REST/common/URLs/helpers/URLHash.hashlist.js');
+var URLHashHelper = require ('REST/common/URLs/helpers/URLHash.hashlist.js');
 
 var MaterializedParents = class{
 
@@ -90,24 +90,24 @@ var MaterializedParents = class{
         switch (idData.objectType) {
             case 'user':
                 //var UserModel = redis.nohm.factory('UserModel');
-                let UsersHelper = require('../../../REST/users/auth/helpers/Users.helper.js');
+                let UsersHelper = require('REST/users/auth/helpers/Users.helper.js');
 
                 return await UsersHelper.findUserById(sObjectId);
 
             case 'forum':
                 //var ForumModel = redis.nohm.factory('ForumModel');
-                let ForumsHelper = require ('../../../REST/forums/forums/helpers/Forums.helper.js');
+                let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
 
                 return await ForumsHelper.findForumById(sObjectId);
 
             case 'reply':
-                let RepliesHelper = require('../../../REST/forums/replies/helpers/Replies.helper.js');
+                let RepliesHelper = require('REST/forums/replies/helpers/Replies.helper.js');
 
                 return await RepliesHelper.findReplyById(sObjectId);
 
             case 'topic':
                 //var ForumModel = redis.nohm.factory('ForumModel');
-                let TopicsHelper = require ('../../../REST/forums/topics/helpers/Topics.helper.js');
+                let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
 
                 //console.log('    topic found: ',sObjectId, await TopicsHelper.findTopicById(sObjectId));
 

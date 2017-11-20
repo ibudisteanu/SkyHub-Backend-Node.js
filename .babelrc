@@ -5,7 +5,10 @@
       {"src": "./src/application",  "expose": "application"},
       {"src": "./src/application/modules/DB", "expose": "DB"},
       {"src": "./src/application/modules/Admin", "expose": "Admin"},
-      {"src": "./src/application/modules/REST", "expose":"REST"}
+      {"src": "./src/application/modules/file-uploads", "expose": "file-uploads"},
+      {"src": "./src/application/modules/REST", "expose":"REST"},
+      {"src": "./src/bin", "expose":"bin"},
+      {"src": "./src", "expose":"src"}
     ]]
   ]
 }

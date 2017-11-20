@@ -2,7 +2,7 @@
  * Created by Alexandru Ionut Budisteanu - SkyHub on 5/23/2017.
  * (C) BIT TECHNOLOGIES
  */
-import constants from './../../../../../../bin/constants';
+import constants from 'bin/constants';
 
 var SessionHash = require ('../sessions/helpers/SessionHash.helper.js');
 var UsersHelper = require('./Users.helper.js');

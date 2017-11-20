@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-import constants from './../../../../bin/constants'
+import constants from 'bin/constants'
 
 let mongoose = require('mongoose');
 
@@ -13,16 +13,16 @@ let ForumModel = mongoose.model('Forums',{ },'Forums');
 let TopicModel = mongoose.model('Topics',{ },'ForumTopics');
 let ReplyModel = mongoose.model('Replies',{ },'Replies');
 
-let UsersHelper = require ('../../REST/users/auth/helpers/Users.helper.js');
-let UserProperties = require ('../../REST/users/auth/models/User.properties.js');
-let SessionsHashList = require ('../../REST/users/auth/sessions/helpers/SessionsHashList.helper.js');
+let UsersHelper = require ('REST/users/auth/helpers/Users.helper.js');
+let UserProperties = require ('REST/users/auth/models/User.properties.js');
+let SessionsHashList = require ('REST/users/auth/sessions/helpers/SessionsHashList.helper.js');
 
-let ForumsHelper = require ('../../REST/forums/forums/helpers/Forums.helper.js');
-let TopicsHelper = require ('../../REST/forums/topics/helpers/Topics.helper.js');
-let RepliesHelper = require ('../../REST/forums/replies/helpers/Replies.helper.js');
-let VotingsHashList = require ('../../REST/voting/helpers/Votings.hashlist.js');
-let StatisticsHelper = require ('../../REST/statistics/helpers/Statistics.helper.js');
-let VoteType = require ('./../../REST/voting/models/VoteType.js');
+let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
+let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
+let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
+let VotingsHashList = require ('REST/voting/helpers/Votings.hashlist.js');
+let StatisticsHelper = require ('REST/statistics/helpers/Statistics.helper.js');
+let VoteType = require ('REST/voting/models/VoteType.js');
 
 let newUsers = [];
 let newCategories = [];
