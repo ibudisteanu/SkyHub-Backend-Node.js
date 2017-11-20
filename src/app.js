@@ -72,7 +72,7 @@ app.use(function(err, req, res, next) {
 //
 // app.use (session({
 //     store: sessionStore,
-//     secret: constants.SESSION_Secret_key,
+//     secret: constants.SESSION_SECRET_KEY,
 //     resave: false,
 //     saveUninitialized: false,
 // }));
@@ -86,7 +86,7 @@ app.use(function(err, req, res, next) {
 // // When configure your session for express use options like this.
 // app.use(session({
 //     key: 'connect.sid',
-//     secret: constants.SESSION_Secret_key, // the session_secret to parse the cookie
+//     secret: constants.SESSION_SECRET_KEY, // the session_secret to parse the cookie
 //     store: sessionStore, // we NEED to use a sessionstore. no memorystore please
 //     resave: true,
 //     saveUninitialized: true

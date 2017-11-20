@@ -2,21 +2,24 @@
  * Created by ERAZER-ALEX on 4/25/2017.
  */
 
+let DB_REDIS_CURRENT_DB_SKYHUB = 15;
+let DB_REDIS_CURRENT_DB_AGGREGATOR = 10;
+
 module.exports =
     {
         WEBSITE_URL : 'http://127.0.0.1:4000/',
 
-        DB_RedisPort : 6379,
-        DB_RedisHost : '127.0.0.1',
-        DB_RedisCurrentDB : 15,
+        DB_REDIS_PORT : 6379,
+        DB_REDIS_HOST: '127.0.0.1',
+        DB_REDIS_CURRENT_DB : (  (process.env.AGGREGATOR || 'false') === 'true' ?  DB_REDIS_CURRENT_DB_AGGREGATOR : DB_REDIS_CURRENT_DB_SKYHUB),
         DB_REDIS_PASSWORD : '',
 
         APP_PORT : 4000,
 
-        SESSION_Secret_key : "",
+        SESSION_SECRET_KEY : "",
 
-        OAUTH2_Facebook_Secret : "",
-        Mongo_connection_URI : 'mongodb://skyhub_client:hbdsahj23123cc@ds011725.mlab.com:11725/skyhub_db',
+        OAUTH2_FACEBOOK_SECRET : "",
+        MONGO_CONNECTION_URI : '',
 
     };
 

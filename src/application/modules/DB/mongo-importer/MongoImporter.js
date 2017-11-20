@@ -462,7 +462,7 @@ class MongoImporter {
 
         console.log('running Mongo Importer');
 
-        await mongoose.connect(constants.Mongo_connection_URI, { useMongoClient: true });
+        await mongoose.connect(constants.MONGO_CONNECTION_URI, { useMongoClient: true });
 
         let users = await this.importUsers();
         let siteCategories = await this.importSiteCategories();

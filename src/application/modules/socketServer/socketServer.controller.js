@@ -47,7 +47,7 @@ function createSocketServer(server){
         socket.bAuthenticated = false;
         socket.userAuthenticated = null;
         try{
-            userAuthenticated = jwt.verify(token, constants.SESSION_Secret_key);
+            userAuthenticated = jwt.verify(token, constants.SESSION_SECRET_KEY);
 
             socket.bAuthenticated = true;
             socket.userAuthenticated = userAuthenticated;

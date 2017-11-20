@@ -40,7 +40,7 @@ class AuthenticatedUser {
 
         console.log("@@@@@@@@@@@@ SESSION ID", sSessionId);
 
-        //var userAuthenticatedData = jwt.verify(sToken, constants.SESSION_Secret_key);
+        //var userAuthenticatedData = jwt.verify(sToken, constants.SESSION_SECRET_KEY);
         //userId = userAuthenticatedData.id
 
 

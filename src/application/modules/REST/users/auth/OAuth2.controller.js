@@ -103,7 +103,7 @@ module.exports = {
 
                         });
 
-                        //data = jwt.verify(sOauth2Token, constants.OAUTH2_Facebook_Secret);
+                        //data = jwt.verify(sOauth2Token, constants.OAUTH2_FACEBOOK_SECRET);
 
                         break;
 

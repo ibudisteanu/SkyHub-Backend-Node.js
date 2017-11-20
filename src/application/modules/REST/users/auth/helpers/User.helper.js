@@ -81,10 +81,10 @@ module.exports = {
     getUserToken (user){
 
         console.log('calculating token');
-        console.log("SECRET key: "+constants.SESSION_Secret_key);
+        console.log("SECRET key: "+constants.SESSION_SECRET_KEY);
 
-        //var token = jwt.sign({ "id" : user.id}, constants.SESSION_Secret_key, {expiresInMinutes: 60 * 24 * 30* 12 * 5});
-        var token = jwt.sign({ "id" : user.id}, constants.SESSION_Secret_key, {expiresIn: 60 * 24 * 30* 12 * 5});
+        //var token = jwt.sign({ "id" : user.id}, constants.SESSION_SECRET_KEY, {expiresInMinutes: 60 * 24 * 30* 12 * 5});
+        var token = jwt.sign({ "id" : user.id}, constants.SESSION_SECRET_KEY, {expiresIn: 60 * 24 * 30* 12 * 5});
         console.log('token = '+token);
 
         return token;

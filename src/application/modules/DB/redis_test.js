@@ -7,7 +7,7 @@ import constants from './../../../bin/constants'
 
 let redis = require('redis');
 
-let redisClient = redis.createClient(constants.DB_RedisHost, constants.DB_RedisPort); //creates a new client
+let redisClient = redis.createClient(constants.DB_REDIS_HOST, constants.DB_REDIS_PORT); //creates a new client
 
 redisClient.on('connect', function() {
     console.log('REDIS connected\n');

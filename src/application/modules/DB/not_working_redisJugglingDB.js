@@ -6,7 +6,7 @@
 import constants from './../../../bin/constants';
 
 var Schema = require('jugglingdb-redis-hq').Schema;
-var schema = new Schema('redis-hq', {port: constants.DB_RedisHost}); //port number depends on your configuration
+var schema = new Schema('redis-hq', {port: constants.DB_REDIS_HOST}); //port number depends on your configuration
 
 // define models
 var Post = schema.define('Post', {
