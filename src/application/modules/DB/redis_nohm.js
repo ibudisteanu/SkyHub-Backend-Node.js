@@ -6,6 +6,14 @@
 console.log("%%%% LOADING REDIS_NOHM.js");
 
 const redis = require('redis');
+
+/*
+    promisify
+    http://redis.js.org/#redis-a-nodejs-redis-client-usage-example-promises
+ */
+// bluebird.promisifyAll(redis.RedisClient.prototype);
+// bluebird.promisifyAll(redis.Multi.prototype);
+
 const nohm = require('nohm').Nohm;
 
 const constants = require('./../../../bin/constants');
