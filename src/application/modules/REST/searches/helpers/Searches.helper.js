@@ -8,19 +8,19 @@ import * as redis from 'DB/redis_nohm'
 let SearchList = require('DB/Redis/lists/search/SearchList.helper.js');
 
 
-let forumModel = require ('../../forums/forums/models/Forum.model.js');
-let userModel = require ('../../users/auth/models/User.model.js');
-let replyModel = require ('../../forums/replies/models/Reply.model.js');
-let topicModel = require ('../../forums/topics/models/Topic.model.js');
+let forumModel = require ('REST/forums/forums/models/Forum.model.js');
+let userModel = require ('REST/users/auth/models/User.model.js');
+let replyModel = require ('REST/forums/replies/models/Reply.model.js');
+let topicModel = require ('REST/forums/topics/models/Topic.model.js');
 
-let ForumsHelper = require ('../../forums/forums/helpers/Forums.helper.js');
-let TopicsHelper = require ('../../forums/topics/helpers/Topics.helper.js');
-let RepliesHelper = require ('../../forums/replies/helpers/Replies.helper.js');
-let UsersHelper = require ('../../users/auth/helpers/Users.helper.js');
+let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
+let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
+let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
+let UsersHelper = require ('REST/users/auth/helpers/Users.helper.js');
 
-let ForumsSorter = require('../../forums/forums/models/ForumsSorter.js');
-let TopicsSorter = require('../../forums/topics/models/TopicsSorter.js');
-let RepliesSorter = require('../../forums/replies/models/RepliesSorter.js');
+let ForumsSorter = require('REST/forums/forums/models/ForumsSorter.js');
+let TopicsSorter = require('REST/forums/topics/models/TopicsSorter.js');
+let RepliesSorter = require('REST/forums/replies/models/RepliesSorter.js');
 
 class Searches {
 
@@ -37,7 +37,7 @@ class Searches {
     async addUserToSearch(text, index, score){
 
         if (typeof index === "string") {
-            let UsersHelper = require ('../../users/auth/helpers/Users.helper.js');
+            let UsersHelper = require ('REST/users/auth/helpers/Users.helper.js');
             index = await UsersHelper.findUserById(index);
         }
 

@@ -4,7 +4,7 @@
 
 var ForumsHelper = require('./helpers/Forums.helper.js');
 
-var AuthenticatingUser = require('../../users/auth/helpers/AuthenticatingUser.helper.js');
+import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
 module.exports = {
 

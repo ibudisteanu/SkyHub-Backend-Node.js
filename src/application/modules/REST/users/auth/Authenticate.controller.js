@@ -1,7 +1,7 @@
 var UserHelper = require('./helpers/User.helper.js');
 var UsersHelper = require('./helpers/Users.helper.js');
 
-var AuthenticatingUser = require('./helpers/AuthenticatingUser.helper.js');
+import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
 var OAuth2 = require('./OAuth2.controller.js');
 

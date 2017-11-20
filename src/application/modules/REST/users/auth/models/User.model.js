@@ -130,7 +130,7 @@ var UserModel = redis.nohm.model('UserModel', {
 
         },
 
-        getPublicInformation : function (userAuthenticated){
+        getPublicInformation : function (userAuthenticated) {
             var properties = this.allProperties();
 
             properties.isOwner = this.isOwner(userAuthenticated);
@@ -147,14 +147,14 @@ var UserModel = redis.nohm.model('UserModel', {
             return properties;
         },
 
-        calculateHotnessCoefficient : function (){
+        calculateHotnessCoefficient : function () {
 
-            var ScoreCoefficientHelper = require ('DB/common/score-coefficient/ScoreCoefficient.helper.js');
+            let ScoreCoefficientHelper = require ('DB/common/score-coefficient/ScoreCoefficient.helper.js');
 
             return ScoreCoefficientHelper.calculateHotnessScoreCoefficient(this);
         },
 
-        checkOwnership : function(sAuthorId){
+        checkOwnership : function (sAuthorId) {
 
             if (sAuthorId === this.id)
                 return true;
@@ -162,7 +162,11 @@ var UserModel = redis.nohm.model('UserModel', {
             return UserProperties.isAdmin(this.p('role'));
         },
 
-        isOwner : function (User){
+        isAdmin :  function () {
+            return UserProperties.isAdmin(this.p('role'));
+        },
+
+        isOwner : function (User) {
 
             if ((typeof(User !== 'undefined')&&(User !== null))&&(typeof User.checkOwnership !== 'undefined')&&(User.checkOwnership(this.id))) return true;
 

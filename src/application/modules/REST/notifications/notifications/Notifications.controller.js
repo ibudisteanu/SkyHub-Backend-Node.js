@@ -6,7 +6,7 @@
 
 var NotificationsHelper = require('./helpers/Notifications.helper.js');
 
-var AuthenticatingUser = require('../../users/auth/helpers/AuthenticatingUser.helper.js');
+import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
 module.exports = {
 

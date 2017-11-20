@@ -1,24 +1,24 @@
-let AuthenticateCtrl = require ('../users/auth/Authenticate.controller.js');
-let UsersCtrl = require ('../users/Users.controller.js');
-let FunctionsCtrl = require ('../common/functions/functions.controller.js');
+let AuthenticateCtrl = require ('REST/users/auth/Authenticate.controller.js');
+let UsersCtrl = require ('REST/users/Users.controller.js');
+let FunctionsCtrl = require ('REST/common/functions/functions.controller.js');
 
-let ForumsCtrl = require ('../forums/forums/Forums.controller.js');
-let TopicsCtrl = require ('../forums/topics/Topics.controller.js');
-let RepliesCtrl = require ('../forums/replies/Replies.controller.js');
-let VotingCtrl = require ('../voting/Voting.controller.js');
+let ForumsCtrl = require ('REST/forums/forums/Forums.controller.js');
+let TopicsCtrl = require ('REST/forums/topics/Topics.controller.js');
+let RepliesCtrl = require ('REST/forums/replies/Replies.controller.js');
+let VotingCtrl = require ('REST/voting/Voting.controller.js');
 let NotificationsCtrl = require ('../notifications/notifications/Notifications.controller.js');
 let MongoImporter = require ('DB/mongo-importer/MongoImporter.js');
 
-let TopContentCtrl = require ('../forums/top-content/TopContent.controller.js');
-let TopForumsCtrl = require ('../forums/top-content/TopForums.controller.js');
-let TopRepliesCtrl = require ('../forums/top-content/TopReplies.controller.js');
+let TopContentCtrl = require ('REST/forums/top-content/TopContent.controller.js');
+let TopForumsCtrl = require ('REST/forums/top-content/TopForums.controller.js');
+let TopRepliesCtrl = require ('REST/forums/top-content/TopReplies.controller.js');
 
-let ContentCtrl = require ('../forums/content/Content.controller.js');
-let StatisticsCtrl = require ('../statistics/Statistics.controller.js');
+let ContentCtrl = require ('REST/forums/content/Content.controller.js');
+let StatisticsCtrl = require ('REST/statistics/Statistics.controller.js');
 
-let SearchesCtrl = require ('../searches/Searches.controller.js');
+let SearchesCtrl = require ('REST/searches/Searches.controller.js');
 let MetaExtractorCtrl = require ('../../utils/meta-extractor/MetaExtractor.controller.js');
-let AllPagesCtrl = require ('../forums/content/all-pages/AllPages.controller.js');
+let AllPagesCtrl = require ('REST/forums/content/all-pages/AllPages.controller.js');
 
 
 /*
@@ -45,7 +45,7 @@ let routesHTTP = {
     },
 
     "test/Session": async (req, res, callback)  => {
-        let SessionHash = require ('../users/auth/sessions/helpers/SessionHash.helper.js');
+        let SessionHash = require ('REST/users/auth/sessions/helpers/SessionHash.helper.js');
         callback( {message: SessionHash.test() });
     },
 
@@ -97,6 +97,8 @@ let routesSocket = {
 let routesCommon = {
 
     "auth/login": async (req, res, callback) => {
+
+        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let answer = await AuthenticateCtrl.postAuthenticateLogin(req, res);
         if (answer.result === true)

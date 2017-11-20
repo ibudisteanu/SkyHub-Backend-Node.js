@@ -6,30 +6,34 @@
 import * as redis from 'DB/redis_nohm'
 import constants from 'bin/constants'
 
-var StatisticsHelper = require ('REST/statistics/helpers/Statistics.helper.js');
+import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
-var ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
-var TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
-var RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
-var UsersHelper = require ('REST/users/auth/helpers/Users.helper.js');
+let StatisticsHelper = require ('REST/statistics/helpers/Statistics.helper.js');
 
-var forumModel = require ('REST/forums/forums/models/Forum.model.js');
-var userModel = require ('REST/users/auth/models/User.model.js');
-var replyModel = require ('REST/forums/replies/models/Reply.model.js');
-var topicModel = require ('REST/forums/topics/models/Topic.model.js');
+let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
+let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
+let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
+let UsersHelper = require ('REST/users/auth/helpers/Users.helper.js');
+
+let forumModel = require ('REST/forums/forums/models/Forum.model.js');
+let userModel = require ('REST/users/auth/models/User.model.js');
+let replyModel = require ('REST/forums/replies/models/Reply.model.js');
+let topicModel = require ('REST/forums/topics/models/Topic.model.js');
+
+let forumModelORM = redis.nohm.factory('ForumModel');
+let userModelORM = redis.nohm.factory('UserModel');
+let topicModelORM = redis.nohm.factory('TopicModel');
+let replyModelORM = redis.nohm.factory('ReplyModel');
 
 let NotificationsCreator = require ('REST/notifications/NotificationsCreator.js');
 let NotificationsSubscribersHashList = require ('REST/notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
 let AllPagesList = require ('REST/forums/content/all-pages/helpers/AllPages.list.js');
 
-class AdminController {
+class AdminHelper {
 
-    async sort(){
+    async sort(userAuthenticated){
 
-        let forumModelORM = redis.nohm.factory('ForumModel');
-        let userModelORM = redis.nohm.factory('UserModel');
-        let topicModelORM = redis.nohm.factory('TopicModel');
-        let replyModelORM = redis.nohm.factory('ReplyModel');
+        if (userAuthenticated === null || userAuthenticated.isAdmin === false) return {result:false, message:"You are not ADMIN"};
 
         await new Promise( (resolve) => {
             forumModelORM.find(async (err, ids) =>{
@@ -87,14 +91,14 @@ class AdminController {
             });
         });
 
+        return {result: true, message: "Sort has been done"}
+
     }
 
-    async replaceUploadedFilesSubstring(substrToReplace, substrReplace){
+    async replaceUploadedFilesSubstring(userAuthenticated, substrToReplace, substrReplace){
 
-        let forumModelORM = redis.nohm.factory('ForumModel');
-        let userModelORM = redis.nohm.factory('UserModel');
-        let topicModelORM = redis.nohm.factory('TopicModel');
-        let replyModelORM = redis.nohm.factory('ReplyModel');
+
+        if (userAuthenticated === null || userAuthenticated.isAdmin === false) return {result:false, message:"You are not ADMIN"};
 
         await new Promise( (resolve) => {
             forumModelORM.find(async  (err, ids) => {
@@ -245,13 +249,14 @@ class AdminController {
             });
         });
 
+        return {result: true, message: "replaceUploadedFilesSubstring done"}
+
     }
 
 
-    async buildAllPagesLists(){
-        let forumModelORM = redis.nohm.factory('ForumModel');
-        let topicModelORM = redis.nohm.factory('TopicModel');
+    async buildAllPagesLists(userAuthenticated){
 
+        if (userAuthenticated === null || userAuthenticated.isAdmin === false) return {result:false, message:"You are not ADMIN"};
 
         await new Promise( (resolve) => {
             forumModelORM.find(async (err, ids) => {
@@ -291,15 +296,14 @@ class AdminController {
                 resolve(true);
             });
         });
+
+        return {result: true, message:"buildAllPagesLists done"}
     }
 
 
-    async buildNotificationsSubscribersLists(){
+    async buildNotificationsSubscribersLists(userAuthenticated){
 
-
-        let forumModelORM = redis.nohm.factory('ForumModel');
-        let topicModelORM = redis.nohm.factory('TopicModel');
-        let replyModelORM = redis.nohm.factory('ReplyModel');
+        if (userAuthenticated === null || userAuthenticated.isAdmin === false) return {result:false, message:"You are not ADMIN"};
 
         await new Promise( (resolve) => {
             forumModelORM.find(async (err, ids) => {
@@ -352,7 +356,12 @@ class AdminController {
 
     }
 
-    async copyDB(dbSource, dbDestination){
+    async copyDB(userAuthenticated, dbSource, dbDestination){
+
+        console.log(userAuthenticated);
+        console.log(userAuthenticated.isAdmin);
+
+        if (userAuthenticated === null || userAuthenticated.isAdmin === false) return {result:false, message:"You are not ADMIN"};
 
         if (typeof dbSource === 'undefined') dbSource = constants.DB_REDIS_CURRENT_DB;
         if (typeof dbDestination === 'undefined') dbDestination = 5;
@@ -410,4 +419,4 @@ class AdminController {
 }
 
 
-module.exports = new AdminController();
+export default new AdminHelper();

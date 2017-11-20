@@ -97,4 +97,4 @@ class AuthenticatedUser {
 
 }
 
-module.exports = new AuthenticatedUser();
+export default new AuthenticatedUser();

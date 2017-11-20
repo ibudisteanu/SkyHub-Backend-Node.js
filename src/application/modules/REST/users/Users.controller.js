@@ -4,8 +4,8 @@
  */
 
 var UsersHelper = require ('./auth/helpers/Users.helper.js');
-var AuthenticatingUser = require('./auth/helpers/AuthenticatingUser.helper.js');
-var ContentHelper = require ('../forums/content/helpers/Content.helper.js');
+import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
+var ContentHelper = require ('REST/forums/content/helpers/Content.helper.js');
 
 module.exports = {
     /*
