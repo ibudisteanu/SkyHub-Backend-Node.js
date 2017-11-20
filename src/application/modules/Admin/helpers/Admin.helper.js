@@ -294,10 +294,11 @@ class AdminHelper {
                 }
 
                 resolve(true);
+
+                return {result: true, message:"buildAllPagesLists done"}
             });
         });
 
-        return {result: true, message:"buildAllPagesLists done"}
     }
 
 
@@ -351,6 +352,8 @@ class AdminHelper {
                 }
 
                 resolve(true);
+
+                return {result: true, message:"buildNotificationsSubscribersLists done"}
             });
         });
 
@@ -390,20 +393,26 @@ class AdminHelper {
                         console.log('====> REDIS selecting worked')
                         console.log("===> NOHM - setting REDIS CLIENT");
 
-                        redisClient.keys('*' , (err, keys) =>{
+                        redisClient.keys('*' , async (err, keys) =>{
                             console.log("keys answer", keys);
 
                             if (keys.length === 0)
                                 return ({message: "Database "+dbSource+" is empty"});
 
-                            for (let i = 0;  i < keys.length; i++){
+                            await new Promise((resolve2)=> {
+                                for (let i = 0; i < keys.length; i++) {
 
-                                let key = keys[i];
-                                redisClient.migrate(constants.DB_REDIS_HOST, constants.DB_REDIS_PORT, key, dbDestination, 100000, true, (err, answer) => {
-                                    console.log("migrated ", key, answer);
-                                })
+                                    let key = keys[i];
 
-                            }
+                                    redisClient.migrate(constants.DB_REDIS_HOST, constants.DB_REDIS_PORT, key, dbDestination, 100000, true, (err, answer) => {
+                                        console.log("migrated ", key, answer);
+
+                                        if (i === keys.length-1) resolve2(true)
+                                    })
+
+                                }
+
+                            });
 
                             resolve ({message:"Database successfully copied from "+dbSource+" to "+dbDestination});
                         });

@@ -46,7 +46,16 @@ class AdminController {
 
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
-        return await AdminHelper.copyDB(userAuthenticated, req.params.dbSource||req.body.dbSource, req.params.dbDestination||req.body.dbDestination);
+        let dbSource, dbDestination;
+        if (typeof req.params !== 'undefined') {
+            dbSource = req.params.dbSource;
+            dbDestination = req.params.dbDestination;
+        } else {
+            dbSource = req.body.dbSource;
+            dbDestination = req.body.dbDestination;
+        }
+
+        return await AdminHelper.copyDB(userAuthenticated, dbSource, dbDestination);
     }
 }
 
