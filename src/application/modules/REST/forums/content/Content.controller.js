@@ -42,8 +42,6 @@ module.exports = {
 
     async postSetIcon (req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
-
         let icon = ''; let id='';
         if (req.hasOwnProperty('body')){
 
@@ -56,13 +54,11 @@ module.exports = {
             id = req.body.id || '';
         }
 
-        return await ContentHelper.setIcon(userAuthenticated, id, icon );
+        return await ContentHelper.setIcon(req.userAuthenticated, id, icon );
 
     },
 
     async postSetCover (req, res){
-
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let cover = ''; let id='';
         if (req.hasOwnProperty('body')){
@@ -70,20 +66,18 @@ module.exports = {
             id = req.body.id || '';
         }
 
-        return await ContentHelper.setCover(userAuthenticated, id, cover);
+        return await ContentHelper.setCover(req.userAuthenticated, id, cover);
 
     },
 
     async postDeleteObject (req, res){
-
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let id='';
         if (req.hasOwnProperty('body')){
             id = req.body.id || '';
         }
 
-        return await ContentHelper.deleteObject(userAuthenticated, id);
+        return await ContentHelper.deleteObject(req.userAuthenticated, id);
 
     }
 

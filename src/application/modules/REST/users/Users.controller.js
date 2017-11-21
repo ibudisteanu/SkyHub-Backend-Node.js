@@ -31,8 +31,6 @@ module.exports = {
 
     async postSetProfilePic (req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
-
         let userId = '', profilePic = '';
 
         if (req.hasOwnProperty('body')){
@@ -44,7 +42,7 @@ module.exports = {
         if (userId.length < 3)
             return {result:false, message:"To few letters"};
 
-        let answer = await ContentHelper.setIcon(userAuthenticated, userId, profilePic);
+        let answer = await ContentHelper.setIcon(req.userAuthenticated, userId, profilePic);
         answer.userId = userId;
         return answer;
 

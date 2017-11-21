@@ -4,6 +4,8 @@
 
 const express = require('express');
 
+import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
+
 import * as routesGeneral from './others/general.routes.js';
 import * as routesREST from 'REST/routes/REST.routes.js';
 import * as routesAdmin from 'Admin/routes/Admin.router.js';
@@ -41,7 +43,7 @@ function initializeRoutesServerSocket(socket){
  * @param router
  * @param routerList
  */
-function initializeRoutesExpressWithList(router, routesList){
+async function initializeRoutesExpressWithList(router, routesList){
 
     for (let routeItem in routesList){
 
@@ -55,6 +57,8 @@ function initializeRoutesExpressWithList(router, routesList){
             //console.log(routeName, typeof routeFunction);
 
             router.get(routeName, async (req, res, next) => {
+
+                req.userAuthenticated = await AuthenticatingUser.loginUser(req);
 
                 await routeFunction(req, res, (answer, suffix, template)=>{
 
@@ -109,6 +113,8 @@ function initializeRoutesSocketWithList(socket, routesList, prefix) {
             let finalRoute = prefix+'/'+lTrimSlash(routeName);
 
             socket.on(finalRoute, async (data)=>{
+
+                data.userAuthenticated = await AuthenticatingUser.loginUser(data);
 
                 if (typeof data === 'object')
                     data.body = data;

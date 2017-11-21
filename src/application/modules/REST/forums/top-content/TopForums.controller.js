@@ -4,6 +4,7 @@
  */
 
 var TopForumsHelper = require('./helpers/TopForums.helper.js');
+var TopContentHelper = require ('REST/forums/top-content/helpers/TopContent.helper.js');
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
 module.exports = {
@@ -13,8 +14,6 @@ module.exports = {
      */
 
     async postGetTopForums (req, res){
-
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let sParent = ''; let iPageIndex=1; let iPageCount = 8;
 
@@ -26,13 +25,11 @@ module.exports = {
 
         console.log('Getting Top Forums : ', sParent);
 
-        return TopForumsHelper.getTopForums(userAuthenticated, sParent, iPageIndex, iPageCount);
+        return TopForumsHelper.getTopForums(req.userAuthenticated, sParent, iPageIndex, iPageCount);
 
     },
 
     async postGetForum (req, res){
-
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let sId = '';
 
@@ -45,7 +42,7 @@ module.exports = {
         //console.log(req);
         console.log('Getting Forum Content : ', '"'+sId+'"');
 
-        return TopContentHelper.getContent(userAuthenticated, sId);
+        return TopContentHelper.getContent(req.userAuthenticated, sId);
 
     },
 

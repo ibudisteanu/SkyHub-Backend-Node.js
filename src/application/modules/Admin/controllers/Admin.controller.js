@@ -13,38 +13,33 @@ class AdminController {
 
     async postSort(req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
-        return await AdminHelper.sort(userAuthenticated);
+
+        return await AdminHelper.sort(req.userAuthenticated);
     }
 
     async postReplaceUploadedFilesSubstring(req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
-
         //callback (  {message: AdminCtrl.replaceUploadedFilesSubstring("myskyhub.ddns.net:4000","skyhub.me:4000") });
         //callback (  {message: AdminCtrl.replaceUploadedFilesSubstring("http://skyhub.me:4000/uploads","http://skyhub.me:4000/public/uploads") });
-        return await AdminHelper.replaceUploadedFilesSubstring(userAuthenticated, "myskyhub.ddns.net:4000", "skyhub.me:4000" );
+        return await AdminHelper.replaceUploadedFilesSubstring(req.userAuthenticated, "myskyhub.ddns.net:4000", "skyhub.me:4000" );
 
     }
 
 
     async postBuildAllPagesLists(req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
-        return await AdminHelper.buildAllPagesLists(userAuthenticated);
+        return await AdminHelper.buildAllPagesLists(req.userAuthenticated);
     }
 
 
     async postBuildNotificationsSubscribersLists(req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
-        return await AdminHelper.buildNotificationsSubscribersLists(userAuthenticated);
+        return await AdminHelper.buildNotificationsSubscribersLists(req.userAuthenticated);
     }
 
     async postCopyDB(req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let dbSource, dbDestination;
         if (typeof req.params !== 'undefined') {
@@ -55,7 +50,7 @@ class AdminController {
             dbDestination = req.body.dbDestination;
         }
 
-        return await AdminHelper.copyDB(userAuthenticated, dbSource, dbDestination);
+        return await AdminHelper.copyDB(req.userAuthenticated, dbSource, dbDestination);
     }
 }
 

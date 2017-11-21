@@ -151,12 +151,11 @@ module.exports = {
 
 
     async logout(req){
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
-        if (userAuthenticated !== null){
+        if (req.userAuthenticated !== null){
             let sSessionId = AuthenticatingUser.getSessionId(req);
             var SessionHashHelper = require ('./sessions/helpers/SessionHash.helper');
-            let result = await SessionHashHelper.deleteSession(sSessionId, userAuthenticated);
+            let result = await SessionHashHelper.deleteSession(sSessionId, req.userAuthenticated);
 
             if (result === true)
                 return { result:true };

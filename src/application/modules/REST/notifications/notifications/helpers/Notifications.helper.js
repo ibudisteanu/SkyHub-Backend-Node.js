@@ -33,6 +33,10 @@ class NotificationsListHelper {
     }
 
     async getUserNotifications(userAuthenticated, pageIndex, pageCount){
+
+        if (userAuthenticated === null)
+            return []
+
         if (typeof pageCount === 'undefined') pageCount = 8;
         pageCount = Math.min(pageCount, 20);
 
@@ -69,6 +73,9 @@ class NotificationsListHelper {
 
     async markNotificationRead(userAuthenticated, notificationId, markAll, markValue){
 
+        if (userAuthenticated === null)
+            return {result: false, message: 'You are not authenticated'};
+
         if (typeof markValue === 'undefined') readValue = true;
         if (typeof notificationId === 'object') notificationId = notificationId.id;
 
@@ -94,30 +101,40 @@ class NotificationsListHelper {
             else
                 await this.hashList.setHash('infoHash:'+userId, 'unread', await this.list.listLength(userId)); //none has been read
 
-            return true;
+            return {result: true}
         }
 
         await this.hashList.setHash('read:'+userId, notificationId, markValue);
         await this.hashList.setHash('shown:'+userId, notificationId, true);
         await this.hashList.incrementBy('infoHash:'+userId, 'unread', (markValue ? -1 : +1) ); // I have read/unread one notification
 
-        return true;
+        return {result: true}
     }
 
     async markNotificationShown(userAuthenticated, notificationId){
+
+        if (userAuthenticated === null) return {result: false, message: 'You are not authenticated'}
+
         if (typeof notificationId === 'object') notificationId = notificationId.id;
 
         let userId =  userAuthenticated;
         if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
 
         await this.hashList.setHash('shown:'+userId, notificationId, true);
+
+        return {result:true}
     }
 
     async resetNotificationsUnreadCounter(userAuthenticated){
+
+        if (userAuthenticated === null) return { result: false,  message: 'You are not authenticated' }
+
         let userId =  userAuthenticated;
         if (typeof userAuthenticated === 'object') userId = userAuthenticated.id;
 
         await this.hashList.setHash('infoHash:'+userId, 'unread', 0 ); // I have read/unread one notification
+
+        return { result: true }
     }
 
     async getReadNotificationStatus(userAuthenticated, notificationId){

@@ -14,8 +14,6 @@ module.exports = {
 
     async postGetTopReplies (req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
-
         let sParent = ''; let iPageIndex=1; let iPageCount = 8;
 
         if (req.hasOwnProperty('body')){
@@ -26,27 +24,24 @@ module.exports = {
 
         console.log('Getting Top Replies : ', sParent);
 
-        return TopRepliesHelper.getTopReplies(userAuthenticated, sParent, iPageIndex, iPageCount);
+        return TopRepliesHelper.getTopReplies(req.userAuthenticated, sParent, iPageIndex, iPageCount);
     },
 
     async postGetAllReplies (req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
         let sParent = '';
 
         if (req.hasOwnProperty('body'))
             sParent = req.body.parent || '';
 
         console.log('Getting All Replies : ', sParent);
-        console.log('rezultat: ', await TopRepliesHelper.getAllReplies(userAuthenticated, sParent));
+        console.log('rezultat: ', await TopRepliesHelper.getAllReplies(req.userAuthenticated, sParent));
 
-        return await TopRepliesHelper.getAllReplies(userAuthenticated, sParent);
+        return await TopRepliesHelper.getAllReplies(req.userAuthenticated, sParent);
     },
 
 
     async postGetReply (req, res){
-
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let sId = '';
 
@@ -59,7 +54,7 @@ module.exports = {
         //console.log(req);
         console.log('Getting Replies Content : ', '"'+sId+'"');
 
-        return TopRepliesHelper.getContent(userAuthenticated, sId);
+        return TopRepliesHelper.getContent(req.userAuthenticated, sId);
 
     },
 

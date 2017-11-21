@@ -15,8 +15,6 @@ module.exports = {
 
     async postAddReply (req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
-
         let parent='', parentReply = '', sTitle = '', sDescription = '', arrKeywords = [], arrAttachments = [], sCountry='', sCity='',sLanguage='';
         let dbLatitude = 0, dbLongitude = 0, arrAdditionalInfo=[];
 
@@ -46,12 +44,10 @@ module.exports = {
 
         console.log('Creating a Reply : ', sTitle);
 
-        return await RepliesHelper.addReply(userAuthenticated, parent, parentReply, sTitle, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, null, arrAdditionalInfo);
+        return await RepliesHelper.addReply(req.userAuthenticated, parent, parentReply, sTitle, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, null, arrAdditionalInfo);
     },
 
     async getReply (req, res){
-
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         var sId = '';
 
@@ -61,7 +57,7 @@ module.exports = {
 
         console.log('getting a Reply : ', sId);
 
-        return await RepliesHelper.getReply(userAuthenticated, sId);
+        return await RepliesHelper.getReply(req.userAuthenticated, sId);
 
     },
 

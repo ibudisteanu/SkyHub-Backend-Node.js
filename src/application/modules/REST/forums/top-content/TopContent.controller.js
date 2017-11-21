@@ -13,8 +13,6 @@ module.exports = {
 
     async postGetTopContent (req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
-
         let sParent = ''; let iPageIndex=1; let iPageCount = 8;
 
         console.log("----"); console.log("----"); console.log("----"); console.log("----");
@@ -28,13 +26,11 @@ module.exports = {
 
         console.log('Getting Top Content : ', sParent);
 
-        return TopContentHelper.getTopContent(userAuthenticated, sParent, iPageIndex, iPageCount);
+        return TopContentHelper.getTopContent(req.userAuthenticated, sParent, iPageIndex, iPageCount);
 
     },
 
     async postGetContent (req, res){
-
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let sId = '';
 
@@ -48,7 +44,7 @@ module.exports = {
         //console.log(req);
         console.log('Getting Content : ', '"'+sId,res.body);
 
-        return TopContentHelper.getContent(userAuthenticated, sId);
+        return TopContentHelper.getContent(req.userAuthenticated, sId);
 
     }
 

@@ -16,29 +16,25 @@ module.exports = {
 
     async postGetLastNotifications (req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
-
-
-        if (userAuthenticated === null){
+        if (req.userAuthenticated === null){
             return {
                 result:false,
                 message: 'You are not authenticated',
             }
         }
 
-        let notifications = await NotificationsHelper.getUserNotifications(userAuthenticated, 1, 8);
+        let notifications = await NotificationsHelper.getUserNotifications(req.userAuthenticated, 1, 8);
+        let unreadNotifications = await NotificationsHelper.getUnreadNotifications(req.userAuthenticated);
 
         return {
             result:true,
-            unreadNotifications: await NotificationsHelper.getUnreadNotifications(userAuthenticated),
+            unreadNotifications: unreadNotifications,
             notifications: notifications,
         }
 
     },
 
     async postGetNotifications (req, res){
-
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let pageIndex = 0;
         let pageCount = 8;
@@ -48,26 +44,25 @@ module.exports = {
             pageCount = req.body.pageCount || 8;
         }
 
-        if (userAuthenticated === null){
+        if (req.userAuthenticated === null){
             return {
                 result:false,
                 message: 'You are not authenticated',
             }
         }
 
-        let notifications = await NotificationsHelper.getUserNotifications(userAuthenticated, pageIndex, pageCount);
+        let notifications = await NotificationsHelper.getUserNotifications(req.userAuthenticated, pageIndex, pageCount);
+        let unreadNotifications = await NotificationsHelper.getUnreadNotifications(req.userAuthenticated);
 
         return {
             result:true,
-            unreadNotifications: await NotificationsHelper.getUnreadNotifications(userAuthenticated),
+            unreadNotifications: unreadNotifications,
             notifications: notifications,
         }
 
     },
 
     async postMarkNotificationRead (req, res){
-
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let notificationId = '';
         let markAll = false;
@@ -81,44 +76,16 @@ module.exports = {
                 markValue = req.body.markValue;
         }
 
-        if (userAuthenticated === null){
-            return {
-                result: false,
-                message: 'You are not authenticated',
-            }
-        }
-
-        let result = await NotificationsHelper.markNotificationRead(userAuthenticated, notificationId, markAll, markValue);
-
-        return {
-            result: true,
-            notifications: result
-        }
+        return await NotificationsHelper.markNotificationRead(req.userAuthenticated, notificationId, markAll, markValue);
 
     },
 
     async postResetNotificationUnreadCounter (req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
-
-        if (userAuthenticated === null){
-            return {
-                result: false,
-                message: 'You are not authenticated',
-            }
-        }
-
-        await NotificationsHelper.resetNotificationsUnreadCounter(userAuthenticated);
-
-        return {
-            result: true,
-        }
-
+        return await NotificationsHelper.resetNotificationsUnreadCounter(req.userAuthenticated);
     },
 
     async postMarkNotificationShown (req, res){
-
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let notificationId = '';
 
@@ -126,18 +93,7 @@ module.exports = {
             notificationId = req.body.notificationId || '';
         }
 
-        if (userAuthenticated === null){
-            return {
-                result: false,
-                message: 'You are not authenticated',
-            }
-        }
-
-        let result = await NotificationsHelper.markNotificationShown(userAuthenticated, notificationId);
-
-        return {
-            result: true,
-        }
+        return await NotificationsHelper.markNotificationShown(req.userAuthenticated, notificationId);
 
     },
 

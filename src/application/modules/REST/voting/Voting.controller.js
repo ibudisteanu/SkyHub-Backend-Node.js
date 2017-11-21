@@ -16,8 +16,6 @@ module.exports = {
 
     async postSubmitVote (req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
-
         let parentId = '';
         let voteType = VoteType.VOTE_NONE;
 
@@ -26,31 +24,29 @@ module.exports = {
             voteType = req.body.voteType || VoteType.VOTE_NONE;
         }
 
-        return await VotingsHashList.submitVote(parentId, userAuthenticated, voteType);
+        return await VotingsHashList.submitVote(parentId, req.userAuthenticated, voteType);
 
     },
 
     async postGetVote (req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
         let parentId = '';
 
         if (req.hasOwnProperty('body'))
             parentId = req.body.parentId || '';
 
-        return await VotingsHashList.getVote(parentId, userAuthenticated);
+        return await VotingsHashList.getVote(parentId, req.userAuthenticated);
 
     },
 
     async postGetAllVotes (req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
         let parentId = '';
 
         if (req.hasOwnProperty('body'))
             parentId = req.body.parentId || '';
 
-        return await VotingsHashList.getVote(parentId, userAuthenticated, true);
+        return await VotingsHashList.getVote(parentId, req.userAuthenticated, true);
 
     },
 

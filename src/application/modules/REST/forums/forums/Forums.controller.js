@@ -14,8 +14,6 @@ module.exports = {
 
     async postAddForum (req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
-
         let sName = '', sTitle = '', sDescription = '', arrKeywords = [], sCountry='', sCity='',sLanguage='', sIconPic='', sCoverPic='', sCoverColor = '';
         let dbLatitude = 0, dbLongitude = 0, arrAdditionalInfo = {} ;
 
@@ -50,12 +48,10 @@ module.exports = {
 
         console.log('Creating a Forum : ', sTitle);
 
-        return await ForumsHelper.addForum(userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, null, arrAdditionalInfo);
+        return await ForumsHelper.addForum(req.userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, null, arrAdditionalInfo);
     },
 
     async getForum (req, res){
-
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         var sId = '';
 
@@ -65,7 +61,7 @@ module.exports = {
 
         console.log('Creating a Forum : ', sId);
 
-        return await ForumsHelper.getForum(userAuthenticated, sId);
+        return await ForumsHelper.getForum(req.userAuthenticated, sId);
 
     },
 

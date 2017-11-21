@@ -15,8 +15,6 @@ module.exports = {
 
     async postAddTopic (req, res){
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
-
         let sTitle = '',  sShortDescription = '', sDescription = '', arrAttachments=[], arrKeywords = [], sCountry='', sCity='',sLanguage='';
         let dbLatitude = 0, dbLongitude = 0, sCoverPic='', arrAdditionalInfo = {};
 
@@ -53,12 +51,10 @@ module.exports = {
 
         console.log('Creating a Topic : ', sTitle);
 
-        return await TopicsHelper.addTopic(userAuthenticated, parent, sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, null, arrAdditionalInfo);
+        return await TopicsHelper.addTopic(req.userAuthenticated, parent, sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, null, arrAdditionalInfo);
     },
 
     async getTopic (req, res){
-
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         var sId = '';
 
@@ -68,7 +64,7 @@ module.exports = {
 
         console.log('Creating a Topic : ', sId);
 
-        return await TopicsHelper.getTopic(userAuthenticated, sId);
+        return await TopicsHelper.getTopic(req.userAuthenticated, sId);
 
     },
 

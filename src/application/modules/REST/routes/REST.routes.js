@@ -18,7 +18,7 @@ let StatisticsCtrl = require ('REST/statistics/Statistics.controller.js');
 
 let SearchesCtrl = require ('REST/searches/Searches.controller.js');
 let MetaExtractorCtrl = require ('../../utils/meta-extractor/MetaExtractor.controller.js');
-let AllPagesCtrl = require ('REST/forums/content/all-pages/AllPages.controller.js');
+let AllPagesCtrl = require ('../forums/content/all-pages/AllPages.controller.js');
 
 
 /*
@@ -45,7 +45,7 @@ let routesHTTP = {
     },
 
     "test/Session": async (req, res, callback)  => {
-        let SessionHash = require ('REST/users/auth/sessions/helpers/SessionHash.helper.js');
+        let SessionHash = require ('../users/auth/sessions/helpers/SessionHash.helper.js');
         callback( {message: SessionHash.test() });
     },
 
@@ -98,7 +98,9 @@ let routesCommon = {
 
     "auth/login": async (req, res, callback) => {
 
-        let userAuthenticated = await AuthenticatingUser.loginUser(req);
+        if (req.userAuthenticated !== null){
+            callback({result:false,  message: "Error! You are already logged in" });
+        }
 
         let answer = await AuthenticateCtrl.postAuthenticateLogin(req, res);
         if (answer.result === true)
