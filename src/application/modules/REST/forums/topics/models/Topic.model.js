@@ -6,8 +6,9 @@
 let redis = require ('DB/redis_nohm');
 let nohmIterator = require ('DB/Redis/nohm/nohm.iterator.js');
 
-let StatisticsHelper = require('../../../statistics/helpers/Statistics.helper.js');
+import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
+import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
 let md5 = require ('md5');
 
@@ -122,6 +123,7 @@ var TopicModel = redis.nohm.model('TopicModel', {
             properties.shortDescription = SanitizeAdvanced.sanitizeAdvancedShortDescription(properties.shortDescription||properties.description, 512);
 
             properties.isOwner = this.isOwner(userAuthenticated);
+            properties.keywords = CommonFunctions.convertKeywordsToArray(properties.keywords);
 
             //Scraping Gravatars
             if (((properties.addInfo.orgName||'')!=='') && ((properties.addInfo.orgAvatar|| '') === '')){

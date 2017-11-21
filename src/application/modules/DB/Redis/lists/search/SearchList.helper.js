@@ -8,10 +8,10 @@
                       http://patshaughnessy.net/2011/11/29/two-ways-of-using-redis-to-build-a-nosql-autocomplete-search-index
 
  */
+import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
+
 var SortedList = require ('../sorted-lists/SortedList.helper.js');
 var AutoCompleteStringsHashList = require ('./AutoCompleteStringsHashList.helper.js');
-
-var commonFunctions = require ('REST/common/helpers/CommonFunctions.helper.js');
 
 class SearchList {
 
@@ -53,14 +53,14 @@ class SearchList {
         // let autoCompleteHashIndex = parent;
 
         phrase = phrase.toLowerCase();
-        phrase = commonFunctions.transliterate(phrase);
+        phrase = CommonFunctions.transliterate(phrase);
 
         let iCount = 0;
 
         let sPrefix = '';
         for (let i=0; i<phrase.length; i++){
 
-            if (commonFunctions.validateUnicodeString(phrase[i])){ //i found a letter
+            if (CommonFunctions.validateUnicodeString(phrase[i])){ //i found a letter
                 sPrefix = sPrefix+ phrase[i];
             } else
                 sPrefix = '';
@@ -89,7 +89,7 @@ class SearchList {
         if (typeof word !== "string") return [];
         if (word.length < this.minimumWordLength) return []; //to few letters... no autocomplete
         word = word.toLowerCase();
-        word = commonFunctions.transliterate(word);
+        word = CommonFunctions.transliterate(word);
 
         return await AutoCompleteStringsHashList.getAutoComplete(await this.sortedList.getListRangeBySortedIndex(word,1,10));
     }
@@ -103,7 +103,7 @@ class SearchList {
         if (typeof phrase !== "string") return false;
         if (phrase.length < 3) return [];
         phrase = phrase.toLowerCase();
-        phrase = commonFunctions.transliterate(phrase);
+        phrase = CommonFunctions.transliterate(phrase);
 
         let arrPartialWordsToSearch = []; // the extracted words used for interogating
         let arrPartialResults = []; // partial results from the DB
@@ -113,7 +113,7 @@ class SearchList {
         let sPrefix = '';
         for (let i=0; i<phrase.length; i++){
 
-            if (commonFunctions.validateUnicodeString(phrase[i])){ //i found a letter
+            if (CommonFunctions.validateUnicodeString(phrase[i])){ //i found a letter
                 sPrefix = sPrefix + phrase[i];
             } else {
 

@@ -3,9 +3,10 @@
  * (C) BIT TECHNOLOGIES
  */
 import * as redis from 'DB/redis_nohm'
+import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
 let forumModel = require ('../models/Forum.model.js');
-let commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
+
 let URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
 let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
@@ -118,7 +119,7 @@ module.exports = {
                 URL: await(URLHashHelper.getFinalNewURL('',sName,null)), //Getting a NEW URL
                 description: sDescription,
                 authorId: (userAuthenticated !== null ? userAuthenticated.id : ''),
-                keywords: commonFunctions.convertKeywordsArrayToString(arrKeywords),
+                keywords: CommonFunctions.convertKeywordsArrayToString(arrKeywords),
                 iconPic: sIconPic,
                 coverPic: sCoverPic,
                 coverColor: sCoverColor,

@@ -2,11 +2,11 @@
  * Created by Alexandru Ionut Budisteanu - SkyHub on 7/9/2017.
  * (C) BIT TECHNOLOGIES
  */
+import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 
 var ScoreCoefficientHelper = require ('DB/common/score-coefficient/ScoreCoefficient.helper.js');
 var HashList = require ('DB/Redis/lists/HashList.helper.js');
 var TopForumsHelper = require ('../../top-content/helpers/TopForums.helper.js');
-let StatisticsHelper = require('../../../statistics/helpers/Statistics.helper.js');
 var ForumsSorter = class{
 
     constructor(){

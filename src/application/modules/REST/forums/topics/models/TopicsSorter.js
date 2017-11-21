@@ -3,6 +3,8 @@
  * (C) BIT TECHNOLOGIES
  */
 
+import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper'
+
 var ScoreCoefficientHelper = require ('DB/common/score-coefficient/ScoreCoefficient.helper.js');
 var HashList = require ('DB/Redis/lists/HashList.helper.js');
 var TopContentHelper = require ('../../top-content/helpers/TopContent.helper.js');
@@ -22,8 +24,6 @@ var TopicsSorter = class{
     }
 
     async calculateHotnessVotingScore (id){
-
-        let StatisticsHelper = require('../../../statistics/helpers/Statistics.helper.js');
 
         let pageViews = await StatisticsHelper.getPageViewsCounter(id);
         let pageVisitorsViews = await StatisticsHelper.getUniqueVisitorsCounter(id);

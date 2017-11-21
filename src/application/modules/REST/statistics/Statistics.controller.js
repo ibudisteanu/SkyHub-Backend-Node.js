@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var StatisticsHelper = require('./helpers/Statistics.helper.js');
+import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 
 
 module.exports = {

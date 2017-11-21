@@ -5,7 +5,7 @@
 
 
 let HashList = require ('DB/Redis/lists/HashList.helper.js');
-let commonFunctions = require ('../../common/helpers/CommonFunctions.helper.js');
+import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
 let VoteType = require ('../models/VoteType.js');
 let VotingInfoHashList = require ('./VotingInfo.hashlist.js');

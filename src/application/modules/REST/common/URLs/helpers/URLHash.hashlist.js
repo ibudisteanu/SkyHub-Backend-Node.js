@@ -3,8 +3,8 @@
  * (C) BIT TECHNOLOGIES
  */
 
+import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 var HashList = require ('DB/Redis/lists/HashList.helper.js');
-var commonFunctions = require ('../../helpers/CommonFunctions.helper.js');
 
 class URLHash {
 
@@ -31,9 +31,9 @@ class URLHash {
         if ((object!==null)&&(typeof object === "object")) object = object.id;
 
         // if (sParentURL !== '')
-        //     sParentURL = commonFunctions.url_slug(sParentURL);
+        //     sParentURL = CommonFunctions.url_slug(sParentURL);
 
-        sInitialURL = (sParentURL !== '' ? sParentURL + '/' : '') + (typeof sSpecialCharSeparator === 'string' ? sSpecialCharSeparator : '') + commonFunctions.url_slug(sInitialURL);
+        sInitialURL = (sParentURL !== '' ? sParentURL + '/' : '') + (typeof sSpecialCharSeparator === 'string' ? sSpecialCharSeparator : '') + CommonFunctions.url_slug(sInitialURL);
 
         let sFinalNewURL = sInitialURL;
 
@@ -74,7 +74,7 @@ class URLHash {
         if ((object!==null)&&(typeof object === "object")) object = object.id;
 
         if ( (bURLSlug||false) === true)
-            sNewURL = commonFunctions.url_slug(sNewURL);
+            sNewURL = CommonFunctions.url_slug(sNewURL);
 
         if ( (bDeleteAllHashes || false) === true ){
             await this.hashList.deleteHash('',sOldURL);

@@ -10,7 +10,7 @@ let VoteType = require ('../../voting/models/VoteType.js');
 let VotingInfoHashList = require ('../../voting/helpers/VotingInfo.hashlist.js');
 let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 
-var StatisticsHelper = class {
+class StatisticsHelper{
 
     //sortedList
     constructor(){
@@ -227,4 +227,4 @@ var StatisticsHelper = class {
 
 };
 
-module.exports = new StatisticsHelper();
+export default new StatisticsHelper();

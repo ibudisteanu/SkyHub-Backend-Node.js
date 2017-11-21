@@ -79,7 +79,7 @@ class VotingInfoHashList {
                     break;
             }
 
-        let StatisticsHelper = require ('../../statistics/helpers/Statistics.helper.js');
+        let StatisticsHelper = require ('REST/statistics/helpers/Statistics.helper.js');
 
         if (downValue !== 0) {
             await this.hashList.incrementBy(parentId, 'downs', downValue);

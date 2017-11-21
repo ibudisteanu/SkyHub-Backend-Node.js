@@ -6,7 +6,7 @@
 import constants from 'bin/constants';
 var Users =  require ('./Users.helper.js');
 var nohmValidation = require ('DB/Redis/nohm/nohm.validation.js');
-var commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
+import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
 module.exports = {
     /*
@@ -31,7 +31,7 @@ module.exports = {
             randomGeneratorNumber = 100000;
         }
 
-        sUserNamePrefix = commonFunctions.url_slug(sUserNamePrefix, {'delimiter':'_', 'transliterate':true});
+        sUserNamePrefix = CommonFunctions.url_slug(sUserNamePrefix, {'delimiter':'_', 'transliterate':true});
          sUserNamePrefix = nohmValidation.sanitizeUsername(sUserNamePrefix, '_');
 
         //generating Random User

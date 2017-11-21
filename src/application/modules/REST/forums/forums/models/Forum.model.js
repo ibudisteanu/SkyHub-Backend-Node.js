@@ -4,12 +4,13 @@
  */
 import * as redis from 'DB/redis_nohm'
 import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
+import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
+import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 
 var nohmIterator = require   ('DB/Redis/nohm/nohm.iterator.js');
 
 var URLHashHelper = require ('REST/common/URLs/helpers/URLHash.hashlist.js');
 
-var StatisticsHelper = require('../../../statistics/helpers/Statistics.helper.js');
 
 
 var ForumModel = redis.nohm.model('ForumModel', {
@@ -118,12 +119,12 @@ var ForumModel = redis.nohm.model('ForumModel', {
         },
         city: {
             type: 'string',
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 2
-                }]
-            ],
+            // validations: [
+            //     ['notEmpty'],
+            //     ['length', {
+            //         min: 2
+            //     }]
+            // ],
         },
         language: {
             type: 'string',
@@ -152,6 +153,8 @@ var ForumModel = redis.nohm.model('ForumModel', {
 
             properties.description = SanitizeAdvanced.sanitizeAdvanced(properties.description);
             properties.shortDescription = SanitizeAdvanced.sanitizeAdvancedShortDescription(properties.description, 512);
+
+            properties.keywords = CommonFunctions.convertKeywordsToArray(properties.keywords);
 
             properties.isOwner = this.isOwner(userAuthenticated);
 

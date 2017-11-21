@@ -3,13 +3,13 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var commonFunctions = require ('REST/common/helpers/CommonFunctions.helper.js');
+import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
 exports.validateKeywords = function(value, options, callback) {
 
     console.log("FOUND KEYWORDS", value);
 
-    var arrKeywords = commonFunctions.convertKeywordsToArray(value);
+    var arrKeywords = CommonFunctions.convertKeywordsToArray(value);
 
     if (arrKeywords.length < 3) {
         callback(false);

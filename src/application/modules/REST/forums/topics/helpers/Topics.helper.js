@@ -6,7 +6,7 @@ import * as redis from 'DB/redis_nohm'
 import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
 
 let topicModel = require ('../models/Topic.model.js');
-let commonFunctions = require ('REST/common/helpers/CommonFunctions.helper.js');
+import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 let URLHashHelper = require ('REST/common/URLs/helpers/URLHash.hashlist.js');
 let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 
@@ -117,9 +117,11 @@ module.exports = {
         // let shortDescription = striptags(sDescription, ['a','b','i','u','strong','div','font','ul','li', 'br', 'span','p','div','em','iframe']);
         // if (shortDescription.length > 512) shortDescription = shortDescription.substr(0, 512);
 
-        console.log("#### DESCRIPTION", sDescription);
+        //console.log("#### DESCRIPTION", sDescription);
+
         sDescription = SanitizeAdvanced.sanitizeAdvanced(sDescription);
-        console.log("#### DESCRIPTION 2", sDescription);
+
+        //console.log("#### DESCRIPTION 2", sDescription);
 
         let shortDescription = '';
         if (sShortDescription.length > 3)  shortDescription = sShortDescription;
@@ -131,7 +133,7 @@ module.exports = {
             delete arrAdditionalInfo.dtOriginal;
         }
 
-        console.log("#### DESCRIPTION 3", sDescription);
+        //console.log("#### DESCRIPTION 3", sDescription);
 
         topic.p(
             {
@@ -142,7 +144,7 @@ module.exports = {
                 shortDescription: shortDescription,
                 coverPic: sCoverPic,
                 authorId: (userAuthenticated !== null ? userAuthenticated.id : ''),
-                keywords: commonFunctions.convertKeywordsArrayToString(arrKeywords),
+                keywords: CommonFunctions.convertKeywordsArrayToString(arrKeywords),
                 country: sCountry.toLowerCase(),
                 city: sCity.toLowerCase(),
                 language: sLanguage.toLowerCase(),

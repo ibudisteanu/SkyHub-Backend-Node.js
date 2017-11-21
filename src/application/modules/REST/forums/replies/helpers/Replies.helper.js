@@ -5,9 +5,9 @@
 
 import * as redis from 'DB/redis_nohm'
 import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
+import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
 let replyModel = require ('../models/Reply.model.js');
-let commonFunctions = require ('REST/common/helpers/CommonFunctions.helper.js');
 let URLHashHelper = require ('REST/common/URLs/helpers/URLHash.hashlist.js');
 let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
@@ -132,7 +132,7 @@ module.exports = {
                     description: sDescription,
                     shortDescription: shortDescription,
                     authorId: (userAuthenticated !== null ? userAuthenticated.id : ''),
-                    keywords: commonFunctions.convertKeywordsArrayToString(arrKeywords),
+                    keywords: CommonFunctions.convertKeywordsArrayToString(arrKeywords),
                     attachments: arrAttachments,
                     country: sCountry.toLowerCase(),
                     city: sCity.toLowerCase(),

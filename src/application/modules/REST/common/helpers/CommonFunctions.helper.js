@@ -6,7 +6,7 @@
 var XRegExp = require ('xregexp');
 let regexUnicodeWord = XRegExp('^\\pL+$');
 
-module.exports = {
+class CommonFunctions {
 
 
     // Transliterate characters to ASCII
@@ -85,11 +85,11 @@ module.exports = {
         }
 
         return word;
-    },
+    }
 
     validateUnicodeString(word){ //check if the word contains only Unicode Letters
         return regexUnicodeWord.test(word);
-    },
+    }
 
     /**
      * Create a web friendly URL slug from a string.
@@ -154,7 +154,7 @@ module.exports = {
         s = s.replace(RegExp('(^' + opt.delimiter + '|' + opt.delimiter + '$)', 'g'), '');
 
         return opt.lowercase ? s.toLowerCase() : s;
-    },
+    }
 
     convertKeywordsToArray(keywords){
 
@@ -167,7 +167,7 @@ module.exports = {
             arrKeywords = keywords.split(',');
 
         return arrKeywords;
-    },
+    }
 
     convertKeywordsArrayToString(keywords){
 
@@ -181,6 +181,8 @@ module.exports = {
             sKeywords = keywords.toString();
 
         return sKeywords;
-    },
+    }
 
-};
+}
+
+export default new CommonFunctions();

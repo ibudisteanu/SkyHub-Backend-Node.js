@@ -4,6 +4,7 @@
  */
 
 import constants from 'bin/constants'
+import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 
 let mongoose = require('mongoose');
 
@@ -21,7 +22,6 @@ let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
 let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
 let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
 let VotingsHashList = require ('REST/voting/helpers/Votings.hashlist.js');
-let StatisticsHelper = require ('REST/statistics/helpers/Statistics.helper.js');
 let VoteType = require ('REST/voting/models/VoteType.js');
 
 let newUsers = [];

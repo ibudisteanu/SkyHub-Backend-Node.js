@@ -1,3 +1,5 @@
+import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
+
 let AuthenticateCtrl = require ('REST/users/auth/Authenticate.controller.js');
 let UsersCtrl = require ('REST/users/Users.controller.js');
 let FunctionsCtrl = require ('REST/common/functions/functions.controller.js');
@@ -14,7 +16,6 @@ let TopForumsCtrl = require ('REST/forums/top-content/TopForums.controller.js');
 let TopRepliesCtrl = require ('REST/forums/top-content/TopReplies.controller.js');
 
 let ContentCtrl = require ('REST/forums/content/Content.controller.js');
-let StatisticsCtrl = require ('REST/statistics/Statistics.controller.js');
 
 let SearchesCtrl = require ('REST/searches/Searches.controller.js');
 let MetaExtractorCtrl = require ('../../utils/meta-extractor/MetaExtractor.controller.js');

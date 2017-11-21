@@ -8,7 +8,7 @@ import constants from 'bin/constants'
 
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
-let StatisticsHelper = require ('REST/statistics/helpers/Statistics.helper.js');
+import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 
 let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
 let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');

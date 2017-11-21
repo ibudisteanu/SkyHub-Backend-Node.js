@@ -5,10 +5,9 @@
 
 import * as redis from 'DB/redis_nohm'
 import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
+import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 
 let nohmIterator = require ('DB/Redis/nohm/nohm.iterator.js');
-
-let StatisticsHelper = require('../../../statistics/helpers/Statistics.helper.js');
 
 let md5 = require ('md5');
 
