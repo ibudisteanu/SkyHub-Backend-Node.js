@@ -3,12 +3,14 @@
  * (C) BIT TECHNOLOGIES
  */
 import * as redis from 'DB/redis_nohm'
+import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
+
 var nohmIterator = require   ('DB/Redis/nohm/nohm.iterator.js');
 
-var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
+var URLHashHelper = require ('REST/common/URLs/helpers/URLHash.hashlist.js');
 
 var StatisticsHelper = require('../../../statistics/helpers/Statistics.helper.js');
-var SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
+
 
 var ForumModel = redis.nohm.model('ForumModel', {
 

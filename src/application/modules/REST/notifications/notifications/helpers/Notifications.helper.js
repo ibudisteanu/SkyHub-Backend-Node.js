@@ -13,14 +13,14 @@
             read:userId
 
  */
-
+import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
 
 let List = require ('DB/Redis/lists/List.helper.js');
 let HashList = require ('DB/Redis/lists/HashList.helper.js');
-let commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
+let commonFunctions = require ('REST/common/helpers/CommonFunctions.helper.js');
 let nohmIterator = require ('DB/Redis/nohm/nohm.iterator');
 let Notification = require ('../models/Notification.model.js');
-let SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
+
 
 const NOTIFICATIONS_DB_MAXIMUM = 100;
 

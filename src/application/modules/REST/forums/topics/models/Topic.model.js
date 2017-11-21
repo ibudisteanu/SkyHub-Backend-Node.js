@@ -7,7 +7,7 @@ let redis = require ('DB/redis_nohm');
 let nohmIterator = require ('DB/Redis/nohm/nohm.iterator.js');
 
 let StatisticsHelper = require('../../../statistics/helpers/Statistics.helper.js');
-let SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
+import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
 
 let md5 = require ('md5');
 

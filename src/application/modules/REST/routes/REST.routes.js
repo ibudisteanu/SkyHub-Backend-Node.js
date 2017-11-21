@@ -131,7 +131,7 @@ let routesCommon = {
 
     "auth/logout": async (req, res, callback) => {
 
-        AuthenticateCtrl.logout(req, res);
+        await AuthenticateCtrl.logout(req, res);
 
         callback({"result": true});
     },

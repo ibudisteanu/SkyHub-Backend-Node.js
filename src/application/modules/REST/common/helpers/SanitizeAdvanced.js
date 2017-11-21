@@ -3,7 +3,7 @@ var sanitizeHtml = require('sanitize-html');
 //var tidy = require('htmltidy2').tidy;
 
 
-module.exports = {
+class SanitizeAdvanced {
 
     // cleanHTML_old(text){
     //     text = tidy(text, {"indent-spaces": 4});
@@ -29,7 +29,7 @@ module.exports = {
                 allowedTags: allowedTags,
                 allowedAttributes: allowedAttributes,
             });
-    },
+    }
 
     sanitizeAdvanced(text,enableAnchors) {
 
@@ -51,7 +51,7 @@ module.exports = {
             });
 
         return text
-    },
+    }
 
     sanitizeAdvancedSimple(text, enableAnchors) {
 
@@ -73,7 +73,7 @@ module.exports = {
             });
 
         return text;
-    },
+    }
 
     sanitizeAdvancedShortDescription(text, limit, enableAnchors) {
 
@@ -87,5 +87,7 @@ module.exports = {
         }
 
         return text;
-    },
-};
+    }
+}
+
+export default new SanitizeAdvanced();

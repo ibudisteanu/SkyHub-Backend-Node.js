@@ -3,16 +3,16 @@
  * (C) BIT TECHNOLOGIES
  */
 import * as redis from 'DB/redis_nohm'
+import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
 
 let topicModel = require ('../models/Topic.model.js');
-let commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
-let URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
+let commonFunctions = require ('REST/common/helpers/CommonFunctions.helper.js');
+let URLHashHelper = require ('REST/common/URLs/helpers/URLHash.hashlist.js');
 let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 
 let VotingsHashList = require ('../../../voting/helpers/Votings.hashlist.js');
 let TopicsSorter = require('../models/TopicsSorter.js');
 let sanitizeHtml = require('sanitize-html');
-let SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
 
 let NotificationsCreator = require ('../../../notifications/NotificationsCreator.js');
 let NotificationsSubscribersHashList = require ('./../../../notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
@@ -117,7 +117,9 @@ module.exports = {
         // let shortDescription = striptags(sDescription, ['a','b','i','u','strong','div','font','ul','li', 'br', 'span','p','div','em','iframe']);
         // if (shortDescription.length > 512) shortDescription = shortDescription.substr(0, 512);
 
+        console.log("#### DESCRIPTION", sDescription);
         sDescription = SanitizeAdvanced.sanitizeAdvanced(sDescription);
+        console.log("#### DESCRIPTION 2", sDescription);
 
         let shortDescription = '';
         if (sShortDescription.length > 3)  shortDescription = sShortDescription;
@@ -128,6 +130,8 @@ module.exports = {
             arrAdditionalInfo.dtRealCreation = new Date().getTime();
             delete arrAdditionalInfo.dtOriginal;
         }
+
+        console.log("#### DESCRIPTION 3", sDescription);
 
         topic.p(
             {

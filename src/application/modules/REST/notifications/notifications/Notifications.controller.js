@@ -14,8 +14,7 @@ module.exports = {
      REST API
      */
 
-    async postGetLastNotifications (req, res){
-
+    async postGetLastNotifications (req, res){s
         if (req.userAuthenticated === null){
             return {
                 result:false,

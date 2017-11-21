@@ -114,10 +114,10 @@ function initializeRoutesSocketWithList(socket, routesList, prefix) {
 
             socket.on(finalRoute, async (data)=>{
 
-                data.userAuthenticated = await AuthenticatingUser.loginUser(data);
+                if (data === '') data = {};
 
-                if (typeof data === 'object')
-                    data.body = data;
+                data.userAuthenticated = await AuthenticatingUser.loginUser(data);
+                data.body = data;
 
                 await routeFunction(data, socket, (answer, suffix, template) => {
 

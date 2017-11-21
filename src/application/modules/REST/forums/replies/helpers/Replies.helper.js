@@ -4,16 +4,17 @@
  */
 
 import * as redis from 'DB/redis_nohm'
+import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
 
 let replyModel = require ('../models/Reply.model.js');
-let commonFunctions = require ('../../../common/helpers/CommonFunctions.helper.js');
-let URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
+let commonFunctions = require ('REST/common/helpers/CommonFunctions.helper.js');
+let URLHashHelper = require ('REST/common/URLs/helpers/URLHash.hashlist.js');
 let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
 let hat = require ('hat');
 let VotingsHashList = require ('../../../voting/helpers/Votings.hashlist.js');
 let RepliesSorter = require('../models/RepliesSorter.js');
-let SanitizeAdvanced = require('../../../common/helpers/SanitizeAdvanced.js');
+
 
 let NotificationsCreator = require ('../../../notifications/NotificationsCreator.js');
 let NotificationsSubscribersHashList = require ('./../../../notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
