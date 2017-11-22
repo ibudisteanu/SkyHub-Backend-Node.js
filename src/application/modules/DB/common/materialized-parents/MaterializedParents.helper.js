@@ -6,9 +6,9 @@
 
 import * as redis from 'DB/redis_nohm'
 
-import URLHashHelper from ('REST/common/URLs/helpers/URLHash.hashlist.js');
+import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist.js';
 
-var MaterializedParents = class{
+class MaterializedParents {
 
     constructor (tablePrefix){
 
