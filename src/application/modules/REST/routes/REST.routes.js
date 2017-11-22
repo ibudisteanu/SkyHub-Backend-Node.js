@@ -1,4 +1,9 @@
-import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
+import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper'
+import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist'
+import MetaExtractorCtrl from 'modules/utils/meta-extractor/MetaExtractor.controller'
+import MetaExtractorHelper from 'modules/utils/meta-extractor/helpers/MetaExtractor.helper';
+
+import SearchList from 'DB/Redis/lists/search/SearchList.helper'
 
 let AuthenticateCtrl = require ('REST/users/auth/Authenticate.controller.js');
 let UsersCtrl = require ('REST/users/Users.controller.js');
@@ -18,9 +23,7 @@ let TopRepliesCtrl = require ('REST/forums/top-content/TopReplies.controller.js'
 let ContentCtrl = require ('REST/forums/content/Content.controller.js');
 
 let SearchesCtrl = require ('REST/searches/Searches.controller.js');
-let MetaExtractorCtrl = require ('../../utils/meta-extractor/MetaExtractor.controller.js');
-let AllPagesCtrl = require ('../forums/content/all-pages/AllPages.controller.js');
-
+let AllPagesCtrl = require ('REST/forums/content/all-pages/AllPages.controller.js');
 
 /*
     TESTING
@@ -41,7 +44,6 @@ let routesHTTP = {
     },
 
     "test/URLHash": async (req, res, callback)  => {
-        let URLHashHelper = require ('../common/URLs/helpers/URLHash.hashlist.js');
         callback( {message: URLHashHelper.test() });
     },
 
@@ -51,10 +53,9 @@ let routesHTTP = {
     },
 
     "test/SearchList": async (req, res, callback) => {
-        let SearchList = require ('DB/Redis/lists/search/SearchList.helper.js');
 
-        SearchList = new SearchList();
-        callback( {message: SearchList.test() });
+        let SearchListInstance = new SearchList();
+        callback( {message: SearchListInstance.test() });
     },
 
     "test/search/Build-Search-List": async (req, res, callback) => {
@@ -63,7 +64,6 @@ let routesHTTP = {
     },
 
     "test/meta-extractor": async (req, res, callback) => {
-        let MetaExtractorHelper = require ('../../utils/meta-extractor/helpers/MetaExtractor.helper.js');
         callback( {message: MetaExtractorHelper.test() });
     },
 

@@ -9,7 +9,7 @@
 
 var ContentHelper = require('./helpers/Content.helper.js');
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
-var URLHashHelper = require ('REST/common/URLs/helpers/URLHash.hashlist.js');
+import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist';
 var MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 
 module.exports = {

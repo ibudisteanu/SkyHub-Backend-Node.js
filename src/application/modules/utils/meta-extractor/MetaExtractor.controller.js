@@ -5,9 +5,9 @@
 
 
 
-var MetaExtractor = require ('./helpers/MetaExtractor.helper.js');
+import MetaExtractorHelper from './helpers/MetaExtractor.helper'
 
-module.exports = {
+class MetaExtractorController {
 
     /*
      REST API
@@ -23,13 +23,15 @@ module.exports = {
 
         console.log('extracting data from link: ', sLink);
 
-        let result = await MetaExtractor.extractDataFromLink(sLink);
+        let result = await MetaExtractorHelper.extractDataFromLink(sLink);
 
         if (result !== null)
             return {result:true, data: result};
         else
             return {result:false, message: "error extracting the data"};
 
-    },
+    }
 
 }
+
+export default new MetaExtractorController()

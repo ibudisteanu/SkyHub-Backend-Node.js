@@ -7,7 +7,7 @@ import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
 let forumModel = require ('../models/Forum.model.js');
 
-let URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
+import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist.js';
 let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
 let ForumsSorter = require('../models/ForumsSorter.js');

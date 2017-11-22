@@ -6,7 +6,7 @@
 
 import * as redis from 'DB/redis_nohm'
 
-var URLHashHelper = require ('REST/common/URLs/helpers/URLHash.hashlist.js');
+import URLHashHelper from ('REST/common/URLs/helpers/URLHash.hashlist.js');
 
 var MaterializedParents = class{
 

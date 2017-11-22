@@ -165,6 +165,6 @@ class SearchList {
 
     }
 
-};
+}
 
-module.exports = SearchList;
+export default SearchList;

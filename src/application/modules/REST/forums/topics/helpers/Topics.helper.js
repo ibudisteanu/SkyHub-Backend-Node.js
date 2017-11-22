@@ -7,7 +7,7 @@ import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
 
 let topicModel = require ('../models/Topic.model.js');
 import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
-let URLHashHelper = require ('REST/common/URLs/helpers/URLHash.hashlist.js');
+import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist';
 let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 
 let VotingsHashList = require ('../../../voting/helpers/Votings.hashlist.js');

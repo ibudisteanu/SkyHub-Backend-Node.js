@@ -8,7 +8,7 @@ import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
 import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
 let replyModel = require ('../models/Reply.model.js');
-let URLHashHelper = require ('REST/common/URLs/helpers/URLHash.hashlist.js');
+import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist.js';
 let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
 let hat = require ('hat');

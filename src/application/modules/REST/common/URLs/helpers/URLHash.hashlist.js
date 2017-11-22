@@ -106,6 +106,6 @@ class URLHash {
         console.log("URL REPLACE ",await this.replaceOldURL("URL2","URL2_SCHIMBAT","22_schimbat"));
     }
 
-};
+}
 
-module.exports = new URLHash();
+export default new URLHash();

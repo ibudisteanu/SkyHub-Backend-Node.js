@@ -6,6 +6,7 @@
 import * as redis from 'DB/redis_nohm'
 import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
 import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
+import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist.js';
 
 let nohmIterator = require ('DB/Redis/nohm/nohm.iterator.js');
 
@@ -134,7 +135,6 @@ var ReplyModel = redis.nohm.model('ReplyModel', {
 
         keepURLSlug : function (sOldURL,  bDelete){
 
-            var URLHashHelper = require ('../../../common/URLs/helpers/URLHash.hashlist.js');
             return URLHashHelper.replaceOldURL(sOldURL, this.p('URL'), this.id, bDelete, false );
         }
 

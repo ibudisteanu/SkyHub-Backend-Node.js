@@ -65,6 +65,6 @@ class MetaExtractorHashList {
 
     }
 
-};
+}
 
-module.exports = new MetaExtractorHashList();
+export default new MetaExtractorHashList();

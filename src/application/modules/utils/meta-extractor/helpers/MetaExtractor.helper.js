@@ -5,16 +5,15 @@
 
 // based on this https://www.npmjs.com/package/node-metainspector
 
-var MetaInspector = require('node-metainspector');
-var MetaExtractorHashList = require('../meta-extractor-list/MetaExtractorHashList.helper.js');
+import MetaExtractorHashList from 'modules/utils/meta-extractor/meta-extractor-list/MetaExtractorHashList.helper';
+const MetaInspector = require('node-metainspector');
 
 const http = require('http');
 const fileType = require('file-type');
 
+const request = require('request');
 
-var request = require('request');
-
-var magic = {
+const magic = {
     jpg: ['ffd8ffe0','ffd8ffdb','ffd8ffe1'],
     png: ['89504e47'],
     gif: ['47494638'],
@@ -31,7 +30,7 @@ function checkMagicNumber(imageChunk, magicArray){
 }
 
 
-module.exports = {
+class MetaExtractorHelper {
 
     /*
      REST API
@@ -60,7 +59,7 @@ module.exports = {
                 }
             });
         });
-    },
+    }
 
     // getImageExtension(url, timeout){
     //
@@ -76,7 +75,7 @@ module.exports = {
     //             });
     //         });
     //     });
-    // },
+    // }
 
     async fetchURLData(sLink){
 
@@ -98,11 +97,11 @@ module.exports = {
 
         });
 
-    },
+    }
 
     getRootUrl(url) {
        return url.toString().replace(/^(.*\/\/[^\/?#]*).*$/,"$1");
-    },
+    }
 
     async extractDataFromLink (sLink){
 
@@ -186,7 +185,7 @@ module.exports = {
 
         return null;
 
-    },
+    }
 
     async test(){
 
@@ -202,3 +201,5 @@ module.exports = {
     }
 
 }
+
+export default new MetaExtractorHelper()

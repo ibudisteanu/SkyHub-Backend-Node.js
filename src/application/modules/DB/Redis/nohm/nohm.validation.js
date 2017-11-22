@@ -4,6 +4,7 @@
  */
 
 import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
+import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist.js';
 
 exports.validateKeywords = function(value, options, callback) {
 
@@ -39,15 +40,13 @@ exports.validateUsername = function (value, options, callback){
 
 exports.validateUniqueURL = function (value, options, callback){
 
-    var URLHash = require ('REST/common/URLs/helpers/URLHash.hashlist.js');
-
     //console.log("VALIDATE UNIQUE URL", options, this.p(''));
 
     this.p('URL','NEW-URL');
 
     console.log("VALIDATE UNIQUE URL", this.p('URL'),this.id, this);
 
-    URLHash.replaceOldURL(this.p('URL'),value).then( (answer)=>{
+    URLHashHelper.replaceOldURL(this.p('URL'),value).then( (answer)=>{
 
         if (answer === null)
             callback(true);

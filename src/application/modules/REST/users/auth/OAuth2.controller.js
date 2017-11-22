@@ -8,6 +8,8 @@ import constants from 'bin/constants'
 let UsersHelper =  require('./helpers/Users.helper.js');
 let UserHelper =  require('./helpers/User.helper.js');
 
+let requestPromise =  require('request-promise')
+
 // import {Users} from './helpers/Users.model.js';
 // import {UserHelper} from './helpers/User.helper.js';
 

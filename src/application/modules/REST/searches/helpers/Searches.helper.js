@@ -5,7 +5,7 @@
 
 import * as redis from 'DB/redis_nohm'
 
-let SearchList = require('DB/Redis/lists/search/SearchList.helper.js');
+import SearchList from 'DB/Redis/lists/search/SearchList.helper'
 
 
 let forumModel = require ('REST/forums/forums/models/Forum.model.js');

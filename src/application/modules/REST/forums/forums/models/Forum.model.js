@@ -9,7 +9,7 @@ import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 
 var nohmIterator = require   ('DB/Redis/nohm/nohm.iterator.js');
 
-var URLHashHelper = require ('REST/common/URLs/helpers/URLHash.hashlist.js');
+import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist.js';
 
 
 
