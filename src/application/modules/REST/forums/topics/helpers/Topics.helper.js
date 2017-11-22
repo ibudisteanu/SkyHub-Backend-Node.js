@@ -7,7 +7,7 @@ import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
 
 let topicModel = require ('../models/Topic.model.js');
 import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
-import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist';
+import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist';
 let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 
 let VotingsHashList = require ('../../../voting/helpers/Votings.hashlist.js');
@@ -138,7 +138,7 @@ module.exports = {
         topic.p(
             {
                 title: sTitle,
-                URL: await(URLHashHelper.getFinalNewURL( (parentObject !== null ? parentObject.p('URL') : 'home') , sTitle, null)), //Getting a NEW URL with this template: skyhub.me/forum-name/topic-name
+                URL: await(URLHash.getFinalNewURL( (parentObject !== null ? parentObject.p('URL') : 'home') , sTitle, null)), //Getting a NEW URL with this template: skyhub.me/forum-name/topic-name
                 attachments: arrAttachments,
                 description: sDescription,
                 shortDescription: shortDescription,

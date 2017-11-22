@@ -6,7 +6,7 @@
 
 import * as redis from 'DB/redis_nohm'
 
-import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist.js';
+import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist.js';
 
 class MaterializedParents {
 
@@ -77,7 +77,7 @@ class MaterializedParents {
 
         sObjectURL = sObjectURL.toLowerCase();// I am storing low-case URLs
 
-        return await URLHashHelper.getId(sObjectURL);
+        return await URLHash.getId(sObjectURL);
 
     }
 
@@ -305,6 +305,6 @@ class MaterializedParents {
         console.log("new bread crumbs",newBreadCrumbs, typeof newBreadCrumbs);
     }
 
-};
+}
 
-module.exports = new MaterializedParents;
+export default new MaterializedParents;

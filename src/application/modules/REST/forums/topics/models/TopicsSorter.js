@@ -6,7 +6,7 @@
 import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper'
 
 var ScoreCoefficientHelper = require ('DB/common/score-coefficient/ScoreCoefficient.helper.js');
-var HashList = require ('DB/Redis/lists/HashList.helper.js');
+import HashList from 'DB/Redis/lists/HashList.helper'
 var TopContentHelper = require ('../../top-content/helpers/TopContent.helper.js');
 
 var TopicsSorter = class{

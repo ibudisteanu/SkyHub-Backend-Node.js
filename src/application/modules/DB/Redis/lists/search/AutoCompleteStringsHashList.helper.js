@@ -8,7 +8,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var HashList = require ('../HashList.helper.js');
+import HashList from 'DB/Redis/lists/HashList.helper'
 var MaterializedParents = require ('../../../common/materialized-parents/MaterializedParents.helper.js');
 
 var hat = require('hat');

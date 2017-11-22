@@ -6,7 +6,7 @@
 
 import * as redis from 'DB/redis_nohm'
 
-var HashList = class{
+class HashList {
 
     constructor (tablePrefix){
         this.tablePrefix = tablePrefix || "Hash";
@@ -92,4 +92,4 @@ var HashList = class{
 
 };
 
-module.exports = HashList;
+export default HashList;

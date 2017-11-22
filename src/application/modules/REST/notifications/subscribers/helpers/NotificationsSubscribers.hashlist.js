@@ -4,7 +4,7 @@
  */
 
 
-var HashList = require ('DB/Redis/lists/HashList.helper.js');
+import HashList from 'DB/Redis/lists/HashList.helper'
 var NotificationSubscriberType = require ('../models/NotificationSubscriberType.js');
 
 class NotificationsSubscribersList {

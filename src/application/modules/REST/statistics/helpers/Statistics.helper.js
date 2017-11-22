@@ -4,7 +4,7 @@
  */
 
 let UniqueVisitorsHelper = require ('../visitors/helpers/UniqueVisitors.helper.js');
-let HashList = require ('DB/Redis/lists/HashList.helper.js');
+import HashList from 'DB/Redis/lists/HashList.helper'
 let VoteType = require ('../../voting/models/VoteType.js');
 
 let VotingInfoHashList = require ('../../voting/helpers/VotingInfo.hashlist.js');

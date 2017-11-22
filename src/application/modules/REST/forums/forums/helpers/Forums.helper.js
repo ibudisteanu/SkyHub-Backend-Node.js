@@ -7,7 +7,7 @@ import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
 let forumModel = require ('../models/Forum.model.js');
 
-import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist.js';
+import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist.js';
 let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
 let ForumsSorter = require('../models/ForumsSorter.js');
@@ -116,7 +116,7 @@ module.exports = {
             {
                 name: sName,
                 title: sTitle,
-                URL: await(URLHashHelper.getFinalNewURL('',sName,null)), //Getting a NEW URL
+                URL: await(URLHash.getFinalNewURL('',sName,null)), //Getting a NEW URL
                 description: sDescription,
                 authorId: (userAuthenticated !== null ? userAuthenticated.id : ''),
                 keywords: CommonFunctions.convertKeywordsArrayToString(arrKeywords),

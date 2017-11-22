@@ -9,7 +9,7 @@
 
 var ContentHelper = require('./helpers/Content.helper.js');
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
-import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist';
+import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist';
 var MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 
 module.exports = {
@@ -31,7 +31,7 @@ module.exports = {
         if (sName.length < 3)
             return {result:false, message:"To few letters"};
 
-        let urlSlug = await URLHashHelper.getFinalNewURL(sParentURL, sName,null);
+        let urlSlug = await URLHash.getFinalNewURL(sParentURL, sName,null);
 
         if (urlSlug !== null)
             return {result:true, URLSlug: urlSlug, message: "Great URL"};

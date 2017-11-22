@@ -8,7 +8,7 @@ import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
 import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
 let replyModel = require ('../models/Reply.model.js');
-import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist.js';
+import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist.js';
 let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
 let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
 let hat = require ('hat');
@@ -128,7 +128,7 @@ module.exports = {
                 {
                     title: sTitle,
                     // URL template: skyhub.com/forum/topic#reply-name
-                    URL: await URLHashHelper.getFinalNewURL( parentObject.p('URL') , (sTitle.length > 0 ? sTitle : hat()) , null , '#' ), //Getting a NEW URL
+                    URL: await URLHash.getFinalNewURL( parentObject.p('URL') , (sTitle.length > 0 ? sTitle : hat()) , null , '#' ), //Getting a NEW URL
                     description: sDescription,
                     shortDescription: shortDescription,
                     authorId: (userAuthenticated !== null ? userAuthenticated.id : ''),

@@ -4,7 +4,7 @@
  */
 
 import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
-var HashList = require ('DB/Redis/lists/HashList.helper.js');
+import HashList from 'DB/Redis/lists/HashList.helper'
 
 class URLHash {
 

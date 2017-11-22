@@ -9,7 +9,7 @@ import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 
 var nohmIterator = require   ('DB/Redis/nohm/nohm.iterator.js');
 
-import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist.js';
+import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist.js';
 
 
 
@@ -177,7 +177,7 @@ var ForumModel = redis.nohm.model('ForumModel', {
 
         keepURLSlug : function (sOldURL,  bDelete){
 
-            return URLHashHelper.replaceOldURL(sOldURL, this.p('URL'), this.id, bDelete, false );
+            return URLHash.replaceOldURL(sOldURL, this.p('URL'), this.id, bDelete, false );
         }
 
     },

@@ -4,13 +4,13 @@
  */
 
 import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
-import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist.js';
+
 
 exports.validateKeywords = function(value, options, callback) {
 
     console.log("FOUND KEYWORDS", value);
 
-    var arrKeywords = CommonFunctions.convertKeywordsToArray(value);
+    let arrKeywords = CommonFunctions.convertKeywordsToArray(value);
 
     if (arrKeywords.length < 3) {
         callback(false);
@@ -46,7 +46,8 @@ exports.validateUniqueURL = function (value, options, callback){
 
     console.log("VALIDATE UNIQUE URL", this.p('URL'),this.id, this);
 
-    URLHashHelper.replaceOldURL(this.p('URL'),value).then( (answer)=>{
+    let URLHash  = require('REST/common/URLs/helpers/URLHash.hashlist.js');
+    URLHash.replaceOldURL(this.p('URL'),value).then( (answer)=>{
 
         if (answer === null)
             callback(true);

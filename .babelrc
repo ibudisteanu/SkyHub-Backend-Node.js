@@ -3,6 +3,7 @@
   "plugins": [
     ["module-alias", [
       {"src": "./src/application",  "expose": "application"},
+      {"src": "./src/application/modules", "expose":"modules"},
       {"src": "./src/application/modules/DB", "expose": "DB"},
       {"src": "./src/application/modules/Admin", "expose": "Admin"},
       {"src": "./src/application/modules/file-uploads", "expose": "file-uploads"},

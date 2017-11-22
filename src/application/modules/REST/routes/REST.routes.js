@@ -1,6 +1,6 @@
 import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper'
-import URLHashHelper from 'REST/common/URLs/helpers/URLHash.hashlist'
-import MetaExtractorCtrl from 'modules/utils/meta-extractor/MetaExtractor.controller'
+import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist'
+import MetaExtractorCtrl from 'modules/utils/meta-extractor/MetaExtractor.controller.js'
 import MetaExtractorHelper from 'modules/utils/meta-extractor/helpers/MetaExtractor.helper';
 
 import SearchList from 'DB/Redis/lists/search/SearchList.helper'
@@ -44,7 +44,7 @@ let routesHTTP = {
     },
 
     "test/URLHash": async (req, res, callback)  => {
-        callback( {message: URLHashHelper.test() });
+        callback( {message: URLHash.test() });
     },
 
     "test/Session": async (req, res, callback)  => {

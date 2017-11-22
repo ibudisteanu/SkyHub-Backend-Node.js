@@ -17,7 +17,7 @@ import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
 import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
 let List = require ('DB/Redis/lists/List.helper.js');
-let HashList = require ('DB/Redis/lists/HashList.helper.js');
+import HashList from 'DB/Redis/lists/HashList.helper'
 let nohmIterator = require ('DB/Redis/nohm/nohm.iterator');
 let Notification = require ('../models/Notification.model.js');
 
