@@ -4,7 +4,9 @@
  */
 
 import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
-
+//not working
+//import UsersHelper from 'REST/users/auth/helpers/Users.helper.js'
+//import URLHash  from 'REST/common/URLs/helpers/URLHash.hashlist.js'
 
 exports.validateKeywords = function(value, options, callback) {
 
@@ -46,7 +48,8 @@ exports.validateUniqueURL = function (value, options, callback){
 
     console.log("VALIDATE UNIQUE URL", this.p('URL'),this.id, this);
 
-    let URLHash  = require('REST/common/URLs/helpers/URLHash.hashlist.js');
+    let URLHash  = require ('REST/common/URLs/helpers/URLHash.hashlist.js').default;
+
     URLHash.replaceOldURL(this.p('URL'),value).then( (answer)=>{
 
         if (answer === null)
@@ -63,14 +66,15 @@ exports.validateUniqueURL = function (value, options, callback){
  */
 exports.validateExistingAuthorId = function (value, options, callback){
 
-    var UsersHelper = require ('REST/users/auth/helpers/Users.helper.js');
-
     console.log("VALIDATE Existing AuthorId", value);
 
     if (value.length < 5) {
         callback(false);
         return;
     }
+
+    let UsersHelper  = require ('REST/users/auth/helpers/Users.helper.js').default
+    console.log("UsersHelper", UsersHelper)
 
     UsersHelper.findUserById(value).then( (answer)=>{
 

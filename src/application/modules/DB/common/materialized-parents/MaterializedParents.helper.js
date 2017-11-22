@@ -7,6 +7,7 @@
 import * as redis from 'DB/redis_nohm'
 
 import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist.js';
+import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 
 class MaterializedParents {
 
@@ -90,7 +91,6 @@ class MaterializedParents {
         switch (idData.objectType) {
             case 'user':
                 //var UserModel = redis.nohm.factory('UserModel');
-                let UsersHelper = require('REST/users/auth/helpers/Users.helper.js');
 
                 return await UsersHelper.findUserById(sObjectId);
 

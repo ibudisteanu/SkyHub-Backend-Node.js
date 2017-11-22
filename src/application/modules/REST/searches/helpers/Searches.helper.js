@@ -16,7 +16,7 @@ let topicModel = require ('REST/forums/topics/models/Topic.model.js');
 let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
 let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
 let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
-let UsersHelper = require ('REST/users/auth/helpers/Users.helper.js');
+import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 
 let ForumsSorter = require('REST/forums/forums/models/ForumsSorter.js');
 let TopicsSorter = require('REST/forums/topics/models/TopicsSorter.js');
@@ -37,7 +37,7 @@ class Searches {
     async addUserToSearch(text, index, score){
 
         if (typeof index === "string") {
-            let UsersHelper = require ('REST/users/auth/helpers/Users.helper.js');
+
             index = await UsersHelper.findUserById(index);
         }
 

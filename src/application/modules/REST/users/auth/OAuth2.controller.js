@@ -4,8 +4,8 @@
  */
 
 import constants from 'bin/constants'
-
-let UsersHelper =  require('./helpers/Users.helper.js');
+import AuthenticateContrller from './Authenticate.controller.js'
+import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 import UserHelper from './helpers/User.helper'
 
 let requestPromise =  require('request-promise')
@@ -55,8 +55,8 @@ module.exports = {
                     req.body.username = userName;
                     console.log('Username generated: ', userName);
 
-                    var Authenticate = require('./Authenticate.controller.js');
-                    return (Authenticate.postAuthenticateRegister(req, res, OAuth));
+
+                    return (AuthenticateContrller.postAuthenticateRegister(req, res, OAuth));
 
                 });
 

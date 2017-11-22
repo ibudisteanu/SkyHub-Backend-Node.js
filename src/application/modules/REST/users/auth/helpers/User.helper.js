@@ -4,7 +4,7 @@
  */
 
 import constants from 'bin/constants';
-var Users =  require ('./Users.helper.js');
+import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 var nohmValidation = require ('DB/Redis/nohm/nohm.validation.js');
 import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
@@ -43,7 +43,7 @@ class UserHelper {
                 else{
                     var sFinalUserName = sUserNamePrefix + Math.floor(Math.random() * randomGeneratorNumber);
 
-                    Users.findUserFromUsername(sFinalUserName).then ((user)=>{
+                    UsersHelper.findUserFromUsername(sFinalUserName).then ((user)=>{
 
                         if (user === null) resolve (sFinalUserName);
                         else
@@ -59,7 +59,7 @@ class UserHelper {
         return new Promise( (resolve)=>{
 
             var sFinalUserName = sUserNamePrefix;
-            Users.findUserFromUsername(sFinalUserName).then ( (user)=>{
+            UsersHelper.findUserFromUsername(sFinalUserName).then ( (user)=>{
 
                 if (user === null) resolve(sFinalUserName);
                 else  nextRandomUser(sUserNamePrefix, 20).then ( (userNameFinal) =>{
@@ -92,4 +92,4 @@ class UserHelper {
 
 }
 
-export default UserHelper
+export default new UserHelper()

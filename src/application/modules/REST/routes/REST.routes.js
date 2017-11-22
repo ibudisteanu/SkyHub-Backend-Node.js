@@ -11,7 +11,7 @@ import TopObjectsListHelper from 'DB/Redis/lists/sorted-lists/TopObjectsList.hel
 import StatisticsCtrl from 'REST/statistics/Statistics.controller'
 import SearchesHelper from 'REST/searches/helpers/Searches.helper'
 import NotificationsHelper from 'REST/notifications/notifications/helpers/Notifications.helper'
-let AuthenticateCtrl = require ('REST/users/auth/Authenticate.controller.js');
+import AuthenticateCtrl from 'REST/users/auth/Authenticate.controller'
 let UsersCtrl = require ('REST/users/Users.controller.js');
 let FunctionsCtrl = require ('REST/common/functions/functions.controller.js');
 

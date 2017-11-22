@@ -5,7 +5,7 @@
 import constants from 'bin/constants';
 
 var SessionHash = require ('../sessions/helpers/SessionHash.helper.js');
-var UsersHelper = require('./Users.helper.js');
+import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 let HashListHelper = require('../sessions/helpers/SessionHash.helper.js');
 
 class AuthenticatedUser {

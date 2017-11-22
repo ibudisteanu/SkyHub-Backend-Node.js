@@ -13,7 +13,7 @@ import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
 let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
 let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
-let UsersHelper = require ('REST/users/auth/helpers/Users.helper.js');
+import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 
 let forumModel = require ('REST/forums/forums/models/Forum.model.js');
 let userModel = require ('REST/users/auth/models/User.model.js');

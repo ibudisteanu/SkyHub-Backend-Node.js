@@ -14,7 +14,7 @@ let ForumModel = mongoose.model('Forums',{ },'Forums');
 let TopicModel = mongoose.model('Topics',{ },'ForumTopics');
 let ReplyModel = mongoose.model('Replies',{ },'Replies');
 
-let UsersHelper = require ('REST/users/auth/helpers/Users.helper.js');
+import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 let UserProperties = require ('REST/users/auth/models/User.properties.js');
 let SessionsHashList = require ('REST/users/auth/sessions/helpers/SessionsHashList.helper.js');
 

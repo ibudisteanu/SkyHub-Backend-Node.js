@@ -4,14 +4,14 @@ var nohmValidation = require ('DB/Redis/nohm/nohm.validation.js');
 var userModel = require ('../models/User.model.js');
 var UserProperties = require ('../models/User.properties.js');
 
-module.exports = {
+class UsersHelper {
 
     createDummyUser (iIndex){
 
         return this.registerUser("emailDummy_"+iIndex+"@yahoo.com","userDummy_"+iIndex, "123456","Gigel",
             "Nume"+iIndex,"RO","Bucharest", "RO", "http://www.gravatar.com/avatar/ee4d1b570eff6ce63"+iIndex+"?default=wavatar&forcedefault=1",
             "http://www.hdfbcover.com/randomcovers/covers/never-stop-dreaming-quote-fb-cover.jpg");
-    },
+    }
 
     findUserById (sId){
 
@@ -32,7 +32,7 @@ module.exports = {
             });
 
         });
-    },
+    }
 
 
     /*
@@ -158,7 +158,7 @@ module.exports = {
             });
 
         });
-    },
+    }
 
     async findUserFromEmailUsernamePassword (sEmailUsername, sPassword){
         console.log("Checking user password ::: " + sEmailUsername + " ::: " + sPassword);
@@ -180,7 +180,7 @@ module.exports = {
                 return {result:false, message: "Password Incorrect"};
 
         }
-    },
+    }
 
     async findUserFromEmailUsername (sEmailUsername){
         console.log("Finding user :::  " + sEmailUsername);
@@ -195,7 +195,7 @@ module.exports = {
         if (userFound !== null) return userFound;
 
         return null;
-    },
+    }
 
 
     async findUserFromUsername(sUsername){
@@ -212,7 +212,7 @@ module.exports = {
                 else resolve(null);
             });
         });
-    },
+    }
 
     async findUserFromEmail (sEmail){
         let UserModel = redis.nohm.factory('UserModel');
@@ -229,7 +229,7 @@ module.exports = {
                 else resolve (null);
             });
         });
-    },
+    }
 
     async findUserFromSocialNetwork(sSocialNetwork, sId){
         let user = redis.nohm.factory('UserModel');
@@ -256,7 +256,7 @@ module.exports = {
                 else resolve(null);
             });
         });
-    },
+    }
 
     async updateLastActivityUser(user){
         user.p('dtLastActivity',new Date().getTime());
@@ -272,7 +272,7 @@ module.exports = {
                     resolve (user);
             });
         });
-    },
+    }
 
     async updateLastActivity(Users){ //making the user online
 
@@ -291,7 +291,7 @@ module.exports = {
             return this.updateLastActivityUser(user);
         }
 
-    },
+    }
 
     passwordHashVerify (sPassword, sPasswordHash) {
 
@@ -302,7 +302,7 @@ module.exports = {
         sPasswordHash = sPasswordHash.replace(/^\$2y(.+)$/i, '\$2a$1');
 
         return bcrypt.compareSync(sPassword, sPasswordHash);
-    },
+    }
 
     passwordHash (sPassword){
 
@@ -310,8 +310,9 @@ module.exports = {
 
         let bcrypt = require('bcrypt');
         return bcrypt.hashSync(sPassword, 8);
-    },
+    }
 
 }
 
 
+export default new UsersHelper()

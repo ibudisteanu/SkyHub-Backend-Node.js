@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var UsersHelper = require ('./auth/helpers/Users.helper.js');
+import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper'
 import ContentHelper from 'REST/forums/content/helpers/Content.helper.js'
 

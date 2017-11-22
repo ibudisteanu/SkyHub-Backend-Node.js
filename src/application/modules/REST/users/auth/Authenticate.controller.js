@@ -1,15 +1,14 @@
-var UserHelper = require('./helpers/User.helper.js');
-var UsersHelper = require('./helpers/Users.helper.js');
+import UserHelper from './helpers/User.helper.js'
+import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
 var OAuth2 = require('./OAuth2.controller.js');
 
-//import {UserHelper} from './helpers/user.helper.js'
-//import {Users} from './helpers/Users.model.js';
+
 //import {OAuth2} from './oauth2.controller.js';
 
-module.exports = {
+class AuthenticateController {
 
      /*
         REST API
@@ -58,7 +57,7 @@ module.exports = {
             });
 
 
-    },
+    }
 
 
     async postAuthenticateSession(req, res){
@@ -76,7 +75,7 @@ module.exports = {
                 user: authenticatedUser.getPublicInformation(authenticatedUser),
             };
 
-    },
+    }
 
 
     postAuthenticateRegister(req, res, OAuth){
@@ -130,7 +129,7 @@ module.exports = {
         console.log('Registering: ', sEmail);
 
         return UsersHelper.registerUser(sEmail, sUsername, password, sFirstName, sLastName, sCountry, sCity, sLanguage, sProfilePic, sCoverPic, dbLatitude, dbLongitude, sShortBio,  iAge, iTimeZone, sGender, bVerified);
-    },
+    }
 
 
     async postAuthenticateRegisterOAuth(req, res){
@@ -147,7 +146,7 @@ module.exports = {
         console.log('Registering with OAuth 2 token ',sSocialNetwork, sOAuth2Token, sSocialNetworkUserId, arrSocialNetworkData);
 
         return OAuth2.registerOAuth2(req, sSocialNetwork, sOAuth2Token, sSocialNetworkUserId, arrSocialNetworkData);
-    },
+    }
 
 
     async logout(req){
@@ -167,3 +166,5 @@ module.exports = {
 
 }
 
+
+export default new AuthenticateController()
