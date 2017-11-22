@@ -3,14 +3,14 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var TopObjectsList = require('DB/Redis/lists/sorted-lists/TopObjectsList.helper.js');
+import TopObjectsListHelper from 'DB/Redis/lists/sorted-lists/TopObjectsList.helper'
 import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 
 class TopReplies {
 
     //sortedList
     constructor(){
-        this.topObjectsList = new TopObjectsList("Replies");
+        this.topObjectsList = new TopObjectsListHelper("Replies");
     }
 
     getTopReplies(userAuthenticated, parent, pageIndex, pageCount){

@@ -27,7 +27,7 @@ let replyModelORM = redis.nohm.factory('ReplyModel');
 
 let NotificationsCreator = require ('REST/notifications/NotificationsCreator.js');
 let NotificationsSubscribersHashList = require ('REST/notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
-let AllPagesList = require ('REST/forums/content/all-pages/helpers/AllPages.list.js');
+import AllPagesList from 'REST/forums/content/all-pages/helpers/AllPages.list'
 
 class AdminHelper {
 
@@ -39,7 +39,7 @@ class AdminHelper {
             forumModelORM.find(async (err, ids) =>{
 
                 for (let i=0; i<ids.length; i++){
-                    //let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
+
                     let index = await ForumsHelper.findForumById(ids[i]);
 
                     await StatisticsHelper.keepElementSortedList(index.id, index.p('parents'));
@@ -53,7 +53,7 @@ class AdminHelper {
             userModelORM.find(async (err, ids) => {
 
                 for (let i = 0; i < ids.length; i++) {
-                    let UsersHelper = require ('REST/users/auth/helpers/Users.helper.js');
+
                     let index = await UsersHelper.findUserById(ids[i]);
                 }
 
@@ -65,7 +65,7 @@ class AdminHelper {
             topicModelORM.find(async (err, ids) => {
 
                 for (let i=0; i<ids.length; i++){
-                    //let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
+
                     let index = await TopicsHelper.findTopicById(ids[i]);
 
                     await StatisticsHelper.keepElementSortedList(index.id, index.p('parents'));
@@ -81,7 +81,6 @@ class AdminHelper {
 
                 for (let i=0; i<ids.length; i++){
 
-                    //let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
                     let index = await RepliesHelper.findReplyById(ids[i]);
 
                     await StatisticsHelper.keepElementSortedList(index.id, index.p('parents'));
@@ -104,7 +103,7 @@ class AdminHelper {
             forumModelORM.find(async  (err, ids) => {
 
                 for (let i=0; i<ids.length; i++){
-                    //let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
+
                     let forum = await ForumsHelper.findForumById(ids[i]);
 
                     if (forum !== null){
@@ -133,7 +132,7 @@ class AdminHelper {
             userModelORM.find(async (err, ids) => {
 
                 for (let i = 0; i < ids.length; i++) {
-                    //let UsersHelper = require ('REST/users/auth/helpers/Users.helper.js');
+
                     let user = await UsersHelper.findUserById(ids[i]);
 
                     if (user !== null){
@@ -164,7 +163,7 @@ class AdminHelper {
             topicModelORM.find(async (err, ids) => {
 
                 for (let i=0; i<ids.length; i++){
-                    //let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
+
                     let topic = await TopicsHelper.findTopicById(ids[i]);
 
                     if (topic !== null){
@@ -212,7 +211,7 @@ class AdminHelper {
 
                 for (let i=0; i<ids.length; i++){
 
-                    //let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
+
                     let reply = await RepliesHelper.findReplyById(ids[i]);
 
                     if (reply !== null){
@@ -261,7 +260,7 @@ class AdminHelper {
         await new Promise( (resolve) => {
             forumModelORM.find(async (err, ids) => {
 
-                //let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
+
 
                 //Deleting previous data
                 for (let i=0; i<ids.length; i++){
@@ -284,7 +283,7 @@ class AdminHelper {
         await new Promise( (resolve) => {
             topicModelORM.find(async (err, ids) => {
 
-                //let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
+
                 for (let i=0; i<ids.length; i++){
                     let topic = await TopicsHelper.findTopicById(ids[i]);
 
@@ -309,7 +308,7 @@ class AdminHelper {
         await new Promise( (resolve) => {
             forumModelORM.find(async (err, ids) => {
 
-                //let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
+
                 for (let i=0; i<ids.length; i++){
                     let forum = await ForumsHelper.findForumById(ids[i]);
 
@@ -324,7 +323,7 @@ class AdminHelper {
         await new Promise( (resolve) => {
             topicModelORM.find(async (err, ids) => {
 
-                //let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
+
                 for (let i=0; i<ids.length; i++){
                     let topic = await TopicsHelper.findTopicById(ids[i]);
 
@@ -342,7 +341,7 @@ class AdminHelper {
         await new Promise( (resolve) => {
             replyModelORM.find(async (err, ids) => {
 
-                //let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
+
                 for (let i=0; i<ids.length; i++){
                     let reply = await RepliesHelper.findReplyById(ids[i]);
 

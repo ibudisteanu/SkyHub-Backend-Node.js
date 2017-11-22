@@ -13,7 +13,7 @@
 
 import * as redis from 'DB/redis_nohm'
 
-var List = class{
+class List {
 
     constructor (tablePrefix){
         this.tablePrefix = tablePrefix || "List";
@@ -217,4 +217,4 @@ var List = class{
 
 };
 
-module.exports = List;
+export default List;

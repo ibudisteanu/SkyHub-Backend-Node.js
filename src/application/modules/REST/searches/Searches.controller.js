@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var SearchesHelper = require ('./helpers/Searches.helper.js');
+import SearchesHelper from 'REST/searches/helpers/Searches.helper'
 
 module.exports = {
 

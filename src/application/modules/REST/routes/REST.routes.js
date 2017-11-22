@@ -6,7 +6,10 @@ import MetaExtractorHelper from 'modules/utils/meta-extractor/helpers/MetaExtrac
 import SearchList from 'DB/Redis/lists/search/SearchList.helper'
 import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 
-import VotingsHashList from 'REST/voting/helpers/Votings.hashlist.js'
+import VotingsHashList from 'REST/voting/helpers/Votings.hashlist'
+import TopObjectsListHelper from 'DB/Redis/lists/sorted-lists/TopObjectsList.helper'
+import StatisticsCtrl from 'REST/statistics/Statistics.controller'
+import SearchesHelper from 'REST/searches/helpers/Searches.helper'
 
 let AuthenticateCtrl = require ('REST/users/auth/Authenticate.controller.js');
 let UsersCtrl = require ('REST/users/Users.controller.js');
@@ -37,8 +40,7 @@ let AllPagesCtrl = require ('REST/forums/content/all-pages/AllPages.controller.j
 let routesHTTP = {
 
     "test/TopContent": async (req, res, callback)  => {
-        let TopContentHelper = require ('DB/Redis/lists/sorted-lists/TopObjectsList.helper.js');
-        callback( {message: TopContentHelper.test() });
+        callback( {message: TopObjectsListHelper.test() });
     },
 
     "test/MaterializedParents": async  (req, res, callback) =>{
@@ -62,7 +64,7 @@ let routesHTTP = {
     },
 
     "test/search/Build-Search-List": async (req, res, callback) => {
-        let SearchesHelper = require ('../searches/helpers/Searches.helper.js');
+
         callback( {message: SearchesHelper.buildSearchTables() });
     },
 

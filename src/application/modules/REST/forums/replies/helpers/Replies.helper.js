@@ -7,10 +7,11 @@ import * as redis from 'DB/redis_nohm'
 import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
 import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
-let replyModel = require ('../models/Reply.model.js');
-import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist.js';
-import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
-let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
+let replyModel = require ('../models/Reply.model.js')
+import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist.js'
+import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper'
+import SearchesHelper from 'REST/searches/helpers/Searches.helper'
+
 let hat = require ('hat');
 import VotingsHashList from 'REST/voting/helpers/Votings.hashlist.js'
 let RepliesSorter = require('../models/RepliesSorter.js');
@@ -50,7 +51,7 @@ module.exports = {
             if ((typeof sId === 'undefined') || (sId === null) || (sId == []) )
                 resolve(null);
             else
-                var ReplyModel  = redis.nohm.factory('ReplyModel', sId, function (err, reply) {
+                var ReplyModel  = redis.nohm.factory('ReplyModel', sId, (err, reply) => {
                     if (err) resolve (null);
                     else resolve (ReplyModel);
                 });
@@ -68,7 +69,7 @@ module.exports = {
                 return null;
 
             let ReplyModel = redis.nohm.factory('ReplyModel');
-            ReplyModel.findAndLoad(  {URL: sURL }, function (err, replies) {
+            ReplyModel.findAndLoad(  {URL: sURL }, (err, replies) => {
                 if (replies.length) resolve(replies[0]);
                 else resolve (null);
             });
@@ -182,7 +183,7 @@ module.exports = {
 
                         } else {
 
-                            let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
+
                             SearchesHelper.addReplyToSearch(null, reply); //async, but not awaited
                         }
 

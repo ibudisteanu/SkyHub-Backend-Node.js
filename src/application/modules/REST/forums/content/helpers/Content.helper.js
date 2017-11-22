@@ -5,6 +5,7 @@
 
 import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 import VotingsHashList from 'REST/voting/helpers/Votings.hashlist.js'
+import SearchesHelper from 'REST/searches/helpers/Searches.helper'
 
 class ContentHelper {
 
@@ -90,7 +91,7 @@ class ContentHelper {
                 break;
         }
 
-        var SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
+
         //should delete the search data///
 
         await VotingsHashList.deleteVoting(id);

@@ -1,6 +1,6 @@
-let List = require ('DB/Redis/lists/List.helper.js');
+import List from 'DB/Redis/lists/List.helper'
 
-var AllPagesList = class {
+class AllPagesList{
 
     constructor (){
         this.list = new List("AllPages")
@@ -49,4 +49,4 @@ var AllPagesList = class {
 
 };
 
-module.exports = new AllPagesList();
+export default new AllPagesList();

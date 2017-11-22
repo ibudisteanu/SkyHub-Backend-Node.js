@@ -11,13 +11,14 @@ import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist';
 import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 
 import VotingsHashList from 'REST/voting/helpers/Votings.hashlist.js'
+import SearchesHelper from 'REST/searches/helpers/Searches.helper'
 let TopicsSorter = require('../models/TopicsSorter.js');
 let sanitizeHtml = require('sanitize-html');
 
 let NotificationsCreator = require ('../../../notifications/NotificationsCreator.js');
 let NotificationsSubscribersHashList = require ('./../../../notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
 
-let AllPagesList = require ('./../../content/all-pages/helpers/AllPages.list.js');
+import AllPagesList from 'REST/forums/content/all-pages/helpers/AllPages.list'
 
 module.exports = {
 
@@ -188,7 +189,7 @@ module.exports = {
 
                     await topic.keepParentsStatistics(+1);
 
-                    let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
+
                     SearchesHelper.addTopicToSearch(null, topic); //async, but not awaited
 
                     if ((arrAdditionalInfo.scraped||false) === true){ //it has been scrapped...

@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-let AllPagesList = require('./helpers/AllPages.list');
+import AllPagesList from 'REST/forums/content/all-pages/helpers/AllPages.list'
 
 module.exports = {
 

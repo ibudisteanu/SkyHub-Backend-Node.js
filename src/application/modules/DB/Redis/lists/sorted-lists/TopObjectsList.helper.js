@@ -110,6 +110,6 @@ class TopObjectsList {
 
     }
     
-};
+}
 
-module.exports = TopObjectsList;
+export default TopObjectsList;

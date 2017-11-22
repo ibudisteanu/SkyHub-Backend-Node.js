@@ -185,6 +185,6 @@ class Searches {
 
     }
 
-};
+}
 
-module.exports = new Searches();
+export default new Searches();

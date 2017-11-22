@@ -6,7 +6,7 @@
 import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 
 
-module.exports = {
+class StatisticsController {
 
     /*
      REST API
@@ -41,4 +41,6 @@ module.exports = {
     }
 
 
-};
+}
+
+export default new StatisticsController()

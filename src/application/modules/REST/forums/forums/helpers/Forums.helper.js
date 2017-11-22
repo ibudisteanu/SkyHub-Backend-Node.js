@@ -9,13 +9,13 @@ let forumModel = require ('../models/Forum.model.js');
 
 import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist.js';
 import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
-let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
+import SearchesHelper from 'REST/searches/helpers/Searches.helper'
 let ForumsSorter = require('../models/ForumsSorter.js');
 
 let NotificationsCreator = require ('../../../notifications/NotificationsCreator.js');
 let NotificationsSubscribersHashList = require ('./../../../notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
 
-let AllPagesList = require ('./../../content/all-pages/helpers/AllPages.list.js');
+import AllPagesList from 'REST/forums/content/all-pages/helpers/AllPages.list'
 
 module.exports = {
 
