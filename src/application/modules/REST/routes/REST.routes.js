@@ -4,6 +4,9 @@ import MetaExtractorCtrl from 'modules/utils/meta-extractor/MetaExtractor.contro
 import MetaExtractorHelper from 'modules/utils/meta-extractor/helpers/MetaExtractor.helper';
 
 import SearchList from 'DB/Redis/lists/search/SearchList.helper'
+import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
+
+import VotingsHashList from 'REST/voting/helpers/Votings.hashlist.js'
 
 let AuthenticateCtrl = require ('REST/users/auth/Authenticate.controller.js');
 let UsersCtrl = require ('REST/users/Users.controller.js');
@@ -39,7 +42,7 @@ let routesHTTP = {
     },
 
     "test/MaterializedParents": async  (req, res, callback) =>{
-        let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
+
         callback( {message: MaterializedParentsHelper.test() });
     },
 
@@ -68,7 +71,7 @@ let routesHTTP = {
     },
 
     "test/voting": async (req, res, callback) => {
-        let VotingsHashList = require ('../voting/helpers/Votings.hashlist.js');
+
         callback( {message: VotingsHashList.test() });
     },
 

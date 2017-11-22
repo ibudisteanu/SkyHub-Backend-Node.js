@@ -2,8 +2,8 @@
  * Created by BIT TECHNOLOGIES on 6/1/2017.
  */
 
-var SortedList = require ('./SortedList.helper.js');
-var MaterializedParents = require ('../../../common/materialized-parents/MaterializedParents.helper.js');
+import SortedList from 'DB/Redis/lists/sorted-lists/SortedList.helper'
+import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 
 class TopObjectsList {
 
@@ -16,7 +16,7 @@ class TopObjectsList {
 
         if (typeof iNumberOfMaximumResults === 'undefined') iNumberOfMaximumResults = 20;
 
-        var sParentId = await MaterializedParents.getObjectId(parent);
+        var sParentId = await MaterializedParentsHelper.getObjectId(parent);
 
 
         console.log('              top objects ','_'+parent+'_','_'+sParentId+'_');
@@ -40,7 +40,7 @@ class TopObjectsList {
 
                 let id = listTopContent[i];
 
-                let object = await MaterializedParents.findObject(id);
+                let object = await MaterializedParentsHelper.findObject(id);
 
                 //console.log('         findObject ',id,object);
 

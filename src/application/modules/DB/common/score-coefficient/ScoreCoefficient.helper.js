@@ -3,8 +3,8 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var redis = require ('../../redis_nohm.js');
-var VotingsHashList = require('REST/voting/helpers/Votings.hashlist.js');
+
+import VotingsHashList from 'REST/voting/helpers/Votings.hashlist.js'
 
 var ScoreCoefficient = class{
 

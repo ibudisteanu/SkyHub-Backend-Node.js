@@ -4,7 +4,7 @@
  */
 
 var TopObjectsList = require('DB/Redis/lists/sorted-lists/TopObjectsList.helper.js');
-var MaterializedParents = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
+import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 
 class TopReplies {
 
@@ -22,7 +22,7 @@ class TopReplies {
     }
 
     getReply(userAuthenticated, id){
-        return MaterializedParents.getObject(userAuthenticated, id);
+        return MaterializedParentsHelper.getObject(userAuthenticated, id);
     }
 
     keepSortedObject( key, score, parents, bDelete ){

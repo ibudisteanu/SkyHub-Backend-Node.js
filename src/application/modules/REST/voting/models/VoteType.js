@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-module.exports = {
+export default {
     VOTE_UP: 1,
     VOTE_DOWN: -1,
     VOTE_NONE: 0,

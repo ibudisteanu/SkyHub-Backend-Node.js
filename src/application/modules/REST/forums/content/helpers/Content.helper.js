@@ -3,8 +3,8 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
-var VotingsHashList = require ('../../../voting/helpers/Votings.hashlist.js');
+import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
+import VotingsHashList from 'REST/voting/helpers/Votings.hashlist.js'
 
 class ContentHelper {
 
@@ -109,4 +109,4 @@ class ContentHelper {
 
 }
 
-module.exports = new ContentHelper();
+export default new ContentHelper();

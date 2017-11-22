@@ -5,10 +5,10 @@
 
 let UniqueVisitorsHelper = require ('../visitors/helpers/UniqueVisitors.helper.js');
 import HashList from 'DB/Redis/lists/HashList.helper'
-let VoteType = require ('../../voting/models/VoteType.js');
+import VoteType from 'REST/voting/models/VoteType.js'
 
-let VotingInfoHashList = require ('../../voting/helpers/VotingInfo.hashlist.js');
-let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
+import VotingInfoHashList from 'REST/voting/helpers/VotingInfo.hashlist.js'
+import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 
 class StatisticsHelper{
 

@@ -1,6 +1,6 @@
 let NotificationsHelper = require ('./notifications/helpers/Notifications.helper.js');
 let NotificationsSubscribersHashList = require ('./subscribers/helpers/NotificationsSubscribers.hashlist.js');
-let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
+import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 
 class NotificationsCreator {
 

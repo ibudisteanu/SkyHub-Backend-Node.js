@@ -10,7 +10,7 @@ import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist.js';
 
 class MaterializedParents {
 
-    constructor (tablePrefix){
+    constructor (){
 
     }
 
@@ -307,4 +307,4 @@ class MaterializedParents {
 
 }
 
-export default new MaterializedParents;
+export default new MaterializedParents();

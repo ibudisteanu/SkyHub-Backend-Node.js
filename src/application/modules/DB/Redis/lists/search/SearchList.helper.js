@@ -8,10 +8,10 @@
                       http://patshaughnessy.net/2011/11/29/two-ways-of-using-redis-to-build-a-nosql-autocomplete-search-index
 
  */
-import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
+import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper'
+import SortedList from 'DB/Redis/lists/sorted-lists/SortedList.helper'
 
-var SortedList = require ('../sorted-lists/SortedList.helper.js');
-var AutoCompleteStringsHashList = require ('./AutoCompleteStringsHashList.helper.js');
+import AutoCompleteStringsHashList from 'DB/Redis/lists/search/AutoCompleteStringsHashList.helper'
 
 class SearchList {
 
@@ -49,7 +49,7 @@ class SearchList {
         if (parent === null) return false;
 
         let autoCompleteHashIndex = await AutoCompleteStringsHashList.addAutoCompleteString(phrase, parent );
-        // let type = MaterializedParents.extractObjectTypeFromId(parent);
+        // let type = MaterializedParentsHelper.extractObjectTypeFromId(parent);
         // let autoCompleteHashIndex = parent;
 
         phrase = phrase.toLowerCase();

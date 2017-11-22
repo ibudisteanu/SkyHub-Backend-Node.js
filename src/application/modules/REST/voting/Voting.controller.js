@@ -3,8 +3,8 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var VotingsHashList = require('./helpers/Votings.hashlist.js');
-var VoteType = require ('./models/VoteType.js');
+import VotingsHashList from 'REST/voting/helpers/Votings.hashlist.js'
+import VoteType from 'REST/voting/models/VoteType.js'
 
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 

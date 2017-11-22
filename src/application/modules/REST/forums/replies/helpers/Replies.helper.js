@@ -9,10 +9,10 @@ import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
 let replyModel = require ('../models/Reply.model.js');
 import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist.js';
-let MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
+import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
 let hat = require ('hat');
-let VotingsHashList = require ('../../../voting/helpers/Votings.hashlist.js');
+import VotingsHashList from 'REST/voting/helpers/Votings.hashlist.js'
 let RepliesSorter = require('../models/RepliesSorter.js');
 
 

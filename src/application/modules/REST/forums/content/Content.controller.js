@@ -7,10 +7,10 @@
  * Created by ERAZER-ALEX on 6/4/2017.
  */
 
-var ContentHelper = require('./helpers/Content.helper.js');
+import ContentHelper from './helpers/Content.helper.js'
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist';
-var MaterializedParentsHelper = require ('DB/common/materialized-parents/MaterializedParents.helper.js');
+import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 
 module.exports = {
 

@@ -6,7 +6,7 @@
 
 import HashList from 'DB/Redis/lists/HashList.helper'
 
-let VoteType = require ('../models/VoteType.js');
+import VoteType from 'REST/voting/models/VoteType.js'
 
 class VotingInfoHashList {
 
@@ -98,4 +98,4 @@ class VotingInfoHashList {
 };
 
 
-module.exports = new VotingInfoHashList();
+export default new VotingInfoHashList();

@@ -9,7 +9,7 @@
  */
 
 import HashList from 'DB/Redis/lists/HashList.helper'
-var MaterializedParents = require ('../../../common/materialized-parents/MaterializedParents.helper.js');
+import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 
 var hat = require('hat');
 
@@ -22,7 +22,7 @@ class AutoCompleteStringsHashList {
 
     async addAutoCompleteString(phrase, parent){
 
-        let type = MaterializedParents.extractObjectTypeFromId(parent);
+        let type = MaterializedParentsHelper.extractObjectTypeFromId(parent);
 
         await this.hashList.setHash(type, parent, phrase);
 
@@ -54,6 +54,6 @@ class AutoCompleteStringsHashList {
         return arrResult;
     }
 
-};
+}
 
-module.exports = new AutoCompleteStringsHashList();
+export default new AutoCompleteStringsHashList();

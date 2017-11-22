@@ -9,9 +9,9 @@
 
 import * as redis from 'DB/redis_nohm'
 
-var MaterializedParentsHelper = require ('../../../common/materialized-parents/MaterializedParents.helper.js');
+import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 
-var SortedList = class{
+class SortedList {
 
     constructor (tablePrefix, trimMaxCount){
         this.tablePrefix = tablePrefix || "ZLIST";
@@ -282,7 +282,6 @@ var SortedList = class{
         return true;
     }
 
+}
 
-};
-
-module.exports = SortedList;
+export default SortedList;
