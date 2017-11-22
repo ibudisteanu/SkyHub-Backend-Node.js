@@ -25,8 +25,8 @@ let userModelORM = redis.nohm.factory('UserModel');
 let topicModelORM = redis.nohm.factory('TopicModel');
 let replyModelORM = redis.nohm.factory('ReplyModel');
 
-let NotificationsCreator = require ('REST/notifications/NotificationsCreator.js');
-let NotificationsSubscribersHashList = require ('REST/notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
+import NotificationsCreator from 'REST/notifications/NotificationsCreator'
+import NotificationsSubscribersHashList from 'REST/notifications/subscribers/helpers/NotificationsSubscribers.hashlist'
 import AllPagesList from 'REST/forums/content/all-pages/helpers/AllPages.list'
 
 class AdminHelper {

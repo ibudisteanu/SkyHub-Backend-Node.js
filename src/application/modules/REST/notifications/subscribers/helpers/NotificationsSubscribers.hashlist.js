@@ -5,7 +5,7 @@
 
 
 import HashList from 'DB/Redis/lists/HashList.helper'
-var NotificationSubscriberType = require ('../models/NotificationSubscriberType.js');
+import NotificationSubscriberType from 'REST/notifications/subscribers/models/NotificationSubscriberType.js'
 
 class NotificationsSubscribersList {
 
@@ -77,4 +77,4 @@ class NotificationsSubscribersList {
 
 }
 
-module.exports = new NotificationsSubscribersList();
+export default new NotificationsSubscribersList();

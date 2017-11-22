@@ -4,7 +4,7 @@
  */
 
 
-var NotificationsHelper = require('./helpers/Notifications.helper.js');
+import NotificationsHelper from 'REST/notifications/notifications/helpers/Notifications.helper'
 
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 

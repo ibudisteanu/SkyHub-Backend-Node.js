@@ -10,7 +10,7 @@ import VotingsHashList from 'REST/voting/helpers/Votings.hashlist'
 import TopObjectsListHelper from 'DB/Redis/lists/sorted-lists/TopObjectsList.helper'
 import StatisticsCtrl from 'REST/statistics/Statistics.controller'
 import SearchesHelper from 'REST/searches/helpers/Searches.helper'
-
+import NotificationsHelper from 'REST/notifications/notifications/helpers/Notifications.helper'
 let AuthenticateCtrl = require ('REST/users/auth/Authenticate.controller.js');
 let UsersCtrl = require ('REST/users/Users.controller.js');
 let FunctionsCtrl = require ('REST/common/functions/functions.controller.js');
@@ -78,7 +78,7 @@ let routesHTTP = {
     },
 
     "test/notifications": async (req, res, callback) => {
-        let NotificationsHelper = require ('../notifications/notifications/helpers/Notifications.helper.js');
+
         callback( {message: NotificationsHelper.test() });
     },
 

@@ -1,5 +1,5 @@
-let NotificationsHelper = require ('./notifications/helpers/Notifications.helper.js');
-let NotificationsSubscribersHashList = require ('./subscribers/helpers/NotificationsSubscribers.hashlist.js');
+import NotificationsHelper from 'REST/notifications/notifications/helpers/Notifications.helper'
+import NotificationsSubscribersHashList from 'REST/notifications/subscribers/helpers/NotificationsSubscribers.hashlist'
 import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 
 class NotificationsCreator {
@@ -64,4 +64,4 @@ class NotificationsCreator {
 };
 
 
-module.exports = new NotificationsCreator();
+export default new NotificationsCreator();

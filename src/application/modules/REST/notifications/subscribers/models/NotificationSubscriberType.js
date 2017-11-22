@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-module.exports = {
+export default {
     NOTIFICATIONS_SUBSCRIBED: 1,
     NOTIFICATIONS_UNSUBSCRIBED: 5,
 };

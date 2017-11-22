@@ -7,9 +7,9 @@
 import HashList from 'DB/Redis/lists/HashList.helper'
 import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
-import VoteType from 'REST/voting/models/VoteType.js'
-import VotingInfoHashList from 'REST/voting/helpers/VotingInfo.hashlist.js'
-let NotificationsCreator = require ('../../notifications/NotificationsCreator.js');
+import VoteType from 'REST/voting/models/VoteType'
+import VotingInfoHashList from 'REST/voting/helpers/VotingInfo.hashlist'
+import NotificationsCreator from 'REST/notifications/NotificationsCreator'
 
 class VotingsHashList {
 

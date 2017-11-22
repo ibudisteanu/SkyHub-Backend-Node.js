@@ -17,8 +17,8 @@ import VotingsHashList from 'REST/voting/helpers/Votings.hashlist.js'
 let RepliesSorter = require('../models/RepliesSorter.js');
 
 
-let NotificationsCreator = require ('../../../notifications/NotificationsCreator.js');
-let NotificationsSubscribersHashList = require ('./../../../notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
+import NotificationsCreator from 'REST/notifications/NotificationsCreator'
+import NotificationsSubscribersHashList from 'REST/notifications/subscribers/helpers/NotificationsSubscribers.hashlist'
 
 module.exports = {
 

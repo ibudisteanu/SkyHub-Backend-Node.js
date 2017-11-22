@@ -239,4 +239,4 @@ class NotificationsListHelper {
 
 }
 
-module.exports = new NotificationsListHelper();
+export default new NotificationsListHelper();

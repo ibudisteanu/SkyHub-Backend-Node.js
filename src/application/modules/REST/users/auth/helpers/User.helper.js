@@ -8,7 +8,7 @@ var Users =  require ('./Users.helper.js');
 var nohmValidation = require ('DB/Redis/nohm/nohm.validation.js');
 import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
-module.exports = {
+class UserHelper {
     /*
      HELPER FUNCTIONS
      */
@@ -69,13 +69,13 @@ module.exports = {
             });
 
         });
-    },
+    }
 
     async createAuthSession (user)
     {
         var SessionHashHelper = require('../sessions/helpers/SessionHash.helper.js');
         return await SessionHashHelper.createSession(user);
-    },
+    }
 
 
     getUserToken (user){
@@ -88,6 +88,8 @@ module.exports = {
         console.log('token = '+token);
 
         return token;
-    },
+    }
 
 }
+
+export default UserHelper

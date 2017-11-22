@@ -15,8 +15,8 @@ import SearchesHelper from 'REST/searches/helpers/Searches.helper'
 let TopicsSorter = require('../models/TopicsSorter.js');
 let sanitizeHtml = require('sanitize-html');
 
-let NotificationsCreator = require ('../../../notifications/NotificationsCreator.js');
-let NotificationsSubscribersHashList = require ('./../../../notifications/subscribers/helpers/NotificationsSubscribers.hashlist.js');
+import NotificationsCreator from 'REST/notifications/NotificationsCreator'
+import NotificationsSubscribersHashList from 'REST/notifications/subscribers/helpers/NotificationsSubscribers.hashlist'
 
 import AllPagesList from 'REST/forums/content/all-pages/helpers/AllPages.list'
 
