@@ -81,7 +81,7 @@ class AuthenticateController {
 
     postAuthenticateRegister(req, res, OAuth){
 
-        let sEmail = '', sUsername = '', password = {type: "string", value: ""}, sFirstName = '', sLastName = '', sLastName='', sCountry='', sCity='',sLanguage='', sProfilePic='', sCoverPic='';
+        let sEmail = '', sUsername = '', password = {type: "string", value: ""}, sFirstName = '', sLastName = '',  sCountry='', sCity='',sLanguage='', sProfilePic='', sCoverPic='';
         let dbLatitude = 0, dbLongitude = 0, iAge = 0, iTimeZone = 0, sGender = 0, bVerified = false;  let sShortBio = '';
 
         if (req.hasOwnProperty('body')){
