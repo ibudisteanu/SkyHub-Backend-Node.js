@@ -96,6 +96,6 @@ class SessionsHashList {
         return userId;
     }
 
-};
+}
 
-module.exports = new SessionsHashList();
+export default new SessionsHashList();

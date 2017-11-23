@@ -90,6 +90,6 @@ class HashList {
     }
 
 
-};
+}
 
 export default HashList;

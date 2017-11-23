@@ -4,7 +4,7 @@
  */
 
 import HashList from 'DB/Redis/lists/HashList.helper'
-var SessionsHashList = require ('./SessionsHashList.helper.js');
+import SessionsHashList from 'REST/users/auth/sessions/helpers/SessionsHashList.helper';
 
 var hat = require('hat');
 
