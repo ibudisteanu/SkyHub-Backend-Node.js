@@ -4,9 +4,8 @@
  */
 import constants from 'bin/constants';
 
-var SessionHash = require ('../sessions/helpers/SessionHash.helper.js');
+import SessionHashHelper from 'REST/users/auth/sessions/helpers/SessionHash.helper'
 import UsersHelper from 'REST/users/auth/helpers/Users.helper'
-let HashListHelper = require('../sessions/helpers/SessionHash.helper.js');
 
 class AuthenticatedUser {
 
@@ -44,7 +43,7 @@ class AuthenticatedUser {
         //userId = userAuthenticatedData.id
 
 
-        let userAuthenticatedId = await HashListHelper.checkSession(sSessionId);
+        let userAuthenticatedId = await SessionHashHelper.checkSession(sSessionId);
 
         if ((userAuthenticatedId === null)||(userAuthenticatedId==='')) {
             console.log("Error. Invalid Session Id");

@@ -2,6 +2,7 @@ import UserHelper from './helpers/User.helper.js'
 import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
+import SessionHashHelper from 'REST/users/auth/sessions/helpers/SessionHash.helper'
 
 var OAuth2 = require('./OAuth2.controller.js');
 
@@ -16,7 +17,7 @@ class AuthenticateController {
 
     async postAuthenticateLogin (req, res){
 
-        var sEmailUsername = '', sUserPassword = '';
+        let sEmailUsername = '', sUserPassword = '';
 
         if (req.hasOwnProperty('body')){
 
@@ -80,8 +81,8 @@ class AuthenticateController {
 
     postAuthenticateRegister(req, res, OAuth){
 
-        var sEmail = '', sUsername = '', password = {type: "string", value: ""}, sFirstName = '', sLastName = '', sLastName='', sCountry='', sCity='',sLanguage='', sProfilePic='', sCoverPic='';
-        var dbLatitude = 0, dbLongitude = 0, iAge = 0, iTimeZone = 0, sGender = 0, bVerified = false;  var sShortBio = '';
+        let sEmail = '', sUsername = '', password = {type: "string", value: ""}, sFirstName = '', sLastName = '', sLastName='', sCountry='', sCity='',sLanguage='', sProfilePic='', sCoverPic='';
+        let dbLatitude = 0, dbLongitude = 0, iAge = 0, iTimeZone = 0, sGender = 0, bVerified = false;  let sShortBio = '';
 
         if (req.hasOwnProperty('body')){
             sEmail = req.body.email || '';
@@ -134,7 +135,7 @@ class AuthenticateController {
 
     async postAuthenticateRegisterOAuth(req, res){
 
-        var sSocialNetwork='', sOAuth2Token = '', sSocialNetworkUserId = '', arrSocialNetworkData = [];
+        let sSocialNetwork='', sOAuth2Token = '', sSocialNetworkUserId = '', arrSocialNetworkData = [];
 
         if (req.hasOwnProperty('body')){
             sSocialNetwork = req.body.socialNetwork || '';
@@ -153,7 +154,7 @@ class AuthenticateController {
 
         if (req.userAuthenticated !== null){
             let sSessionId = AuthenticatingUser.getSessionId(req);
-            var SessionHashHelper = require ('./sessions/helpers/SessionHash.helper');
+
             let result = await SessionHashHelper.deleteSession(sSessionId, req.userAuthenticated);
 
             if (result === true)

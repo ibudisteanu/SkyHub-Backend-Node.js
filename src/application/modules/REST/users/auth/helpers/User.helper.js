@@ -7,6 +7,7 @@ import constants from 'bin/constants';
 import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 var nohmValidation = require ('DB/Redis/nohm/nohm.validation.js');
 import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
+import SessionHashHelper from 'REST/users/auth/sessions/helpers/SessionHash.helper'
 
 class UserHelper {
     /*
@@ -71,9 +72,7 @@ class UserHelper {
         });
     }
 
-    async createAuthSession (user)
-    {
-        var SessionHashHelper = require('../sessions/helpers/SessionHash.helper.js');
+    async createAuthSession (user) {
         return await SessionHashHelper.createSession(user);
     }
 

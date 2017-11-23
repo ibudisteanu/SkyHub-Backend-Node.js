@@ -46,7 +46,7 @@ class SessionHash {
 
         if (userId === '') return false;
 
-        let realUserSession = await this.hashList.checkSession('', sessionId);
+        let realUserSession = await this.checkSession(sessionId);
 
         if (realUserSession !== userId){
 
@@ -106,4 +106,4 @@ class SessionHash {
 
 };
 
-module.exports = new SessionHash();
+export default SessionHash();

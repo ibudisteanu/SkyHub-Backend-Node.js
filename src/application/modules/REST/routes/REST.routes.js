@@ -12,6 +12,8 @@ import StatisticsCtrl from 'REST/statistics/Statistics.controller'
 import SearchesHelper from 'REST/searches/helpers/Searches.helper'
 import NotificationsHelper from 'REST/notifications/notifications/helpers/Notifications.helper'
 import AuthenticateCtrl from 'REST/users/auth/Authenticate.controller'
+import SessionHashHelper from 'REST/users/auth/sessions/helpers/SessionHash.helper'
+
 let UsersCtrl = require ('REST/users/Users.controller.js');
 let FunctionsCtrl = require ('REST/common/functions/functions.controller.js');
 
@@ -53,8 +55,8 @@ let routesHTTP = {
     },
 
     "test/Session": async (req, res, callback)  => {
-        let SessionHash = require ('../users/auth/sessions/helpers/SessionHash.helper.js');
-        callback( {message: SessionHash.test() });
+
+        callback( {message: SessionHashHelper.test() });
     },
 
     "test/SearchList": async (req, res, callback) => {

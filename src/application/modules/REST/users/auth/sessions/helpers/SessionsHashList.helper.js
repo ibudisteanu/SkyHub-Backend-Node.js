@@ -4,6 +4,7 @@
  */
 
 import HashList from 'DB/Redis/lists/HashList.helper'
+import SessionHashHelper from 'REST/users/auth/sessions/helpers/SessionHash.helper'
 
 var hat = require('hat');
 
@@ -68,13 +69,11 @@ class SessionsHashList {
 
         if (userId === '') return false;
 
-        let SessionHash = require ('./SessionHash.helper.js');
-
         let CurrentSessionsList = await this.getSessions(userId);
 
         for (let i=CurrentSessionsList.length-1; i>=0; i--)
         {
-            SessionHash.deleteSession(CurrentSessionsList[i], userAuthenticated);
+            SessionHashHelper.deleteSession(CurrentSessionsList[i], userAuthenticated);
         }
 
         return this.hashList.deleteHash('',userId);
