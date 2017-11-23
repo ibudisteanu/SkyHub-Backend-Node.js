@@ -106,4 +106,4 @@ class SessionHash {
 
 };
 
-export default SessionHash();
+export default new SessionHash();
