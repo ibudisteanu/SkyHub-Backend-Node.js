@@ -5,7 +5,9 @@
 
 var ScoreCoefficientHelper = require ('DB/common/score-coefficient/ScoreCoefficient.helper.js');
 import HashList from 'DB/Redis/lists/HashList.helper';
+import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper'
 var TopRepliesHelper = require ('../../top-content/helpers/TopReplies.helper.js');
+
 
 var RepliesSorter = class{
 
@@ -22,8 +24,6 @@ var RepliesSorter = class{
     }
 
     async calculateHotnessVotingScore (id){
-
-        let StatisticsHelper = require('REST/statistics/helpers/Statistics.helper.js');
 
         let replies = await StatisticsHelper.getTotalRepliesCounter(id);
         let voteDiff = await StatisticsHelper.getVoteUpsCounter(id) - await StatisticsHelper.getVoteDownsCounter(id);
