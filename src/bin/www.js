@@ -37,7 +37,6 @@ app.set('port', port);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -103,9 +102,13 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-server.listen(port, function(){
-  console.log('listening on *:'+port);
-});
+try {
+    server.listen(port, () => {
+        console.log('listening on *:' + port);
+    });
+} catch (exception){
+    console.error("Error listening the server on port", port, exception)
+}
 
 /*
     SOCKET IO SERVER

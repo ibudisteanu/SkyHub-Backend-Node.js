@@ -4,6 +4,3 @@ if((typeof window !== 'undefined' && !window._babelPolyfill) ||
 }
 
 let app = require('./bin/www.js');
-
-import TestingSanitizeAdvanced from 'REST/common/helpers/TestingSanitizeAdvanced'
-TestingSanitizeAdvanced._test1();

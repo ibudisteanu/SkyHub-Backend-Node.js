@@ -3,7 +3,7 @@
  */
 
 let DB_REDIS_CURRENT_DB_SKYHUB = 15;
-let DB_REDIS_CURRENT_DB_AGGREGATOR = 10;
+let DB_REDIS_CURRENT_DB_AGGREGATOR = 6;
 
 module.exports =
     {
