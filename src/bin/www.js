@@ -7,7 +7,7 @@
 
 
 import constants from 'bin/constants';
-import {serverSocket, createSocketServer} from '../application/modules/socketServer/socketServer.controller.js';
+import {serverSocket, createSocketServer} from '../application/modules/Server-Socket/Server-Socket.js';
 
 import app from '../app';
 
