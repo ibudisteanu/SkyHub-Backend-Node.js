@@ -6,9 +6,9 @@ const express = require('express');
 
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
-import * as routesGeneral from './others/general.routes.js';
-import * as routesREST from 'REST/routes/REST.routes.js';
-import * as routesAdmin from 'Admin/routes/Admin.router.js';
+import routesGeneral from './others/general.routes.js';
+import routesREST from 'REST/routes/REST.routes.js';
+import routesAdmin from 'Admin/routes/Admin.router.js';
 import routesUpload from 'file-uploads/routes/file-uploads.routes.js';
 
 /**

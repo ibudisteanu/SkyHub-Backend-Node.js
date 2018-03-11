@@ -318,7 +318,7 @@ let routesCommon = {
 };
 
 
-export {
+export default {
     routesCommon,
     routesHTTP,
     routesSocket
