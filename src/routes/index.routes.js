@@ -17,9 +17,9 @@ import routesUpload from 'file-uploads/routes/file-uploads.routes.js';
  */
 function initializeRoutesExpressServer (app) {
 
-    initializeRoutesExpress(app, routesGeneral, '/');
-    initializeRoutesExpress(app, routesREST, '/api');
-    initializeRoutesExpress(app, routesAdmin, '/api/admin');
+    _initializeRoutesExpress(app, routesGeneral, '/');
+    _initializeRoutesExpress(app, routesREST, '/api');
+    _initializeRoutesExpress(app, routesAdmin, '/api/admin');
 
     //file uploads
     app.use('/upload', routesUpload);
@@ -31,9 +31,9 @@ function initializeRoutesExpressServer (app) {
  */
 function initializeRoutesServerSocket(socket){
 
-    initializeRoutesSocket(socket, routesGeneral, '/');
-    initializeRoutesSocket(socket, routesREST, '/api');
-    initializeRoutesSocket(socket, routesAdmin, '/api/admin');
+    _initializeRoutesExpress(socket, routesGeneral, '/');
+    _initializeRoutesExpress(socket, routesREST, '/api');
+    _initializeRoutesExpress(socket, routesAdmin, '/api/admin');
 //    data.body = data;
 
 }
@@ -43,7 +43,7 @@ function initializeRoutesServerSocket(socket){
  * @param router
  * @param routerList
  */
-async function initializeRoutesExpressWithList(router, routesList){
+async function _initializeRoutesExpressWithList(router, routesList){
 
     for (let routeItem in routesList){
 
@@ -83,25 +83,25 @@ async function initializeRoutesExpressWithList(router, routesList){
  * @param routerData
  * @param prefix
  */
-function initializeRoutesExpress (app, routerData, prefix) {
+function _initializeRoutesExpress (app, routerData, prefix) {
 
     const router = express.Router();
 
     if (typeof routerData.routesHTTP !== 'undefined')
-        initializeRoutesExpressWithList(router, routerData.routesHTTP);
+        _initializeRoutesExpressWithList(router, routerData.routesHTTP);
 
     if (typeof routerData.routesCommon !== 'undefined')
-        initializeRoutesExpressWithList(router, routerData.routesCommon);
+        _initializeRoutesExpressWithList(router, routerData.routesCommon);
 
     app.use(prefix, router);
 
 }
 
 
-function initializeRoutesSocketWithList(socket, routesList, prefix) {
+function _initializeRoutesExpressWithList(socket, routesList, prefix) {
 
-    prefix = lTrimSlash(prefix);
-    prefix = rTrimSlash(prefix);
+    prefix = _lTrimSlash(prefix);
+    prefix = _rTrimSlash(prefix);
 
     for (let routeItem in routesList) {
 
@@ -110,7 +110,7 @@ function initializeRoutesSocketWithList(socket, routesList, prefix) {
 
         if (typeof routeName === "string" && routeName !== '' && typeof routeFunction === "function") {
 
-            let finalRoute = prefix+'/'+lTrimSlash(routeName);
+            let finalRoute = prefix+'/'+_lTrimSlash(routeName);
 
             socket.on(finalRoute, async (data)=>{
 
@@ -126,8 +126,8 @@ function initializeRoutesSocketWithList(socket, routesList, prefix) {
                     if (typeof suffix === 'undefined')
                         socket.emit(finalRoute, answer );
                     else {
-                        //console.log('############################ finalRoute',finalRoute+ '/'+lTrimSlash(suffix), answer)
-                        socket.emit(finalRoute+ '/'+lTrimSlash(suffix), answer)
+                        //console.log('############################ finalRoute',finalRoute+ '/'+_lTrimSlash(suffix), answer)
+                        socket.emit(finalRoute+ '/'+_lTrimSlash(suffix), answer)
                     }
 
                 })
@@ -139,50 +139,26 @@ function initializeRoutesSocketWithList(socket, routesList, prefix) {
     }
 }
 
-function initializeRoutesSocket (socket, routerData, prefix) {
+function _initializeRoutesExpress (socket, routerData, prefix) {
 
     if (typeof routerData.routesSocket !== 'undefined')
-        initializeRoutesSocketWithList(socket, routerData.routesHTTP, prefix);
+        _initializeRoutesExpressWithList(socket, routerData.routesHTTP, prefix);
 
     if (typeof routerData.routesCommon !== 'undefined')
-        initializeRoutesSocketWithList(socket, routerData.routesCommon, prefix);
+        _initializeRoutesExpressWithList(socket, routerData.routesCommon, prefix);
 
 }
 
 
 
 
-
-//OBSOLETE not used
-function getExpressRoutes (router, routePrefix) {
-
-    if (typeof routePrefix === 'undefined')  routePrefix = 'api';
-
-    let arrResult = [];
-
-    router.stack.forEach(function(r){
-        if (r.route && r.route.path){
-
-            let sRoute = routePrefix+r.route.path;
-
-            if (sRoute[1] === '/')sRoute.substring(1);
-
-            arrResult.push(sRoute);
-            console.log(sRoute)
-
-        }
-    });
-
-    return arrResult;
-};
-
-function rTrimSlash(str) {
+function _rTrimSlash(str) {
     if(str[str.length-1] === '/')
         return str.substr(0, str.length - 1);
     return str;
 }
 
-function lTrimSlash(str) {
+function _lTrimSlash(str) {
     if(str[0] === '/')
         return str.substr(1);
     return str;
@@ -190,5 +166,5 @@ function lTrimSlash(str) {
 
 export {
     initializeRoutesExpressServer,
-   initializeRoutesServerSocket
+    initializeRoutesServerSocket
 }

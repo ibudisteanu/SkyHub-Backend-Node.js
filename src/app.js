@@ -5,6 +5,12 @@ const logger = require('morgan');
 let cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
+if ( !process.env.BROWSER ) {
+    require('console-warn');
+    require('console-info');
+    require('console-error');
+}
+
 import {initializeRoutesExpressServer} from './routes/index.routes';
 import constants from 'bin/constants';
 
@@ -31,7 +37,7 @@ app.use(cookieParser());
 
 
 //the first parameter is used for a prefix...
-app.use("/",express.static(path.join(__dirname, (__dirname.indexOf("/build/dist")>0 ? '../../' : '')+'public')));
+app.use("/",express.static(path.join(__dirname, (__dirname.indexOf("/build/dist_bundle")>0 ? '../../' : '')+'public')));
 // app.use(express.static(path.join(__dirname, 'public')));
 // in case it doesn't work
  //app.use("/public", express.static(__dirname + '/public'));
