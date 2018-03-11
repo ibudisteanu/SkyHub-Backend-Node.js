@@ -15,10 +15,10 @@ import TopicsHelper from 'REST/forums/topics/helpers/Topics.helper';
 import RepliesHelper from 'REST/forums/replies/helpers/Replies.helper';
 import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 
-let forumModel = require ('REST/forums/forums/models/Forum.model.js');
-let userModel = require ('REST/users/auth/models/User.model.js');
-let replyModel = require ('REST/forums/replies/models/Reply.model.js');
-let topicModel = require ('REST/forums/topics/models/Topic.model.js');
+import forumModel from 'REST/forums/forums/models/Forum.model'
+import userModel from 'REST/users/auth/models/User.model'
+import replyModel from 'REST/forums/replies/models/Reply.model'
+import topicModel from 'REST/forums/topics/models/Topic.model'
 
 let forumModelORM = redis.nohm.factory('ForumModel');
 let userModelORM = redis.nohm.factory('UserModel');

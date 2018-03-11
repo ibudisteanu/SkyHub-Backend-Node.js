@@ -3,7 +3,6 @@
  * (C) BIT TECHNOLOGIES
  */
 
-
 import redis from 'DB/redis_nohm'
 
 import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist.js';

@@ -8,10 +8,10 @@ import redis from 'DB/redis_nohm'
 import SearchList from 'DB/Redis/lists/search/SearchList.helper'
 
 
-let forumModel = require ('REST/forums/forums/models/Forum.model');
-let userModel = require ('REST/users/auth/models/User.model');
-let replyModel = require ('REST/forums/replies/models/Reply.model');
-let topicModel = require ('REST/forums/topics/models/Topic.model');
+import forumModel from 'REST/forums/forums/models/Forum.model';
+import userModel from 'REST/users/auth/models/User.model';
+import treplyModel from 'REST/forums/replies/models/Reply.model';
+import topicModel from 'REST/forums/topics/models/Topic.model';
 
 import ForumsHelper from 'REST/forums/forums/helpers/Forums.helper';
 import TopicsHelper from 'REST/forums/topics/helpers/Topics.helper';
