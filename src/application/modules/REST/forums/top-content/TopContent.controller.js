@@ -35,9 +35,7 @@ export default {
         let sId = '';
 
         if (req.hasOwnProperty('body')){
-
             sId = req.body.id ||'';
-
         }
 
         console.log(""); console.log(""); console.log(""); console.log("");

@@ -219,9 +219,7 @@ let routesCommon = {
     },
 
     "content/get-content": async (req, res, callback) => {
-
         callback(await TopContentCtrl.postGetContent(req, res));
-
     },
 
     //          CONTENT
@@ -298,7 +296,6 @@ let routesCommon = {
     },
 
     "notifications/reset-notification-unread-counter": async (req, res, callback) => {
-
 
         callback(await NotificationsCtrl.postResetNotificationUnreadCounter(req, res))
     },

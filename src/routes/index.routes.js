@@ -31,9 +31,9 @@ function initializeRoutesExpressServer (app) {
  */
 function initializeRoutesServerSocket(socket){
 
-    _initializeRoutesExpress(socket, routesGeneral, '/');
-    _initializeRoutesExpress(socket, routesREST, '/api');
-    _initializeRoutesExpress(socket, routesAdmin, '/api/admin');
+    _initializeRoutesSocket(socket, routesGeneral, '/');
+    _initializeRoutesSocket(socket, routesREST, '/api');
+    _initializeRoutesSocket(socket, routesAdmin, '/api/admin');
 //    data.body = data;
 
 }
@@ -54,7 +54,7 @@ async function _initializeRoutesExpressWithList(router, routesList){
 
             if (routeName[0] !== '/') routeName = '/'+routeName;
 
-            //console.log(routeName, typeof routeFunction);
+            console.log(routeName, typeof routeFunction);
 
             router.get(routeName, async (req, res, next) => {
 
@@ -98,7 +98,7 @@ function _initializeRoutesExpress (app, routerData, prefix) {
 }
 
 
-function _initializeRoutesExpressWithList(socket, routesList, prefix) {
+function _initializeRoutesSocketWithList(socket, routesList, prefix) {
 
     prefix = _lTrimSlash(prefix);
     prefix = _rTrimSlash(prefix);
@@ -139,13 +139,13 @@ function _initializeRoutesExpressWithList(socket, routesList, prefix) {
     }
 }
 
-function _initializeRoutesExpress (socket, routerData, prefix) {
+function _initializeRoutesSocket (socket, routerData, prefix) {
 
     if (typeof routerData.routesSocket !== 'undefined')
-        _initializeRoutesExpressWithList(socket, routerData.routesHTTP, prefix);
+        _initializeRoutesSocketWithList(socket, routerData.routesHTTP, prefix);
 
     if (typeof routerData.routesCommon !== 'undefined')
-        _initializeRoutesExpressWithList(socket, routerData.routesCommon, prefix);
+        _initializeRoutesSocketWithList(socket, routerData.routesCommon, prefix);
 
 }
 
