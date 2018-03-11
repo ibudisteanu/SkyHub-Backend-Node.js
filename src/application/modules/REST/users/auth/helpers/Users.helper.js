@@ -1,8 +1,8 @@
-import * as redis from 'DB/redis_nohm'
+import redis from 'DB/redis_nohm'
 var nohmValidation = require ('DB/Redis/nohm/nohm.validation.js');
 
 var userModel = require ('../models/User.model.js');
-var UserProperties = require ('../models/User.properties.js');
+import UserProperties from '../models/User.properties';
 
 class UsersHelper {
 

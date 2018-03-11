@@ -3,11 +3,10 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var TopicsHelper = require('./helpers/Topics.helper.js');
-
+import TopicsHelper from './helpers/Topics.helper'
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
-module.exports = {
+export default {
 
     /*
      REST API

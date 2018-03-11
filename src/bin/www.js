@@ -9,19 +9,17 @@
 import constants from 'bin/constants';
 import {serverSocket, createSocketServer} from '../application/modules/socketServer/socketServer.controller.js';
 
-var app = require('../app');
+import app from '../app';
+
 var debug = require('debug')('express:server');
 var http = require('http');
 
-//FOR TESTING ONLY
-//var redis = require('DB/redis_test.js');
 
-//JugglingDB it's NOT working
-//var redis = require ('DB/redisJugglingDB');
 
 /**
  * Create HTTP server.
  */
+
 
 var server = http.createServer(app);
 

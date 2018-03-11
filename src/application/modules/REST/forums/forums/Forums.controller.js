@@ -2,11 +2,10 @@
  * Created by ERAZER-ALEX on 5/23/2017.
  */
 
-var ForumsHelper = require('./helpers/Forums.helper.js');
-
+import ForumsHelper from './helpers/Forums.helper'
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
-module.exports = {
+export default {
 
     /*
      REST API

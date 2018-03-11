@@ -3,24 +3,24 @@
  * (C) BIT TECHNOLOGIES
  */
 
-import * as redis from 'DB/redis_nohm'
+import redis from 'DB/redis_nohm'
 
 import SearchList from 'DB/Redis/lists/search/SearchList.helper'
 
 
-let forumModel = require ('REST/forums/forums/models/Forum.model.js');
-let userModel = require ('REST/users/auth/models/User.model.js');
-let replyModel = require ('REST/forums/replies/models/Reply.model.js');
-let topicModel = require ('REST/forums/topics/models/Topic.model.js');
+let forumModel = require ('REST/forums/forums/models/Forum.model');
+let userModel = require ('REST/users/auth/models/User.model');
+let replyModel = require ('REST/forums/replies/models/Reply.model');
+let topicModel = require ('REST/forums/topics/models/Topic.model');
 
-let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
-let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
-let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
+import ForumsHelper from 'REST/forums/forums/helpers/Forums.helper';
+import TopicsHelper from 'REST/forums/topics/helpers/Topics.helper';
+import RepliesHelper from 'REST/forums/replies/helpers/Replies.helper';
 import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 
-let ForumsSorter = require('REST/forums/forums/models/ForumsSorter.js');
-let TopicsSorter = require('REST/forums/topics/models/TopicsSorter.js');
-let RepliesSorter = require('REST/forums/replies/models/RepliesSorter.js');
+import ForumsSorter from 'REST/forums/forums/models/ForumsSorter';
+import TopicsSorter from 'REST/forums/topics/models/TopicsSorter';
+import RepliesSorter from 'REST/forums/replies/models/RepliesSorter';
 
 class Searches {
 
@@ -57,7 +57,7 @@ class Searches {
     async addForumToSearch(text, index, score){
 
         if (typeof index === "string") {
-            let ForumsHelper = require ('../../forums/forums/helpers/Forums.helper.js');
+            let ForumsHelper = require ('../../forums/forums/helpers/Forums.helper.js').default;
             index = await ForumsHelper.findForumById(index);
         }
 
@@ -78,7 +78,7 @@ class Searches {
     async addTopicToSearch(text, index, score){
 
         if (typeof index === "string") {
-            let TopicsHelper = require ('../../forums/topics/helpers/Topics.helper.js');
+            let TopicsHelper = require ('../../forums/topics/helpers/Topics.helper.js').default;
             index = await TopicsHelper.findTopicById(index);
         }
 
@@ -96,7 +96,7 @@ class Searches {
     async addReplyToSearch(text, index, score){
 
         if (typeof index === "string") {
-            let RepliesHelper = require('../../forums/replies/helpers/Replies.helper.js');
+            let RepliesHelper = require('../../forums/replies/helpers/Replies.helper.js').default;
             index = await RepliesHelper.findReplyById(index);
         }
 

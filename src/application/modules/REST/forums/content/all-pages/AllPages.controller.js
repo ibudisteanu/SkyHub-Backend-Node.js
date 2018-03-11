@@ -5,7 +5,7 @@
 
 import AllPagesList from 'REST/forums/content/all-pages/helpers/AllPages.list'
 
-module.exports = {
+export default {
 
     /*
      REST API

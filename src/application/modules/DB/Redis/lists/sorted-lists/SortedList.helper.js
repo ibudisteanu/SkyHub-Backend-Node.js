@@ -7,7 +7,7 @@
  *
  */
 
-import * as redis from 'DB/redis_nohm'
+import redis from 'DB/redis_nohm'
 
 import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 

@@ -10,7 +10,7 @@ import UserHelper from './helpers/User.helper'
 
 let requestPromise =  require('request-promise')
 
-module.exports = {
+export default {
 
 
     async registerOAuth2(req, sSocialNetwork, sOAuth2Token, sSocialNetworkUserId, arrSocialNetworkData){

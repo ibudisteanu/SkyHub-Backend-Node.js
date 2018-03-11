@@ -4,9 +4,10 @@
  */
 import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 
-var ScoreCoefficientHelper = require ('DB/common/score-coefficient/ScoreCoefficient.helper.js');
+import ScoreCoefficientHelper from 'DB/common/score-coefficient/ScoreCoefficient.helper';
 import HashList from 'DB/Redis/lists/HashList.helper'
-var TopForumsHelper = require ('../../top-content/helpers/TopForums.helper.js');
+import TopForumsHelper from '../../top-content/helpers/TopForums.helper';
+
 var ForumsSorter = class{
 
     constructor(){
@@ -75,4 +76,4 @@ var ForumsSorter = class{
 
 };
 
-module.exports = new ForumsSorter();
+export default new ForumsSorter();

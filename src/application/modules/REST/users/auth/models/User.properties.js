@@ -17,7 +17,7 @@ const UserRolesEnum = {
         SYS_ADMIN: 666,
 }
 
-module.exports = {
+export default {
 
     UserGenderEnum: UserGenderEnum,
     UserRolesEnum : UserRolesEnum,

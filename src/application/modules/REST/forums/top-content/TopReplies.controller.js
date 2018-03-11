@@ -3,10 +3,10 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var TopRepliesHelper = require('./helpers/TopReplies.helper.js');
+import TopRepliesHelper from './helpers/TopReplies.helper.js';
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
-module.exports = {
+export default {
 
     /*
      REST API

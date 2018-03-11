@@ -1,8 +1,8 @@
-import * as redis from 'DB/redis_nohm'
+import redis from 'DB/redis_nohm'
 var nohmIterator = require ('DB/Redis/nohm/nohm.iterator.js');
 
 const md5 = require ('md5');
-var UserProperties = require ('./User.properties.js');
+import UserProperties from './User.properties';
 
 var UserModel = redis.nohm.model('UserModel', {
     properties: {
@@ -147,9 +147,9 @@ var UserModel = redis.nohm.model('UserModel', {
             return properties;
         },
 
-        calculateHotnessCoefficient : function () {
+        calculateHotnessCoefficient : () => {
 
-            let ScoreCoefficientHelper = require ('DB/common/score-coefficient/ScoreCoefficient.helper.js');
+            let ScoreCoefficientHelper = require ('DB/common/score-coefficient/ScoreCoefficient.helper.js').default;
 
             return ScoreCoefficientHelper.calculateHotnessScoreCoefficient(this);
         },
@@ -194,3 +194,4 @@ var UserModel = redis.nohm.model('UserModel', {
     },
     //client: redis.someRedisClient // optional
 });
+

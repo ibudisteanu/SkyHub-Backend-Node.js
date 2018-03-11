@@ -4,7 +4,7 @@
  */
 
 
-import * as redis from 'DB/redis_nohm'
+import redis from 'DB/redis_nohm'
 
 import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist.js';
 import UsersHelper from 'REST/users/auth/helpers/Users.helper'
@@ -96,18 +96,18 @@ class MaterializedParents {
 
             case 'forum':
                 //var ForumModel = redis.nohm.factory('ForumModel');
-                let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
+                let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js').default;
 
                 return await ForumsHelper.findForumById(sObjectId);
 
             case 'reply':
-                let RepliesHelper = require('REST/forums/replies/helpers/Replies.helper.js');
+                let RepliesHelper = require('REST/forums/replies/helpers/Replies.helper.js').default;
 
                 return await RepliesHelper.findReplyById(sObjectId);
 
             case 'topic':
                 //var ForumModel = redis.nohm.factory('ForumModel');
-                let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
+                let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js').default;
 
                 //console.log('    topic found: ',sObjectId, await TopicsHelper.findTopicById(sObjectId));
 

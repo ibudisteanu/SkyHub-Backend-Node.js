@@ -51,4 +51,4 @@ var ScoreCoefficient = class{
 
 };
 
-module.exports = new ScoreCoefficient;
+export default new ScoreCoefficient;

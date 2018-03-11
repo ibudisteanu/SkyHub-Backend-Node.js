@@ -3,13 +3,13 @@
  * (C) BIT TECHNOLOGIES
  */
 
-let redis = require ('DB/redis_nohm');
+import redis from 'DB/redis_nohm';    //REDIS NOHM
 let nohmIterator = require ('DB/Redis/nohm/nohm.iterator.js');
 
 import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist.js'
 import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
-import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
+const CommonFunctions = require ('REST/common/helpers/CommonFunctions.helper').default;
 
 let md5 = require ('md5');
 

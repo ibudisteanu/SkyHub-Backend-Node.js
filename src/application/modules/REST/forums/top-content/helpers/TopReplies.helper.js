@@ -35,4 +35,4 @@ class TopReplies {
 
 };
 
-module.exports = new TopReplies();
+export default new TopReplies();

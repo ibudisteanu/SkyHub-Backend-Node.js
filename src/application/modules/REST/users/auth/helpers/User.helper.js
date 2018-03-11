@@ -6,7 +6,7 @@
 import constants from 'bin/constants';
 import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 var nohmValidation = require ('DB/Redis/nohm/nohm.validation.js');
-import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
+const CommonFunctions = require ('REST/common/helpers/CommonFunctions.helper').default;
 import SessionHashHelper from 'REST/users/auth/sessions/helpers/SessionHash.helper'
 
 class UserHelper {
@@ -83,6 +83,7 @@ class UserHelper {
         console.log("SECRET key: "+constants.SESSION_SECRET_KEY);
 
         //var token = jwt.sign({ "id" : user.id}, constants.SESSION_SECRET_KEY, {expiresInMinutes: 60 * 24 * 30* 12 * 5});
+        let jwt = require('jsonwebtoken');
         var token = jwt.sign({ "id" : user.id}, constants.SESSION_SECRET_KEY, {expiresIn: 60 * 24 * 30* 12 * 5});
         console.log('token = '+token);
 

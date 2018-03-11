@@ -2,25 +2,26 @@
  * Created by Alexandru Ionut Budisteanu - SkyHub on 5/26/2017.
  * (C) BIT TECHNOLOGIES
  */
-import * as redis from 'DB/redis_nohm'
+let sanitizeHtml = require('sanitize-html');
+
+import redis from 'DB/redis_nohm'
 import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
 
 let topicModel = require ('../models/Topic.model.js');
-import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
+const CommonFunctions = require ('REST/common/helpers/CommonFunctions.helper').default;
 import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist';
 import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 
 import VotingsHashList from 'REST/voting/helpers/Votings.hashlist.js'
 import SearchesHelper from 'REST/searches/helpers/Searches.helper'
-let TopicsSorter = require('../models/TopicsSorter.js');
-let sanitizeHtml = require('sanitize-html');
+import TopicsSorter from '../models/TopicsSorter'
 
 import NotificationsCreator from 'REST/notifications/NotificationsCreator'
 import NotificationsSubscribersHashList from 'REST/notifications/subscribers/helpers/NotificationsSubscribers.hashlist'
 
 import AllPagesList from 'REST/forums/content/all-pages/helpers/AllPages.list'
 
-module.exports = {
+export default {
 
     createDummyForum (iIndex){
 

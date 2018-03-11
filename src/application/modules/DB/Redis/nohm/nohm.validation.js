@@ -3,7 +3,9 @@
  * (C) BIT TECHNOLOGIES
  */
 
-import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
+let CommonFunctions = require('./../../../REST/common/helpers/CommonFunctions.helper.js').default;
+
+
 //not working
 //import UsersHelper from 'REST/users/auth/helpers/Users.helper.js'
 //import URLHash  from 'REST/common/URLs/helpers/URLHash.hashlist.js'

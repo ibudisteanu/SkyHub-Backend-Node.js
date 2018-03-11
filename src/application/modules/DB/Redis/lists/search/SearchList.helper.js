@@ -8,7 +8,7 @@
                       http://patshaughnessy.net/2011/11/29/two-ways-of-using-redis-to-build-a-nosql-autocomplete-search-index
 
  */
-import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper'
+const CommonFunctions = require ('REST/common/helpers/CommonFunctions.helper').default;
 import SortedList from 'DB/Redis/lists/sorted-lists/SortedList.helper'
 
 import AutoCompleteStringsHashList from 'DB/Redis/lists/search/AutoCompleteStringsHashList.helper'

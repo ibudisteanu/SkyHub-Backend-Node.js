@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-import * as redis from 'DB/redis_nohm'
+import redis from 'DB/redis_nohm'
 import constants from 'bin/constants'
 
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
@@ -55,4 +55,4 @@ class AdminController {
 }
 
 
-module.exports = new AdminController();
+export default new AdminController();

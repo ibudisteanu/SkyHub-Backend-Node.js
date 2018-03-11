@@ -7,7 +7,7 @@ import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper'
 import ContentHelper from 'REST/forums/content/helpers/Content.helper.js'
 
-module.exports = {
+export default {
     /*
      REST API
      */

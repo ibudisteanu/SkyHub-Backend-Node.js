@@ -8,7 +8,7 @@ import NotificationsHelper from 'REST/notifications/notifications/helpers/Notifi
 
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
-module.exports = {
+export default {
 
     /*
      REST API

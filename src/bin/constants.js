@@ -5,8 +5,7 @@
 let DB_REDIS_CURRENT_DB_SKYHUB = 15;
 let DB_REDIS_CURRENT_DB_AGGREGATOR = 6;
 
-module.exports =
-    {
+export default {
         WEBSITE_URL : 'http://127.0.0.1:4000/',
 
         DB_REDIS_PORT : 6379,

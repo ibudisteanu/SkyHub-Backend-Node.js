@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-import * as redis from 'DB/redis_nohm'
+import redis from 'DB/redis_nohm'
 import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
 import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist.js';

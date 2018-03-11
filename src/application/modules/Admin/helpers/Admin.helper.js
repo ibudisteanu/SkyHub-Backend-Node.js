@@ -3,16 +3,16 @@
  * (C) BIT TECHNOLOGIES
  */
 
-import * as redis from 'DB/redis_nohm'
+import redis from 'DB/redis_nohm'
 import constants from 'bin/constants'
 
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
-import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
+import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper';
 
-let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
-let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
-let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
+import ForumsHelper from 'REST/forums/forums/helpers/Forums.helper';
+import TopicsHelper from 'REST/forums/topics/helpers/Topics.helper';
+import RepliesHelper from 'REST/forums/replies/helpers/Replies.helper';
 import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 
 let forumModel = require ('REST/forums/forums/models/Forum.model.js');

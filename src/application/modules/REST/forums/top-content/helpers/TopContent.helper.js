@@ -32,4 +32,4 @@ class TopContent {
 
 };
 
-module.exports = new TopContent();
+export default new TopContent();

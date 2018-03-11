@@ -5,9 +5,9 @@
 
 import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper'
 
-var ScoreCoefficientHelper = require ('DB/common/score-coefficient/ScoreCoefficient.helper.js');
+import ScoreCoefficientHelper from 'DB/common/score-coefficient/ScoreCoefficient.helper.js';
 import HashList from 'DB/Redis/lists/HashList.helper'
-var TopContentHelper = require ('../../top-content/helpers/TopContent.helper.js');
+import TopContentHelper from '../../top-content/helpers/TopContent.helper';
 
 var TopicsSorter = class{
 
@@ -73,4 +73,4 @@ var TopicsSorter = class{
 
 };
 
-module.exports = new TopicsSorter();
+export default new TopicsSorter();

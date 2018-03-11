@@ -10,7 +10,7 @@ node_modules
 public/uploads/
 .idea/
 tmp/
-build/
+dist_bundle/
 .idea/workspace.xml
 bin/constants.js
 

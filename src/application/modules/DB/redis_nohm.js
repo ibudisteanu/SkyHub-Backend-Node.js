@@ -3,10 +3,8 @@
     //TUTORIAL http://maritz.github.io/nohm/
  */
 
-console.log("%%%% LOADING REDIS_NOHM.js");
-
 const redis = require('redis');
-
+const path = require("path");
 /*
     promisify
     http://redis.js.org/#redis-a-nodejs-redis-client-usage-example-promises
@@ -14,17 +12,20 @@ const redis = require('redis');
 // bluebird.promisifyAll(redis.RedisClient.prototype);
 // bluebird.promisifyAll(redis.Multi.prototype);
 
-const nohm = require('nohm').Nohm;
+import constants from 'bin/constants';
+import {Nohm} from 'nohm';
 
-const constants = require('./../../../bin/constants');
+let nohm = Nohm;
 
+console.log("%%%% LOADING REDIS_NOHM.js");
 
-nohm.setExtraValidations((__dirname !== '/' ? __dirname : '') +'/Redis/nohm/nohm.validation.js');
-nohm.setExtraValidations((__dirname !== '/' ? __dirname : '') +'/Redis/nohm/nohm.iterator.js');
+nohm.setExtraValidations('./../../../'+(__dirname !== '/' ? __dirname : '') +'/Redis/nohm/nohm.validation.js');
+nohm.setExtraValidations('./../../../'+(__dirname !== '/' ? __dirname : '') +'/Redis/nohm/nohm.iterator.js');
+
 
 console.log("===> Connecting REDIS CLIENT");
-
 var redisClient = null;
+
 
 try{
     redisClient = redis.createClient(constants.DB_REDIS_PORT, constants.DB_REDIS_HOST, {password: constants.DB_REDIS_PASSWORD}); //creates a new client
@@ -52,11 +53,9 @@ redisClient.on('disconnect', () => {
     console.log('===> REDIS disconnected!!!\n');
 });
 
-
-module.exports =
-    {
-        nohm : nohm,
-        redisClient : redisClient,
-        redis: redis,
-    };
+export default {
+    nohm : nohm,
+    redisClient : redisClient,
+    redis: redis,
+};
 

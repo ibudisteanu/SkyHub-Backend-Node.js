@@ -36,8 +36,8 @@ let routesCommon = {
 };
 
 
-
-
-module.exports.routesCommon = routesCommon;
-module.exports.routesHTTP = routesHTTP;
-module.exports.routesSocket = routesSocket;
+export {
+    routesCommon,
+    routesHTTP,
+    routesSocket
+}

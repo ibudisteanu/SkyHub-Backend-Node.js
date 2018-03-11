@@ -5,7 +5,6 @@
 
 
 import HashList from 'DB/Redis/lists/HashList.helper'
-import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
 import VoteType from 'REST/voting/models/VoteType'
 import VotingInfoHashList from 'REST/voting/helpers/VotingInfo.hashlist'

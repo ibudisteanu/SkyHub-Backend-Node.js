@@ -6,7 +6,8 @@
 import constants from 'bin/constants'
 import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 import VotingsHashList from 'REST/voting/helpers/Votings.hashlist.js'
-let mongoose = require('mongoose');
+
+const mongoose = require('mongoose');
 
 let UserModel = mongoose.model('users',{}, 'users');
 let SiteCategoryModel = mongoose.model('SiteCategories',{ },'SiteCategories');
@@ -15,12 +16,12 @@ let TopicModel = mongoose.model('Topics',{ },'ForumTopics');
 let ReplyModel = mongoose.model('Replies',{ },'Replies');
 
 import UsersHelper from 'REST/users/auth/helpers/Users.helper'
-let UserProperties = require ('REST/users/auth/models/User.properties.js');
+import UserProperties from 'REST/users/auth/models/User.properties';
 import SessionsHashList from 'REST/users/auth/sessions/helpers/SessionsHashList.helper';
 
-let ForumsHelper = require ('REST/forums/forums/helpers/Forums.helper.js');
-let TopicsHelper = require ('REST/forums/topics/helpers/Topics.helper.js');
-let RepliesHelper = require ('REST/forums/replies/helpers/Replies.helper.js');
+import ForumsHelper from 'REST/forums/forums/helpers/Forums.helper';
+import TopicsHelper from 'REST/forums/topics/helpers/Topics.helper';
+import RepliesHelper from 'REST/forums/replies/helpers/Replies.helper';
 
 import VoteType from 'REST/voting/models/VoteType.js'
 
@@ -487,4 +488,4 @@ class MongoImporter {
     }
 }
 
-module.exports = new MongoImporter();
+export default new MongoImporter();

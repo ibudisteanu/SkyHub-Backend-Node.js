@@ -3,10 +3,10 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var ScoreCoefficientHelper = require ('DB/common/score-coefficient/ScoreCoefficient.helper.js');
+import ScoreCoefficientHelper from 'DB/common/score-coefficient/ScoreCoefficient.helper';
 import HashList from 'DB/Redis/lists/HashList.helper';
 import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper'
-var TopRepliesHelper = require ('../../top-content/helpers/TopReplies.helper.js');
+import TopRepliesHelper from '../../top-content/helpers/TopReplies.helper';
 
 
 var RepliesSorter = class{
@@ -68,4 +68,4 @@ var RepliesSorter = class{
 
 };
 
-module.exports = new RepliesSorter();
+export default new RepliesSorter();

@@ -32,4 +32,4 @@ class TopForums {
 
 };
 
-module.exports = new TopForums();
+export default new TopForums();

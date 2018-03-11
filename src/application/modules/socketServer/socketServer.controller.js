@@ -13,10 +13,11 @@ const socketIo = require('socket.io');
 
 var serverSocket = null;
 
-function createSocketServer(server){
+let createSocketServer = (server) => {
+
     console.log('===> Creating SOCKET SERVER');
 
-// Initialize socket.io
+    // Initialize socket.io
     serverSocket = socketIo.listen(server);
 
     console.log("===> STARTING SOCKET SERVER");
@@ -92,7 +93,7 @@ function createSocketServer(server){
     });
 }
 
-module.exports = {
-    serverSocket : serverSocket,
-    createSocketServer: createSocketServer,
+export{
+    serverSocket,
+    createSocketServer
 };

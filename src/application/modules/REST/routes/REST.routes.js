@@ -14,24 +14,24 @@ import NotificationsHelper from 'REST/notifications/notifications/helpers/Notifi
 import AuthenticateCtrl from 'REST/users/auth/Authenticate.controller'
 import SessionHashHelper from 'REST/users/auth/sessions/helpers/SessionHash.helper'
 
-let UsersCtrl = require ('REST/users/Users.controller.js');
-let FunctionsCtrl = require ('REST/common/functions/functions.controller.js');
+import UsersCtrl from 'REST/users/Users.controller'
+import FunctionsCtrl from 'REST/common/functions/functions.controller'
 
-let ForumsCtrl = require ('REST/forums/forums/Forums.controller.js');
-let TopicsCtrl = require ('REST/forums/topics/Topics.controller.js');
-let RepliesCtrl = require ('REST/forums/replies/Replies.controller.js');
-let VotingCtrl = require ('REST/voting/Voting.controller.js');
-let NotificationsCtrl = require ('../notifications/notifications/Notifications.controller.js');
-let MongoImporter = require ('DB/mongo-importer/MongoImporter.js');
+import ForumsCtrl from 'REST/forums/forums/Forums.controller'
+import TopicsCtrl from 'REST/forums/topics/Topics.controller'
+import RepliesCtrl from 'REST/forums/replies/Replies.controller'
+import VotingCtrl from 'REST/voting/Voting.controller'
+import NotificationsCtrl from 'REST/notifications/notifications/Notifications.controller'
+import MongoImporter from 'DB/mongo-importer/MongoImporter'
 
-let TopContentCtrl = require ('REST/forums/top-content/TopContent.controller.js');
-let TopForumsCtrl = require ('REST/forums/top-content/TopForums.controller.js');
-let TopRepliesCtrl = require ('REST/forums/top-content/TopReplies.controller.js');
+import TopContentCtrl from 'REST/forums/top-content/TopContent.controller';
+import TopForumsCtrl from 'REST/forums/top-content/TopForums.controller';
+import TopRepliesCtrl from 'REST/forums/top-content/TopReplies.controller';
 
-let ContentCtrl = require ('REST/forums/content/Content.controller.js');
+import ContentCtrl from 'REST/forums/content/Content.controller'
 
-let SearchesCtrl = require ('REST/searches/Searches.controller.js');
-let AllPagesCtrl = require ('REST/forums/content/all-pages/AllPages.controller.js');
+import SearchesCtrl from 'REST/searches/Searches.controller'
+import AllPagesCtrl from 'REST/forums/content/all-pages/AllPages.controller'
 
 /*
     TESTING
@@ -315,9 +315,11 @@ let routesCommon = {
         callback(await StatisticsCtrl.pageViewNewVisitor(req, res))
     },
 
+};
+
+
+export {
+    routesCommon,
+    routesHTTP,
+    routesSocket
 }
-
-
-module.exports.routesCommon = routesCommon;
-module.exports.routesHTTP = routesHTTP;
-module.exports.routesSocket = routesSocket;

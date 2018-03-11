@@ -3,11 +3,10 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var RepliesHelper = require('./helpers/Replies.helper.js');
-
+import RepliesHelper from './helpers/Replies.helper'
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
-module.exports = {
+export default {
 
     /*
      REST API

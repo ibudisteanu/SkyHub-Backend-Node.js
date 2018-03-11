@@ -3,7 +3,7 @@
  * (C) BIT TECHNOLOGIES
  */
 
-import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
+const CommonFunctions = require ('REST/common/helpers/CommonFunctions.helper').default;
 import HashList from 'DB/Redis/lists/HashList.helper'
 
 class URLHash {

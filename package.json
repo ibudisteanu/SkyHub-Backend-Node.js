@@ -1,11 +1,11 @@
 {
   "name": "express",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "babel --presets es2017 src -d build/dist ",
-    "start": "npm run build && node ./build/dist/main.js",
-    "test": "npm run start",
+    "build": "webpack --config build/webpack.terminal.config.js ",
+    "start": "npm run build && node dist_bundle/terminal-bundle.js",
+    "test": "webpack --config build_webpack/tests/webpack.terminal.test.config.js && mocha --exit --timeout 10000 dist_bundle/terminal-mocha-bundle.js --reporter mochawesome && npm run show_mocha_report",
     "aggregator": "npm run build && AGGREGATOR=true node  ./build/dist/main.js",
     "webpack": "npm run build && webpack && node ./build/webpack.bundle.js"
   },
@@ -50,7 +50,11 @@
     "babel-loader": "^7.0.0",
     "babel-preset-env": "^1.4.0",
     "babel-preset-es2015": "^6.24.1",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "friendly-errors-webpack-plugin": "^1.6.1",
     "webpack": "^2.5.1",
+    "webpack-bundle-analyzer": "^2.11.1",
+    "webpack-merge": "^4.1.2",
     "webpack-node-externals": "^1.6.0"
   }
 }

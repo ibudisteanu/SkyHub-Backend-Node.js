@@ -4,7 +4,8 @@
  */
 
 
-module.exports = {
+export default {
+
     /*
      HELPER FUNCTIONS
      */

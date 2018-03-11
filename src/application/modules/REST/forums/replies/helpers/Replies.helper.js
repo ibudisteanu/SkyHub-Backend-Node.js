@@ -3,9 +3,9 @@
  * (C) BIT TECHNOLOGIES
  */
 
-import * as redis from 'DB/redis_nohm'
+import redis from 'DB/redis_nohm'
 import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
-import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
+const CommonFunctions = require ('REST/common/helpers/CommonFunctions.helper').default;
 
 let replyModel = require ('../models/Reply.model.js')
 import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist.js'
@@ -14,13 +14,13 @@ import SearchesHelper from 'REST/searches/helpers/Searches.helper'
 
 let hat = require ('hat');
 import VotingsHashList from 'REST/voting/helpers/Votings.hashlist.js'
-let RepliesSorter = require('../models/RepliesSorter.js');
+import RepliesSorter from '../models/RepliesSorter.js';
 
 
 import NotificationsCreator from 'REST/notifications/NotificationsCreator'
 import NotificationsSubscribersHashList from 'REST/notifications/subscribers/helpers/NotificationsSubscribers.hashlist'
 
-module.exports = {
+export default {
 
     createDummyForum (iIndex){
 

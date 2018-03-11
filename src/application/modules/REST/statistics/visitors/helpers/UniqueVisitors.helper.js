@@ -10,7 +10,7 @@
 
  */
 
-import * as redis from 'DB/redis_nohm'
+import redis from 'DB/redis_nohm'
 
 class UniqueVisitorsHelper {
 
@@ -68,4 +68,4 @@ class UniqueVisitorsHelper {
 
 }
 
-module.exports = new UniqueVisitorsHelper();
+export default new UniqueVisitorsHelper();

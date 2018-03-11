@@ -8,7 +8,7 @@ import VoteType from 'REST/voting/models/VoteType.js'
 
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
-module.exports = {
+export default {
 
     /*
      REST API

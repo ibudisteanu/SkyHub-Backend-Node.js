@@ -180,4 +180,4 @@ router.post('/image',  imageUpload.single('file'), function (req, res, next) {
 
 
 
-module.exports = router;
+export default router;

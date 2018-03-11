@@ -5,7 +5,7 @@
 
 import SearchesHelper from 'REST/searches/helpers/Searches.helper'
 
-module.exports = {
+export default {
 
     /*
      REST API

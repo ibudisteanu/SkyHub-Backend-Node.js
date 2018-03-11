@@ -188,5 +188,7 @@ function lTrimSlash(str) {
     return str;
 }
 
-exports.initializeRoutesExpressServer = initializeRoutesExpressServer;
-exports.initializeRoutesServerSocket = initializeRoutesServerSocket;
+export {
+    initializeRoutesExpressServer,
+   initializeRoutesServerSocket
+}

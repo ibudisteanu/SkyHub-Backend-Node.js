@@ -4,7 +4,7 @@ import UsersHelper from 'REST/users/auth/helpers/Users.helper'
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 import SessionHashHelper from 'REST/users/auth/sessions/helpers/SessionHash.helper'
 
-var OAuth2 = require('./OAuth2.controller.js');
+import OAuth2 from './OAuth2.controller.js';
 
 
 //import {OAuth2} from './oauth2.controller.js';

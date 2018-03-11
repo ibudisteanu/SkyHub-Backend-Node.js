@@ -2,10 +2,10 @@
  * Created by ERAZER-ALEX on 6/4/2017.
  */
 
-var TopContentHelper = require('./helpers/TopContent.helper.js');
+import TopContentHelper from './helpers/TopContent.helper';
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
-module.exports = {
+export default {
 
     /*
      REST API

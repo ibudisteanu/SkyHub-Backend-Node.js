@@ -2,9 +2,9 @@
  * Created by Alexandru Ionut Budisteanu - SkyHub on 5/16/2017.
  * (C) BIT TECHNOLOGIES
  */
-import * as redis from 'DB/redis_nohm'
+import redis from 'DB/redis_nohm'
 import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
-import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
+const CommonFunctions = require ('REST/common/helpers/CommonFunctions.helper').default;
 import StatisticsHelper from 'REST/statistics/helpers/Statistics.helper.js';
 
 var nohmIterator = require   ('DB/Redis/nohm/nohm.iterator.js');

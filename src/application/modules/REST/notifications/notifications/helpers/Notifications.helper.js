@@ -14,7 +14,6 @@
 
  */
 import SanitizeAdvanced from 'REST/common/helpers/SanitizeAdvanced'
-import CommonFunctions from 'REST/common/helpers/CommonFunctions.helper.js'
 
 import List from 'DB/Redis/lists/List.helper'
 import HashList from 'DB/Redis/lists/HashList.helper'

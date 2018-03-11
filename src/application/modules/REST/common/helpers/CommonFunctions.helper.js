@@ -185,4 +185,4 @@ class CommonFunctions {
 
 }
 
-export default new CommonFunctions();
+exports.default = new CommonFunctions();

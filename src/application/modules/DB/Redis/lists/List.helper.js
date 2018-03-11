@@ -11,7 +11,7 @@
  */
 
 
-import * as redis from 'DB/redis_nohm'
+import redis from 'DB/redis_nohm'
 
 class List {
 

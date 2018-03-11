@@ -12,7 +12,7 @@ import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helpe
 import URLHash from 'REST/common/URLs/helpers/URLHash.hashlist';
 import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
 
-module.exports = {
+export default {
 
     /*
      REST API

@@ -3,9 +3,9 @@
  * (C) BIT TECHNOLOGIES
  */
 
-let UniqueVisitorsHelper = require ('../visitors/helpers/UniqueVisitors.helper.js');
+import UniqueVisitorsHelper from '../visitors/helpers/UniqueVisitors.helper';
 import HashList from 'DB/Redis/lists/HashList.helper'
-import VoteType from 'REST/voting/models/VoteType.js'
+import VoteType from 'REST/voting/models/VoteType'
 
 import VotingInfoHashList from 'REST/voting/helpers/VotingInfo.hashlist.js'
 import MaterializedParentsHelper from 'DB/common/materialized-parents/MaterializedParents.helper';
@@ -200,14 +200,14 @@ class StatisticsHelper{
                 return ''; //to do for users too
 
             case 'forum':
-                let ForumsSorter = require ('../../forums/forums/models/ForumsSorter.js');
+                let ForumsSorter = require ('../../forums/forums/models/ForumsSorter.js').default;
                 await ForumsSorter.calculateKeepSortedList(id, parents, bDelete);
 
                 if (bDelete) await ForumsSorter.destroySorterInDB(id);
 
                 return true;
             case 'reply':
-                let RepliesSorter = require ('../../forums/replies/models/RepliesSorter.js');
+                let RepliesSorter = require ('../../forums/replies/models/RepliesSorter.js').default;
                 await RepliesSorter.calculateKeepSortedList(id, parents, bDelete);
 
                 if (bDelete) await ForumsSorter.destroySorterInDB(id);
@@ -215,7 +215,7 @@ class StatisticsHelper{
                 return true;
 
             case 'topic':
-                let TopicsSorter = require ('../../forums/topics/models/TopicsSorter.js');
+                let TopicsSorter = require ('../../forums/topics/models/TopicsSorter.js').default;
                 await TopicsSorter.calculateKeepSortedList(id, parents, bDelete);
 
                 if (bDelete) await ForumsSorter.destroySorterInDB(id);

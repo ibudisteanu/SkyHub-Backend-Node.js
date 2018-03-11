@@ -3,11 +3,11 @@
  * (C) BIT TECHNOLOGIES
  */
 
-var TopForumsHelper = require('./helpers/TopForums.helper.js');
-var TopContentHelper = require ('REST/forums/top-content/helpers/TopContent.helper.js');
+import TopForumsHelper from './helpers/TopForums.helper.js';
+import TopContentHelper from 'REST/forums/top-content/helpers/TopContent.helper.js';
 import AuthenticatingUser from 'REST/users/auth/helpers/AuthenticatingUser.helper';
 
-module.exports = {
+export default {
 
     /*
      REST API
